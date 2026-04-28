@@ -19,6 +19,5 @@ namespace eAttendance.Models
 
         public int Status { get; set; }
 
-        public virtual ICollection<SetupShiftTime> SetupShiftTimes { get; set; }
     }
 }
