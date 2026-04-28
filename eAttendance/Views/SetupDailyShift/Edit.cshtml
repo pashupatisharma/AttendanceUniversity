@@ -1,0 +1,63 @@
+﻿@model eAttendance.Models.ShiftType
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "शिफ्ट सच्याउनुहोस्";
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li>सेटअप</li>
+            <li>
+                <a href="@Url.Action("Index","SetupDailyShift")">
+                    दैनिक शिफ्ट सेटअप
+                </a>
+            </li>
+            <li class="active">शिफ्ट सच्याउनुहोस्</li>
+        </ol>
+    </div>
+</div>
+
+@using (Html.BeginForm("Edit", "SetupDailyShift", FormMethod.Post, new { @id = "frmEditShiftType", @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.ShiftTypeId)
+
+    <div class="ibox">
+        <div class="ibox-content">
+
+            <!-- Shift Name -->
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name, "शिफ्ट नाम", new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+            </div>
+
+            <!-- Is Active -->
+            <div class="form-group">
+                @Html.LabelFor(m => m.IsActive, "स्थिति", new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.CheckBoxFor(m => m.IsActive)
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <button type="submit" class="btn btn-primary">
+                        Update
+                    </button>
+
+                    <a href="@Url.Action("Index","SetupDailyShift")" class="btn btn-default">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}

@@ -45,6 +45,7 @@ namespace eAttendance.Models
 
         public DbSet<SetupShiftTime> SetupShiftTime { get; set; }
         public DbSet<Shift> Shift { get; set; }
+        public DbSet<ShiftType> ShiftType { get; set; }
         public DbSet<WeekDaySetUp> WeekDaySetUp { get; set; }
         public DbSet<YearlyShift> YearlyShift { get; set; }
 

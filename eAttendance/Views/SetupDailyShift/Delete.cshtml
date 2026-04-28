@@ -1,0 +1,43 @@
+﻿@model eAttendance.Models.ShiftType
+
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">×</span>
+            </button>
+
+            <h4 class="modal-title">शिफ्ट मेटाउनुहोस्</h4>
+        </div>
+
+        @using (Html.BeginForm("Delete", "SetupDailyShift", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="modal-body">
+
+                @Html.HiddenFor(m => m.ShiftTypeId)
+
+                <p>
+                    <i class="fa fa-question-circle"></i>
+                    के तपाईं यो शिफ्ट मेटाउन निश्चित हुनुहुन्छ?
+                </p>
+
+                <div class="alert alert-warning">
+                    <strong>@Model.Name</strong>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger btn-sm">हो, मेटाउनुहोस्</button>
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">रद्द गर्नुहोस्</button>
+            </div>
+        }
+    </div>
+</div>
