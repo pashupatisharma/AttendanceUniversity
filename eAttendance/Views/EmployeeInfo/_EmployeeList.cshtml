@@ -1,0 +1,122 @@
+﻿@model PagedList.IPagedList<eAttendance.Models.EmployeeInfo>
+@{
+    eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
+}
+@using PagedList.Mvc
+
+<table id="tblEmployeeInfo" class="table table-hover table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>क्र सं</th>
+            <th class="col-md-2">पद</th>
+            <th>कर्मचारी</th>
+            <th>लिंग</th>
+            <th>@eAttendance.Service.MenuService.EmailId</th>
+            <th>@eAttendance.Service.MenuService.Status</th>
+            <th class="hidden-print col-md-2"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{int count = ((Model.PageNumber - 1) * Model.PageSize);}
+        @foreach (var m in Model)
+        {
+            count += 1;
+
+            var office = db.EmployeeOfficeDetail.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault();
+            var userid = m.EmailId;
+
+
+            <tr>
+                <td>@count</td>
+                <td class="col-md-2">
+                    @{
+            if (office != null && office.DesignationSetUp != null)
+            {
+                @Html.Raw(office.DesignationSetUp.DesignationName)
+            }
+                    }
+                </td>
+
+                <td class="project-title">
+                    @m.EmployeeNameNp [@m.EmployeeNo]
+                    <br />
+                    @if (office != null)
+                    {
+                        @Html.Raw(office.OfficeSetUp.OfficeName)
+                    }
+                </td>
+                <td>
+                    <span class="text-center">
+                        @if (m.Gender == 1)
+                        {
+                            <span class="btn btn-success btn-xs">
+                                <i class='fa fa-male'></i> पुरुष
+                            </span>
+                        }
+                        else if (m.Gender == 2)
+                        {
+                            <span class="btn btn-success btn-xs">
+                                <i class='fa fa-female'></i> महिला
+                            </span>
+                        }
+                    </span>
+                </td>
+                <td>@m.EmailId</td>
+                <td>@((m.Status == 1) ? eAttendance.Service.MenuService.Active : eAttendance.Service.MenuService.Deactive)</td>
+           
+                <td class="hidden-print project-actions col-md-2">
+                    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator") || User.IsInRole("Admin"))
+                    {
+                        if (m.Status == 4)
+                        {
+
+                            <button value="@m.EmployeeId" type="button" class="btn-viewExternalTransferedInfo btn btn-sm btn-info" title="View Info"><i class="fa fa-info"></i> <span class="hidden-xs hidden-sm"></span> </button>
+                            <button value="@m.EmployeeId" type="button" class="btn-ReTransfer btn btn-sm btn-success" title="Re-Tansfer"><i class="fa fa-check-circle-o"></i> <span class="hidden-xs hidden-sm"></span> </button>
+                        }
+                        else
+                        {
+                            var userId = m.UserId;
+                            if (userId != null)
+                            {
+                                var aspuser = db.Users.Where(x => x.Id == userId).FirstOrDefault();
+                                if (aspuser != null)
+                                {
+                                    <button value="@aspuser.UserName" type="button" class="btn-reset btn btn-info btn-sm" title="@eAttendance.Service.MenuService.ResetPassword"><i class="fa fa-lock"></i> <span class="hidden-xs hidden-sm"></span> </button>
+                                }
+                            }
+
+
+                        }
+                    }
+                    @if (m.Status != 4)
+                    {
+
+
+                        <a href="@Url.Action("edit", "EmployeeInfo" , new { @id=m.EmployeeId })" type="button" class="btn-edit btn btn-primary btn-sm"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm"></span> </a>
+
+                        if (m.Status == 2)
+                        {
+                            <button value="@m.EmployeeId" class="btn-delete btn btn-sm btn-success" title="@eAttendance.Service.MenuService.Active"><i class='fa fa-check'></i><span class="hidden-xs hidden-sm"></span> </button>
+                        }
+                        else if (m.Status == 1)
+                        {
+                            <button value="@m.EmployeeId" class="btn-delete btn btn-sm btn-danger" title="@eAttendance.Service.MenuService.Deactive"><i class='fa fa-ban'></i><span class="hidden-xs hidden-sm"></span> </button>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="row">
+    <div class=" col-md-3 col-sm-3">
+        <div class="pull-left">
+            page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        </div>
+    </div>
+    <div class="col-md-9 col-sm-9">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { nFromDate = ViewBag.NFromDate = ViewBag.NToDate, officeId = ViewBag.OfficeId, branchId = ViewBag.BranchId, serviceId = ViewBag.ServiceId, levelId = ViewBag.LevelId, designationId = ViewBag.DesignationId, empId = ViewBag.EmpId, page, sortOrder = ViewBag.CurrentSort }))
+    </div>
+</div>
+
+

@@ -1,0 +1,1145 @@
+﻿@model eAttendance.Models.WeekForMonth
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Holiday Calender";
+}
+<link href="~/Content/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">सार्वजनिक बिदा  सेटअप</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupDistrict")">सार्वजनिक बिदा सेटअप</a></li>
+            <li class="animated fadeInRight">सार्वजनिक बिदाका सूचीहरु</li>
+
+        </ol>
+    </div>
+</div>
+<div class="row wrapper white-bg page-heading hidden-print">
+    <div class="col-lg-10 col-sm-10">
+        <h2>सार्वजनिक बिदा  सेटअप</h2>
+        
+    </div>
+    <div class="col-lg-2 col-sm-2">
+        <div class="hidden-print title-action">
+            @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+            {
+                <button class="btn btn-primary btn-add"> थप्नुहोस् </button>
+            }
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary active">
+                    <input type="radio" name="calendar-view" id="btnTable" autocomplete="off" value="2" checked> <i class="fa fa-table"></i>
+                </label>
+                <label class="btn btn-primary ">
+                    <input type="radio" name="calendar-view" id="btnCalendar" autocomplete="off" value="1"> <i class="fa fa-calendar-o"></i>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content padding-top-md">
+    <!--Added-->
+    <div class="ibox float-e-margins no-margins">
+        <div class="ibox-title">
+            <h5><i class="fa fa-filter"></i> @eAttendance.Service.MenuService.Filter</h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+
+            </div>
+        </div>
+
+        <div class="ibox-content no-border-bottom">
+            @using (Html.BeginForm("SearchHolidayCalendarOfficeWise", "HolidayCalendar", FormMethod.Get, new { @id = "frmSearch", @class = "form-view-data" }))
+            {
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">कार्यालय</label>
+                            @Html.DropDownList("officeId", eAttendance.Utility.GetOfficeIdName(User), new { @class = "chosen-select form-control" })
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group margin-top-25">
+                            <button type="submit" class="btn-Search btn btn-primary btn-rounded btn-outline fa fa-search"> खोज्नुहोस्</button>
+                            <div class="spinner">
+                                <div class="bounce1"></div>
+                                <div class="bounce2"></div>
+                                <div class="bounce3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!--Added-->
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div id="tableView" class="ibox" style="display:block;">
+                @{Html.RenderAction("_HolidayInformation", new { officeId = ViewBag.OfficeId });}
+            </div>
+
+            <div id="calendarView" class="ibox-content" style="display:none;">
+
+                @using (Html.BeginForm())
+                {
+                    <div id="component-header" class="row">
+                        <div class="col-md-2 col-sm-2">
+                            <a id="@Model.prevMonth" class="month fc-prev-button fc-button fc-state-default btn btn-primary fc-corner-left"><span class="fc-icon fc-icon-left-single-arrow"></span></a>
+                        </div>
+                        <div class="col-md-8 col-sm-8 text-center fc-date-button">
+                            @{
+                                var nDate = NepaliDateConverter.ConvertToNepali(DateTime.Today.Date);
+                                var month = Utility.NepaliMonthList().ToList().Find(w => w.Value == nDate.Month.ToString()).Text;
+                            }
+                            <h2> @Html.Raw(month) @Html.Raw(nDate.Year) </h2>
+                        </div>
+                        <div class="col-md-2 col-sm-2">
+                            <a id="@Model.nextMonth" class="month fc-next-button fc-button fc-state-default btn btn-primary fc-corner-right pull-right"><span class="fc-icon fc-icon-right-single-arrow"></span></a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <table id="component-table" class="table table-bordered table-calendar table-color ">
+                            <thead>
+                                <tr>
+                                    <th>आईतवार</th>
+                                    <th>सोमबार</th>
+                                    <th>मंगलवार</th>
+                                    <th>बुद्धबार</th>
+                                    <th>बिहीवार</th>
+                                    <th>शुक्रबार </th>
+                                    <th>शनिबार</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="week1">
+                                    @{ var today = NepaliDateConverter.ConvertToNepali(DateTime.Today.Date).ToString();}
+                                    @foreach (var item in Model.Week1)
+                                    {
+                                        if (item != null)
+                                        {
+                                            if (item.daycolumn == 0 || item.daycolumn == 6)
+                                            {
+                                                if (item.Date.ToString() == today)
+                                                {
+                                                    <td class="weekend selected">
+                                                        <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                        @foreach (var holiday in item.holidayname)
+                                                        {
+                                                            <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                                @holiday.HolidayTypeName
+                                                            </span>
+                                                        }
+
+                                                    </td>
+                                                }
+                                                else
+                                                {
+
+                                                    <td class="weekend">
+                                                        <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                        @foreach (var holiday in item.holidayname)
+                                                        {
+                                                            <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                                @holiday.HolidayTypeName
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                }
+                                            }
+                                            else if (item.Date != NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                            {
+                                                <td>
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @foreach (var holiday in item.holidayname)
+                                                    {
+                                                        <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                            @holiday.HolidayTypeName
+                                                        </span>
+                                                    }
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="selected">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @foreach (var holiday in item.holidayname)
+                                                    {
+                                                        <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                            @holiday.HolidayTypeName
+                                                        </span>
+                                                    }
+                                                </td>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                    }
+                                </tr>
+                                <tr id="week2">
+                                    @foreach (var item in Model.Week2)
+                                    {
+                                        if (item != null)
+                                        {
+                                            if (item.daycolumn == 0 || item.daycolumn == 6)
+                                            {
+                                                if (item.Date.ToString() == today)
+                                                {
+                                                    <td class="weekend selected">
+                                                        <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                        @foreach (var holiday in item.holidayname)
+                                                        {
+                                                            <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                                @holiday.HolidayTypeName
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                }
+                                                else
+                                                {
+
+                                                    <td class="weekend">
+                                                        <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                        @foreach (var holiday in item.holidayname)
+                                                        {
+                                                            <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                                @holiday.HolidayTypeName
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                }
+                                            }
+                                            else if (item.Date != NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                            {
+                                                <td>
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @foreach (var holiday in item.holidayname)
+                                                    {
+                                                        <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                            @holiday.HolidayTypeName
+                                                        </span>
+                                                    }
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="selected">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @foreach (var holiday in item.holidayname)
+                                                    {
+                                                        <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                            @holiday.HolidayTypeName
+                                                        </span>
+                                                    }
+                                                </td>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                    }
+                                </tr>
+                                <tr id="week3">
+                                    @foreach (var item in Model.Week3)
+                                    {
+                                        if (item != null)
+                                        {
+                                            if (item.daycolumn == 0 || item.daycolumn == 6)
+                                            {
+                                                if (item.Date.ToString() == today)
+                                                {
+                                                    <td class="weekend selected">
+                                                        <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                        @foreach (var holiday in item.holidayname)
+                                                        {
+                                                            <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                                @holiday.HolidayTypeName
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                }
+                                                else
+                                                {
+
+                                                    <td class="weekend">
+                                                        <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                        @foreach (var holiday in item.holidayname)
+                                                        {
+                                                            <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                                @holiday.HolidayTypeName
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                }
+                                            }
+                                            else if (item.Date != NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                            {
+                                                <td>
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @foreach (var holiday in item.holidayname)
+                                                    {
+                                                        <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                            @holiday.HolidayTypeName
+                                                        </span>
+                                                    }
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="selected">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @foreach (var holiday in item.holidayname)
+                                                    {
+                                                        <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                            @holiday.HolidayTypeName
+                                                        </span>
+                                                    }
+                                                </td>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                    }
+                                </tr>
+                                <tr id="week4">
+                                    @foreach (var item in Model.Week4)
+                                    {
+                                        if (item != null)
+                                        {
+                                            if (item.daycolumn == 0 || item.daycolumn == 6)
+                                            {
+
+                                                if (item.Date.ToString() == today)
+                                                {
+                                                    <td class="weekend selected">
+                                                        <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                        @foreach (var holiday in item.holidayname)
+                                                        {
+                                                            <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                                @holiday.HolidayTypeName
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                }
+                                                else
+                                                {
+
+                                                    <td class="weekend">
+                                                        <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                        @foreach (var holiday in item.holidayname)
+                                                        {
+                                                            <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                                @holiday.HolidayTypeName
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                }
+                                            }
+                                            else if (item.Date != NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                            {
+                                                <td>
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @foreach (var holiday in item.holidayname)
+                                                    {
+                                                        <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                            @holiday.HolidayTypeName
+                                                        </span>
+                                                    }
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="selected">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @foreach (var holiday in item.holidayname)
+                                                    {
+                                                        <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                            @holiday.HolidayTypeName
+                                                        </span>
+                                                    }
+                                                </td>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                    }
+                                </tr>
+                                <tr id="week5">
+                                    @foreach (var item in Model.Week5)
+                                    {
+                                        if (item != null)
+                                        {
+                                            if (item.daycolumn == 0 || item.daycolumn == 6)
+                                            {
+                                                if (item.Date.ToString() == today)
+                                                {
+                                                    <td class="weekend selected">
+                                                        <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                        @foreach (var holiday in item.holidayname)
+                                                        {
+                                                            <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                                @holiday.HolidayTypeName
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                }
+                                                else
+                                                {
+
+                                                    <td class="weekend">
+                                                        <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                        @foreach (var holiday in item.holidayname)
+                                                        {
+                                                            <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                                @holiday.HolidayTypeName
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                }
+                                            }
+                                            else if (item.Date != NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                            {
+                                                <td>
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @foreach (var holiday in item.holidayname)
+                                                    {
+                                                        <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                            @holiday.HolidayTypeName
+                                                        </span>
+                                                    }
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="selected">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @foreach (var holiday in item.holidayname)
+                                                    {
+                                                        <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                            @holiday.HolidayTypeName
+                                                        </span>
+                                                    }
+                                                </td>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                    }
+                                </tr>
+                                <tr id="week6">
+                                    @if (Model.Week6 != null)
+                                    {
+                                        foreach (var item in Model.Week6)
+                                        {
+                                            if (item != null)
+                                            {
+                                                if (item.daycolumn == 0 || item.daycolumn == 6)
+                                                {
+                                                    if (item.Date.ToString() == today)
+                                                    {
+                                                        <td class="weekend selected">
+                                                            <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                            @foreach (var holiday in item.holidayname)
+                                                            {
+                                                                <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                                    @holiday.HolidayTypeName
+                                                                </span>
+                                                            }
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <td class="weekend">
+                                                            <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                            @foreach (var holiday in item.holidayname)
+                                                            {
+                                                                <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                                    @holiday.HolidayTypeName
+                                                                </span>
+                                                            }
+                                                        </td>
+                                                    }
+                                                }
+                                                else if (item.Date != NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                                {
+                                                    <td>
+                                                        <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3></a>
+                                                        @foreach (var holiday in item.holidayname)
+                                                        {
+                                                            <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                                @holiday.HolidayTypeName
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="selected">
+                                                        <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                        @foreach (var holiday in item.holidayname)
+                                                        {
+                                                            <span class="label label-primary" value="@holiday.HolidayCalendarId">
+                                                                @holiday.HolidayTypeName
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+                                        }
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="modal inmodal fade" id="modelAdd" role="dialog">
+
+</div>
+<div class="modal inmodal fade" id="modelEdit" role="dialog">
+
+</div>
+<div class="modal inmodal fade" id="modelDelete" role="dialog">
+
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        $('td').on('mouseover', function () {
+
+            if ($(this).css("background-color") == "rgb(255, 255, 255)") {
+                $(this).css("background-color", "#FFDFCC");
+            }
+        });
+
+        $('td').on('mouseleave', function () {
+
+            if ($(this).css("background-color") == "rgb(255, 223, 204)") {
+                $(this).css("background-color", "rgb(255, 255, 255)");
+            }
+        });
+
+
+        $(".month").on("click", function () {
+            var object = $(this).attr("id");
+            var str = object.split('/');
+            var today = '';
+            // str[0] contains "month"
+            // str[1] contains "year"
+            $.ajax
+                ({
+
+                           url:"@Url.Action("AsyncTodayDateBS", "HolidayCalendar")",
+                    type: 'GET',
+                    traditional: true,
+                    async: false,
+                    contentType: 'application/json',
+                    data: {},
+                    success: function (result) {
+                        today = result;
+                    }
+                });
+
+            $.ajax
+                ({
+
+                    url:"@Url.Action("AsyncUpdateCalender", "HolidayCalendar")",
+
+                    type: 'GET',
+                    traditional: true,
+                    contentType: 'application/json',
+                    data: { month: str[0], year: str[1], officeId: str[2] },
+                    success: function (result) {
+
+                        if (!jQuery.isEmptyObject(result)) {
+                            var week1 = $("#week1");
+                            week1.empty();
+                            var week2 = $("#week2");
+                            week2.empty();
+                            var week3 = $("#week3");
+                            week3.empty();
+                            var week4 = $("#week4");
+                            week4.empty();
+                            var week5 = $("#week5");
+                            week5.empty();
+                            var week6 = $("#week6");
+                            week6.empty();
+                            $('.fc-prev-button').attr('id', result.prevMonth);
+                            $('.fc-next-button').attr('id', result.nextMonth);
+                            $('.fc-date-button h2').text(getMonth(str[0]) + ' ' + str[1]);
+
+                            $.each(result.Week1, function (i, item) {
+                                var htmlStr = null;
+                                if (jQuery.isEmptyObject(item)) {
+                                    htmlStr = $('<td></td>');
+                                    week1.append(htmlStr);
+                                } else {
+                                    if (item.daycolumn == 0 || item.daycolumn == 6) {
+                                        if (item.dateStr == today) {
+                                            htmlStr = $('<td class="weekend selected"></td>');
+                                            htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                            if (item.holidayname.length > 0) {
+                                                item.holidayname.forEach(function (holiday) {
+                                                    htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+
+                                                });
+                                            }
+                                            htmlStr.append('</a>');
+                                        }
+                                        else {
+                                            htmlStr = $('<td class="weekend"></td>');
+                                            htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                            if (item.holidayname.length > 0) {
+                                                item.holidayname.forEach(function (holiday) {
+                                                    htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                                });
+                                            }
+                                            htmlStr.append('</a>');
+                                        }
+                                    }
+                                    else if (item.dateStr != today) {
+                                        htmlStr = $('<td></td>');
+                                        htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                        if (item.holidayname.length > 0) {
+                                            item.holidayname.forEach(function (holiday) {
+                                                htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                            });
+                                        }
+                                    } else {
+                                        htmlStr = $('<td class="selected"></td>');
+                                        htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                        if (item.holidayname.length > 0) {
+                                            item.holidayname.forEach(function (holiday) {
+                                                htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                            });
+                                        }
+                                    }
+
+                                    week1.append(htmlStr);
+
+                                }
+
+                            });
+                            $.each(result.Week2, function (i, item) {
+                                var htmlStr = null;
+                                if (jQuery.isEmptyObject(item)) {
+                                    htmlStr = $('<td></td>');
+                                    week2.append(htmlStr);
+                                } else {
+
+                                    if (item.daycolumn == 0 || item.daycolumn == 6) {
+                                        if (item.dateStr == today) {
+
+                                            htmlStr = $('<td class="weekend selected"></td>');
+                                            htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                            if (item.holidayname.length > 0) {
+                                                item.holidayname.forEach(function (holiday) {
+                                                    htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                                });
+                                            }
+                                            htmlStr.append('</a>');
+
+
+                                            //htmlStr = $('<td class="weekend selected"></td>');
+                                            //htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3> <span class="label label-primary">' + item.holidayname + '</span></a>');
+
+                                        }
+                                        else {
+                                            htmlStr = $('<td class="weekend"></td>');
+
+                                            htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                            if (item.holidayname.length > 0) {
+                                                item.holidayname.forEach(function (holiday) {
+                                                    htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                                });
+                                            }
+                                            htmlStr.append('</a>');
+                                            //htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3> <span class="label label-primary">' + item.holidayname + '</span></a>');
+                                        }
+                                    }
+                                    else if (item.dateStr != today) {
+                                        htmlStr = $('<td></td>');
+
+                                        htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                        if (item.holidayname.length > 0) {
+                                            item.holidayname.forEach(function (holiday) {
+                                                htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                            });
+                                        }
+                                        htmlStr.append('</a>');
+                                        //htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3><span class="label label-primary">' + item.holidayname + '</span> </a>');
+                                    } else {
+                                        htmlStr = $('<td class="selected"></td>');
+
+                                        htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                        if (item.holidayname.length > 0) {
+                                            item.holidayname.forEach(function (holiday) {
+                                                htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                            });
+                                        }
+                                        htmlStr.append('</a>');
+                                        //htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3> <span class="label label-primary">' + item.holidayname + '</span></a>');
+                                    }
+                                    week2.append(htmlStr);
+                                }
+                            });
+                            $.each(result.Week3, function (i, item) {
+                                var htmlStr = null;
+                                if (jQuery.isEmptyObject(item)) {
+                                    htmlStr = $('<td></td>');
+                                    week3.append(htmlStr);
+                                } else {
+                                    if (item.daycolumn == 0 || item.daycolumn == 6) {
+                                        if (item.dateStr == today) {
+
+                                            htmlStr = $('<td class="weekend selected"></td>');
+                                            htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                            if (item.holidayname.length > 0) {
+                                                item.holidayname.forEach(function (holiday) {
+                                                    htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                                });
+                                            }
+                                            htmlStr.append('</a>');
+                                            //htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3> <span class="label label-primary">' + item.holidayname + '</span></a>');
+                                        }
+                                        else {
+                                            htmlStr = $('<td class="weekend"></td>');
+
+                                            htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                            if (item.holidayname.length > 0) {
+                                                item.holidayname.forEach(function (holiday) {
+                                                    htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                                });
+                                            }
+                                            htmlStr.append('</a>');
+                                            //htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3> <span class="label label-primary">' + item.holidayname + '</span></a>');
+                                        }
+                                    }
+                                    else if (item.dateStr != today) {
+                                        htmlStr = $('<td></td>');
+
+                                        htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                        if (item.holidayname.length > 0) {
+                                            item.holidayname.forEach(function (holiday) {
+                                                htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                            });
+                                        }
+                                        htmlStr.append('</a>');
+                                        //htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3> <span class="label label-primary">' + item.holidayname + '</span></a>');
+                                    } else {
+                                        htmlStr = $('<td class="selected"></td>');
+
+                                        htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                        if (item.holidayname.length > 0) {
+                                            item.holidayname.forEach(function (holiday) {
+                                                htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                            });
+                                        }
+                                        htmlStr.append('</a>');
+                                        //htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3><span class="label label-primary">' + item.holidayname + '</span> </a>');
+                                    }
+                                    week3.append(htmlStr);
+                                }
+                            });
+                            $.each(result.Week4, function (i, item) {
+                                var htmlStr = null;
+                                if (jQuery.isEmptyObject(item)) {
+                                    htmlStr = $('<td></td>');
+                                    week4.append(htmlStr);
+                                } else {
+                                    if (item.daycolumn == 0 || item.daycolumn == 6) {
+                                        if (item.dateStr == today) {
+                                            htmlStr = $('<td class="weekend selected"></td>');
+
+                                            htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                            if (item.holidayname.length > 0) {
+                                                item.holidayname.forEach(function (holiday) {
+                                                    htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                                });
+                                            }
+                                            htmlStr.append('</a>');
+                                            //htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3> <span class="label label-primary">' + item.holidayname + '</span></a>');
+                                        }
+                                        else {
+                                            htmlStr = $('<td class="weekend"></td>');
+
+                                            htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                            if (item.holidayname.length > 0) {
+                                                item.holidayname.forEach(function (holiday) {
+                                                    htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                                });
+                                            }
+                                            htmlStr.append('</a>');
+                                            //htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3> <span class="label label-primary">' + item.holidayname + '</span></a>');
+                                        }
+                                    }
+                                    else if (item.dateStr != today) {
+                                        htmlStr = $('<td></td>');
+
+                                        htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                        if (item.holidayname.length > 0) {
+                                            item.holidayname.forEach(function (holiday) {
+                                                htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                            });
+                                        }
+                                        htmlStr.append('</a>');
+                                        //htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3><span class="label label-primary">' + item.holidayname + '</span> </a>');
+                                    } else {
+                                        htmlStr = $('<td class="selected"></td>');
+
+                                        htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                        if (item.holidayname.length > 0) {
+                                            item.holidayname.forEach(function (holiday) {
+                                                htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                            });
+                                        }
+                                        htmlStr.append('</a>');
+                                        //htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3><span class="label label-primary">' + item.holidayname + '</span> </a>');
+                                    }
+                                    week4.append(htmlStr);
+                                }
+                            });
+                            $.each(result.Week5, function (i, item) {
+                                var htmlStr = null;
+                                if (jQuery.isEmptyObject(item)) {
+                                    htmlStr = $('<td></td>');
+                                    week5.append(htmlStr);
+                                } else {
+                                    if (item.daycolumn == 0 || item.daycolumn == 6) {
+                                        if (item.dateStr == today) {
+                                            htmlStr = $('<td class="weekend selected"></td>');
+                                            htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                            if (item.holidayname.length > 0) {
+                                                item.holidayname.forEach(function (holiday) {
+                                                    htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                                });
+                                            }
+                                            htmlStr.append('</a>');
+                                            //htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3> <span class="label label-primary">' + item.holidayname + '</span></a>');
+                                        }
+                                        else {
+                                            htmlStr = $('<td class="weekend"></td>');
+
+                                            htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                            if (item.holidayname.length > 0) {
+                                                item.holidayname.forEach(function (holiday) {
+                                                    htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                                });
+                                            }
+                                            htmlStr.append('</a>');
+                                        }
+                                    }
+                                    else if (item.dateStr != today) {
+                                        htmlStr = $('<td></td>');
+
+                                        htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                        if (item.holidayname.length > 0) {
+                                            item.holidayname.forEach(function (holiday) {
+                                                htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                            });
+                                        }
+                                        htmlStr.append('</a>');
+                                    } else {
+                                        htmlStr = $('<td class="selected"></td>');
+
+                                        htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                        if (item.holidayname.length > 0) {
+                                            item.holidayname.forEach(function (holiday) {
+                                                htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                            });
+                                        }
+                                        htmlStr.append('</a>');
+                                    }
+                                    week5.append(htmlStr);
+                                }
+                            });
+                            $.each(result.Week6, function (i, item) {
+                                var htmlStr = null;
+                                if (jQuery.isEmptyObject(item)) {
+                                    htmlStr = $('<td></td>');
+                                    week6.append(htmlStr);
+                                } else {
+                                    if (item.daycolumn == 0 || item.daycolumn == 6) {
+                                        if (item.dateStr == today) {
+                                            htmlStr = $('<td class="weekend selected"></td>');
+                                            htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                            if (item.holidayname.length > 0) {
+                                                item.holidayname.forEach(function (holiday) {
+                                                    htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                                });
+                                            }
+                                            htmlStr.append('</a>');
+                                        }
+                                        else {
+                                            htmlStr = $('<td class="weekend"></td>');
+
+                                            htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                            if (item.holidayname.length > 0) {
+                                                item.holidayname.forEach(function (holiday) {
+                                                    htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                                });
+                                            }
+                                            htmlStr.append('</a>');
+                                        }
+                                    }
+                                    else if (item.dateStr != today) {
+                                        htmlStr = $('<td></td>');
+
+                                        htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                        if (item.holidayname.length > 0) {
+                                            item.holidayname.forEach(function (holiday) {
+                                                htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                            });
+                                        }
+                                        htmlStr.append('</a>');
+                                    } else {
+                                        htmlStr = $('<td class="selected"></td>');
+
+                                        htmlStr.append('<a   id=' + item.dateStr + ' class="dt"><h3>' + item.dtDay + '</h3>');
+                                        if (item.holidayname.length > 0) {
+                                            item.holidayname.forEach(function (holiday) {
+                                                htmlStr.append(' <span class="label label-primary" value="' + holiday.HolidayCalendarId + '">' + holiday.HolidayTypeName + '</span>');
+                                            });
+                                        }
+                                        htmlStr.append('</a>');
+                                    }
+                                    week6.append(htmlStr);
+                                }
+                            });
+
+                            $("#component-table").trigger("update");
+                        } else {
+                            alertMsg('Oops, errors occur in retrieving calender');
+                        }
+                    }
+                });
+        });
+    });
+
+
+
+    function getTodayDate() {
+        var localdate = new Date;
+        var localday = localdate.getDate();
+        //    if (localday < 10) {
+        //        localday = '0' + localday;
+        //    }
+        var localmonth = localdate.getMonth() + 1;
+        //    if (localmonth < 10) {
+        //        localmonth = '0' + localmonth;
+        //    }
+        var localyear = localdate.getFullYear();
+
+        var local = localmonth + "/" + localday + "/" + localyear;
+        return local;
+    }
+
+
+
+    function getMonth(m) {
+        var month;
+        switch (m) {
+            case "1":
+                month = "बैशाख";
+                return month;
+                break;
+            case "2":
+                month = "जेठ";
+                return month;
+                break;
+            case "3":
+                month = "असार";
+                return month;
+                break;
+            case "4":
+                month = "साउन";
+                return month;
+                break;
+            case "5":
+                month = "भदौ";
+                return month;
+                break;
+            case "6":
+                month = "असोज";
+                return month;
+                break;
+            case "7":
+                month = "कार्तिक";
+                return month;
+                break;
+            case "8":
+                month = "मंसिर";
+                return month;
+                break;
+            case "9":
+                month = "पुस";
+                return month;
+                break;
+            case "10":
+                month = "माघ";
+                return month;
+                break;
+            case "11":
+                month = "फागुन";
+                return month;
+                break;
+            case "12":
+                month = "चैत";
+                return month;
+                break;
+            default:
+                month = "non";
+                return month;
+                break;
+        }
+    }
+
+
+
+
+
+</script>
+
+@section Scripts
+{
+
+
+    <script type="text/javascript">
+        $(function () {
+            //$(".nepali-calendar").nepaliDatePicker();
+        });
+        $(document).ready(function () {
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+            toastr.options = {
+                "progressBar": true, "positionClass": "toast-top-center", "preventDuplicates": false,
+                "showDuration": "300", "hideDuration": "1000", "timeOut": "5000", "extendedTimeOut": "1000",
+                "showEasing": "swing", "hideEasing": "linear", "showMethod": "fadeIn", "hideMethod": "fadeOut"
+            }
+
+            var hasMessage = '@TempData["HasMessage"]';
+            if (hasMessage) { Command: toastr["@TempData["MessageType"]"]("@TempData["Message"]", "@TempData["MessageHeader"]") }
+
+            $('input[name="calendar-view"]').on('change', function (event, state) {
+                var v = $(this).val();
+                if (v == 1) {
+                    $('#tableView').hide(500);
+                    $('#calendarView').show(500);
+                }
+                else {
+                    $('#calendarView').hide(500);
+                    $('#tableView').show(500);
+                }
+            });
+            $("#frmSearch").validate({
+                rules: {
+                    officeId: {
+                        min: 1,
+                    }
+                },
+                messages: {
+                    officeId: {
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    }
+                }
+            });
+
+
+
+
+            $('.btn-add').on('click', function () {
+                $.ajax({
+                    url: '@Url.Action("Add", "HolidayCalendar")',
+                    type: 'GET',
+                    data: {},
+                    success: function (result) {
+                        $("#modelAdd").html(result);
+                        $("#modelAdd").modal('show');
+                    },
+                    error: function () { }
+                });
+            });
+
+            $('.btn-edit').on('click', function () {
+                var holidayCalender = $(this).attr('value');
+                $.ajax({
+                    url: '@Url.Action("Edit", "HolidayCalendar")',
+                    type: 'GET',
+                    data: { id: holidayCalender },
+                    success: function (result) {
+                        console.log(result)
+                        $("#modelEdit").html(result);
+                        $("#modelEdit").modal('show');
+                    },
+                    error: function () {
+                    }
+                });
+            });
+
+
+            $('.btn-delete').on('click', function () {
+                var holidayCalender = $(this).attr('value');
+                $.ajax({
+                    url: '@Url.Action("Delete", "HolidayCalendar")',
+                    type: 'GET',
+                    data: { id: holidayCalender },
+                    success: function (result) {
+                        console.log(result)
+                        $("#modelDelete").html(result);
+                        $("#modelDelete").modal('show');
+                    },
+                    error: function () {
+                    }
+                });
+            });
+
+
+
+            $(document).on('click', 'span.label-primary', function () {
+                var holidayCalender = $(this).attr('value');
+                $.ajax({
+                    url: '@Url.Action("Edit", "HolidayCalendar")',
+                    type: 'GET',
+                    data: { id: holidayCalender },
+                    success: function (result) {
+                        $("#modelEdit").html(result);
+                        $("#modelEdit").modal('show');
+
+                    },
+                    error: function () {
+                    }
+                });
+
+            });
+            //$('span.label-primary').on('click', function () {
+            //               alert($(this).attr('value'))
+            //});
+        });
+    </script>
+}

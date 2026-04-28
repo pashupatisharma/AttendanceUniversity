@@ -1,0 +1,113 @@
+﻿@model eAttendance.Models.WeekDaySetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Setup Weeks Days";
+}
+<div class="wrapper wrapper-content">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <div class="row wrapper white-bg page-heading hidden-print">
+                        <div class="col-lg-10">
+                            <h2>सप्ताह सेटअप </h2>
+                            <ol class="breadcrumb ">
+                                <li>
+                                    <a href="@Url.Action("Index","Home")">घर</a>
+                                </li>
+                                <li>
+                                    <a>सामान्य सेटअप </a>
+                                </li>
+                                <li class="active">
+                                    <strong>सप्ताह सेटअप </strong>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-success" style="width:100%;">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa"></i>सप्ताह </h3>
+                    </div>
+                    <div class="panel-body" style="font-style: normal;">
+                    @using (Html.BeginForm("Index", "SetupWeekDays", FormMethod.Post, new { @id = "frmSetupWeekDays", @class = "form-horizontal" }))
+                         {
+                        <div class="modal-body">
+                            <div class="form-group">
+                                @foreach (var m in Model.WeekDaySetUpList)
+                                {
+                                    <div class="row" >
+                                        <div class="col-sm-8 pull-left">
+                                            @m.WeekDayName
+                                            <div class="radio-inline col-sm-2 pull-right">
+                                                @Html.RadioButtonFor(model => model.WorkType, "3", new {name=m.WeekDayName})
+                                                @Html.LabelFor(model => model.WorkType, "Off Day")
+                                            </div>
+                                            <div class="radio-inline col-sm-2 pull-right">
+                                                @Html.RadioButtonFor(model => model.WorkType, "2", new { name = m.WeekDayName })
+                                                @Html.LabelFor(model => model.WorkType, "Half Day")
+                                            </div>
+                                            <div class="radio-inline col-sm-2 pull-right">
+                                                @Html.RadioButtonFor(model => model.WorkType, "1", new {name = m.WeekDayName })
+                                                @Html.LabelFor(model => model.WorkType, "Full Day")
+                                            </div>
+                                            @*<div class="radio-inline col-sm-2 pull-right">
+                                                @Html.RadioButton("Full Day","1",isChecked:true)@Html.Label("Off Day")
+                                            </div>
+                                            <div class="radio-inline col-sm-2 pull-right">
+                                               @Html.RadioButton("Half Day", "2", isChecked:false)@Html.Label("Half Day")
+                                            </div>
+                                            <div class="radio-inline col-sm-2 pull-right">
+                                                @Html.RadioButton("Off Day", "3", isChecked: false)@Html.Label("Full Day")
+                                            </div>
+                                            <p id="sel"></p><br />*@
+                                        </div>
+                                    </div>
+                                   
+                                }
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary btn-sm" id="modelAdd">बचत गर्नु</button>
+                            </div>
+                        </div>
+                    }
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+       
+        $('.btn-add').on('click', function () {
+            $.ajax({
+                url: '@Url.Action("Index", "SetupWeekDays")',
+                type: 'GET',
+                data: {},
+                success: function (result) {
+                    console.log(result)
+                    $("#modelAdd").html(result);
+                    $("#modelAdd").modal('show');
+                },
+                error: function () {
+                }
+            });
+        })
+        $(function () {
+
+            $('#btn-add').click(function () {
+                alert('w');
+                var checkedradio = $('[name="Day"]:radio:checked').val();
+                $("#sel").html("Selected Value: " + checkedradio);
+
+            });
+
+        });
+    </script>
+
+}

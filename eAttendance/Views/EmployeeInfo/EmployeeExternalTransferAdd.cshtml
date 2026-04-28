@@ -1,0 +1,169 @@
+﻿@model eAttendance.Models.TransferModel
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<style>
+    label.error {
+        float: right;
+        font-size: 10.5px;
+    }
+</style>
+<div class="modal-dialog modal-md">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title"><i class="fa fa-plus-circle"></i> @eAttendance.Service.MenuService.ExternalTransfer</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("AddIncomingEmployeeExternalTransfer", "EmployeeInfo", FormMethod.Post, new { @id = "frmAddIncomingEmployeeExternalTransferInfo" }))
+        {
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.HiddenFor(m => m.EmployeeId)
+                        <div class="form-group">
+                            <label>@eAttendance.Service.MenuService.Enrollment *</label>
+                            @Html.TextBoxFor(m => m.EmployeeNo, new { @placeholder = "Employee Number", @id = "ExtEmployeeNo", @class = "form-control", disabled = "true" })
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">@Html.DisplayNameFor(m => m.NTransferDateTime)</label>
+                            @Html.TextBoxFor(m => m.NTransferDateTime, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", @id = "ExtNTransferDateTime", data_mask = "9999-99-99" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>@eAttendance.Service.MenuService.EmployeeNameNep *</label>
+                            @Html.TextBoxFor(m => m.EmployeeNameNp, new { @placeholder = "Employee Name ", @id = "ExtEmployeeName", @class = "form-control", disabled = "true" })
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromOfficeId)</label>
+                            @Html.DropDownListFor(m => m.FromOfficeId, eAttendance.Utility.GetOfficeIdNameWithSelect(User), new { @class = "form-control chosen-select", @id = "ExtFromOfficeId" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromBranchId)</label>
+                            @Html.DropDownListFor(m => m.FromBranchId, eAttendance.Utility.GetBranchIdName(@User), new { @class = "form-control chosen-select", @id = "ExtFromBranchId" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromServiceId)</label>
+                            @Html.DropDownListFor(m => m.FromServiceId, eAttendance.Utility.GetServiceIdName(), new { @class = "form-control chosen-select", @id = "ExtFromServiceId" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromLevelId)</label>
+                            @Html.DropDownListFor(m => m.FromLevelId, eAttendance.Utility.GetLevelIdName(), new { @class = "form-control chosen-select", @id = "ExtFromLevelId" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromDesignationId)</label>
+                            @Html.DropDownListFor(m => m.FromDesignationId, eAttendance.Utility.GetDesignationIdName(User), new { @class = "form-control chosen-select", @id = "ExtFromDesignationId" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToOfficeName)</label>
+                            @Html.TextBoxFor(m => m.ToOfficeName, new { @class = "chosen-select form-control", @id = "toOfficeId" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToBranchName)</label>
+                            @Html.TextBoxFor(m => m.ToBranchName, new { @class = "form-control", @id = "toBranchId" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToServiceName)</label>
+                            @Html.TextBoxFor(m => m.ToServiceName, new { @class = "form-control", @id = "toServiceId" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToLevelName)</label>
+                            @Html.TextBoxFor(m => m.ToLevelName, new { @class = "form-control", @id = "toLevelId" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToDesignationName)</label>
+                            @Html.TextBoxFor(m => m.ToDesignationName, new { @class = "form-control", @id = "toDesignationId" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.Remarks)</label>
+                            @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control", @id = "ExtRemarks" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+            </div>
+        }
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            //$(".chosen-select").chosen({ width: '100%' });
+            $('.nepali-calendar').nepaliDatePicker();
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+            $("#frmAddIncomingEmployeeExternalTransferInfo").validate({
+                rules: {
+                    TransferType: {
+                        min: 1
+                    },
+                    NTransferDateTime: {
+                        required: true
+                    },
+                    FromOfficeId: {
+                        min: 1
+                    },
+                    ToOfficeName: {
+                        required:true
+                    }
+                },
+                messages: {
+                    TransferType: {
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    NTransferDateTime: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्'
+                    },
+                    FromOfficeId: {
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    ToOfficeName: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्'
+                    }
+                }
+            });
+
+        });
+        $(document).on('change', '#ExtFromLevelId', function () {
+            var levelId = $(this).val();
+            $.getJSON("@Url.Action("GetDesignationByLevelId", "Utility")", { LevelId: levelId, withAll: false, withSelect: true },
+             function (data) {
+                 $("#ExtFromDesignationId").empty();
+                 var $prevGroup, prevGroupName;
+                 $.each(data, function () {
+                     if (this.Group == null) { $("<option />").val(this.Value).text(this.Text).appendTo('#ExtFromDesignationId'); }
+                     else {
+                         if (prevGroupName != this.Group.Name) { $prevGroup = $('<optgroup />').prop('label', this.Group.Name).appendTo('#ExtFromDesignationId'); }
+                         $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                         prevGroupName = this.Group.Name;
+                     }
+                 });
+                 $("#ExtFromDesignationId").trigger('chosen:updated');
+             });
+        });
+    </script>
+}
+
+
+
+

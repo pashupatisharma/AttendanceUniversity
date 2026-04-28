@@ -1,0 +1,55 @@
+﻿@model  eAttendance.Models.AssignEmployeeLeave
+@if (Model.Employees.Count == 0 || Model.AssignEmployeeLeaveList.Count == 0)
+{
+    <p class="font-bold  alert alert-danger m-b-sm">
+        <i class="fa fa-info-circle"></i>
+        खोजिएको डाटा भेटिएन।
+    </p>
+    return;
+}
+<table id="assignLeave" class="table table-condensed table-bordered table-color ">
+    <thead>
+        <tr>
+            <th rowspan="2" class="text-center center" width="140px" style="width:140px; vertical-align: inherit;">
+                कर्मचारीको नाम
+            </th>
+            @foreach (var lt in Model.LeaveTypes)
+            {
+                <th colspan="2" class="text-center">@lt.LeaveTypeName</th>
+            }
+        </tr>
+        <tr>
+            @foreach (var lt in Model.LeaveTypes)
+            {
+                <th class="text-center">गत वर्ष</th>
+                <th class="text-center">यो वर्ष</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var e in Model.Employees)
+        {
+            <tr>
+                <td style="vertical-align: inherit;" employeeid="@e.EmployeeId">@e.EmployeeNameNp [@e.EmployeeNo]</td>
+                @foreach (var lt in Model.LeaveTypes)
+                {
+                    var assignLeave = Model.AssignEmployeeLeaveList.Find(w => w.EmployeeId == e.EmployeeId && w.LeaveTypeId == lt.LeaveTypeId);
+                    if (assignLeave == null)
+                    {
+                        <td assignleaveid="0" leavetypeid="@lt.LeaveTypeId" assigntype="lastyear"></td>
+                        <td assignleaveid="0" leavetypeid="@lt.LeaveTypeId" assigntype="thisyear"></td>
+                    }
+                    else
+                    {
+                        <td class="text-center" leavetypeid="@lt.LeaveTypeId" assignleaveid="@assignLeave.LeaveApplicationId" assigntype="lastyear">
+                            @assignLeave.OpenningBalance.ToString("0.#")
+                        </td>
+                        <td class="text-center" leavetypeid="@lt.LeaveTypeId" assignleaveid="@assignLeave.LeaveApplicationId" assigntype="thisyear">
+                            @assignLeave.NoOfLeave.ToString("0.#")
+                        </td>
+                    }
+                }
+            </tr>
+        }
+    </tbody>
+</table>

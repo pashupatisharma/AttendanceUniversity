@@ -1,0 +1,169 @@
+﻿@model eAttendance.Models.YearlyShift
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Yearly Shift";
+}
+<div class="wrapper wrapper-content">
+    <div class="modal-content">
+        <div class="modal-header">
+            <ol class="breadcrumb">
+                <li class="animated fadeInUp">सेटअप</li>
+                <li class="animated fadeInLeft"><a href="@Url.Action("Index","YearlyShift")">वार्षिक शिफ्ट सेटअप</a></li>
+                <li class="animated fadeInRight">वार्षिक शिफ्टका सूचीहरु</li>
+
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <div class="row wrapper white-bg page-heading hidden-print">
+                        <div class="col-lg-10">
+                            <h2>वार्षिक शिफ्ट सेटअप</h2>
+
+                        </div>
+                        <div class="col-lg-2">
+                            <h2>&nbsp;</h2>
+                            <div class="ibox-tools hidden-print">
+                                <button class="btn btn-primary btn-sm btn-add" onclick="location.href='@Url.Action("Add","YearlyShift")'">नयाँ बनाउनु </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="project-list">
+                        <table id="tblYearlyShiftId" class="table table-hover table-condensed table-color ">
+                            <thead>
+                                <tr>
+                                    <th>क्र सं</th>
+
+                                    <th>@Html.DisplayNameFor(m => m.FiscalYearId)</th>
+                                    <th>@Html.DisplayNameFor(m => m.StartDate)</th>
+                                    <th>@Html.DisplayNameFor(m => m.EndDate)</th>
+                                    <th>शिफ्ट</th>
+
+                                    <th class="hidden-print text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int count = 0;}
+                                @foreach (var m in Model.YearlyShiftList)
+                                {
+                                    count += 1;
+                                    <tr>
+                                        <td>@count</td>
+
+                                        <td>@Html.Raw((m.FiscalYearId <= 0) ? "-" : eAttendance.Utility.GetFiscalList().FirstOrDefault(d => d.Value == m.FiscalYearId.ToString()).Text)</td>
+
+                                        <td>@m.NStartDate</td>
+                                        <td>@m.NEndDate</td>
+                                        <td>@Html.Raw((m.ShiftId <= 0) ? "-" : eAttendance.Utility.GetShiftNameAndInOut().FirstOrDefault(d => d.Value == m.ShiftId.ToString()).Text)</td>
+
+                                        <td class="project-actions hidden-print col-md-2">
+                                            <button type="button" class="btn-edit btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit","YearlyShift",new { @id=m.YearlyShiftId})'"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm"></span> </button>
+                                            <button value="@m.YearlyShiftId" class="btn-delete btn btn-sm btn-danger"><i class="fa fa-remove"></i><span class="hidden-xs hidden-sm"></span> </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal inmodal fade" id="modelDelete" role="dialog">
+
+</div>
+
+@section Scripts
+{
+
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+      
+   
+
+
+        $('.btn-add').on('click', function () {
+                        $.ajax({
+                url: '@Url.Action("Add", "YearlyShift")',
+                type: 'GET',
+                data: {},
+                success: function (result) {
+                    console.log(result)
+                    $("#modelAdd").html(result);
+                    $("#modelAdd").modal('show');
+                },
+                error: function () {
+                }
+            });
+        })
+
+        $('#tblYearlyShiftId tbody').on('click', '.btn-edit', function () {
+           
+            var YearlyShiftId = $(this).attr('value');
+            $.ajax({
+                url: '@Url.Action("Edit", "YearlyShift")',
+                type: 'GET',
+                data: { id: YearlyShiftId },
+                success: function (result) {
+                    console.log(result)
+                    $("#modelEdit").html(result);
+                    $("#modelEdit").modal('show');
+                },
+                error: function () {
+                }
+            });
+        })
+
+        $('#tblYearlyShiftId tbody').on('click', '.btn-delete', function () {
+            var YearlyShiftId = $(this).attr('value');
+            $.ajax({
+                url: '@Url.Action("Delete", "YearlyShift")',
+                type: 'GET',
+                data: { id: YearlyShiftId },
+                success: function (result) {
+                    console.log(result)
+                    $("#modelDelete").html(result);
+                    $("#modelDelete").modal('show');
+                },
+                error: function () {
+                }
+            });
+        })
+        function CompareDate(fromDate, toDate) {
+            if (fromDate != '' && toDate != '') {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CompareDate", "Utility")',
+                    data: "{'nFromDate':'" + fromDate + "','nToDate':'" + toDate + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        console.log(data)
+                        $('#nFromDate').val(data.FromDate);
+                        $('#nToDate').val(data.ToDate); 
+                    },
+                    error: function () {
+                        alert("Failed to load Item");
+                    }
+                });
+            }
+        }
+    })
+    </script>
+
+}
+
+
+
+

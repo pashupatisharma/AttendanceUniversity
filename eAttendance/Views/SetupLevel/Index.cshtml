@@ -1,0 +1,99 @@
+﻿@model eAttendance.Models.LevelSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Setup Level";
+}
+<div class="row wrapper white-bg page-heading hidden-print">
+    <div class="modal-content">
+        <div class="modal-header">
+            <ol class="breadcrumb">
+                <li class="animated fadeInUp">सेटअप</li>
+                <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupLevel")">श्रेणी सेटअप</a></li>
+                <li class="animated fadeInRight">श्रेणीका सूचीहरु</li>
+
+            </ol>
+        </div>
+    </div>
+
+    <div class="col-lg-10">
+        <h2>श्रेणी सेटअप </h2>
+
+    </div>
+    <div class="col-lg-2">
+        <div class="title-action hidden-print">
+            <button class="btn btn-primary btn-sm btn-add" onclick="location.href='@Url.Action("Add","SetupLevel")'">नयाँ बनाउनु </button>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header bg-info">
+            <h2 class="m-b-0 text-info">श्रेणी सेटअप  </h2>
+        </div>
+        <div class="card-body">
+            <table id="tblLevel" class="table table-hover table-condensed table-color ">
+                <thead>
+                    <tr>
+                        <th>SNo</th>
+                        <th>@Html.DisplayNameFor(m => m.LevelName)</th>
+                        <th>@Html.DisplayNameFor(m => m.Alias)</th>
+                        <th>@Html.DisplayNameFor(m => m.Description)</th>
+                        <th class="project-actions hidden-print">कार्य </th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @{ int count = 0;}
+                    @foreach (var m in Model.SetupLevelList.OrderBy(o => o.DisplayOrder))
+                    {
+                        <tr>
+                            <td>@Html.Raw((count += 1))</td>
+                            <td class="project-title">
+                                @m.LevelName
+                            </td>
+                            <td>@m.Alias</td>
+                            <td>@m.Description</td>
+                            <td class="project-actions hidden-print">
+                                <button value="@m.LevelId" type="button" class="btn-edit btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit","SetupLevel",new { @id=m.LevelId})'"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm"></span> </button>
+                                <button value="@m.LevelId" class="btn-delete btn btn-sm btn-danger"><i class="fa fa-remove"></i><span class="hidden-xs hidden-sm"></span> </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+ 
+<div class="modal inmodal fade" id="modelDelete" role="dialog">
+
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+        
+      
+
+
+        $('#tblLevel tbody').on('click', '.btn-delete', function () {
+                var levelId = $(this).attr('value');
+                $.ajax({
+                    url: '@Url.Action("Delete", "SetupLevel")',
+                    type: 'GET',
+                    data: { id: levelId },
+                    success: function (result) {
+                        $("#modelDelete").html(result);
+                        $("#modelDelete").modal('show');
+                    },
+                    error: function () {
+                    }
+                });
+            })
+        })
+    </script>
+}
+
+
+

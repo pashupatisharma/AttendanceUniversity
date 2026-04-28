@@ -1,0 +1,169 @@
+﻿@model eAttendance.Models.TransferModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+
+<div class="modal-dialog ">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">सम्पादन स्थानान्तरण</h4>
+            <small class="font-bold"></small>
+        </div>
+
+        @using (Html.BeginForm("EditInternalTransfer", "Transfer", FormMethod.Post, new { @id = "frmEditTransfer" }))
+        {
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            @Html.HiddenFor(m => m.TransferId)
+                            @Html.HiddenFor(m => m.TransferType)
+                            @Html.HiddenFor(m => m.CreatedBy)
+                            @Html.HiddenFor(m => m.CreatedDate)
+                            <label class="control-label text-center">@Html.DisplayNameFor(m => m.EmployeeId)</label>
+                            @Html.DropDownListFor(m => m.EmployeeId, eAttendance.Utility.GetEmployeeIdWithAll(), new { @class = "chosen-select form-control" })
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromOfficeId)</label>
+
+                            @Html.DropDownListFor(m => m.FromOfficeId, Enumerable.Empty<SelectListItem>(), new { @class = "TxtFrmOfficeId form-control chosen-select" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromBranchId)</label>
+                            @Html.DropDownListFor(m => m.FromBranchId, eAttendance.Utility.GetBranchIdName(User), new { @class = "TxtFrmBranchId form-control", @id = "frmBranchId" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromServiceId)</label>
+                            @Html.DropDownListFor(m => m.FromServiceId, eAttendance.Utility.GetServiceIdName(), new { @class = "TxtFrmServiceId form-control chosen", @id = "frmServiceId" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromLevelId)</label>
+                            @Html.DropDownListFor(m => m.FromLevelId, eAttendance.Utility.GetLevelIdName(), new { @class = "TxtFrmLevelId form-control chosen", @id = "frmLevelId" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromDesignationId)</label>
+                            @Html.DropDownListFor(m => m.FromDesignationId, eAttendance.Utility.GetDesignationIdNameList(), new { @class = "TxtFrmDesignationId form-control chosen", @id = "frmDesignationId" })
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToOfficeId)</label>
+                            @Html.DropDownListFor(m => m.ToOfficeId, eAttendance.Utility.GetOfficeIdName(User), new { @class = "chosen-select form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToBranchId)</label>
+                            @Html.DropDownListFor(m => m.ToBranchId, eAttendance.Utility.GetBranchIdName(User), new { @class = "form-control chosen-select" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToServiceId)</label>
+                            @Html.DropDownListFor(m => m.ToServiceId, eAttendance.Utility.GetServiceIdName(), new { @class = "form-control chosen-select" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToLevelId)</label>
+                            @Html.DropDownListFor(m => m.ToLevelId, eAttendance.Utility.GetLevelIdName(), new { @class = "form-control chosen-select" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToDesignationId)</label>
+                            @Html.DropDownListFor(m => m.ToDesignationId, eAttendance.Utility.GetDesignationIdNameList(), new { @class = "form-control chosen-select" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="control-label">@Html.DisplayNameFor(m => m.NTransferDateTime)</label>
+                            @Html.TextBoxFor(m => m.NTransferDateTime, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99", @id = "NTransferDateTimeEditInternal" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.Remarks)</label>
+                            @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $('.nepali-calendar').nepaliDatePicker();
+
+        $("#frmEditExternalTransfer").validate({
+            rules: {
+
+                EmployeeId: {
+                    min: 1
+                },
+                FromOfficeId: {
+                    min: 1
+                },
+                NTransferDateTime: { required: true, },
+
+                FromServiceId: {
+                    min: 1
+                },
+                FromLevelId: {
+                    min: 1
+                },
+                FromDesignationId: {
+                    min: 1
+                },
+                ToOfficeId: {
+                    min: 1
+                },
+
+            },
+            messages: {
+
+                EmployeeId: {
+                    min: 'कृपया विकल्प चयन गर्नुहोस्'
+                },
+                FromOfficeId: {
+                    min: 'कृपया विकल्प चयन गर्नुहोस्'
+                },
+                NTransferDateTime: {
+                    required: 'कृपया आवश्यक जानकारी भर्नुहोस्'
+
+                },
+
+                FromServiceId: {
+                    min: 'कृपया विकल्प चयन गर्नुहोस्'
+                },
+                FromLevelId: {
+                    min: 'कृपया विकल्प चयन गर्नुहोस्'
+                },
+                FromDesignationId: {
+                    min: 'कृपया विकल्प चयन गर्नुहोस्'
+                },
+                ToOfficeId: {
+                    min: 'कृपया विकल्प चयन गर्नुहोस्'
+                },
+
+            }
+        })
+    })
+</script>
+}
+

@@ -1,0 +1,119 @@
+﻿@model eAttendance.Models.ForgotEntry
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+    <script type="text/javascript">
+    $(function () {
+        $('#OfficeId').on('change', function (e) {
+
+
+            var nYearId = 0;
+            var nMonthId = 0;
+                var officeId = $("#OfficeId").val();
+            var branchId = 0;
+            var serviceId = 0;
+            var levelId = 0;
+            var designationId = 0;
+
+
+                //int year, int month, int officeId, int branchId = 0, int serviceId = 0, int levelId = 0, int designationId = 0, bool withAll = false, bool withSelect = false
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetEmployeeOfSelectedOffice", "Report")',
+                    data: "{'year':'" + nYearId + "','month':'" + nMonthId + "','officeId':'" + officeId + "','branchId':'" + branchId + "','serviceId':'" + serviceId + "','levelId':'" + levelId + "','designationId':'" + designationId + "','withAll':'" + true + "','withSelect':'" + false + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        debugger;
+                        $("#EmployeeId").empty();
+                        $("#RequestedBy").empty();
+                        var $prevGroup, prevGroupName;
+                        $.each(data, function () {
+                            if (this.Group == null) {
+                                $("<option />").val(this.Value).text(this.Text).appendTo('#EmployeeId');
+                                 $("<option />").val(this.Value).text(this.Text).appendTo('#RequestedBy');
+                            }
+                            else {
+                                if (prevGroupName != this.Group.Name) { $prevGroup = $('<optgroup />').prop('label', this.Group.Name).appendTo('#EmployeeId'); }
+                                $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                                prevGroupName = this.Group.Name;
+                            }
+                        });
+                        $("#EmployeeId").trigger('chosen:updated');
+                         $("#RequestedBy").trigger('chosen:updated');
+                    },
+                    error: function () {
+                        alert("Failed to load Item");
+                    }
+                });
+
+        });
+    });
+    </script>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title"> हाजिरी छुटेको थप</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("Add", "ForgotEntry", FormMethod.Post, new { @id = "AddForgotEntryForm", @class = "form-horizontal" }))
+        {
+            @Html.Partial("_Common");
+        }
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".chosen-select").chosen({ width: '100%' });
+            $('.nepali-calendar').nepaliDatePicker();
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+            $("#AddForgotEntryForm").validate({
+                rules: {
+
+                    EmployeeId: {
+                        min: 1
+                    },
+                    NForgotDate: {
+                        required: true,
+                    },
+                    NForgotTime: {
+                        required: true,
+                    },
+                    RequestedBy: {
+                        min: 1
+                    },
+                    ApprovedBy: {
+                        min: 1
+                    },
+                },
+                messages: {
+
+                    EmployeeId: {
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    RequestedBy: {
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    ApprovedBy: {
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    NForgotDate: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्',
+                    },
+                    NForgotTime: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्',
+                    },
+                }
+            });
+        });
+        $('.inputmask').inputmask({
+            mask: '99:99'
+        })
+    </script>
+}

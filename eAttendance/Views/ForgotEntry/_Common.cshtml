@@ -1,0 +1,60 @@
+﻿@model eAttendance.Models.ForgotEntry
+    <div class="modal-body">
+      
+        <div class="form-group">
+            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.OfficeId)</label>
+            <div class="col-sm-9">
+                @Html.DropDownListFor(m => m.OfficeId, Utility.GetOfficeIdNameWithSelect(User), "छान्नुहोस्", new { @class = "chosen-select form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.EmployeeId)</label>
+            <div class="col-sm-9">
+                @Html.DropDownListFor(m => m.EmployeeId, eAttendance.Utility.GetEmployeeIdWithAll(), new { @class = "chosen-select form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.CheckType)</label>
+            <div class="col-sm-9">
+                @Html.DropDownListFor(m => m.CheckType, eAttendance.Utility.GetCheckType(), new { @class = "chosen-select form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.NForgotDate)</label>
+            <div class="col-sm-9">
+                @Html.TextBoxFor(m => m.NForgotDate, "{0:yyyy/MM/dd }", new { @class = "form-control nepali-calendar", data_mask = "9999-99-99" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.NForgotTime)</label>
+            <div class="col-sm-9">
+                @Html.TextBoxFor(m => m.NForgotTime, new { @class = "form-control inputmask" })@*, @mask = "99:99" })*@
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.RequestedBy)</label>
+            <div class="col-sm-9">
+                @Html.DropDownListFor(m => m.RequestedBy, eAttendance.Utility.GetEmployeeIdWithAll(), new { @class = "chosen-select form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.ApprovedBy)</label>
+            <div class="col-sm-9">
+                @Html.DropDownListFor(m => m.ApprovedBy, eAttendance.Utility.GetEmployeeApproverList(User), new { @class = "chosen-select form-control" })
+            </div>
+
+
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.Remarks)</label>
+            <div class="col-sm-9">
+                @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control" })
+            </div>
+        </div>
+
+    </div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+</div>

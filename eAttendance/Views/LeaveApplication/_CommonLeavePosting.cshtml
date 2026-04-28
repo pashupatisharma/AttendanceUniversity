@@ -1,0 +1,179 @@
+﻿@model eAttendance.Models.LeaveApplication
+<script type="text/javascript">
+    $(function () {
+        $('#OfficeId').on('change', function (e) {
+
+
+            var nYearId = 0;
+            var nMonthId = 0;
+                var officeId = $("#OfficeId").val();
+            var branchId = 0;
+            var serviceId = 0;
+            var levelId = 0;
+            var designationId = 0;
+        
+
+                //int year, int month, int officeId, int branchId = 0, int serviceId = 0, int levelId = 0, int designationId = 0, bool withAll = false, bool withSelect = false
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetEmployeeOfSelectedOffice", "Report")',
+                    data: "{'year':'" + nYearId + "','month':'" + nMonthId + "','officeId':'" + officeId + "','branchId':'" + branchId + "','serviceId':'" + serviceId + "','levelId':'" + levelId + "','designationId':'" + designationId + "','withAll':'" + true + "','withSelect':'" + false + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        debugger;
+                        $("#EmployeeId").empty();
+                        var $prevGroup, prevGroupName;
+                        $.each(data, function () {
+                            if (this.Group == null) { $("<option />").val(this.Value).text(this.Text).appendTo('#EmployeeId'); }
+                            else {
+                                if (prevGroupName != this.Group.Name) { $prevGroup = $('<optgroup />').prop('label', this.Group.Name).appendTo('#EmployeeId'); }
+                                $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                                prevGroupName = this.Group.Name;
+                            }
+                        });
+                        $("#EmployeeId").trigger('chosen:updated');
+                    },
+                    error: function () {
+                        alert("Failed to load Item");
+                    }
+                });
+
+        });
+    });
+</script>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-8 b-r col-sm-8">
+
+            @if (User.IsInRole("SuperAdmin"))
+            {
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="control-label">@Html.DisplayNameFor(m => m.OfficeId)</label>
+
+                        @Html.DropDownListFor(m => m.OfficeId, Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control" })
+                    </div>
+                </div>
+            }
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label class="control-label">@Html.DisplayNameFor(m => m.EmployeeId)</label>
+                    @{var officeid = eAttendance.EmployeeProvider.GetOfficeIdByUserId(User.Identity.Name);}
+                    @Html.DropDownListFor(m => m.EmployeeId, Utility.GetEmployeeListBYUserSuper(officeid, User), "छान्नुहोस्", new { @class = "chosen-select form-control" })
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="control-label">@Html.DisplayNameFor(m => m.LeaveTypeId)</label>
+                    @Html.DropDownListFor(m => m.LeaveTypeId, eAttendance.Utility.GetLeaveType(),"छान्नुहोस्", new { @class = "chosen-select form-control" })
+                </div>
+                <div class="form-group col-md-6 ">
+                    <label class="control-label">@Html.DisplayNameFor(m => m.NFromDate)</label>
+                    @Html.TextBoxFor(m => m.NFromDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99", @id = "endDate" })
+                </div>
+                <div class="form-group  col-md-6">
+                    <label class="control-label">@Html.DisplayNameFor(m => m.NToDate)</label>
+                    @Html.TextBoxFor(m => m.NToDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", @mask = "9999-99-99" })
+                </div>
+                <div class="form-group  col-md-6">
+                    <label class="control-label">@Html.DisplayNameFor(m => m.Subject)</label>
+                    @Html.TextBoxFor(m => m.Subject, new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="pull-left">@Html.DisplayNameFor(m => m.IsHalfDay) &nbsp;</label>
+                    <div>
+                        <div class="radio-inline i-checks" style="color:#0D70A5">
+                            @Html.CheckBoxFor(m => m.IsHalfDay, new { @style = "position: absolute; opacity: 0;" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group  col-md-12">
+                    <label class="control-label">@Html.DisplayNameFor(m => m.Message)</label>
+                    @Html.TextAreaFor(m => m.Message, new { @class = "form-control", style = "height:50px;" })
+                </div>
+
+                <div class="form-group  col-md-6">
+                    <label class="control-label">@Html.DisplayNameFor(m => m.Recomender)</label>
+                    @Html.DropDownListFor(m => m.Recomender, eAttendance.Utility.GetEmployeeRecommederListAll(User), new { @class = "chosen-select form-control" })
+                </div>
+                <div class="form-group  col-md-6">
+                    <label class="control-label">@Html.DisplayNameFor(m => m.ApprovedBy)</label>
+                    @Html.DropDownListFor(m => m.ApprovedBy, eAttendance.Utility.GetEmployeeApproverListAll(User), new { @class = "chosen-select form-control" })
+                </div>
+
+
+
+                <div class="form-group col-md-6">
+                    <label class="control-label">@Html.DisplayNameFor(m => m.NApprovedDate)</label>
+                    @Html.TextBoxFor(m => m.NApprovedDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", @mask = "9999-99-99" })
+
+                </div>
+        
+
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4">
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <div class="ibox-content">
+                        <div>
+                            <div>
+                                <span class="font-bold">जम्मा लिन पाउने बिदा</span>
+                                <small class="pull-right" style="float:right">
+                                    <label class="control-label" id="lblAssignedLeave"></label>
+                                </small>
+                            </div>
+                          
+                            <div>
+                                <span class="font-bold">जम्मा लिएका बिदा</span>
+                                <small class="pull-right" style="float:right">
+                                    <label class="control-label" id="lblTotalLeaveTaken"></label>
+                                </small>
+                            </div>
+                         
+                            <div>
+                                <span class="font-bold">जम्मा बाँकी बिदा</span>
+                                <small class="pull-right" style="float:right">
+                                    <label id="lblLeaveBalance" class="control-label"></label>
+                                </small>
+                            </div>
+                       
+       
+                            <div>
+                                <span class="font-bold">जम्मा सार्वजनिक बिदा</span>
+                                <small class="pull-right" style="float:right">
+                                    <label id="lblTotalHolidays" class="control-label"></label>
+                                </small>
+                            </div>
+                        
+                            <div>
+                                <span class="font-bold">जम्मा शनिवार</span>
+                                <small class="pull-right" style="float:right">
+                                    <label id="lblTotalSaturdays" class="control-label"></label>
+                                </small>
+                            </div>
+                           
+                            <!--added-->
+                            <div>
+                                <span class="font-bold">जम्मा छानिएको दिन</span>
+                                <small class="pull-right" style="float:right">
+                                    <label class="control-label" id="lblTotalDays"></label>
+                                </small>
+                            </div>
+                          
+                        </div>
+                        <br />
+                        <div>
+                            <label class="control-label text-danger" id="lblErrorMessage"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+</div>

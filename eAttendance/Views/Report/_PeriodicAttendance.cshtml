@@ -1,0 +1,202 @@
+﻿@model eAttendance.ReportModel.EmployeeAttendanceList
+@{
+    eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
+}
+<div id="DataTables_Table_0_wrapper" class="dataTable form-inline no-margins table-responsive">
+    <div class="table-responsive">
+        @if (Model._nFromDate != null && Model._nToDate != null && Model.OfficeId != 0)
+        {
+            <table id="dtDailyAttendance" class="table table-striped table-bordered table-condensed">
+                <thead>
+                    <tr class="no-borders bg-white">
+                        <td colspan="10" class="no-borders bg-white text-center">
+                         
+                            <img src="@Url.Content("~/Images/Emblem_of_Nepal.png")" width="80" height="80" />
+                            <h4>नेपाल सरकार</h4>
+                            <h5>
+                                @if (Model.OfficeId > 0)
+                                {
+                                    @eAttendance.Utility.GetOfficeInfoByOfficeId(Model.OfficeId).OfficeName
+
+
+                                }
+                                else
+                                {
+                                    <text>सबै</text>
+                                }
+                            </h5>
+                            <h5>
+                                @if (Model.OfficeId > 0)
+                                {
+                                    @db.OfficeSetUp.Where(x => x.OfficeId == Model.OfficeId).FirstOrDefault().Address
+                                }
+                            </h5>
+
+                            <h5>@eAttendance.Service.MenuService.PeriodicAttendanceReport</h5>
+                        </td>
+                    </tr>
+
+                    <tr class='no-border-row bg-white'>
+                        <td colspan="10">
+
+
+                    <tr class="no-border-row">
+                        <td class="no-borders">@eAttendance.Service.MenuService.FromDate :@Model._nFromDate</td>
+                        <td class="no-borders">@eAttendance.Service.MenuService.ToDate : @Model._nToDate</td>
+                        <td class="no-borders">कार्यालय: @Html.Raw((Model.OfficeId > 0) ? eAttendance.Utility.GetOfficeInfoByOfficeId(Model.OfficeId).OfficeName : "सबै")</td>
+
+                        <td class="no-borders">शाखा: @Html.Raw((Model.BranchId > 0) ? eAttendance.Utility.GetBranchByMainBranchId(Model.BranchId).BranchName : "सबै")</td>
+                    </tr>
+                    <tr class="no-border-row">
+                        <td class="no-borders">सेवा: @Html.Raw((Model.ServiceId > 0) ? eAttendance.Utility.GetServiceByServiceId(Model.ServiceId).ServiceName : "सबै")</td>
+                        <td class="no-borders">तह: @Html.Raw((Model.LevelId > 0) ? eAttendance.Utility.GetLevelByLevelId(Model.LevelId).LevelName : "सबै")</td>
+                        <td class="no-borders">पद: @Html.Raw((Model.DesignationId > 0) ? @eAttendance.Utility.GetDesignationByDesignationId(Model.DesignationId).DesignationName : "सबै")</td>
+                        <td class="no-borders">कर्मचारी: @Html.Raw((Model.EmployeeId > 0) ? eAttendance.Utility.GetEmployeeInfoByEmnployeeId(Model.EmployeeId).EmployeeNameNp : "सबै")</td>
+                        <td class="no-borders"></td>
+                    </tr>
+
+
+
+                    <tr>
+                        <th rowspan="2" class="text-center col-md-1">@eAttendance.Service.MenuService.Date</th>
+                        <th rowspan="2" class="text-center col-md-1">पद</th>
+                        <th rowspan="2" class="text-center col-md-3">@eAttendance.Service.MenuService.EmployeeName</th>
+                        <th rowspan="2" class="text-center col-md-1">@eAttendance.Service.MenuService.ShiftName</th>
+                        <th colspan="2" class="text-center col-md-2">समय</th>
+                        <th colspan="2" class="text-center col-md-2">कैफियत</th>
+                        <th rowspan="2" class="text-center col-md-1">@eAttendance.Service.MenuService.WorkedHour</th>
+                        <th rowspan="2" class="text-center col-md-1">@eAttendance.Service.MenuService.Remarks</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">आएको</th>
+                        <th class="text-center">गएको</th>
+                        <th class="text-center">आएको</th>
+                        <th class="text-center">गएको</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                                string nFromDate = Model._nFromDate;
+                                string CodeName = string.Empty;
+                                string nToDate = Model._nToDate;
+                                DateTime FromLogDateAD = FromLogDateAD = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(nFromDate));
+                                DateTime ToLogDateAD = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(nToDate));
+                                int count = 0;
+                                foreach (var emp in Model.EmployeeAttendanceLists)
+                                {
+                                    count += 1;
+                                    //var attendace = new eAttendance.Providers.ReportProvider().GetEmployeeAttendance_WithSelectedShiftTime(emp.EmployeeId, FromLogDateAD, ToLogDateAD);
+                                    var attendance = ReportService.ReportService.GetEmployeeAttandaneByOfficeWithInDateRange(emp.EmployeeId, emp.OfficeId, FromLogDateAD, ToLogDateAD);
+                                    TimeSpan totalWorkingHours = new TimeSpan(00, 00, 0);
+                                    foreach (var m in attendance.OrderBy(w => w.LogDate))
+                                    {
+                                        if (m.LogDate > DateTime.Now)
+                                        {
+                                            <tr>
+                                                <td class="text-center">@Html.Raw(EnglishToNepaliNumber.ConvertToNepaliString(NepaliDateConverter.ConvertToNepali(Convert.ToDateTime(m.LogDate)).ToString()))</td>
+                                                <td>@Html.Raw(eAttendance.Utility.GetDesignationByDesignationId(emp.DesignationId).DesignationName ?? "")</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+
+
+
+                                            var employee =
+                                                db.EmployeeInfo.Where(x => x.EmployeeId == emp.EmployeeId).FirstOrDefault();
+
+
+                                            CodeName = employee.EmployeeNameNp + "[" + employee.EmployeeNo + "]";
+                                            ReportService.SetupShiftTimeProvider pro = new ReportService.SetupShiftTimeProvider();
+                                            var shift = db.SetupShiftTime.Where(w => w.ShiftTimeId == m.ShiftTimeId).FirstOrDefault();
+                                            if (m.CheckIn != null && m.CheckOut != null)
+                                            {
+
+                                                totalWorkingHours += ((TimeSpan)m.CheckOut - (TimeSpan)m.CheckIn);
+                                            }
+                                            <tr>
+                                                <td class="text-center">@Html.Raw(EnglishToNepaliNumber.ConvertToNepaliString(NepaliDateConverter.ConvertToNepali(Convert.ToDateTime(m.LogDate)).ToString()))</td>
+                                                <td>@Html.Raw(eAttendance.Utility.GetDesignationByDesignationId(emp.DesignationId).DesignationName ?? "")</td>
+
+                                                <td>@CodeName</td>
+                                                <td class="text-center">@Html.Raw(m.StatusType == 1 ? (((shift != null) ? shift.ShiftStartTime : "00:00") + "-" + ((shift != null) ? shift.ShiftEndTime : "00:00")) : "")</td>
+                                                <td class="text-center">@(m.StatusType == 1 ? (m.CheckIn != TimeSpan.Zero && m.CheckIn!=null) ? m.CheckIn.Value.ToString(@"hh\:mm") : "" : "")</td>
+                                                <td class="text-center">@(m.StatusType == 1 ? (m.CheckOut != TimeSpan.Zero && m.CheckOut != null) ? m.CheckOut.Value.ToString(@"hh\:mm") : "" : "")</td>
+                                                <td>@Html.Raw((m.StatusType == 4) ? "" : m.CheckInRemarks)</td>
+                                                <td class="col-md-2">@Html.Raw((m.StatusType == 4) ? "" : m.CheckOutRemarks)</td>
+                                                <td class="text-center">@Html.Raw(m.StatusType == 1 ? ((m.CheckIn != TimeSpan.Zero && m.CheckIn != null && m.CheckOut != TimeSpan.Zero && m.CheckOut!= null) ? EnglishToNepaliNumber.ConvertToNepaliString((m.CheckOut - m.CheckIn).Value.ToString(@"hh\:mm")) : "") : "")</td>
+                                                <td>
+                                                    @if (m.StatusType == 1)
+                                                    {
+                                                        @Html.Raw("उपस्थित");
+                                                    }
+                                                    else if (m.StatusType == 4)
+                                                    {
+                                                        @Html.Raw("सरुवा भएको या कार्यालय संग सम्बन्धित नरहेको");
+                                                    }
+                                                    else
+                                                    {
+                                                        string remarks = "";
+                                                        if (m.Holiday != null && m.Holiday.Length > 0)
+                                                        {
+                                                            remarks += m.Holiday + " ";
+                                                        }
+
+                                                        if (m.OnLeave != null && m.OnLeave.Length > 0)
+                                                        {
+                                                            remarks += m.OnLeave + " ";
+                                                        }
+                                                        if (m.OnVisit != null && m.OnVisit.Length > 0)
+                                                        {
+                                                            remarks += m.OnVisit + " ";
+                                                        }
+                                                        if (m.WorkType == 3)
+                                                        {
+                                                            remarks += "सप्ताह ";
+                                                        }
+
+                                                        if (remarks.Length == 0)
+                                                        {
+                                                            remarks = "अनुपस्थित ";
+                                                        }
+                                                        @Html.Raw(remarks);
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    <tr>
+                                        <td colspan="8"><b>@eAttendance.Service.MenuService.WorkedHour</b></td>
+                                        @{
+                                    int _days = totalWorkingHours.Days;
+                                    int _hrs = totalWorkingHours.Hours;
+                                    int _minutes = totalWorkingHours.Minutes;
+
+                                    _hrs = _hrs + (_days * 24);
+                                        }
+                                        <td class="text-center"><b>@EnglishToNepaliNumber.ConvertToNepaliString(_hrs + ":" + _minutes)</b></td>
+
+                                        <td></td>
+                                    </tr>
+                                }
+                                if (count == 0)
+                                {
+                                    <tr>
+                                        <td class="text-center alert-info" colspan="35">@eAttendance.Service.MenuService.NoRecordFound</td>
+                                    </tr>
+                                }
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+</div>

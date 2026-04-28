@@ -1,0 +1,46 @@
+﻿@model eAttendance.Models.VisitTypeSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">काज</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupVisitType")">काज प्रकार सेटअप</a></li>
+            <li class="animated fadeInRight">नयाँ काज प्रकार थप्नुहोस्</li>
+
+        </ol>
+    </div>
+</div>
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title"> काज प्रकार थप</h4>
+        <small class="font-bold"></small>
+    </div>
+    @using (Html.BeginForm("Add", "SetupVisitType", FormMethod.Post, new { @id = "VisittypeAddForm", @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Partial("_Common");
+    }
+</div>
+
+
+@section scripts
+{
+    <script src="~/Scripts/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".chosen-select").chosen({ width: '100%' });
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+            });
+
+        });
+        $('.inputmask').inputmask({
+            mask: '9999/99/99'
+        })
+    </script>
+}

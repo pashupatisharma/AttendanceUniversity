@@ -1,0 +1,70 @@
+﻿@model eAttendance.Models.OfficeSetUp
+@Html.AntiForgeryToken()
+
+
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <fieldset>
+                <legend></legend>
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+                        @Html.DisplayNameFor(m => m.OfficeName)
+                        @Html.TextBoxFor(m => m.OfficeName, new { @class = "form-control" })
+                    </div>
+
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        @Html.DisplayNameFor(m => m.Code)
+                        @Html.TextBoxFor(m => m.Code, new { @class = "form-control" })
+                    </div>
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        @Html.DisplayNameFor(m => m.Address)
+                        @Html.TextBoxFor(m => m.Address, new { @class = "form-control i-checks" })
+                    </div>
+
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        @Html.DisplayNameFor(m => m.DistrictId)
+                        @Html.DropDownListFor(m => m.DistrictId, eAttendance.Utility.GetDistrictList(), new { @class = "chosen-select form-control" })
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        @Html.DisplayNameFor(m => m.PhoneNumber)
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                    </div>
+
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        @Html.DisplayNameFor(m => m.DisplayOrder)
+                        @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control" })
+                    </div>
+
+
+
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        @Html.DisplayNameFor(m => m.HasMainBranch)
+
+                        @Html.DropDownListFor(m => m.OfficeHead, Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control" })
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="location.href = '@Url.Action("Index","OfficeSetup")'">Back</button>
+                </div>
+            </fieldset>
+            </div>
+        </div>
+    </div>
+

@@ -1,0 +1,461 @@
+﻿@using ReportService
+@model  eAttendance.ReportModel.EmployeeAttendanceList
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Leave Report";
+}
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/ExcelExport.js"></script>
+<div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px;
+                                      top: 0px; width: 100%; height: 100%; background-color: #666666; z-index: 30001;
+                                      opacity: .8; filter: alpha(opacity=70); display: none">
+    <p style="position: absolute; top: 30%; left: 45%; color: White; text-align: center;">
+        <img src="~/Images/ajax-loading.gif" />
+        <br />
+        Loading Please Wait...........
+    </p>
+</div>
+
+<script>
+
+    function ShowLoader() {
+        $("#divLoading").show();
+    }
+    function EndLoader() {
+        $("#divLoading").hide();
+    }
+</script>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-8 col-sm-8">
+        <h2>बिदाको सारांश</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index","Home")">घर</a>
+            </li>
+            <li>
+               रिपोर्ट
+            </li>
+            <li class="active">
+                <strong>बिदाको सारांश</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-4 col-sm-4">
+        <div class="title-action">
+
+
+
+            <a download="बिदा रिपोर्ट.xls" class="btn btn-success btn_excel fa fa-file-excel-o" href="#" onclick="return ExcellentExport.excel(this, 'divprint', 'Daily Report');">Excel मा लैजानुहोस् </a>
+
+            <button type="button" id="btnPrint" class="btn btn-primary"><i class="fa fa-print"></i> Print </button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInDown no-margins padding-top-md">
+            <div class="ibox float-e-margins no-margins">
+            
+                <div class="ibox-content no-border-bottom">
+
+                    @using (Ajax.BeginForm("LeaveReport", "Report", new AjaxOptions { HttpMethod = "Post", OnBegin = "ShowLoader", OnComplete = "EndLoader", UpdateTargetId = "divprint" }))
+                    {
+                        <fieldset>
+                            <legend>Search Criteria</legend>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">@eAttendance.Service.MenuService.FromDate</label>
+                                        @Html.TextBoxFor(m => m._nFromDate, "", new { @class = "form-control inputmask nepali-calendar input-sm", data_mask = "9999-99-99", @id = "_nFromDate" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">@eAttendance.Service.MenuService.ToDate</label>
+                                        @Html.TextBoxFor(m => m._nToDate, "", new { @class = "form-control inputmask nepali-calendar  input-sm", data_mask = "9999-99-99", @id = "_nToDate" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">कार्यालय</label>
+
+                                        @Html.DropDownList("officeId", eAttendance.Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control chosen-select" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">शाखा</label>
+                                        @Html.DropDownList("branchId", Utility.GetBranchIdName(User), new { @class = "chosen-select form-control chosen-select" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">तह</label>
+                                        @Html.DropDownList("levelId", Utility.GetLevelIdName(), new { @class = "chosen-select form-control chosen-select" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">पद</label>
+                                        @Html.DropDownList("designationId", Utility.GetDesignationIdName(User), new { @class = "chosen-select form-control chosen-select" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label ">सेवा</label>
+                                        @Html.DropDownList("serviceId", Utility.GetServiceIdName(), new { @class = "chosen-select form-control chosen-select" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">कर्मचारी र @eAttendance.Service.MenuService.EmployeeNo</label>
+                                        @Html.DropDownList("employeeid", Enumerable.Empty<SelectListItem>(), "Select", new { @class = "chosen-select form-control chosen-select" })
+
+
+
+
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-sm-3">
+                                    <div class="form-group margin-top-25">
+                                        <button type="submit" class="btn-Search btn btn-primary btn-rounded btn-outline fa fa-search"> खोज्नुहोस्</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    }
+                </div>
+            </div>
+            <div id="divprint" class="ibox-content p-xl no-padding no-borders">
+                @{
+                    Html.RenderPartial("_LeaveReport", Model);
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".nepali-calendar").nepaliDatePicker({
+                onChange: function () {
+                    CompareDate();
+                    UpdateChange();
+                }
+            });
+
+            $(".chosen-select").chosen({ width: '100%' });
+            toastr.options = {
+                "progressBar": true,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            var getEmployee = function () {
+                var officeId = $('#officeId').val();
+                var branchId = $('#branchId').val();
+                var levelId = $('#levelId').val();
+                var designationId = $('#designationId').val();
+                var serviceId = $('#serviceId').val();
+
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetEmployeeBy", "Utility")',
+                    data: {
+                        OfficeId: officeId,
+                        BranchId: branchId,
+                        LevelId: levelId,
+                        DesignationId: designationId,
+                        ServiceId: serviceId,
+                        withAll: true,
+                        withSelect: false
+                    },
+
+                    cache: false,
+                    success: function (data) {
+                        $("#employeeid").empty();
+                        var $prevGroup, prevGroupName;
+                        $.each(data,
+                            function () {
+                                if (this.Group == null) {
+                                    $("<option />").val(this.Value).text(this.Text).appendTo('#employeeid');
+                                } else {
+                                    if (prevGroupName != this.Group.Name) {
+                                        $prevGroup =
+                                            $('<optgroup />').prop('label', this.Group.Name).appendTo('#employeeid');
+                                    }
+                                    $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                                    prevGroupName = this.Group.Name;
+                                }
+                            });
+                        $("#employeeid").trigger('chosen:updated');
+                    },
+                    error: function () {
+                        alert("Failed to load Item");
+                    }
+                });
+
+            }
+
+
+            var getDesignation = function () {
+                var levelId = $('#levelId').val();
+                $.getJSON("@Url.Action("GetDesignationByLevelId", "Utility")",
+                    { LevelId: levelId, withAll: true, withSelect: false },
+                    function (data) {
+                        $("#designationId").empty();
+                        var $prevGroup, prevGroupName;
+                        $.each(data,
+                            function () {
+                                if (this.Group == null) {
+                                    $("<option />").val(this.Value).text(this.Text).appendTo('#designationId');
+                                } else {
+                                    if (prevGroupName != this.Group.Name) {
+                                        $prevGroup =
+                                            $('<optgroup />').prop('label', this.Group.Name).appendTo('#designationId');
+                                    }
+                                    $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                                    prevGroupName = this.Group.Name;
+                                }
+                            });
+                        $("#designationId").trigger('chosen:updated');
+                    });
+            };
+
+            $('#officeId').chosen().change(function () {
+                getEmployee();
+            });
+
+            $('#branchId').chosen().change(function () {
+                getEmployee();
+            });
+
+            $("#levelId").chosen().change(function () {
+                getEmployee();
+                getDesignation();
+            });
+
+            $('#designationId').chosen().change(function () {
+                getEmployee();
+            });
+
+            $('#serviceId').chosen().change(function () {
+                getEmployee();
+            });
+
+            $('#pageSize').on('change',
+                function () {
+                    var officeId = '@ViewBag.OfficeId';
+                    var branchId = '@ViewBag.BranchId';
+                    var levelId = '@ViewBag.LevelId';
+                    var designationId = '@ViewBag.DesignationId';
+                    var serviceId = '@ViewBag.ServiceId';
+                    var employeeId = '@ViewBag.EmployeeId';
+                    var statusId = '@ViewBag.StatusId';
+                    var pageSize = $(this).val();
+
+                    window.location = '@Url.Action("Index", "EmployeeInfo")' +
+                        '?officeId=' +
+                        officeId +
+                        '&branchId=' +
+                        branchId +
+                        '&levelId=' +
+                        levelId +
+                        '&designationId=' +
+                        designationId +
+                        '&serviceId=' +
+                        serviceId +
+                        '&employeeId=' +
+                        employeeId +
+                        '&statusid=' +
+                        statusId +
+                        '&pageSize=' +
+                        pageSize +
+                        '&page=1';
+                });
+
+
+            var hasMessage = '@TempData["HasMessage"]';
+            if (hasMessage) {
+                Command: toastr["@TempData["MessageType"]"]("@TempData["Message"]", "@TempData["MessageHeader"]");
+            }
+
+
+
+        });
+    </script>
+
+
+    @*<script>
+            $(function () {
+                $('body').addClass("pace-done skin-1 mini-navbar");
+
+                $(".chosen-select").chosen({ width: '100%' });
+
+                $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+
+                $("#frmSearch").validate({
+                    rules: {
+                        "nYearId": { min: 1 },
+                        "officeId": { min: 1 }
+                    },
+                    messages:
+                    {
+                        "nYearId": { min: 'कृपया विकल्प चयन गर्नुहोस्' },
+                        "officeId": {
+                            min: 'कृपया विकल्प चयन गर्नुहोस्'
+                        }
+
+                    }
+                });
+                UpdateChange();
+
+                $("#LevelId").chosen().change(function () {
+
+                    var levelId = $(this).val();
+                    $.getJSON("@Url.Action("GetDesignationByLevelId", "Utility")",
+                        { LevelId: levelId, withAll: true, withSelect: false },
+                        function (data) {
+                            $("#designationId").empty();
+                            var $prevGroup, prevGroupName;
+                            $.each(data,
+                                function () {
+                                    if (this.Group == null) {
+                                        $("<option />").val(this.Value).text(this.Text).appendTo('#DesignationId');
+                                    } else {
+                                        if (prevGroupName != this.Group.Name) {
+                                            $prevGroup =
+                                                $('<optgroup />').prop('label', this.Group.Name).appendTo('#DesignationId');
+                                        }
+                                        $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                                        prevGroupName = this.Group.Name;
+                                    }
+                                });
+                            $("#DesignationId").trigger('chosen:updated');
+                        });
+                });
+
+                $('#YearId').on('change',
+                    function (e) {
+                        UpdateChange();
+                    });
+                $('#OfficeId').on('change',
+                    function (e) {
+                        UpdateChange();
+                    });
+                $('#BranchId').on('change',
+                    function (e) {
+                        UpdateChange();
+                    });
+                $('#ServiceId').on('change',
+                    function (e) {
+                        UpdateChange();
+                    });
+                $('#LevelId').on('change',
+                    function (e) {
+                        UpdateChange();
+                    });
+                $('#DesignationId').on('change',
+                    function (e) {
+                        UpdateChange();
+                    });
+
+                function UpdateChange() {
+                    debugger;
+                    var nYear = $("#YearId").val();
+                    var officeId = $("#OfficeId").val();
+                    var branchId = $("#BranchId").val();
+                    var serviceId = $("#ServiceId").val();
+                    var levelId = $("#LevelId").val();
+                    var designationId = $("#DesignationId").val();
+                    //var empId = $("#empId").val();
+                    if (nYear == null || nYear <= 0 || officeId == null || officeId <= 0)
+                        return
+                    //int year, int officeId, int branchId = 0, int serviceId = 0, int levelId = 0, int designationId = 0, bool withAll = false, bool withSelect = false
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("GetEmployeeBy_FiscalYear_OfficeWithAllOrSelect", "Report")',
+                        data: "{'fiscalYearId':'" +
+                            nYear +
+                            "','officeId':'" +
+                            officeId +
+                            "','branchId':'" +
+                            branchId +
+                            "','serviceId':'" +
+                            serviceId +
+                            "','levelId':'" +
+                            levelId +
+                            "','designationId':'" +
+                            designationId +
+                            "','withAll':'" +
+                            true +
+                            "','withSelect':'" +
+                            false +
+                            "'}",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: 'json',
+                        cache: false,
+                        success: function (data) {
+                            debugger;
+                            $("#EmployeeId").empty();
+                            var $prevGroup, prevGroupName;
+                            $.each(data,
+                                function () {
+                                    if (this.Group == null) {
+                                        $("<option />").val(this.Value).text(this.Text).appendTo('#EmployeeId');
+                                    } else {
+                                        if (prevGroupName != this.Group.Name) {
+                                            $prevGroup =
+                                                $('<optgroup />').prop('label', this.Group.Name).appendTo('#EmployeeId');
+                                        }
+                                        $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                                        prevGroupName = this.Group.Name;
+                                    }
+                                });
+                            $("#EmployeeId").trigger('chosen:updated');
+                        },
+                        error: function () {
+                            alert("Failed to load Item");
+                        }
+                    });
+
+                }
+
+                $('#btnPrint').on('click',
+                    function () {
+                        printReport('Leave Report');
+
+                    });
+
+            });
+
+
+        </script>*@
+}
+
+
+
+

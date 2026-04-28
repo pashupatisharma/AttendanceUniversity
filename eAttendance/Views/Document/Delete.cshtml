@@ -1,0 +1,36 @@
+﻿@model eAttendance.Models.Document
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">मेटाउन कागजात</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("Delete", "Document", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            <div class="modal-body">
+                @Html.HiddenFor(m => m.DocumentId)
+                @Html.HiddenFor(m => m.CategoryId)
+                @Html.HiddenFor(m => m.EmployeeId)
+                @Html.HiddenFor(m => m.DocumentName)
+                @Html.HiddenFor(m => m.DocumentFullName)
+                @Html.HiddenFor(m => m.ContentType)
+                @Html.HiddenFor(m => m.Extension)
+                @Html.HiddenFor(m => m.Size)
+                @Html.HiddenFor(m => m.IsActive)
+                
+                <p><i class="fa fa-question-circle"></i>तपाईं मेटाउन निश्चित हुनुहुन्छ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">हो </button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">होइन</button>
+            </div>
+        }
+    </div>
+</div>
+
+
+

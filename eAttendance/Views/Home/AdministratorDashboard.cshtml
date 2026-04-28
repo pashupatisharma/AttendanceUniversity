@@ -1,0 +1,106 @@
+﻿@model eAttendance.ViewModel.DashboardViewModel
+@{
+    ViewBag.Title = "Administrator Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li><a href="@Url.Action("AdministratorDashboard","Home")">Dashboard</a></li> 
+            <li>AdministratorDashboard</li>
+
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeIn no-padding ">
+    <div class="ibox">
+        <div class="ibox-content">
+            <fieldset>
+                <legend>Search Criteria</legend>
+                <div class="row">
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="product_name">कार्यालयको नाम</label>
+                            <input type="text" id="office_name" name="office_name" value="" placeholder="कार्यालयको नाम" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label" for="product_name">मिति</label>
+                            <input type="text" id="n_logdate" class="form-control inputmask nepali-calendar" , data_mask="9999-99-99" />
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label" for="status">स्थिति</label>
+                            <select name="status" id="status" class="form-control">
+                                <option value="0" selected="">सबै</option>
+                                <option value="1">सक्रिय</option>
+                                <option value="2">निष्क्रिय</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group margin-top-25">
+                            <button class="btn btn-primary btn-sm btnSearch">
+                                <i class="fa fa-search"> </i> खोज्नु
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
+            <div id="OfficeAttendanceTable">
+                @Html.Action("OfficeAttendanceTable", new { ViewBag.module })
+            </div>
+
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    @Scripts.Render("~/bundles/DashboardChart")
+    <script type="text/javascript">
+        var getData = function () {
+            $.ajax({
+                url: '@Url.Action("OfficeAttendanceTable", "Home")',
+                type: 'GET',
+                data: { officename: office_name.value, ndate: n_logdate.value, status: $("#status").val() },
+                beforeSend: function () {
+                    $("#modalLoading").modal('show');
+                },
+                complete: function () {
+                    $("#modalLoading").modal('hide');
+                },
+                success: function (result) {
+                    $('#OfficeAttendanceTable').html(result);
+                    bindPageEvent();
+                },
+                error: function () {
+                    alert('Error occured while searching...');
+                }
+            });
+        }
+
+        $(".btnSearch").on('click', function (e) {
+            e.preventDefault();
+            getData();
+        });
+
+        $('.nepali-calendar').nepaliDatePicker();
+
+        var bindPageEvent = function () {
+            $(".pagination a").click(function (e) {
+                e.preventDefault();
+                var page = $(this).attr("href")[$(this).attr("href").length - 1];
+                getData(page);
+            });
+        }
+        bindPageEvent();
+
+
+    </script>
+}

@@ -1,0 +1,72 @@
+﻿@model eAttendance.Models.LeaveTypeSetUp
+<div class="modal-body">
+    <div class="row">
+
+        <div class="form-group col-md-6">
+            <label>@Html.DisplayNameFor(m => m.LeaveTypeName)</label>
+            @Html.TextBoxFor(m => m.LeaveTypeName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.LeaveTypeName)
+        </div>
+
+
+
+        <div class="form-group col-md-6">
+            <label>@Html.DisplayNameFor(m => m.Alias)</label>
+            @Html.TextBoxFor(m => m.Alias, new { @class = "form-control" })
+        </div>
+        <div class="form-group col-md-6">
+            <label>@Html.DisplayNameFor(m => m.ApplicableFor)</label>
+            @Html.DropDownListFor(m => m.ApplicableFor, Utility.GetApplicableForIdName(), new { @class = "form-control" })
+        </div>
+
+
+        <div class="form-group col-md-6">
+            <label>@Html.DisplayNameFor(m => m.DefaultValue)</label>
+            @Html.TextBoxFor(m => m.DefaultValue, new { @class = "form-control" })
+        </div>
+        <div class="form-group col-md-6">
+            <label>@Html.DisplayNameFor(m => m.MaximumLimit)</label>
+            @Html.TextBoxFor(m => m.MaximumLimit, new { @class = "form-control" })
+        </div>
+        <div class="form-group col-md-6">
+            <label>@Html.DisplayNameFor(m => m.DisplayOrder)</label>
+            @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control" })
+        </div>
+        <div class="form-group col-md-12">
+            <label>@Html.DisplayNameFor(m => m.Description)</label>
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+        </div>
+
+
+        <div class="form-group col-md-6">
+            <label class="col-md-8 control-label">@Html.DisplayNameFor(m => m.WeeklyOffInclude)</label>
+            <div class="checkbox i-checks pull-right" style="color:#0D70A5">
+                @Html.CheckBoxFor(m => m.WeeklyOffInclude, new { @style = "position: absolute;" })
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="col-md-8">@Html.DisplayNameFor(m => m.HolidayInclude)</label>
+            <div class="checkbox i-checks pull-right" style="color:#0D70A5">
+                @Html.CheckBoxFor(m => m.HolidayInclude, new { @style = "position: absolute; " })
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="col-md-8">@Html.DisplayNameFor(m => m.AllowLeaveLimitExceed)</label>
+            <div class="checkbox i-checks pull-right" style="color:#0D70A5">
+                @Html.CheckBoxFor(m => m.AllowLeaveLimitExceed, new { @style = "position: absolute;" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label class="col-md-8">@Html.DisplayNameFor(m => m.IsTransferable)</label>
+            <div class="checkbox i-checks pull-right" style="color:#0D70A5">
+                @Html.CheckBoxFor(m => m.IsTransferable, new { @style = "position: absolute;" })
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+</div>

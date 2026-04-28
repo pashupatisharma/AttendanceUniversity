@@ -1,0 +1,30 @@
+﻿@model List<eAttendance.Models.Document>
+<div class="row">
+    <div class="col-lg-11">
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="alert alert-info">
+                <i class="fa fa-info-circle"></i> <strong>Info! </strong>  File not found.
+            </div>
+        }
+        @foreach (var a in Model)
+        {
+
+            <div class="file-box">
+                <div class="file">
+                    <a href="@Url.Action("DownloadFile", "Document", new { DocumentFullName = a.DocumentFullName, EmployeeId = a.EmployeeId })" id=" document">Download</a>
+
+
+
+                    <div class="file-name">
+                        @a.DocumentName
+
+
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

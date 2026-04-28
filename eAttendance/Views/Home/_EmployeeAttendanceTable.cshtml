@@ -1,0 +1,45 @@
+﻿@using System.Linq
+@using eAttendance.Models
+@model IEnumerable<eAttendance.ViewModel.EmployeeCountDashBoardModl>
+@{
+    ApplicationDbContext context = new ApplicationDbContext();
+}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th class="col-md-1">तह</th>
+            <th class="col-md-1">पद</th>
+            <th>कोड </th>
+            <th class="text-right">आउने समय </th>
+            <th>टिप्पणी </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{ var sno = 1;}
+        @foreach (var m in Model)
+        {
+            var designationid = context.EmployeeOfficeDetail.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault().DesignationId;
+            <tr>
+                <td>@Html.Raw(sno++)</td>
+                <td class="col-md-1">@context.DesignationSetUp.Where(x => x.DesignationId == designationid).FirstOrDefault().DesignationName</td>
+
+                <td>
+                    @m.EmployeeNameNp
+                    [@m.EmployeeNo]
+                </td>
+                <td class="text-right">
+                    @if (m.InDateTime == null)
+                    {
+                        Html.Raw("");
+                    }
+                    else
+                    {
+                        @Convert.ToDateTime(m.InDateTime).ToShortTimeString()<i class="fa fa-clock-o"></i>
+                    }
+                </td>
+                <td>@m.Remarks</td>
+            </tr>
+        }
+    </tbody>
+</table>

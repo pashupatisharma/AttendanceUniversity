@@ -1,0 +1,418 @@
+﻿@model PagedList.IPagedList<eAttendance.Models.LeaveApplication>
+@using PagedList.Mvc;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.title = "Leave Posting";
+    eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">बिदा सेटअप</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("LeavePosting","LeaveApplication")">बिदा पोस्ट सेटअप</a></li>
+            <li class="animated fadeInRight">बिदा पोस्टका सूचीहरु</li>
+
+        </ol>
+    </div>
+</div>
+
+<div class="row wrapper white-bg page-heading hidden-print">
+    <div class="col-lg-10 col-sm-10">
+        <h2>बिदा </h2>
+
+    </div>
+    <div class="col-lg-2 col-sm-2">
+        <div class="title-action hidden-print">
+            <button class="btn btn-primary btn-add">नयाँ बनाउनु </button>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content no-padding padding-top-md">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins no-margins">
+
+                <div class="ibox-content no-border-bottom">
+                    @using (Html.BeginForm("LeavePosting", "LeaveApplication", FormMethod.Get, new { @class = "form-view-data", @id = "frmLeavePosting" }))
+                    {
+                        <fieldset>
+                            <legend>Search Criteria</legend>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">@eAttendance.Service.MenuService.FromDate</label>
+                                        @Html.TextBox("nFromDate", "", new { @class = "form-control nepali-calendar" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">@eAttendance.Service.MenuService.ToDate</label>
+                                        @Html.TextBox("nToDate", "", new { @class = "form-control nepali-calendar" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">कार्यालय</label>
+                                        @Html.DropDownList("officeId", eAttendance.Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control chosen-select" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label ">सेवा</label>
+                                        @Html.DropDownList("serviceId", eAttendance.Utility.GetServiceIdName(User), new { @class = "chosen-select form-control chosen-select" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">तह</label>
+                                        @Html.DropDownList("levelId", eAttendance.Utility.GetLevelIdName(), new { @class = "chosen-select form-control chosen-select" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">पद</label>
+                                        @Html.DropDownList("designationId", eAttendance.Utility.GetDesignationIdName(User), new { @class = "chosen-select form-control chosen-select" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">कर्मचारी</label>
+                                        @Html.DropDownList("empId", Enumerable.Empty<SelectListItem>(), "Select", new { @class = "chosen-select form-control chosen-select" })
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group margin-top-25">
+                                        <button type="submit" class="btn-Search btn btn-primary btn-rounded btn-outline fa fa-search"> खोज्नुहोस्</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    }
+                </div>
+            </div>
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="project-list">
+                        <table id="tblLeavePosting" class="table table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>क्र.सं</th>
+                                    <th>पद</th>
+                                    <th>कर्मचारीको नाम</th>
+                                    <th>विषय</th>
+                                    <th>बिदा किसिम</th>
+                                    <th>मिति देखि</th>
+                                    <th>मिति सम्म</th>
+
+                                    <th class="hidden-print text-center action">कार्य</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int count = ((Model.PageNumber - 1) * Model.PageSize);}
+                                @foreach (var m in Model)
+                                {
+                                    count += 1;
+                                    <tr>
+                                        <td>@count</td>
+                                        @{
+                                            var office = db.EmployeeOfficeDetail.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault();
+                                        }
+                                        <td class="col-md-2">
+                                            @{
+                                                if (office != null && office.DesignationSetUp != null)
+                                                {
+                                                    @Html.Raw(office.DesignationSetUp.DesignationName)
+                                                }
+                                            }
+                                        </td>
+
+                                        <td>
+                                            @Html.Raw(m.EmployeeInfo.EmployeeNameNp + "[" + m.EmployeeInfo.EmployeeNo + "]")
+                                            @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+                                            {
+                                                <br />
+                                                if (office != null)
+                                                {
+                                                    @Html.Raw(office.OfficeSetUp.OfficeName)
+                                                }
+
+                                            }
+                                        </td>
+                                        <td>
+                                            @m.Subject
+                                        </td>
+                                        <td>@m.LeaveTypeSetUp.LeaveTypeName</td>
+                                        <td>
+                                            @((m.FromDate.Value.Year >= 1913 && m.FromDate.Value.Year <= 2042) ? eAttendance.NepaliDateConverter.ConvertToNepali(m.FromDate.Value.Date) : NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                        </td>
+                                        <td>
+                                            @((m.ToDate.Value.Year >= 1913 && m.ToDate.Value.Year <= 2042) ? eAttendance.NepaliDateConverter.ConvertToNepali(m.ToDate.Value.Date) : NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                        </td>
+
+                                        <td class="project-actions hidden-print text-center">
+                                            <button value="@m.LeaveApplicationId" type="button" class="btn-edit btn btn-primary btn-sm">
+                                                <i class="fa fa-pencil"></i>
+                                                <span class="hidden-xs hidden-sm"></span>
+                                            </button>
+                                            <button value="@m.LeaveApplicationId" class="btn-delete btn btn-sm btn-danger">
+                                                <i class="fa fa-remove"></i>
+                                                <span class="hidden-xs hidden-sm"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class=" col-md-3 col-sm-3">
+                                <div class="pull-left">
+                                    page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                                </div>
+                            </div>
+                            <div class=" col-md-9 col-sm-9">
+                                @Html.PagedListPager(Model, page => Url.Action("LeavePosting",
+                               new
+                           {
+                               nFromDate = ViewBag.NFromDate,
+                               nToDate = ViewBag.NToDate,
+                               officeId = ViewBag.OfficeId,
+                               branchId = ViewBag.BranchId,
+                               serviceId = ViewBag.ServiceId,
+                               levelId = ViewBag.LevelId,
+                               designationId = ViewBag.DesignationId,
+                               empId = ViewBag.EmpId,
+                               pageSize = ViewBag.PageSize,
+                               page,
+                               sortOrder = ViewBag.CurrentSort
+                           }))
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+
+
+    <div class="modal inmodal fade" id="modelAdd" role="dialog">
+
+    </div>
+
+    <div class="modal inmodal fade" id="modelEdit" role="dialog">
+
+    </div>
+
+    <div class="modal inmodal fade" id="modelDelete" role="dialog">
+
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#File_FileName').on('click', function () {
+                var img = $('<img />', {
+                    src: this.src,
+                    'class': 'fullImage'
+                });
+
+                $('.showimagediv').html(img).show();
+            });
+        });
+
+
+
+
+
+
+        $(function () {
+
+            $('#officeId').chosen().change(function () {
+
+                var officeId = $(this).val();
+
+
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetEmployeeBy", "Utility")',
+                    data: {
+                        OfficeId: officeId,
+                        BranchId: 0,
+                        LevelId: 0,
+                        DesignationId: 0,
+                        ServiceId: 0,
+                        withAll: true,
+                        withSelect: false
+                    },
+
+                    cache: false,
+                    success: function (data) {
+                        $("#empId").empty();
+                        var $prevGroup, prevGroupName;
+                        $.each(data,
+                            function () {
+                                if (this.Group == null) {
+                                    $("<option />").val(this.Value).text(this.Text).appendTo('#empId');
+                                } else {
+                                    if (prevGroupName != this.Group.Name) {
+                                        $prevGroup =
+                                            $('<optgroup />').prop('label', this.Group.Name).appendTo('#empId');
+                                    }
+                                    $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                                    prevGroupName = this.Group.Name;
+                                }
+                            });
+                        $("#empId").trigger('chosen:updated');
+                    },
+                    error: function () {
+                        alert("Failed to load Item");
+                    }
+                });
+
+            });
+            $("#levelId").chosen().change(function () {
+                // Loading Designation
+                var officeId = $("#officeId").val();
+                var levelId = $(this).val();
+                $.getJSON("@Url.Action("GetDesignationByOfficeId", "Report")", { OfficeId: officeId, LevelId: levelId },
+                 function (data) {
+                     $("#designationId").empty();
+                     var $prevGroup, prevGroupName;
+                     $.each(data, function () {
+                         if (this.Group == null) { $("<option />").val(this.Value).text(this.Text).appendTo('#designationId'); }
+                         else {
+                             if (prevGroupName != this.Group.Name) { $prevGroup = $('<optgroup />').prop('label', this.Group.Name).appendTo('#designationId'); }
+                             $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                             prevGroupName = this.Group.Name;
+                         }
+                     });
+                     $("#designationId").trigger('chosen:updated');
+                 });
+            });
+
+            $('.nepali-calendar').nepaliDatePicker();
+
+            toastr.options = {
+                "progressBar": true, "positionClass": "toast-top-center", "preventDuplicates": false, "showDuration": "300",
+                "hideDuration": "1000", "timeOut": "5000", "extendedTimeOut": "1000", "showEasing": "swing", "hideEasing": "linear",
+                "showMethod": "fadeIn", "hideMethod": "fadeOut"
+            }
+
+            var hasMessage = '@TempData["HasMessage"]';
+            if (hasMessage) {
+                Command: toastr["@TempData["MessageType"]"]("@TempData["Message"]", "@TempData["MessageHeader"]")
+            }
+
+            var serverParams = { "invoiceDate": "", "contractID": "" }
+
+            serverParams.invoiceDate = $("#nFromDate").val();
+            serverParams.contractID = $("#empId").val();
+
+
+            $('.btn-edit').on('click', function () {
+                var leaveApplicationId = $(this).attr('value');
+                $.ajax({
+                    url: '@Url.Action("EditLeavePosting", "LeaveApplication")',
+                    type: 'GET',
+                    data: { id: leaveApplicationId },
+
+                    success: function (result) {
+                        console.log(result)
+                        $("#modelEdit").html(result);
+                        $("#modelEdit").modal('show');
+                    },
+                    error: function () {
+
+                    }
+                });
+            });
+
+            $('.btn-delete').on('click', function () {
+                var leaveApplicationId = $(this).attr('value');
+                $.ajax({
+                    url: '@Url.Action("DeleteLeavePosting", "LeaveApplication")',
+                    type: 'GET',
+                    data: { id: leaveApplicationId },
+
+                    success: function (result) {
+                        console.log(result)
+                        $("#modelDelete").html(result);
+                        $("#modelDelete").modal('show');
+                    },
+                    error: function () {
+
+                    }
+                });
+            });
+
+
+            function GenerateRows() {
+           
+            }
+            $('#nFromDate').on('change', function () {
+                var fromDate = $('#nFromDate').val() == null ? "" : $('#nFromDate').val();
+                var toDate = $('#nToDate').val() == null ? "" : $('#nToDate').val();
+                CompareDate(fromDate, toDate, 1);
+            });
+
+            $('#nToDate').on('change', function () {
+                var fromDate = $('#nFromDate').val() == null ? "" : $('#nFromDate').val();
+                var toDate = $('#nToDate').val() == null ? "" : $('#nToDate').val();
+                CompareDate(fromDate, toDate, 2);
+            });
+
+      
+
+            $('.btn-add').on('click', function () {
+                $.ajax({
+                    url: '@Url.Action("AddLeavePosting", "LeaveApplication")',
+                    type: 'GET',
+                    data: {},
+                    success: function (result) {
+                        console.log(result)
+                        $("#modelAdd").html(result);
+                        $("#modelAdd").modal('show');
+                    },
+                    error: function () {
+                    }
+                });
+            })
+            function CompareDate(fromDate, toDate, type) {
+
+                if (fromDate != '' && toDate != '') {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("CompareDate", "Utility")',
+                        data: "{'nFromDate':'" + fromDate + "','nToDate':'" + toDate + "','type':'" + type + "'}",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: 'json',
+                        cache: false,
+                        success: function (data) {
+                            console.log(data)
+                            $('#nFromDate').val(data.FromDate);
+                            $('#nToDate').val(data.ToDate);
+                        },
+                        error: function () {
+                            alert("Failed to load Item");
+                        }
+                    });
+                }
+            }
+        })
+    </script>
+}
+
+

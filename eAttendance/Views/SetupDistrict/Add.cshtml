@@ -1,0 +1,22 @@
+﻿@model eAttendance.Models.DistrictSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">सेटअप</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupDistrict")">जिल्ला सेटअप</a></li>
+            <li class="animated fadeInRight">नयाँ जिल्ला थप्नुहोस्</li>
+
+        </ol>
+    </div>
+</div>
+@using (Html.BeginForm("Add", "SetupDistrict", FormMethod.Post, new { @id = "frmAddDistrict", @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Partial("_Common")
+}
+
+
+

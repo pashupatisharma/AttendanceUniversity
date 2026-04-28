@@ -1,0 +1,415 @@
+﻿@model PagedList.IPagedList<eAttendance.Models.EmployeeInfoReport>
+@using PagedList.Mvc;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Employee Information";
+    eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">कर्मचारी</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupDistrict")">कर्मचारी सेटअप</a></li>
+            <li class="animated fadeInRight">कर्मचारीका सूचीहरु</li>
+
+        </ol>
+    </div>
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-8">
+        <h2>कर्मचारी को सूची</h2>
+
+    </div>
+    <div class="col-lg-4">
+        <div class="title-action">
+            <button class="btn btn-primary btn-add" onclick="window.location.href = '@Url.Action("Add","EmployeeInfo")'"><i class="fa fa-plus-circle"></i> नयाँ बनाउनु </button>
+
+        </div>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="ibox float-e-margins no-margins">
+
+        <div class="ibox-content no-border-bottom">
+            @using (Html.BeginForm("Index", "EmployeeInfo", FormMethod.Get, new { @class = "form-view-data", @id = "frmEmployeeInfo" }))
+
+            {
+                <fieldset>
+                    <legend>Search Criteria</legend>
+                    <div class="row">
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">कार्यालय</label>
+
+
+
+
+                                @Html.DropDownList("officeId", eAttendance.Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control chosen-select" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">शाखा</label>
+                                @Html.DropDownList("branchId", Utility.GetBranchIdName(User), new { @class = "chosen-select form-control chosen-select" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">तह</label>
+                                @Html.DropDownList("levelId", Utility.GetLevelIdName(), new { @class = "chosen-select form-control chosen-select" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">पद</label>
+                                @Html.DropDownList("designationId", Utility.GetDesignationIdName(User), new { @class = "chosen-select form-control chosen-select" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label ">सेवा</label>
+                                @Html.DropDownList("serviceId", Utility.GetServiceIdName(), new { @class = "chosen-select form-control chosen-select" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">कर्मचारी र कर्मचारी  कोड</label>
+                                @Html.DropDownList("employeeid", Enumerable.Empty<SelectListItem>(), "Select", new { @class = "chosen-select form-control chosen-select" })
+
+
+
+
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-sm-3">
+                            <div class="form-group margin-top-25">
+                                <button type="submit" class="btn-Search btn btn-primary btn-rounded btn-outline fa fa-search"> खोज्नुहोस्</button>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            }
+        </div>
+    </div>
+    <div class="ibox">
+        <div class="ibox-content">
+            <label>
+                @Html.DropDownList("pageSize", @Utility.GetPageSize(), new { @class = "form-control input-sm" })
+            </label>
+            <table id="tblEmployeeInfo" class="table table-bordered table-hover table-condensed table-striped table-color ">
+                <thead>
+                    <tr>
+                        <th class="text-center">क्र.सं</th>
+                        <th class="col-md-1">तह</th>
+                        <th class="col-md-1">पद</th>
+                        <th>कर्मचारी</th>
+
+                        <th>इमेल आइढी</th>
+                        <th>लिंग</th>
+
+                        <th>लिंग</th>
+                        <th class="hidden-print col-md-1 text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{int count = ((Model.PageNumber - 1) * Model.PageSize);}
+                    @foreach (var m in Model.OrderBy(x => x.DesignationId))
+                    {
+                        count += 1;
+                        var office = db.EmployeeOfficeDetail.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault();
+
+                        var userid = m.EmailId;
+                        <tr>
+                            <td class="text-center">@count</td>
+                            <td class="col-md-1">
+                                @if (office != null && office.LevelSetUp != null)
+                                {
+                                    @Html.Raw(office.LevelSetUp.LevelName)
+                                }
+                            </td>
+                            <td class="col-md-1">
+                                @{
+                                    if (office != null && office.DesignationSetUp != null)
+                                    {
+                                        @Html.Raw(office.DesignationSetUp.DesignationName)
+                                    }
+                                }
+                            </td>
+
+
+
+                            <td class="project-title">
+                                @m.EmployeeName [@m.EmployeeNo]
+                                <br />
+                                @if (office != null)
+                                {
+                                    @Html.Raw(office.OfficeSetUp.OfficeName)
+                                }
+                            </td>
+                            <td>@m.EmailId</td>
+                            <td>
+                                <span class="text-center">
+                                    @if (m.Gender == 1)
+                                    {
+                                        <span class="btn btn-success btn-xs">
+                                            पुरुष
+                                        </span>
+                                    }
+                                    else if (m.Gender == 2)
+                                    {
+                                        <span class="btn btn-success btn-xs">
+                                            महिला
+                                        </span>
+                                    }
+                                </span>
+                            </td>
+
+                            <td>
+                                @if (m.Status == 1)
+                                {
+                                    @eAttendance.Service.MenuService.Active
+                                }
+                                else if (m.Status == 2)
+                                {
+                                    @eAttendance.Service.MenuService.Inactive
+                                }
+                                else if (m.Status == 4)
+                                {
+                                    @eAttendance.Service.MenuService.ExternalTransfer
+                                }
+                                else if (m.Status == 3)
+                                {
+
+                                    <label>आन्तरिक स्थानान्तरण</label>
+                                }
+                            </td>
+                            <td class="hidden-print project-actions col-md-1">
+                                <div class="btn-group btn-group-sm">
+                                    <a href="@Url.Action("edit", "EmployeeInfo" , new { @id=m.EmployeeId })" type="button" class="btn-edit btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+                                    @if (m.Status == 1)
+                                    {
+                                        <a href="#" value="@m.EmployeeId" class="btn-delete btn btn-sm btn-danger"><i class='fa fa-remove'></i></a>
+                                    }
+                                    else if (m.Status == 2)
+                                    {
+                                        <a href="#" value="@m.EmployeeId" class="btn-delete btn btn-sm btn-danger"><i class='fa fa-remove'></i> </a>
+                                    }
+
+
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="row">
+                <div class=" col-md-3 col-sm-3">
+                    <div class="pull-left">
+                        page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-9">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { officeId = ViewBag.OfficeId, branchId = ViewBag.BranchId, levelId = ViewBag.LevelId, designationId = ViewBag.DesignationId, serviceId = ViewBag.ServiceId, employeeId = ViewBag.EmployeeId, statusid = ViewBag.StatusId, pageSize = ViewBag.PageSize, page }))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal fade" id="modelDelete" role="dialog">
+
+</div>
+
+
+
+
+
+
+@section Scripts
+{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+
+            $('#tblEmployeeInfo tbody').on('click', '.btn-delete', function () {
+                var districtId = $(this).attr('value');
+           
+            $.ajax({
+                url: '@Url.Action("Delete", "EmployeeInfo")',
+                type: 'GET',
+                data: { id: districtId },
+                success: function (result) {
+                    console.log(result)
+                    $("#modelDelete").html(result);
+                    $("#modelDelete").modal('show');
+                },
+                error: function () {
+                }
+            });
+        })
+
+
+            $(".chosen-select").chosen({ width: '100%' });
+            toastr.options = {
+                "progressBar": true,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            var getEmployee = function () {
+                var officeId = $('#officeId').val();
+                var branchId = $('#branchId').val();
+                var levelId = $('#levelId').val();
+                var designationId = $('#designationId').val();
+                var serviceId = $('#serviceId').val();
+
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetEmployeeBy", "Utility")',
+                    data: {
+                        OfficeId: officeId,
+                        BranchId: branchId,
+                        LevelId: levelId,
+                        DesignationId: designationId,
+                        ServiceId: serviceId,
+                        withAll: true,
+                        withSelect: false
+                    },
+
+                    cache: false,
+                    success: function (data) {
+                        $("#employeeid").empty();
+                        var $prevGroup, prevGroupName;
+                        $.each(data,
+                            function () {
+                                if (this.Group == null) {
+                                    $("<option />").val(this.Value).text(this.Text).appendTo('#employeeid');
+                                } else {
+                                    if (prevGroupName != this.Group.Name) {
+                                        $prevGroup =
+                                            $('<optgroup />').prop('label', this.Group.Name).appendTo('#employeeid');
+                                    }
+                                    $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                                    prevGroupName = this.Group.Name;
+                                }
+                            });
+                        $("#employeeid").trigger('chosen:updated');
+                    },
+                    error: function () {
+                        alert("Failed to load Item");
+                    }
+                });
+
+            }
+
+
+            var getDesignation = function () {
+                var levelId = $('#levelId').val();
+                $.getJSON("@Url.Action("GetDesignationByLevelId", "Utility")",
+                    { LevelId: levelId, withAll: true, withSelect: false },
+                    function (data) {
+                        $("#designationId").empty();
+                        var $prevGroup, prevGroupName;
+                        $.each(data,
+                            function () {
+                                if (this.Group == null) {
+                                    $("<option />").val(this.Value).text(this.Text).appendTo('#designationId');
+                                } else {
+                                    if (prevGroupName != this.Group.Name) {
+                                        $prevGroup =
+                                            $('<optgroup />').prop('label', this.Group.Name).appendTo('#designationId');
+                                    }
+                                    $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                                    prevGroupName = this.Group.Name;
+                                }
+                            });
+                        $("#designationId").trigger('chosen:updated');
+                    });
+            };
+
+            $('#officeId').chosen().change(function () {
+                getEmployee();
+            });
+
+            $('#branchId').chosen().change(function () {
+                getEmployee();
+            });
+
+            $("#levelId").chosen().change(function () {
+                getEmployee();
+                getDesignation();
+            });
+
+            $('#designationId').chosen().change(function () {
+                getEmployee();
+            });
+
+            $('#serviceId').chosen().change(function () {
+                getEmployee();
+            });
+
+            $('#pageSize').on('change',
+                function () {
+                    var officeId = '@ViewBag.OfficeId';
+                    var branchId = '@ViewBag.BranchId';
+                    var levelId = '@ViewBag.LevelId';
+                    var designationId = '@ViewBag.DesignationId';
+                    var serviceId = '@ViewBag.ServiceId';
+                    var employeeId = '@ViewBag.EmployeeId';
+                    var statusId = '@ViewBag.StatusId';
+                    var pageSize = $(this).val();
+
+                    window.location = '@Url.Action("Index", "EmployeeInfo")' +
+                        '?officeId=' +
+                        officeId +
+                        '&branchId=' +
+                        branchId +
+                        '&levelId=' +
+                        levelId +
+                        '&designationId=' +
+                        designationId +
+                        '&serviceId=' +
+                        serviceId +
+                        '&employeeId=' +
+                        employeeId +
+                        '&statusid=' +
+                        statusId +
+                        '&pageSize=' +
+                        pageSize +
+                        '&page=1';
+                });
+
+
+            var hasMessage = '@TempData["HasMessage"]';
+            if (hasMessage) {
+                Command: toastr["@TempData["MessageType"]"]("@TempData["Message"]", "@TempData["MessageHeader"]");
+            }
+
+
+
+        });
+    </script>
+}

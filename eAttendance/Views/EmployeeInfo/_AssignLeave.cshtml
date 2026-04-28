@@ -1,0 +1,85 @@
+﻿@model eAttendance.Models.AssignEmployeeLeave
+@{  Layout = null;
+
+  eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
+}
+
+
+@using (Html.BeginForm("SaveAssignEmployeeLeave", "EmployeeInfo"))
+{
+    @Html.HiddenFor(m => m.EmployeeId)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="assignLeave" class="table table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>बिदा किसिम</th>
+                                        <th>गत वर्ष</th>
+                                        <th>यो वर्ष</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.LeaveTypes.Count; i++)
+                                    {
+                                        @Html.HiddenFor(m => Model.LeaveTypes[i].LeaveTypeId)
+                                        int leavetypeid = Model.LeaveTypes[i].LeaveTypeId;
+                                        var assignedLeave = db.AssignEmployeeLeave.Where(w => w.LeaveTypeId == leavetypeid && w.EmployeeId == Model.EmployeeId).FirstOrDefault();
+                                        if (assignedLeave != null)
+                                        {
+                                            Model.LeaveTypes[i].LeaveApplicationId = assignedLeave.LeaveApplicationId;
+                                            @Html.HiddenFor(m => Model.LeaveTypes[i].LeaveApplicationId, new { value = assignedLeave.LeaveApplicationId })
+                                        }
+                                        else
+                                        {
+
+                                            @Html.HiddenFor(m => Model.LeaveTypes[i].LeaveApplicationId)}
+                                        if (assignedLeave != null)
+                                        {
+                                            Model.LeaveTypes[i].OpenningBalance = assignedLeave.OpenningBalance;
+                                            Model.LeaveTypes[i].NoOfLeave = assignedLeave.NoOfLeave;
+                                            <tr>
+                                                <th>@Model.LeaveTypes[i].LeaveTypeName</th>
+
+                                                <td>@Html.TextBoxFor(m => Model.LeaveTypes[i].OpenningBalance)</td>
+                                                <td>@Html.TextBoxFor(m => @Model.LeaveTypes[i].NoOfLeave)</td>
+
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            string thisYear = (Model.LeaveTypes[i].DefaultValue == null) ? "0" : Model.LeaveTypes[i].DefaultValue.Value.ToString("0.#");
+                                            <tr>
+                                                <th>@Model.LeaveTypes[i].LeaveTypeName</th>
+
+                                                <td>@Html.TextBoxFor(m => @Model.LeaveTypes[i].OpenningBalance, new { value = 0 })</td>
+                                                <td>@Html.TextBoxFor(m => @Model.LeaveTypes[i].NoOfLeave, new { value = @thisYear })</td>
+
+
+                                            </tr>
+                                        }
+                                    }
+
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" id="btnSaveAddress" class="btn btn-primary" type="button" title="बचत गर्नु">बचत गर्नु</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}

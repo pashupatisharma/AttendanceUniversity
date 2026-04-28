@@ -1,0 +1,98 @@
+﻿@model eAttendance.Models.VisitApplication
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">काजको निबेदन </h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("VisitPosting", "VisitApplication", FormMethod.Post, new { @id = "VisitApplicationAddForm" }))
+        {
+            @Html.Partial("_Common")
+        }
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/Scripts/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.nepali-calendar').nepaliDatePicker();
+            $(".chosen-select").chosen({ width: '100%' });
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+           
+            $('#EmployeeId').change(function () {
+                LoadVisitType(this.value);
+            });
+           
+            function LoadVisitType(employeeId) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("LoadVisitType", "VisitApplication")',
+                    data: "{'employeeId':'" + employeeId + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        $("#VisitApplicationAddForm").find('#VisitTypeId').get(0).options.length = 0;
+                        $("#VisitApplicationAddForm").find('#VisitTypeId').get(0).options[0] = new Option("Select Visit Type", "0");
+                        $.map(data, function (item) {
+                            $("#VisitApplicationAddForm").find('#VisitTypeId').get(0).options[$('#VisitTypeId').get(0).options.length] = new Option(item.Text, item.Value);
+                        });
+                        $("#VisitApplicationAddForm").find('#VisitTypeId').trigger("chosen:updated");
+                    },
+                    error: function () {
+                        alert("Failed to load Item");
+                    }
+                });
+            }
+            function LoadVisitBalance(employeeId, VisitTypeId, startDate, endDate) {
+                var startDate = $('#startDate').val();
+                var endDate = $('#endDate').val();
+                alert(startDate);
+                alert(endDate);
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("LoadVisitBalance", "VisitApplication")',
+                    data: "{'employeeId':'" + employeeId + "','VisitTypeId':'" + VisitTypeId + "','startDate':'" + startDate + "','endDate':'" + endDate + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        $("#lblVisitBalance").html(data)
+                    },
+                    error: function () {
+                        alert("Failed to load Item");
+                    }
+                });
+            }
+            function LoadTotalSelectEdDate(fromDate, toDate) {
+                var fromtDate = fromDate;
+                var toDate = toDate;
+                //Difference in milliseconds
+                var timeDiff = Date.parse(fromtDate) - Date.parse(toDate);
+                if (Date.parse(endDate) > Date.parse(startDate)) {
+
+                    //show the date diffrent in Days in two no of fraction no.
+                    daysDiff = Math.round(Math.abs(timeDiff / (1000 * 60 * 60 * 24)) * 10);
+                    alert(Math.abs(daysDiff / 10) + ' Days');
+                }
+                else {
+                    alert("Fromdate must be lesser than ToDate");
+                }
+            }
+
+        });
+        $('.inputmask').inputmask({
+            mask: '9999-99-99'
+        });
+    </script>
+}
+
+
+
+

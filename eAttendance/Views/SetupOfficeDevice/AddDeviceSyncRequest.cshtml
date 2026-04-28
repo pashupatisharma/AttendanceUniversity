@@ -1,0 +1,32 @@
+﻿@model eAttendance.Models.DeviceSyncRequestModel
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">@eAttendance.Service.MenuService.DeviceSyncRequest</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("AddDeviceSyncRequest", "SetupOfficeDevice", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            <div class="modal-body">
+                @Html.HiddenFor(m=> m.RequestBy)
+                @Html.HiddenFor(m => m.OfficeId)
+                @Html.HiddenFor(m => m.RequestDateTime)
+                @Html.HiddenFor(m => m.ResponseStatus)
+                @Html.HiddenFor(m=>m.OfficeDeviceId)
+                <p><i class="fa fa-question-circle"></i> तपाईं उपकरण सिङ्क अनुरोध पठाउन चाहनुहुन्छ ? </p>
+                <p>यस प्रक्रियामा ५ देखि १० मिनेट लाग्नसक्छ ।</p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">हो </button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">होइन</button>
+            </div>
+        }
+    </div>
+</div>
+
+
+

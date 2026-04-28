@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>View</h2>
+
+@{
+    eAttendance.ApplicationDbContext atn=new ApplicationDbContext();
+    var leave = (from la in atn.LeaveApplications
+                 where 1 == 1                
+                 select new 
+                 { 
+                    EmloyeeId=la.EmployeeId,
+                    EmployeeINfo=la.EmployeeInfo1
+                    
+                 }).OrderBy(d => d.EmployeeINfo);
+    
+}
+@foreach (var l in leave)
+{
+    int empId = l.EmployeeINfo.EmployeeId;
+    <div class="row">@l.EmployeeInfo1.EmployeeName</div>
+    <div class="row">@l.SetupLeaveType.LeaveTypeName</div>
+}

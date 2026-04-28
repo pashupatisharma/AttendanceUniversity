@@ -1,0 +1,75 @@
+﻿@model eAttendance.Models.HolidayCalender
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title"><i class="fa fa-edit"></i> सम्पादन सार्वजनिक बिदा</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("Edit", "HolidayCalendar", FormMethod.Post, new { @id = "frmEditHoliday", @class = "form-horizontal" }))
+        {
+            @Html.HiddenFor(m => m.HolidayCalendarId)
+            @Html.HiddenFor(m => m.CreatedBy)
+            @Html.HiddenFor(m => m.CreatedDate)
+            
+            @Html.Partial("_Common");
+            
+        }
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('.nepali-calendar').nepaliDatePicker();
+            $(".chosen-select").chosen({ width: '100%' });
+            //$.validator.setDefaults({ ignore: ":hidden:not(select)" });
+            $("#frmEditHoliday").validate({
+                rules: {
+                    HolidayTypeId: {
+                        required: true,
+                        remote: {
+                            url: "@Url.Action("CheckDuplicate", "HolidayCalendar")",
+                            type: "POST",
+                            data: {
+                                HolidayTypeId: function () {
+                                    return $('#frmEditHoliday').find('#HolidayTypeId').val()
+                                },
+                                Id: function () { return $('#HolidayCalendarId').val() },
+                                OfficeId: function () {
+                                    return $('#frmEditHoliday').find("#OfficeId").val();
+                                }
+                            }
+                        }
+                    },
+                    //OfficeId: {
+                    //    min: 1
+                    //},
+                    HolidayTypeId: {
+                        min: 1
+                    },
+                    FromDate: {
+                        required: true,
+                    },
+                    ToDate: {
+                        required: true,
+                    }
+                },
+                messages: {
+                    HolidayTypeId: {
+                        remote: "Duplicate holiday type found. Please use another holiday type."
+                    },
+                    OfficeId: {
+                        min: "Please select an option."
+                    },
+                    HolidayTypeId: {
+                        min: "Please select an option."
+                    },
+                }
+            });
+        });
+    </script>
+}

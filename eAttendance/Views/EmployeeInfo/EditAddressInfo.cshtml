@@ -1,0 +1,146 @@
+﻿@model eAttendance.Models.EmployeeInfo
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+@using (Html.BeginForm("EditAddressInfo", "EmployeeInfo", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.EmployeeId)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.PZone)</label>
+                                @Html.DropDownListFor(m => m.PZone, eAttendance.Utility.GetZoneList(), new { @class = "chosen-select form-control" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.TZone)</label>
+                                @Html.DropDownListFor(m => m.TZone, eAttendance.Utility.GetZoneList(), new { @class = " chosen-select form-control" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.PDistrict)</label>
+                                @Html.DropDownListFor(m => m.PDistrict, eAttendance.Utility.GetDistrictList(), new { @class = "chosen-select form-control" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.TDistrict)</label>
+                                @Html.DropDownListFor(m => m.TDistrict, eAttendance.Utility.GetDistrictList(), new { @class = "chosen-select form-control" })
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.PVdc)</label>
+                                @Html.TextBoxFor(m => m.PVdc, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.PWardNo)</label>
+                                @Html.TextBoxFor(m => m.PWardNo, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.TVdc)</label>
+                                @Html.TextBoxFor(m => m.TVdc, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.TWardNo)</label>
+                                @Html.TextBoxFor(m => m.TWardNo, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" id="btnSaveAddress" class="btn btn-primary" type="button" title="बचत गर्नु">बचत गर्नु</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+
+    </div>
+
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(function () {
+
+            $('#PZone').change(function () {
+
+                LoadDistrict(this.value);
+            });
+
+            function LoadDistrict(zoneid) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("LoadDistrict", "EmployeeInfo")',
+                    data: "{'zoneid':'" + zoneid + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        $('#PDistrict').get(0).options.length = 0;
+                        $('#PDistrict').get(0).options[0] = new Option("Select District", "0");
+                        $.map(data, function (item) {
+                            $('#PDistrict').get(0).options[$('#PDistrict').get(0).options.length] = new Option(item.Text, item.Value);
+                        });
+                        $('#PDistrict').trigger("chosen:updated");
+                    },
+                    error: function () {
+                        alert("Failed to load Item");
+                    }
+                });
+            }
+            $('#TZone').change(function () {
+                LoadTDistrict(this.value);
+            });
+
+            function LoadTDistrict(zoneid) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("LoadTDistrict", "EmployeeInfo")',
+                    data: "{'zoneid':'" + zoneid + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        $('#TDistrict').get(0).options.length = 0;
+                        $('#TDistrict').get(0).options[0] = new Option("Select District", "0");
+                        $.map(data, function (item) {
+                            $('#TDistrict').get(0).options[$('#TDistrict').get(0).options.length] = new Option(item.Text, item.Value);
+                        });
+                        $('#TDistrict').trigger("chosen:updated");
+                    },
+                    error: function () {
+                        alert("Failed to load Item");
+                    }
+                });
+            }
+
+            $(".chosen").chosen({ width: '100%', disable_search_threshold: 10 });
+            $(".chosen-select").chosen({ width: '100%' });
+
+        });
+
+    </script>
+}
+

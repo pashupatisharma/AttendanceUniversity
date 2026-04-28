@@ -1,0 +1,43 @@
+﻿@model eAttendance.Models.HolidayCalender
+<div class="modal-body">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.OfficeId)</label>
+        <div class="col-sm-9">
+            @Html.DropDownListFor(m => m.OfficeId, Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.HolidayTypeName)</label>
+        <div class="col-sm-9 ui-widget">
+            @Html.TextBoxFor(m => m.HolidayTypeName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.Alias)</label>
+        <div class="col-sm-9 ui-widget">
+            @Html.TextBoxFor(m => m.Alias, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.NFromDate)</label>
+        <div class="col-sm-9">
+            @Html.TextBoxFor(m => m.NFromDate, new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.NToDate)</label>
+        <div class="col-sm-9">
+            @Html.TextBoxFor(m => m.NToDate, new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.ApplicableFor)</label>
+        <div class="col-sm-9">
+            @Html.DropDownListFor(m => m.ApplicableFor, Utility.GetApplicableForIdName(), new { @class = "chosen-select form-control" })
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary">बचत गर्नु</button>
+    <button type="button" class="btn btn-danger" data-dismiss="modal">बन्द गर्नु</button>
+</div>

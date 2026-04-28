@@ -1,0 +1,208 @@
+﻿@model eAttendance.Models.CompanyInfo
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row wrapper white-bg page-heading hidden-print">
+    <div class="col-lg-10">
+        <h2>@eAttendance.Service.MenuService.CompanyInformation</h2>
+        <ol class="breadcrumb ">
+            <li>
+                <a href="@Url.Action("Index","Home")">घर</a>
+            </li>
+            <li>
+                <a>@eAttendance.Service.MenuService.GeneralSetup</a>
+            </li>
+            <li class="active">
+                <strong>@eAttendance.Service.MenuService.CompanyInformation</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content no-padding padding-top-md">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="project-list">
+                        <div class="panel-body">
+                            @using (Html.BeginForm("Add", "CompanyInfo", FormMethod.Post, new { enctype = "multipart/form-data",@id = "frmAddCompanyInfo", @class = "form-horizontal"  }))
+                            {
+                                <div class="row">
+                                    <div class="col-lg-6 b-r">
+                                        @Html.HiddenFor(m => m.CompanyInfoId)
+                                      
+                                        @Html.HiddenFor(m=> m.LogoName)
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m =>m.Title)</label>
+                                            <div class="col-sm-9">
+                                                @Html.TextBoxFor(m => m.Title, new { @class = "form-control " })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.Alias)</label>
+                                            <div class="col-sm-9">
+                                                @Html.TextBoxFor(m => m.Alias, new { @class = "form-control " })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.Address1)</label>
+                                            <div class="col-sm-9">
+                                                @Html.TextBoxFor(m => m.Address1, new { @class = "form-control " })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.ContactNo)</label>
+                                            <div class="col-sm-9">
+                                                @Html.TextBoxFor(m => m.ContactNo, new { @class = "form-control " })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.Email)</label>
+                                            <div class="col-sm-9">
+                                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control " })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.WebSite)</label>
+                                            <div class="col-sm-9">
+                                                @Html.TextBoxFor(m => m.WebSite, new { @class = "form-control " })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.Copyright)</label>
+                                            <div class="col-sm-9">
+                                                @Html.TextBoxFor(m => m.Copyright, new { @class = "form-control " })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-offset-3 col-lg-6">
+                                                <div class="form-group">
+
+                                                    @if (Model.LogoName != null && Model.LogoName != "")
+                                                    {
+                                                        var imageName = Model.LogoName;
+                                                        
+                                                        var path = "~/Images/CompanyLogo/" + imageName; ;
+                                                        <img id="imgLogo" class="col-sm-offset-1" src="@Url.Content(path)" style="width:220px;height:150px" alt="" />
+                                                    }
+                                                    else
+                                                    {
+                                                        
+                                                        <img id="imgLogo" class="col-sm-offset-1" src="~/Images/img_not_available.png" style="width:220px;height:150px" alt="" />
+                                                    }
+                                                    <br />
+                                                    <br />
+                                                    <label title="Upload Logo" for="inputLogo" class="btn btn-sm btn-primary col-sm-offset-1">
+                                                        <input id="inputLogo" class="hide" type="file" name="file" accept="image/*" onchange="previewFile()">
+                                                        Upload Logo
+                                                    </label>
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    <label title="Remove logo" id="removeBtn" value="@Model.LogoName" onclick="previewFile()" class=" btn btn-sm btn-primary">
+                                                        Remove Logo
+                                                    </label>
+                                                    <br />
+                                                    <br />
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.Address1)</label>
+                                                        <div class="col-sm-9">
+                                                            @Html.TextBoxFor(m => m.Address1, new { @class = "form-control " })
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.Address2)</label>
+                                                        <div class="col-sm-9">
+                                                            @Html.TextBoxFor(m => m.Address2, new { @class = "form-control " })
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <div class="col-sm-2 pull-right">
+                                            <button type="submit" class="btn btn-primary btn-sm pull-right">बचत गर्नु</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/Scripts/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script>
+        function previewFile() {
+            var preview = document.querySelector('#imgLogo');
+            var file = document.querySelector('#inputLogo').files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+            }
+        }
+
+        //function removeFile() {
+        //    var logoName = $("#LogoName").val();
+        //    var imageUrl = "~/Images/Photo/img_not_available.png";
+        //    var imgTag = document.querySelector('#imgLogo');
+        //    imgTag.src = imageUrl;
+        //}
+        $(document).ready(function () {
+
+            $('#removeBtn').on('click', function () {
+                
+            var logoName = $(this).attr('value');
+            $.ajax({
+                url: '@Url.Action("RemoveLogo", "CompanyInfo")',
+                type: 'POST',
+                data: { LogoName: logoName },
+                success: function (result) {
+                    console.log(result)
+                    
+                },
+                error: function () {
+                }
+            });
+        })
+
+           
+
+
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" })
+            $("#frmAddCompanyInfo").validate({
+                rules: {
+                    Name: {
+                        required: true,
+                        minlength: 6,
+                    }
+                },
+                messages: {
+                }
+            });
+        });
+
+    </script>
+}

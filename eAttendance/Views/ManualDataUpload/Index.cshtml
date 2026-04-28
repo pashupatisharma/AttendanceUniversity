@@ -1,0 +1,57 @@
+﻿@model PagedList.IPagedList<eAttendance.Models.LeaveApplication>
+@using PagedList.Mvc;
+@using eAttendance.Helper
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.title = "Leave Posting";
+    eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
+}
+
+
+<div class="wrapper wrapper-content no-padding padding-top-md">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins no-margins">
+
+                <div class="ibox-content no-border-bottom">
+
+                    @using (Html.BeginForm("Index", "ManualDataUpload", FormMethod.Post, new { enctype = "multipart/form-data", @id = "frmAddDocument", @class = "form-horizontal" }))
+                    {
+                        @TempData["Message"]
+                        <div class="row">
+
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="control-label">कार्यालय</label>
+                                    @Html.DropDownList("OfficeId", eAttendance.Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control chosen-select" })
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="control-label">File</label>
+                                    <input type="file" name="file" />
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group margin-top-25">
+                                    <button type="submit" class="btn-Search btn btn-primary btn-rounded btn-outline fa fa-search"> Upload</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+

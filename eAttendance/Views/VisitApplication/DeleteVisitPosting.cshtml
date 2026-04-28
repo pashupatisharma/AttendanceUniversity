@@ -1,0 +1,42 @@
+﻿@model eAttendance.Models.VisitApplication
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title"> काजको प्रविष्टि</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("DeleteVisitPosting", "VisitApplication", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.HiddenFor(m=> m.VisitApplicationId)
+            @Html.HiddenFor(m => m.EmployeeId)
+            @Html.HiddenFor(m => m.ApplicationDate)
+            @Html.HiddenFor(m => m.VisitTypeId)
+            @Html.HiddenFor(m => m.Subject)
+            @Html.HiddenFor(m => m.FromDate)
+            @Html.HiddenFor(m => m.ToDate)
+            @Html.HiddenFor(m => m.Message)
+            @Html.HiddenFor(m=> m.Recomender)
+            @Html.HiddenFor(m=>m.RecomenderStatus)
+            @Html.HiddenFor(m=> m.RecomendedDate)
+            @Html.HiddenFor(m=> m.Type)
+            @Html.HiddenFor(m => m.ApprovedBy)
+            @Html.HiddenFor(m=> m.ApprovedStatus)
+            @Html.HiddenFor(m=> m.ApprovedDate)
+            @Html.HiddenFor(m => m.CreatedBy)
+            @Html.HiddenFor(m => m.CreatedDate)
+            <div class="modal-body">
+                <p><i class="fa fa-question-circle"></i>तपाईं मेटाउन निश्चित हुनुहुन्छ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">हो </button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">होइन</button>
+            </div>
+        }
+    </div>
+</div>
+
+

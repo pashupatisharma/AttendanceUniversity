@@ -1,0 +1,57 @@
+﻿@model eAttendance.Models.OfficeDeviceSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">सेटअप</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupOfficeDevice")"> कार्यालय उपकरण सेटअप</a></li>
+            <li class="animated fadeInRight">कार्यालय उपकरण सच्याउनुहोस्</li>
+
+        </ol>
+    </div>
+</div>
+        @using (Html.BeginForm("Edit", "SetupOfficeDevice", FormMethod.Post, new { @id = "EditOfficeDeviceForm", @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.OfficeDeviceId)
+            @Html.Partial("_Common")
+
+        }
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".chosen-select").chosen({ width: '100%' });
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+
+            $("#EditOfficeDeviceForm").validate({
+                rules: {
+
+                    OfficeId: {
+                        min: 1
+                    },
+                    DeviceIp: {
+                        required: true,
+                        minlength: 3
+                    },
+                    Port: {
+                        required: true,
+                        minlength: 3
+                    }
+                },
+                messages: {
+                    DeviceNo: {
+                        remote: "Duplicate  device no found. Please use another name."
+                    },
+                    OfficeId: {
+                        min: "Please select an option."
+                    },
+
+                }
+            });
+        });
+    </script>
+}

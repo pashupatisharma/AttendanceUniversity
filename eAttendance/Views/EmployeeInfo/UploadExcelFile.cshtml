@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "योजना अपलोड";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("UploadExcelFile", "EmployeeInfo", FormMethod.Post, new { enctype = "multipart/form-data", @id = "ajaxUploadProgramFile" }))
+{
+
+
+
+    <div class="col-sm-12" style="margin-top:5px">
+        <table>
+            <tr>
+                <td>
+                    <input type="file" name="file" />
+                </td>
+
+            </tr>
+        </table>
+        <br />
+        <input type="submit" value="अपलोड गर्नुहोस" class="btn-primary" />
+
+    </div>
+
+
+
+
+}
+
+
+

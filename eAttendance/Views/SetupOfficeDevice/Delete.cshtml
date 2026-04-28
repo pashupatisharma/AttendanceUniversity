@@ -1,0 +1,37 @@
+﻿@model eAttendance.Models.OfficeDeviceSetUp
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">मेटाउन कार्यालय उपकरण</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("Delete", "SetupOfficeDevice", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken();
+            <div class="modal-body">
+                @Html.HiddenFor(m => m.OfficeDeviceId)
+                @Html.HiddenFor(m => m.OfficeId)
+                @Html.HiddenFor(m => m.LicenseNo)
+                @Html.HiddenFor(m => m.DeviceType)
+                @Html.HiddenFor(m => m.DeviceNo)
+                @Html.HiddenFor(m => m.DeviceIp)
+                @Html.HiddenFor(m => m.Port)
+                @Html.HiddenFor(m => m.Status)
+                @Html.HiddenFor(m => m.LastImportDate)
+
+                <p><i class="fa fa-question-circle"></i>तपाईं मेटाउन निश्चित हुनुहुन्छ? </p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">हो </button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">होइन</button>
+            </div>
+        }
+    </div>
+</div>
+
+
+

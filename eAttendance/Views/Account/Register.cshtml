@@ -1,0 +1,57 @@
+﻿@model eAttendance.Models.RegisterViewModel
+@{
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+    ViewBag.Title = "Register";
+}
+
+<section id="loginForm" class="ibox-content text-center no-margins">
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @id = "frmRegister", @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control input-lg", @placeholder = "User Name" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control input-lg", @placeholder = "Password" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control input-lg", @placeholder = "Confirm Password" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.DropDownListFor(m => m.RolesId, Utility.GetRolesList(), new { @class = "form-control input-lg" })
+            </div>
+        </div>
+
+        <div class="user-button">
+            <div class="row">
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg"><i class="fa fa-sign-out"></i> Register</button>
+
+                </div>
+                <div class="col-md-6">
+                    <a href="@Url.Action("Login","Account",routeValues:null)" class="btn btn-default btn-lg btn-block"><i class="fa fa-sign-in"></i> Log In</a>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+
+            </div>
+        </div>
+    }
+</section>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        //$(".chosen-select").chosen({ width: '100%' });
+    </script>
+}

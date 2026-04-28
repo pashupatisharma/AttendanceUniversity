@@ -1,0 +1,241 @@
+﻿@model eAttendance.Models.TransferModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+
+<div class="modal-dialog ">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">सम्पादन स्थानान्तरण</h4>
+            <small class="font-bold"></small>
+        </div>
+
+        @using (Html.BeginForm("Edit", "Transfer", FormMethod.Post, new { @id = "frmEditTransfer" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="modal-body">
+                <div class="row">
+
+                    @Html.HiddenFor(m => m.TransferId)
+                    @Html.HiddenFor(m=> m.CreatedBy)
+                    @Html.HiddenFor(m=> m.CreatedDate)
+
+                    @*@Html.HiddenFor(m => m.TransferType)
+                    @if (Model.TransferType == 2)
+                    {*@
+                    <div class="form-group col-md-6">
+                        <label class="control-label">@Html.DisplayNameFor(m => m.EmployeeId)</label>
+                        @Html.DropDownListFor(m => m.EmployeeId, eAttendance.Utility.GetEmployeeIdNameWithSelect(User), new { @class = "chosen-select form-control" })
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label>@Html.DisplayNameFor(m => m.Remarks)</label>
+                        @Html.TextBoxFor(m => m.Remarks, new { @class = "form-control" })
+                    </div>
+
+
+                    <div class="form-group col-md-6">
+                        <label>@Html.DisplayNameFor(m => m.FromOfficeId)</label>
+
+                        @Html.DropDownListFor(m => m.FromOfficeId, eAttendance.Utility.GetOfficeIdNameWithSelect(User), new { @class = "TxtFrmOfficeId form-control" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>@Html.DisplayNameFor(m => m.ToOfficeName)</label>
+                        @Html.TextBoxFor(m => m.ToOfficeName, new { @class = "form-control" })
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label>@Html.DisplayNameFor(m => m.FromMainBranchId)</label>
+                        @Html.DropDownListFor(m => m.FromMainBranchId, eAttendance.Utility.GetMainBranchName(User), new { @class = "TxtFrmMainBranchId form-control" })
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label>@Html.DisplayNameFor(m => m.ToMainBranchName)</label>
+                        @Html.TextBoxFor(m => m.ToMainBranchName, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>@Html.DisplayNameFor(m => m.FromBranchId)</label>
+                        @Html.DropDownListFor(m => m.FromBranchId, eAttendance.Utility.GetBranchIdNameWithAll(), new { @class = "TxtFrmBranchId form-control" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>@Html.DisplayNameFor(m => m.ToBranchName)</label>
+                        @Html.TextBoxFor(m => m.ToBranchName, new { @class = "form-control" })
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label>@Html.DisplayNameFor(m => m.FromServiceId)</label>
+                        @Html.DropDownListFor(m => m.FromServiceId, eAttendance.Utility.GetServiceIdNameWithAll(), new { @class = "TxtFrmServiceId form-control" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>@Html.DisplayNameFor(m => m.ToServiceName)</label>
+                        @Html.TextBoxFor(m => m.ToServiceName, new { @class = "form-control" })
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label>@Html.DisplayNameFor(m => m.FromLevelId)</label>
+                        @Html.DropDownListFor(m => m.FromLevelId, eAttendance.Utility.GetLevelIdNameWithAll(User), new { @class = "TxtFrmLevelId form-control" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>@Html.DisplayNameFor(m => m.ToLevelName)</label>
+                        @Html.TextBoxFor(m => m.ToLevelName, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>@Html.DisplayNameFor(m => m.FromDesignationId)</label>
+                        @Html.DropDownListFor(m => m.FromDesignationId, eAttendance.Utility.GetDesignationIdNameWithAll(), new { @class = "TxtFrmDesignationId form-control" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>@Html.DisplayNameFor(m => m.ToDesignationName)</label>
+                        @Html.TextBoxFor(m => m.ToDesignationName, new { @class = "form-control" })
+                    </div>
+
+
+                    @*//}
+                    //else if (Model.TransferType == 1)
+                    //{*@
+                   
+
+
+                        @*<div class="form-group col-md-6">
+                            <label class="control-label">@Html.DisplayNameFor(m => m.EmployeeId)</label>
+                            @Html.DropDownListFor(m => m.EmployeeId, eAttendance.Utility.GetEmployeeIdNameWithSelect(User), new { @class = "chosen-select form-control" })
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>@Html.DisplayNameFor(m => m.Remarks)</label>
+
+                            @Html.TextBoxFor(m => m.Remarks, new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>@Html.DisplayNameFor(m => m.FromOfficeId)</label>
+
+                            @Html.DropDownListFor(m => m.FromOfficeId, eAttendance.Utility.GetOfficeIdNameWithSelect(User), new { @class = "TxtFrmOfficeId form-control" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>@Html.DisplayNameFor(m => m.ToOfficeId)</label>
+                            @Html.DropDownListFor(m => m.ToOfficeId, eAttendance.Utility.GetOfficeIdNameWithSelect(User), new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>@Html.DisplayNameFor(m => m.FromMainBranchId)</label>
+                            @Html.DropDownListFor(m => m.FromMainBranchId, eAttendance.Utility.GetMainBranchName(User), new { @class = "TxtFrmMainBranchId form-control" })
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>@Html.DisplayNameFor(m => m.ToMainBranchId)</label>
+                            @Html.DropDownListFor(m => m.ToMainBranchId, eAttendance.Utility.GetMainBranchName(User), new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>@Html.DisplayNameFor(m => m.FromBranchId)</label>
+                            @Html.DropDownListFor(m => m.FromBranchId, eAttendance.Utility.GetBranchIdNameWithAll(), new { @class = "TxtFrmBranchId form-control" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>@Html.DisplayNameFor(m => m.ToBranchId)</label>
+                            @Html.DropDownListFor(m => m.ToBranchId, eAttendance.Utility.GetBranchIdNameWithAll(), new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>@Html.DisplayNameFor(m => m.FromServiceId)</label>
+                            @Html.DropDownListFor(m => m.FromServiceId, eAttendance.Utility.GetServiceIdNameWithAll(), new { @class = "TxtFrmServiceId form-control" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>@Html.DisplayNameFor(m => m.ToServiceId)</label>
+                            @Html.DropDownListFor(m => m.ToServiceId, eAttendance.Utility.GetServiceIdNameWithAll(), new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>@Html.DisplayNameFor(m => m.FromLevelId)</label>
+                            @Html.DropDownListFor(m => m.FromLevelId, eAttendance.Utility.GetLevelIdNameWithAll(User), new { @class = "TxtFrmLevelId form-control" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>@Html.DisplayNameFor(m => m.ToLevelId)</label>
+                            @Html.DropDownListFor(m => m.ToLevelId, eAttendance.Utility.GetLevelIdNameWithAll(User), new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>@Html.DisplayNameFor(m => m.FromDesignationId)</label>
+                            @Html.DropDownListFor(m => m.FromDesignationId, eAttendance.Utility.GetDesignationIdNameWithAll(User), new { @class = "TxtFrmDesignationId form-control" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>@Html.DisplayNameFor(m => m.ToDesignationId)</label>
+                            @Html.DropDownListFor(m => m.ToDesignationId, eAttendance.Utility.GetDesignationIdNameWithAll(), new { @class = "form-control" })
+                        </div>*@
+                    @*}*@
+
+                    </div>
+                </div>
+                
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+                </div>
+                }
+            </div>
+    </div>
+
+@section scripts
+{
+<script>
+    $(document).ready(function () {
+
+        $("#frmEditTransfer").validate({
+                rules: {
+
+                    EmployeeId: {
+                        min: 1
+                    },
+                    ToOfficeName: {
+                        required: true,
+                    },
+                    //ToMainBranchName: {
+                    //    required: true,
+                    //},
+                    //ToBranchName: {
+                    //    required: true,
+                    //},
+                    ToServiceName: {
+                        required: true,
+                    },
+                    ToLevelName: {
+                        required: true,
+                    },
+                    ToDesignationName: {
+                        required: true,
+
+                    },
+
+                },
+                messages: {
+
+                    EmployeeId: {
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                        },
+                        ToOfficeName: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्'
+                        },
+                        @*ToMainBranchName: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्'
+                        },
+                        ToBranchName: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्'
+                        },*@
+                        ToServiceName: {
+                            required: 'कृपया आवश्यक जानकारी भर्नुहोस्',
+                        
+                        },
+                        ToLevelName: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्',
+                        
+                        },
+                        ToDesignationName: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्',
+                        }
+                        }
+})
+    })
+    </script>
+}

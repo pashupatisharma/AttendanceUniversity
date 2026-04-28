@@ -1,0 +1,41 @@
+﻿@model eAttendance.Models.DocumentCatogory
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title"><i class="fa fa-plus-circle"></i> कागजात प्रकार</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("Add", "DocumentCategory", FormMethod.Post, new { @id = "frmAddDocumentCatogory", @class = "form-horizontal" }))
+        {
+            <div class="modal-body">
+                
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.CategoryName)</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.CategoryName, new { @class = "form-control" })
+                    </div>
+                </div>               
+                
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts
+{
+   <script type="text/javascript">
+       $('.i-checks').iCheck({
+           checkboxClass: 'icheckbox_square-blue',
+           radioClass: 'iradio_square-blue',
+       });
+    </script>
+}

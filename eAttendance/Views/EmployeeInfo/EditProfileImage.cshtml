@@ -1,0 +1,56 @@
+﻿@model eAttendance.Models.EmployeeImage
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+@using (Html.BeginForm("EditProfileImage", "EmployeeInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(m => m.EmployeeId)
+
+    <div class="row">
+        <div class="col-xs-6 col-md-4">
+            <div class="form-group">
+                @if (Model.ImageName != null)
+                {
+                    var imageName = Model.ImageName;
+                    var imageType = Model.ImageType;
+                    var path = "~/Images/Photo/" + imageName + "." + imageType;
+                    <img id="imgEmployee" src="@Url.Content(path)" style="width:220px;height:150px" alt="" />
+                }
+                else
+                {
+                    <img id="imgEmployee" src="~/Images/img_not_available.png" style="width:220px;height:150px" alt="" />
+                }
+                <br />
+                <br />
+                <label title="Upload image file" for="inputImage" class="btn btn-sm btn-primary">
+                    <input id="inputImage" class="hide" type="file" name="file" accept="image/*" onchange="previewFile()">
+                    Upload image
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="hr-line-dashed">
+        <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु </button>
+        <a href="@Url.Action("Index", "EmployeeInfo")" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु </a>
+    </div>
+}
+@section scripts
+{
+    <script>
+        function previewFile() {
+            var preview = document.querySelector('#imgEmployee');
+            var file = document.querySelector('#inputImage').files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+            }
+        }
+    </script>
+}

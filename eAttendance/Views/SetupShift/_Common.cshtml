@@ -1,0 +1,37 @@
+﻿@model eAttendance.Models.Shift
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header bg-info">
+            <h2 class="m-b-0 text-info">शिफ्ट  थप  </h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+                    @Html.DisplayNameFor(m => m.ShiftName)
+                    @Html.TextBoxFor(m => m.ShiftName, new { @class = "form-control" })
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+
+                    @Html.DisplayNameFor(m => m.Status)<br/>
+                    @Html.RadioButtonFor(model => model.Status, true) True
+                    @Html.RadioButtonFor(model => model.Status, false) False
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+                    @Html.DisplayNameFor(m => m.DisplayOrder)
+                    @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="location.href='@Url.Action("Index","SetupShift")'">Back</button>
+            </div>
+        </div>
+    </div>
+</div>s

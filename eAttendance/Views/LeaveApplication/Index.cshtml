@@ -1,0 +1,161 @@
+﻿@model eAttendance.Models.LeaveApplicationModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Leave Application";
+}
+
+<div class="row wrapper white-bg page-heading hidden-print">
+    <div class="col-lg-10">
+        <h2>बिदाको निबेदन  </h2>
+        <ol class="breadcrumb ">
+            <li>
+                <a href="@Url.Action("Index","Home")">घर</a>
+            </li>
+            <li class="active">
+                <strong>बिदाको निबेदन </strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+        <div class="title-action hidden-print">
+            <button class="btn btn-primary btn-add">नयाँ बनाउनु </button>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content padding-top-md">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5> बिदाको निबेदन </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="project-list">
+                        <table id="tblLeaveApplication" class="table table-hover table-color ">
+                            <thead>
+                                <tr>
+                                    <th>क्र सं</th>
+                                    <th>@Html.DisplayNameFor(m => m.ApplicationDate)</th>
+                                    <th>@Html.DisplayNameFor(m=> m.EmployeeId)</th>
+                                    <th>@Html.DisplayNameFor(m => m.Subject)</th>
+                                    <th>@Html.DisplayNameFor(m => m.FromDate)</th>
+                                    <th>@Html.DisplayNameFor(m => m.ToDate)</th>
+                                    <th>@Html.DisplayNameFor(m => m.ApprovedBy)</th>
+                                    <th class="hidden-print text-center action">कार्य</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int count = 0;}
+                                @foreach (var m in Model.LeaveApplicationList)
+                                {
+                                    count += 1;
+                                    <tr>
+                                        <td>@count</td>
+                                        <td>
+                                            @((m.ApplicationDate.Value.Year >= 1913 && m.ApplicationDate.Value.Year <= 2042) ? eAttendance.NepaliDateConverter.ConvertToNepali(m.ApplicationDate.Value.Date) : NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                        </td>
+                                        <td>@Html.Raw(eAttendance.Utility.GetEmployeeIdWithAll().FirstOrDefault(w => w.Value == ((m.EmployeeId != null && m.EmployeeId > 0) ? m.EmployeeId.ToString() : "0")).Text) </td>
+                                       
+                                        <td>@m.Subject</td>
+                                        <td>
+                                            @((m.FromDate.Value.Year >= 1913 && m.FromDate.Value.Year <= 2042) ? eAttendance.NepaliDateConverter.ConvertToNepali(m.FromDate.Value.Date) : NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                        </td>
+                                        <td>
+                                            @((m.ToDate.Value.Year >= 1913 && m.ToDate.Value.Year <= 2042) ? eAttendance.NepaliDateConverter.ConvertToNepali(m.ToDate.Value.Date) : NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                        </td>
+                                    
+                                            <td>@Html.Raw(Utility.GetEmployeeIdWithAll().FirstOrDefault(w => w.Value == ((m.ApprovedBy != null && m.ApprovedBy > 0) ? m.ApprovedBy.ToString() : "0")).Text) </td>
+
+
+                                 
+                                        <td class="project-actions hidden-print text-center">
+                                            <button value="@m.LeaveApplicationId" type="button" class="btn-edit btn btn-primary btn-sm">
+                                                <i class="fa fa-pencil"></i> 
+                                                <span class="hidden-xs hidden-sm"></span> 
+                                            </button>
+                                            <button value="@m.LeaveApplicationId" class="btn-delete btn btn-sm btn-danger">
+                                                <i class="fa fa-remove"></i>
+                                                <span class="hidden-xs hidden-sm"></span> 
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal inmodal fade" id="modelAdd" role="dialog">
+
+</div>
+
+<div class="modal inmodal fade" id="modelEdit" role="dialog">
+
+</div>
+
+<div class="modal inmodal fade" id="modelDelete" role="dialog">
+
+</div>
+@section Scripts
+{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+  
+            $('.btn-add').on('click',
+                function() {
+                    $.ajax({
+                        url: '@Url.Action("Add", "LeaveApplication")',
+                        type: 'GET',
+                        data: {},
+                        success: function(result) {
+                            console.log(result);
+                            $("#modelAdd").html(result);
+                            $("#modelAdd").modal('show');
+                        },
+                        error: function() {
+                        }
+                    });
+                });
+            $('.btn-edit').on('click',
+                function() {
+                    var leaveApplicationId = $(this).attr('value');
+                    $.ajax({
+                        url: '@Url.Action("Edit", "LeaveApplication")',
+                        type: 'GET',
+                        data: { id: leaveApplicationId },
+                        success: function(result) {
+                            console.log(result);
+                            $("#modelEdit").html(result);
+                            $("#modelEdit").modal('show');
+                        },
+                        error: function() {
+                        }
+                    });
+                });
+            $('.btn-delete').on('click',
+                function() {
+                    var leaveApplicationId = $(this).attr('value');
+                    $.ajax({
+                        url: '@Url.Action("Delete", "LeaveApplication")',
+                        type: 'GET',
+                        data: { id: leaveApplicationId },
+                        success: function(result) {
+                            console.log(result);
+                            $("#modelDelete").html(result);
+                            $("#modelDelete").modal('show');
+                        },
+                        error: function() {
+                        }
+                    });
+                });
+        })
+    </script>
+}
+
+

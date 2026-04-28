@@ -1,0 +1,39 @@
+﻿@model eAttendance.Models.HolidayCalender
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title"><i class="fa fa-question-circle"></i> मेटाउन सार्वजनिक बिदा</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("Delete", "HolidayCalendar", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-body">
+                @Html.HiddenFor(m => m.HolidayCalendarId)
+                @Html.HiddenFor(m => m.OfficeId)
+                @Html.HiddenFor(m => m.HolidayTypeName)
+                @Html.HiddenFor(m => m.Alias)
+                @Html.HiddenFor(m => m.FromDate)
+                @Html.HiddenFor(m => m.ToDate)
+                @Html.HiddenFor(m=>m.ApplicableFor)
+                @Html.HiddenFor(m => m.CreatedBy)
+                @Html.HiddenFor(m => m.CreatedDate)
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>तपाईं मेटाउन निश्चित हुनुहुन्छ ?</h3>
+                    </div>
+                </div>                            
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary"> &nbsp; हो &nbsp;</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">होइन</button>
+            </div>
+        }
+    </div>
+</div>
+
+

@@ -1,0 +1,29 @@
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\BioMatrix\BioMatrix\BioMetrixCore\bin\Debug\BioMetrixCore.exe.config
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\BioMatrix\BioMatrix\BioMetrixCore\bin\Debug\BioMetrixCore.exe
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\BioMatrix\BioMatrix\BioMetrixCore\bin\Debug\BioMetrixCore.pdb
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\BioMatrix\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.DataEmpty.resources
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\BioMatrix\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.Master.resources
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\BioMatrix\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.Properties.Resources.resources
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\BioMatrix\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.csproj.GenerateResource.Cache
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\BioMatrix\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.exe
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\BioMatrix\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.pdb
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\BioMatrix\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.csprojAssemblyReference.cache
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\BioMatrix\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.csproj.CoreCompileInputs.cache
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Debug\BioMetrixCore.exe.config
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Debug\BioMetrixCore.exe
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Debug\BioMetrixCore.pdb
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Debug\Syncfusion.Core.WinForms.dll
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Debug\Syncfusion.Licensing.dll
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Debug\Syncfusion.Shared.Base.dll
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Debug\Syncfusion.Core.WinForms.xml
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Debug\Syncfusion.Shared.Base.xml
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.csproj.AssemblyReference.cache
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.csproj.SuggestedBindingRedirects.cache
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.DataEmpty.resources
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.Master.resources
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.Properties.Resources.resources
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.csproj.GenerateResource.cache
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.csproj.CoreCompileInputs.cache
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.csproj.CopyComplete
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.exe
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Debug\BioMetrixCore.pdb

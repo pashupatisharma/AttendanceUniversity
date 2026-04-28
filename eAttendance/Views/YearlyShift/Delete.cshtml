@@ -1,0 +1,32 @@
+﻿
+@model eAttendance.Models.YearlyShift
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">मेटाउन शिफ्ट </h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("Delete", "YearlyShift", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-body">
+                @Html.HiddenFor(m => m.YearlyShiftId)
+                @Html.HiddenFor(m => m.FiscalYearId)
+                @Html.HiddenFor(m => m.ShiftId)
+                @Html.HiddenFor(m => m.StartDate)
+                @Html.HiddenFor(m => m.EndDate)
+                <p><i class="fa fa-question-circle"></i>तपाईं मेटाउन निश्चित हुनुहुन्छ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">हो </button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">होइन</button>
+            </div>
+        }
+    </div>
+</div>
+
+

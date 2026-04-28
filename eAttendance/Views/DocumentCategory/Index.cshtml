@@ -1,0 +1,162 @@
+﻿@model List<eAttendance.Models.DocumentCatogory>
+
+@{
+    ViewBag.Title = "कागजातको प्रकार";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row wrapper white-bg page-heading hidden-print">
+    <div class="col-lg-10 col-md-10 col-xs-10">
+        <h2> कागजातको प्रकार </h2>
+        <ol class="breadcrumb ">
+            <li>
+                <a href="@Url.Action("Index", "Home")">@eAttendance.Service.MenuService.Dashboard</a>
+            </li>
+            <li class="active">
+                <strong>कागजात प्रकार </strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2 col-md-2 col-xs-2">
+        <div class="title-action hidden-print">
+            <button class="btn btn-primary btn-sm btn-add">नयाँ बनाउनु </button>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content padding-top-md">
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-content">                
+                <div class="project-list">
+                    <table id="tblDocumentCategory" class="table table-striped table-condensed table-hover">
+                        <thead>
+                            <tr>
+                                <th>क्र.सं</th>
+                                <th>कागजात श्रेणी</th>
+                                <th>@eAttendance.Service.MenuService.Status</th>
+                                <th class="title-action">@eAttendance.Service.MenuService.Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(Model != null && Model.Count() ==0 )
+                            {
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="alert alert-danger">
+                                          @eAttendance.Service.MenuService.NoRecordFound !
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                            @{ int sno = 1;}
+                            @foreach (var item in Model)
+                                {
+                                <tr>
+                                    <td>
+                                        @Html.Raw(sno++)
+                                    </td>
+                                    <td>
+                                        @item.CategoryName
+                                    </td>
+                                    <td>
+                                        @switch (item.Status)
+                                        {
+                                            case 0:
+                                                <span class="badge badge-primary active-inactive" data-id="@item.CategoryId">@eAttendance.Service.MenuService.Active</span>
+                                                break;
+                                            case 1:
+                                                <span class="badge badge-primary active-inactive" data-id="@item.CategoryId">@eAttendance.Service.MenuService.Active</span>
+                                                break;
+                                            case 2:
+                                                <span class="badge badge-danger active-inactive" data-id="@item.CategoryId">@eAttendance.Service.MenuService.Inactive</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td class="title-action">
+                                        <button value="@item.CategoryId" type="button" class="btn-edit btn btn-primary btn-sm"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm"></span> </button>
+                                        <button value="@item.CategoryId" class="btn-delete btn btn-sm btn-danger"><i class="fa fa-remove"></i><span class="hidden-xs hidden-sm"></span> </button>
+                                    </td>
+                                </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal inmodal fade" id="modelAdd" role="dialog"></div>
+<div class="modal inmodal fade" id="modelEdit" role="dialog"></div>
+<div class="modal inmodal fade" id="modelDelete" role="dialog"></div>
+@section Scripts
+{
+    <script type="text/javascript">
+        $('.btn-add').on('click', function () {
+            $.ajax({
+                url: '@Url.Action("Add", "DocumentCategory")',
+                type: 'GET',
+                data: {},
+                success: function (result) {
+                    console.log(result)
+                    $("#modelAdd").html(result);
+                    $("#modelAdd").modal('show');
+                },
+                error: function () {
+                }
+            });
+        });
+
+        $('#tblDocumentCategory tbody').on('click', '.btn-edit', function () {
+            var leaveTypeId = $(this).attr('value');
+            $.ajax({
+                url: '@Url.Action("Edit", "DocumentCategory")',
+                type: 'GET',
+                data: { id: leaveTypeId },
+                success: function (result) {
+                    console.log(result)
+                    $("#modelEdit").html(result);
+                    $("#modelEdit").modal('show');
+                },
+                error: function () {
+                }
+            });
+        });
+
+        $('#tblDocumentCategory tbody').on('click', '.btn-delete', function () {
+            var leaveTypeId = $(this).attr('value');
+            $.ajax({
+                url: '@Url.Action("Delete", "DocumentCategory")',
+                type: 'GET',
+                data: { id: leaveTypeId },
+                success: function (result) {
+                    $("#modelDelete").html(result);
+                    $("#modelDelete").modal('show');
+                },
+                error: function () {
+                }
+            });
+        });
+
+        $('#tblDocumentCategory tbody').on('click', '.active-inactive', function () {
+            var categoryid = $(this).attr('data-id');
+            $.ajax({
+                url:'@Url.Action("ActiveInactive","DocumentCategory")',
+                type:'POST',
+                data: { id: categoryid },
+                success: function (result) {
+                    if (result.flag == "Success") {
+                        Command: toastr["success"]("Data saved successfully.", "Success Message !");
+                        window.location.reload();
+                    } else {
+                        Command: toastr["error"]("Error while saving data.", "Error Message !");
+                    }
+                  
+                },
+                error: function () {
+                    Command: toastr["error"]("Error while saving data.", "Error Message !")
+                }
+            })
+        });
+
+    </script>
+}

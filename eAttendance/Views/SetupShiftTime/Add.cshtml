@@ -1,0 +1,240 @@
+﻿@using System.Collections.Generic;
+@using eAttendance.Models;
+
+@model  List<SetupShiftTime>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Add Shift Time";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="modal-content">
+        <div class="modal-header">
+            <ol class="breadcrumb">
+                <li class="animated fadeInUp">सेटअप</li>
+                <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupShiftTime")"> शिफ्ट समय सेटअप</a></li>
+                <li class="animated fadeInRight">नयाँ शिफ्ट समय थप्नुहोस्</li>
+
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        @using (Html.BeginForm("Add", "SetupShiftTime", FormMethod.Post, new { @id = "frmSetupShiftTimeAdd" }))
+        {
+            <div class="ibox-content ibox-heading ibox-title">
+                <h3>सिफ्ट चयन गर्नुहोस्!</h3>
+                @Html.DropDownList("SetupShiftId", eAttendance.Utility.GetShiftIdName(), "छान्नुहोस्", new { @class = "chosen-select form-control" })
+            </div>
+
+            <div class="ibox-content ibox-heading ibox-title">
+
+                @Html.DropDownList("OfficeId", eAttendance.Utility.GetOfficeIdName(User), "छान्नुहोस्", new { @class = "chosen-select form-control" })
+            </div>
+            <div class="ibox-content inspinia-timeline valueFields">
+                @for (var i = 0; i < 7; i++)
+                {
+                    <div class="timeline-item">
+                        @Html.Hidden("list[" + i + "].ShiftTimeId", Model[i].ShiftTimeId)
+                        @Html.Hidden("list[" + i + "].ShiftId", Model[i].ShiftId)
+                        @Html.Hidden("list[" + i + "].WeekDay", Model[i].WeekDay)
+                        <div class="row">
+                            <div class="col-xs-3 date">
+                                <i>
+                                    @Html.CheckBox("list[" + i + "].IsWeekOff", Model[i].IsWeekOff, new { @class = "i-checks ChkTitle", dataplacement = "top", title = "Is Week Day Off ?" })
+                                </i>
+                                @Model[i].WeekDayNameEn
+                                <br>
+                                <small class="text-navy">@Model[i].WeekDayNameNp</small>
+                            </div>
+                            <div class="col-xs-9 content @((Model.IndexOf(Model[i]) == 0) ? "no-top-border" : "")">
+                                <div class="form-inline">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="@("ShiftInTime_" + Model[i].WeekDay)" class="control-label">@eAttendance.Service.MenuService.ShiftStartTime</label>
+                                                <div class="input-group clockpicker" data-autoclose="true">
+                                                    @Html.TextBox("list[" + i + "].ShiftStartTime", Model[i].ShiftStartTime, new { @class = "form-control txtShiftStartTime clockpicker", data_mask = "99:99" })
+                                                    <span class="input-group-addon">
+                                                        <span class="fa fa-clock-o"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="@("ShiftEndTime_" + Model[i].WeekDay)" class="control-label">@eAttendance.Service.MenuService.ShiftEndTime</label>
+                                                <div class="input-group clockpicker" data-autoclose="true">
+                                                    @Html.TextBox("list[" + i + "].ShiftEndTime", Model[i].ShiftEndTime, new { @class = "form-control txtShiftEndTime clockpicker", data_mask = "99:99" })
+                                                    <span class="input-group-addon">
+                                                        <span class="fa fa-clock-o"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="@("ShiftLateInAfter" + Model[i].WeekDay)" class="control-label">@eAttendance.Service.MenuService.ShiftLateInAfter</label>
+                                                <div class="input-group clockpicker" data-autoclose="true">
+                                                    @Html.TextBox("list[" + i + "].ShiftLateInAfter", Model[i].ShiftLateInAfter, new { @class = "form-control txtShiftLateInAfter clockpicker", data_mask = "99:99" })
+                                                    <span class="input-group-addon">
+                                                        <span class="fa fa-clock-o"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="@("ShiftEarlyOutBefore" + Model[i].WeekDay)" class="control-label">@eAttendance.Service.MenuService.ShiftEarlyOutBefore</label>
+                                                <div class="input-group clockpicker" data-autoclose="true">
+                                                    @Html.TextBox("list[" + i + "].ShiftEarlyOutBefore", Model[i].ShiftEarlyOutBefore, new { @class = "form-control txtShiftEarlyOutBefore clockpicker", data_mask = "99:99" })
+                                                    <span class="input-group-addon">
+                                                        <span class="fa fa-clock-o"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="ibox-content ibox-heading border-bottom ibox-footer">
+                <input type="submit" value="सुरक्षित गर्नुहोस" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        var count = 0;
+
+        $(document).ready(function () {
+            if (count = 0) {
+                var shiftTimeID = $("#SetupShiftId").val();
+                var OfficeId = $("#OfficeId").val();
+                GetShiftTimeByOfficeId(shiftTimeID, OfficeId);
+                count++;
+            }
+
+            toastr.options = {
+                "progressBar": true,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            var hasMessage = '@TempData["HasMessage"]';
+            if (hasMessage) {
+                Command: toastr["@TempData["MessageType"]"]("@TempData["Message"]", "@TempData["MessageHeader"]")
+            }
+            $('.ChkTitle').tooltip({ placement: 'top', animation: true });
+            $(".chosen").chosen({ width: '100%', disable_search_threshold: 10 });
+            $(".chosen-select").chosen({ width: '100%' });
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" })
+
+            $("#frmSetupShiftTimeAdd").validate({
+                rules: {
+                    SetupShiftId: {
+                        min: 1
+                    }
+                },
+                messages: {
+                    SetupShiftId: {
+                        min: "कृपया विकल्प चयन गर्नुहोस्"
+                    }
+                }
+            });
+            $('.txtShiftStartTime').change(function () {
+                var val = this.value;
+                if (val != '') {
+                    $('.valueFields .txtShiftStartTime').each(function () {
+                        if (this.value.length <= 0) {
+                            this.value = val;
+                        }
+                    });
+                }
+            });
+
+            $('.clockpicker').clockpicker({
+                placement: 'top',
+                align: 'left',
+                donetext: 'Done'
+            });
+
+            $('#SetupShiftId').on('change', function () {
+                var shiftTimeID = $(this).val();
+                var OfficeId = $("#OfficeId").val();
+                GetShiftTimeByOfficeId(shiftTimeID, OfficeId);
+
+
+
+            });
+
+            $('#OfficeId').on('change', function () {
+                var OfficeId = $(this).val();
+
+                var shiftTimeID = $("#SetupShiftId").val();
+                GetShiftTimeByOfficeId(shiftTimeID, OfficeId);
+
+
+            });
+
+            function GetShiftTimeByOfficeId(shiftTimeID, OfficeId) {
+
+                if (shiftTimeID > 0 && OfficeId > 0) {
+                    window.location = '@Url.Action("Add","SetupShiftTime")' + '?SetupShiftId=' + shiftTimeID + '&OfficeId=' + OfficeId;
+
+                }
+            }
+
+            $('.txtShiftEndTime').change(function () {
+                var val = this.value;
+                if (val != '') {
+                    $('.valueFields .txtShiftEndTime').each(function () {
+                        if (this.value.length <= 0) {
+                            this.value = val;
+                        }
+                    });
+                }
+            });
+            $('.txtShiftLateInAfter').change(function () {
+                var val = this.value;
+                if (val != '') {
+                    $('.valueFields .txtShiftLateInAfter').each(function () {
+                        if (this.value.length <= 0) {
+                            this.value = val;
+                        }
+                    });
+                }
+            });
+            $('.txtShiftEarlyOutBefore').change(function () {
+                var val = this.value;
+                if (val != '') {
+                    $('.valueFields .txtShiftEarlyOutBefore').each(function () {
+                        if (this.value.length <= 0) {
+                            this.value = val;
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
+
+
+
+
+
+

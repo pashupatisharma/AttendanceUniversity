@@ -1,0 +1,90 @@
+﻿@model eAttendance.Models.RolePermissionsModel
+@{
+    ViewBag.Title = "RolePermissions";
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content mailbox-content">
+                    <div class="file-manager">
+                        <h2>भूमिका</h2>
+                        <hr />
+                        <ul id="rolelist" style="padding: 0" class="list-group elements-list">
+                            @foreach (var r in Utility.GetRolesList(1))
+                            {
+                                if (r.Value == Model.RoleId)
+                                {
+                                    <li class="list-group-item active">
+                                        <a href="#" value="@r.Value">
+                                            @r.Text
+
+                                        <i class="fa fa-angle-right pull-right"></i>
+
+                                    </a>
+                                </li>
+                                }
+                                else
+                                {
+                                    <li class="list-group-item">
+                                        <a href="#" value="@r.Value">
+                                            @r.Text
+
+
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 animated fadeInRight">
+            <div class="mail-box-header">
+                <h2> अनुमति </h2>
+            </div>
+            <div id="dvPermissionResults" class="mail-box" style="min-height:420px; vertical-align:central;">
+                @{Html.RenderPartial("_RolePermissions", Model);}
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#rolelist li a").on('click', function () {
+                $('li').removeClass('active');
+                $(this).parent().addClass('active');
+                $('li').find('i').remove();
+                $(this).parent().append('<i class="fa fa-angle-right pull-right"></i>');
+                var roleId = $(this).attr('value');
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetRolePermissions", "Account", null, Request.Url.Scheme)',
+                    data: { roleId: roleId },
+                    beforeSend: function () {
+                        // this is where we append a loading image
+                        $('#dvPermissionResults').html('<div class="text-center"><i class="fa fa-spinner fa-spin fa-2x"></i></div>');
+                    },
+                    success: function (data) {
+                        // successful request; do something with the data
+                        $('#dvPermissionResults').empty();
+                        $('#dvPermissionResults').append(data);
+                    },
+                    error: function () {
+                        // failed request; give feedback to user
+                        $('#dvPermissionResults').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments.</p>');
+                    }
+                });
+            });
+
+
+        });
+    </script>
+
+}

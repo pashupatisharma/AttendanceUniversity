@@ -1,0 +1,119 @@
+﻿@model eAttendance.Models.Document
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Documents";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-9">
+        <h2>कागजात</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="index.html">Document</a>
+            </li>
+
+            <li class="active">
+                <strong>Index</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+
+
+                    @{var officeId = EmployeeProvider.GetOfficeIdByUserId(User.Identity.Name); }
+                    <table>
+                        @foreach (var r in Utility.GetEmployeeList(officeId))
+                        {
+                            <tr>
+                                <td>
+                                    <a href="#" value="@r.Value" id="employeeId" class="rolelist">
+                                        @r.Text
+                                    </a>
+                                </td>
+
+                                <td class="btn btn-primary">
+                                    <a href="#" value="@r.Value" id="Upload" class="btn-block">
+                                        Upload
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 animated fadeInRight">
+            <div id="EmployeeDocument" class="row">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal inmodal fade" id="modelAdd" role="dialog">
+
+</div>
+
+@section Scripts
+{
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.rolelist').on('click',
+                function () {
+                    var employeeId = $(this).attr('value');
+
+                    $.ajax({
+                        url: '@Url.Action("EmployeeDocument", "Document")',
+                        type: 'GET',
+                        data: { employeeId: employeeId },
+                        beforeSend: function () {
+                            $("#modalLoading").modal('show');
+                        },
+                        complete: function () {
+                            $("#modalLoading").modal('hide');
+                        },
+                        success: function (result) {
+                            $('#EmployeeDocument').html(result);
+                        },
+                        error: function () {
+                            alert('Error occured while searching...');
+                        }
+                    });
+                });
+
+            $('.btn-block').on('click',
+                function () {
+                    var employeeId = $(this).attr('value');
+                    alert(employeeId);
+                    $.ajax({
+                        url: '@Url.Action("Add", "Document")',
+                        type: 'GET',
+                        data: { employeeId: employeeId },
+                        success: function (result) {
+                            console.log(result);
+                            $("#modelAdd").html(result);
+                            $("#modelAdd").modal('show');
+                        },
+                        error: function () {
+                        }
+                    });
+                });
+
+
+        })
+    </script>
+}
+
+

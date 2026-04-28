@@ -1,0 +1,460 @@
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title - ARS</title>
+    @{
+        eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
+        var data = db.OfficeSetUp.OrderBy(x => x.DisplayOrder).FirstOrDefault();
+    }
+
+    <!-- STYLES -->
+    <link href="/Content/plugins/jQueryUI/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" />
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="/Content/plugins/iCheck/custom.css" rel="stylesheet" />
+    <link href="/Content/plugins/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="/Content/plugins/chosen/chosen.css" rel="stylesheet" />
+    <link href="/Content/animate.css" rel="stylesheet" />
+    <link href="/Content/style.css" rel="stylesheet" />
+    <link href="/Content/site.css" rel="stylesheet" />
+
+    <link href="/Content/clockpicker.css" rel="stylesheet" />
+
+    <!-- SCRIPTS -->
+    <script src="/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery-3.7.1.min.js"></script>
+    @*<script src="/Scripts/jquery-2.1.3.js"></script>*@
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/plugins/validate/jquery.validate.min.js"></script>
+    <script src="/Scripts/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/Scripts/inspinia.js"></script>
+    <script src="/Scripts/plugins/iCheck/icheck.min.js"></script>
+    <script src="/Scripts/respond.js"></script>
+    <script src="/Scripts/plugins/toastr/toastr.min.js"></script>
+    <script src="/Scripts/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script src="/Scripts/plugins/chosen/chosen.jquery.js"></script>
+    <script src="/Scripts/jQuery.print.js"></script>
+
+    <link href="~/Content/nepali.datepicker.v4.0.8/nepali.datepicker.v4.0.8.min.css" rel="stylesheet" />
+    <script src="~/Content/nepali.datepicker.v4.0.8/nepali.datepicker.v4.0.8.min.js"></script>
+
+
+
+    <script src="~/Scripts/chart.min.js"></script>
+    <script src="/Scripts/clockpicker.js"></script>
+    <!-- html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script type="text/javascript">
+        function printReport(SheetName) {
+            var mywindow = document.getElementById('divprint');
+            var popupWin = window.open('', SheetName, 'width=350,height=150,location=no,left=200px');
+
+            popupWin.document.open();
+
+            popupWin.document.write('<link rel="stylesheet" href="../Content/printLandscape.css" type="text/css" />');
+            popupWin.document.write('<html><title>' + SheetName + '</title><link rel="stylesheet" type="text/css"  href="../Content/bootstrap.min.css" /></head><body onload="window.print()">')
+            popupWin.document.write('<html><title>' + SheetName + '</title><link rel="stylesheet" type="text/css" href="../Content/print.css" /></head><body onload="window.print()">')
+            popupWin.document.write(mywindow.innerHTML);
+
+            popupWin.document.write('</html>');
+
+            popupWin.document.close();
+        }
+    </script>
+    <script>
+
+
+
+
+
+
+        async function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const element = document.getElementById('divprint');
+
+            // Render canvas
+            const canvas = await html2canvas(element, { scale: 2 });
+
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+
+            const imgProps = pdf.getImageProperties(imgData);
+            const imgWidth = pdfWidth;
+            const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            // Add first page
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pdfHeight;
+
+            // Add more pages if needed
+            while (heightLeft > 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pdfHeight;
+            }
+
+            pdf.save('attendance-report.pdf');
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+</head>
+
+<body class="pace-done skin-1 hidden-print" style="font-family:Kalimati !important;">
+    <div class="loader">
+        <img src="@Url.Content("~/Images/ring.svg")" alt="" />
+    </div>
+    <div class="modal inmodal" id="modalLoading" role="dialog" data-keyboard="false" data-backdrop="static"
+         style="top:200px;">
+        <div class="modal-dialog" style="width:80px; height:80px;">
+            <div class="widget blue-bg text-center no-margins animated fadeIn">
+                <div class="fa fa-spinner fa-spin fa-2x"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="wrapper">
+
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu" style="display: block;">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <a class="logo clearfix" href="@Url.Action("Index","Home")">
+                                <span class="logo-img clearfix">
+                                    @{var logo = Utility.GetCompanyInfo();}
+
+                                    <img src="~/Images/Emblem_of_Nepal.png" class="img-responsive" />
+
+
+                                </span>
+                                <span class="logo-title clear">
+                                    @{ var OfficeName = Utility.GetCompanyInfo();}
+                                    @if (OfficeName != null)
+                                    {
+                                        <span class="text-xs block">@OfficeName.Address1</span>
+                                        <span class="text-xs block">@OfficeName.Address2</span>
+                                    }
+                                    @if (!User.IsInRole("SuperAdmin") || !User.IsInRole("Administrator"))
+                                    {
+                                        var officeName = Utility.GetOfficeNameByUserId(User.Identity.Name);
+                                        <span class="text-xs block">@officeName</span>
+                                    }
+
+                                </span>
+                            </a>
+                        </div>
+                        <div class="logo-element">
+                            <img src="~/Images/Emblem_of_Nepal.png" class="img-responsive" />
+
+                        </div>
+                    </li>
+
+                    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator") || User.IsInRole("Admin") || User.IsInRole("Recommendatory") || User.IsInRole("Approver"))
+                    {
+                        <li>
+                            <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">ड्यासबोर्ड</span><span class="fa arrow"></span></a>
+
+                            <ul class="nav nav-second-level collapse">
+                                @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+                                {
+                                    <li><a href="@Url.Action("AdministratorDashboard", "Home")">व्यवस्थापक ड्यासबोर्ड</a></li>
+
+                                }
+                                @if (User.IsInRole("Admin") || User.IsInRole("Recommendatory") || User.IsInRole("Approver"))
+                                {
+                                    <li><a href="@Url.Action("Index","Home")">ड्यासबोर्ड</a></li>
+
+                                }
+                            </ul>
+                        </li>
+                    }
+
+
+                    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+                    {
+                        <li>
+                            <a href="#"><i class="fa fa-gears"></i> <span class="nav-label"> सेटअप</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+
+
+                                <li><a href="@Url.Action("Index", "OfficeSetup")">कार्यालय</a></li>
+
+                                <li><a href="@Url.Action("Index", "SetupBranch")">शाखा</a></li>
+                                <li><a href="@Url.Action("Index", "SetupLevel")">श्रेणी</a></li>
+                                <li><a href="@Url.Action("Index", "SetupDesignation")">पद</a></li>
+                                <li><a href="@Url.Action("Index", "SetupService")">सेवा</a></li>
+                                <li><a href="@Url.Action("Index", "SetupFiscalYear")">  वर्ष</a></li>
+                                <li><a href="@Url.Action("Index", "SetupShift")">सिफ्ट</a></li>
+                                <li><a href="@Url.Action("Index", "YearlyShift")">बाषिक र्सिफ्ट</a></li>
+                                <li><a href="@Url.Action("Add", "SetupShiftTime")">सिफ्ट समय</a></li>
+
+                                <li><a href="@Url.Action("Index","SetupOfficeDevice")">उपकरण</a></li>
+
+                                <li><a href="@Url.Action("Index", "SetupDistrict")">जिल्ला</a></li>
+                            </ul>
+                        </li>
+                    }
+
+
+                    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator") || User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a href="#"><i class="fa fa-users"></i> <span class="nav-label">कर्मचारी</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator") || User.IsInRole("Admin"))
+                                {
+                                    <li><a href="@Url.Action("Index", "EmployeeInfo")">कर्मचारीको सुची</a></li>
+                                    <li><a href="@Url.Action("AttendanceRecordDelete", "EmployeeInfo")">हाजिरी मेटाउने</a></li>
+
+                                    <li><a href="@Url.Action("Index", "Transfer")">कर्मचारी आन्तरिक सरुवा</a></li>
+                                    <li><a href="@Url.Action("IndexExternalTransfer", "Transfer")">कर्मचारी बाह्य सरुवा</a></li>
+
+                                    <li><a href="@Url.Action("IndexPage", "Document")">कागजात</a></li>
+                                }
+                                <li><a href="@Url.Action("Index", "ForgotEntry")">हाजिरी छुटेको</a></li>
+                                <li><a href="@Url.Action("Index", "ManualDataUpload")">Attendance from Log</a></li>
+
+                            </ul>
+                        </li>
+                    }
+                    <li>
+                        <a href="mailbox.html"><i class="fa fa-envelope"></i> <span class="nav-label">सार्वजनिक बिदा  </span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator") || User.IsInRole("Admin") || User.IsInRole("Employee"))
+                            {
+                                <li><a href="@Url.Action("Index","HolidayCalendar")">सार्वजनिक बिदा </a></li>
+                            }
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">बिदा</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+                            {
+                                <li><a href="@Url.Action("LeavePosting", "LeaveApplication")">बिदा पोस्ट</a></li>
+                            }
+                            @if (User.IsInRole("Administrator") || User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+                            {
+                                <li><a href="@Url.Action("AddList", "AssignEmployeeLeave")">बिदा नियूक्ति</a></li>
+
+                            }
+
+                            @if (User.IsInRole("Administrator") || User.IsInRole("SuperAdmin"))
+                            {
+                                <li><a href="@Url.Action("Index","SetupLeaveType")">बिदाको प्रकार</a></li>
+
+                            }
+                            @if (User.IsInRole("Employee"))
+                            {
+                                <li><a href="@Url.Action("Index", "LeaveApplication")">  बिदाको आवेदन</a></li>
+                            }
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="fa fa-desktop"></i> <span class="nav-label">काज</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+                            {
+
+                                <li><a href="@Url.Action("VisitPosting", "VisitApplication")">काजको  पोस्ट</a></li>
+                            }
+
+                            @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+                            {
+                                <li><a href="@Url.Action("Index","SetupVisitType")">काजको प्रकार</a></li>
+
+
+                            }
+                            @if (User.IsInRole("Employee"))
+                            {
+                                <li><a href="@Url.Action("Index","VisitApplication")">काजको आवेदन</a></li>
+                            }
+                        </ul>
+                    </li>
+
+                    @*Report*@
+                    <li class="">
+                        <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">रिपोर्ट </span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                            <li class="">
+                                <a href="#">दैनिक रिपोर्ट  <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level collapse" aria-expanded="false" style="height: 0px;">
+                                    <li><a href="@Url.Action("DailyAttendanceReport", "Report")">दैनिक हाजिरी</a></li>
+                                    <li><a href="@Url.Action("LateInEarlyOutAttendanceReport", "Report")">ढिलो आउने वा छिटो जाने</a></li>
+                                </ul>
+                            </li>
+                            <li class="">
+                                <a href="#">मासिक रिपोर्ट <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level collapse" aria-expanded="false" style="height: 0px;">
+                                    <li><a href="@Url.Action("MonthlyAttendance","Report")">उपस्थित अनुपस्थित</a></li>
+                                    <li><a href="@Url.Action("InOutAttendance","Report")">ईन आउट रिपोर्ट</a></li>
+                                </ul>
+                            </li>
+                            <li class="">
+                                <a href="#">अधिक<span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level collapse" aria-expanded="false" style="height: 0px;">
+                                    <li><a href="@Url.Action("PeriodicAttendanceReport", "Report")">आवधिक हाजरि रिपोर्ट</a></li>
+                                    <li><a href="@Url.Action("AnualReport", "Report")"> वार्षिक रिपोर्ट</a></li>
+
+
+                                    <li><a href="@Url.Action("LeaveReport", "Report")">बिदा रिपोर्ट</a></li>
+
+                                    <li><a href="@Url.Action("VisitReport", "Report")">काजको सारांश</a></li>
+
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a href="#"><i class="fa fa-calculator"></i> <span class="nav-label">उपकरण</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="@Url.Action("Index","SetupOfficeDevice")">OfficeDevice</a></li>
+                            </ul>
+                        </li>
+
+                    }
+
+
+                    @*@if (User.IsInRole("Admin")|| User.IsInRole("SuperAdmin"))
+            {
+                <li>
+                    <a href="#"><i class="fa fa-calculator"></i> <span class="nav-label">उपकरण</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="@Url.Action("Index","DataPush")">Push Log</a></li>
+                    </ul>
+                </li>
+
+            }*@
+                </ul>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="hidden-print">
+
+            <div class="top-bar" style="background-color: #152175; display:flex; flex-direction:row; justify-content:space-between; align-items:center; padding:10px">
+
+                <div style="display: flex; flex-direction: row; align-items: center; gap: 0;">
+
+                    <div style="align-items: center;">
+                        <a class="navbar-minimalize minimalize-styl-2" href="javascript:void(0)">
+                            <i class="fa fa-bars text-white" style="font-size: 20px;"></i>
+                        </a>
+                    </div>
+
+                    <div class="text-white text-truncate" style="min-width:100%; text-align:left; float:left;">
+                        @if (data != null)
+                        {
+                            <h2 style="font-size: 20px;">
+                                <b>@data.OfficeName</b>
+                            </h2>
+                            <h3 style="font-size: 14px; font-weight: bold; margin: 0; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; padding: 5px">
+                                @data.Address
+                            </h3>
+                        }
+                        <h4 style="font-size: 12px; font-weight: bold; margin: 0; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; padding: 5px">
+                            हाजिरी व्यवस्थापन प्रणाली
+                        </h4>
+                    </div>
+
+                </div>
+
+                <div>
+                    @Html.Partial("_LoginPartial")
+                </div>
+
+            </div>
+
+
+
+            <br />
+            @RenderBody()
+
+            <div class="footer">
+                <div class="pull-right">
+                    <span class="text-xs block"></span>
+                </div>
+                <div>
+                    @{
+                        var copyright = Utility.GetCompanyInfo();
+                    }
+                    @if (copyright != null)
+                    {
+                        <span class="text-xs block">@copyright.Copyright</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            $(".loader").hide();
+
+            $(".navbar-minimalize").click(function () {
+                $("body").toggleClass("sidebar-collapsed");
+            });
+
+            // Maintain active menu highlight
+            //$('#side-menu ul li').find('a').each(function () {
+            //    var link = new RegExp($(this).attr('href'));
+            //    if (link.test(document.location.href)) {
+            //        if (!$(this).parents().hasClass('active')) {
+            //            $(this).parents('li').addClass('menu-open');
+            //            $(this).parents().addClass("active");
+            //            $(this).addClass("active");
+            //        }
+            //    }
+            //});
+
+
+
+
+
+        });
+
+
+
+    </script>
+
+
+</body>
+</html>

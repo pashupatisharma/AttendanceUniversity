@@ -1,0 +1,37 @@
+﻿@model eAttendance.Models.LeaveTypeSetUp
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">सम्पादन बिदा प्रकार</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("Edit", "SetupLeaveType", FormMethod.Post, new { @id = "LeaveTypeform" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.LeaveTypeId)
+            @Html.HiddenFor(m => m.CreatedBy)
+            @Html.HiddenFor(m => m.CreatedDate)
+            @Html.Partial("_Common")
+
+        }
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".chosen-select").chosen({ width: '100%' });
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+            });
+
+
+        });
+    </script>
+}

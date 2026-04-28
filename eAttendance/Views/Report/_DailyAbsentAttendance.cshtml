@@ -1,0 +1,85 @@
+﻿@model  eAttendance.ReportModel.EmployeeAttendanceList
+@{
+    eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
+}
+<div id="DataTables_Table_0_wrapper" class="dataTable form-inline no-margins table-responsive">
+    <div class="table-responsive">
+        <table class="table table-bordered table-condensed no-top-border no-top-margin">
+            <thead>
+                <tr class="no-borders bg-white">
+                    <td colspan="9" class="no-borders bg-white text-center">
+                        <img src="@Url.Content("~/Images/Emblem_of_Nepal.png")" width="80" height="80" />
+                        <h4>नेपाल सरकार</h4>
+                        <h5>
+                            @if (Model.OfficeId > 0)
+                            {
+                                @eAttendance.Utility.GetOfficeInfoByOfficeId(Model.OfficeId).OfficeName
+
+
+                            }
+                            else
+                            {
+                                <text>सबै</text>
+                            }
+                        </h5>
+                        <h5>
+                            @if (Model.OfficeId > 0)
+                            {
+                                @db.OfficeSetUp.Where(x => x.OfficeId == Model.OfficeId).FirstOrDefault().Address
+                            }
+                        </h5>
+
+                        <h5>(@eAttendance.Service.MenuService.DailyAbsentAttendanceReport)</h5>
+                    </td>
+                </tr>
+
+                <tr class='no-border-row bg-white'>
+
+                    <td colspan="9">
+                        <table class="table no-borders no-margins">
+
+
+                            <tr class="no-border-row">
+                                <td class="no-borders">@eAttendance.Service.MenuService.Date: @Model.nLogDate</td>
+                                <td class="no-borders">कार्यालय: @Html.Raw((Model.OfficeId > 0) ? eAttendance.Utility.GetOfficeInfoByOfficeId(Model.OfficeId).OfficeName : "सबै")</td>
+                                <td class="no-borders">सेवा: @Html.Raw((Model.ServiceId > 0) ? eAttendance.Utility.GetServiceByServiceId(Model.ServiceId).ServiceName : "सबै")</td>
+                                <td class="no-borders">शाखा: @Html.Raw((Model.BranchId > 0) ? eAttendance.Utility.GetBranchByMainBranchId(Model.BranchId).BranchName : "सबै")</td>
+                            </tr>
+                            <tr class="no-border-row">
+                                <td class="no-borders">तह: @Html.Raw((Model.LevelId > 0) ? eAttendance.Utility.GetLevelByLevelId(Model.LevelId).LevelName : "सबै")</td>
+                                <td class="no-borders">पद: @Html.Raw((Model.DesignationId > 0) ? eAttendance.Utility.GetDesignationByDesignationId(Model.DesignationId).DesignationName : "सबै")</td>
+                                <td class="no-borders">कर्मचारी: @Html.Raw((Model.EmployeeId > 0) ? eAttendance.Utility.GetEmployeeInfoByEmnployeeId(Model.EmployeeId).EmployeeNameNp : "सबै")</td>
+                                <td class="no-borders"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr role="row">
+                    <th class="text-center" style="width:10%;">क्र सं</th>
+                    <th style="width:25%;">पद</th>
+                    <th>कर्मचारी</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int count = 0;}
+                @foreach (var m in Model.EmployeeAttendanceLists)
+                {
+                    count += 1;
+                    <tr class="gradeA odd" role="row">
+                        <td class="sorting_1 text-center" width="60" style="width:50px;">@EnglishToNepaliNumber.ConvertToNepaliNumber(count)</td>
+                        <td style="width:150px;" width="150">@Html.Raw(Utility.GetDesignationByDesignationId(m.DesignationId).DesignationName ?? "") </td>
+                        <td> @Html.Raw(m.EmployeeNameAndCodeNp ?? "")</td>
+                    </tr>
+                }
+                @if (count == 0)
+                {
+                    <tr>
+                        <td class="text-center alert-info" colspan="9">
+                            <strong> @eAttendance.Service.MenuService.NoRecordFound </strong>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

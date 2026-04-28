@@ -1,0 +1,204 @@
+﻿@model eAttendance.Models.EmployeeInfo
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+@using (Html.BeginForm("EditProfile", "EmployeeInfo", FormMethod.Post, new { @id = "frmEditProfile" }))
+{
+    @Html.HiddenFor(m => m.EmployeeId)
+    @Html.HiddenFor(m => m.CreatedBy)
+    @Html.HiddenFor(m => m.CreatedDate)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.EmployeeNo)</label>
+                                @Html.TextBoxFor(m => m.EmployeeNo, new { @class = "form-control required" })
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.EmployeeNameNp)</label>
+                                @Html.TextBoxFor(m => m.EmployeeNameNp, new { @class = "form-control required" })
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                <label for="firstname">@Html.DisplayNameFor(m => m.EmployeeName) </label>
+                                @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control required" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.NDateOfBirth)</label>
+                                @Html.TextBoxFor(m => m.NDateOfBirth, new { @class = "form-control nepali-calendar", data_mask = "9999-99-99" })
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.Gender)</label>
+                                @Html.DropDownListFor(m => m.Gender, eAttendance.Utility.GetGender(), new { @class = " chosen-select form-control", data_placeholder = "I am" })
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>@Html.DisplayNameFor(m => m.GenerateReport)</label>
+                                    @Html.DropDownListFor(m => m.GenerateReport, Utility.GetSelectionStatus(), new { @class = "chosen-select form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.MaritalStatus)</label>
+                                @Html.DropDownListFor(m => m.MaritalStatus, eAttendance.Utility.GetMaritalStatus(), new { @class = "chosen-select form-control", data_placeholder = "I am" })
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.BloodGroup)</label>
+                                @Html.DropDownListFor(m => m.BloodGroup, eAttendance.Utility.GetBloodGroup(), new { @class = "chosen-select form-control" })
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-md-4">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.NationalityId)</label>
+                                @Html.DropDownListFor(m => m.NationalityId, eAttendance.Utility.GetNationalityIdName(), new { @class = "chosen-select form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.NEntryDate)</label>
+                                @Html.TextBoxFor(m => m.NEntryDate, new { @id = "NEntryDateEdit", @class = "form-control nepali-calendar ndp-nepali-calendar", data_mask = "9999-99-99" })
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-md-4">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.PhoneNumber)</label>
+                                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-md-4">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.MobileNumber)</label>
+                                @Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                <label>नागरिकता नम्बर</label>
+                                @Html.TextBoxFor(m => m.Qualification, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.DisplayOrder)</label>
+                                @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                <label>अवस्था</label>
+                                @Html.DropDownListFor(m => m.Status, Utility.GetStatusList(), new { @class = "form-control" })
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>इमेल आइढी<span class="text-danger">*</span> </label>
+                                @Html.TextBoxFor(m => m.RegisterViewModel.Email, new { @placeholder = "Enter Email Address", @class = "form-control required email",@readonly="readonly" })
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>पासवर्ड<span class="text-danger">*</span></label>
+                                @Html.PasswordFor(m => m.RegisterViewModel.Password, new { @placeholder = "Password", @class = "form-control required" })
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label> पासवर्ड सुनिश्चित <span class="text-danger">*</span></label>
+                                @Html.PasswordFor(m => m.RegisterViewModel.ConfirmPassword, new { @placeholder = "Confirm Password", @class = "form-control required" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="ibox-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" id="btnSaveAddress" class="btn btn-primary" type="button" title="बचत गर्नु">बचत गर्नु</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+
+            var form = $("#frmEditProfile");
+            form.validate({
+                errorPlacement: function errorPlacement(error, element) { element.before(error); },
+                rules: {
+                    'RegisterViewModel.Password': {
+                        required: true,
+                        minlength: 6
+                    },
+                    
+                    'RegisterViewModel.ConfirmPassword': {
+                        equalTo: '#RegisterViewModel_Password'
+                    }
+                },
+                messages: {
+                 
+                }
+            });
+
+
+            $.validator.addMethod("DropdownCheck", function (value, element, param) {
+                if (value == '0')
+                    return false;
+                else
+                    return true;
+            }, "*");
+            $(".chosen-select").chosen({ width: '100%' });
+
+
+            $("#frmEditProfile").validate({
+                rules: {
+                    EmployeeName: {
+                        required: true,
+                        minlength: 3,
+                    },
+                    Gender: {
+                        required: true,
+                        DropdownCheck: true,
+                    }
+                }
+            });
+        });
+
+    </script>
+}

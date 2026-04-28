@@ -1,0 +1,78 @@
+﻿@model eAttendance.Models.YearlyShift
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">सेटअप</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","YearlyShift")">वार्षिक शिफ्ट सेटअप</a></li>
+            <li class="animated fadeInRight">वार्षिक शिफ्ट सच्याउनुहोस्</li>
+
+        </ol>
+    </div>
+</div>
+
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header bg-info">
+            <h2 class="m-b-0 text-info">थप वार्षिक शिफ्ट  </h2>
+        </div>
+        <div class="card-body">
+
+
+            @using (Html.BeginForm("Edit", "YearlyShift", FormMethod.Post, new { @id = "frmAddYearlyShift", @class = "form-horizontal" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.YearlyShiftId)
+                @Html.HiddenFor(m => m.CreatedBy)
+                @Html.HiddenFor(m => m.CreatedDate)
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+
+                        @Html.DisplayNameFor(m => m.FiscalYearId)
+                        @Html.DropDownListFor(m => m.FiscalYearId, Utility.GetFiscalList(), new { @class = "chosen-select form-control" })
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+
+                        @Html.DisplayNameFor(m => m.StartDate)
+                        @Html.TextBoxFor(m => m.NStartDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99" })
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+
+                        @Html.DisplayNameFor(m => m.EndDate)
+                        @Html.TextBoxFor(m => m.NEndDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99" })
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+
+                        @Html.DisplayNameFor(m => m.ShiftId)
+                        @Html.DropDownListFor(m => m.ShiftId, eAttendance.Utility.GetShiftNameAndInOut(), new { @class = "chosen-select form-control" })
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+
+                        @Html.DisplayNameFor(m => m.OfficeId)
+                        @Html.DropDownList("OfficeId", eAttendance.Utility.GetOfficeIdName(User), "छान्नुहोस्", new { @class = "chosen-select form-control" })
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btn-submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="location.href='@Url.Action("Index","YearlyShift")'">Back</button>
+                </div>
+            }
+        </div>
+    </div>
+    </div>
+
+  

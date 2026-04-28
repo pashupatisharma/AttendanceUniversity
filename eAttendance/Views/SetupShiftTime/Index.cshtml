@@ -1,0 +1,142 @@
+﻿@model eAttendance.Models.SetupShiftTime
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Setup Shift Time";
+}
+<div class="row wrapper white-bg page-heading hidden-print">
+    <div class="col-lg-10">
+        <h2>सिफ्ट सेटअप</h2>
+        <ol class="breadcrumb ">
+            <li>
+                <a href="@Url.Action("Index","Home")">घर</a>
+            </li>
+            <li>
+                <a> सेटअप</a>
+            </li>
+            <li class="active">
+                <strong>सिफ्ट सेटअप</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+        <div class="title-action hidden-print">
+            <a class="btn btn-primary btn-sm btn-add" href="@Url.Action("Add","SetupShiftTime")">नयाँ बनाउनु </a>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content padding-top-md">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="project-list">
+                        <table id="tblShift" class="table table-hover table-color ">
+                            <thead>
+                                <tr>
+                                    <th>क्र सं</th>
+                                    <th>@Html.DisplayNameFor(m => m.ShiftName)</th>
+                                    <th>@Html.DisplayNameFor(m => m.Alias)</th>
+                                    <th>@Html.DisplayNameFor(m => m.ShiftStartTime)</th>
+                                    <th>@Html.DisplayNameFor(m => m.ShiftEndTime)</th>
+                                    <th>@Html.DisplayNameFor(m => m.ShiftHours)</th>
+                                    <th class="hidden-print text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int count = 0;}
+                                @foreach (var m in Model.SetupShiftTimeList)
+                                {
+                                    count += 1;
+                                    <tr>
+                                        <td>@count</td>
+                                        <td class="project-title">
+                                            <strong>@m.ShiftName</strong>   <br />
+                                            @* <small>@Html.Raw((m.OfficeId == null || m.OfficeId <= 0) ? "-" : eAttendance.Utility.GetOfficeIdName().FirstOrDefault(d => d.Value == m.OfficeId.ToString()).Text)</small>*@
+                                        </td>
+                                        <td>@m.Alias</td>
+                                        <td>@m.ShiftStartTime</td>
+                                        <td>@m.ShiftEndTime</td>
+                                        <td>@m.ShiftHours</td>
+                                        <td class="project-actions hidden-print col-md-2">
+                                            <button value="@m.ShiftId" type="button" class="btn-edit btn btn-primary btn-sm"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm"></span> </button>
+                                            <button value="@m.ShiftId" class="btn-delete btn btn-sm btn-danger"><i class="fa fa-remove"></i><span class="hidden-xs hidden-sm"></span> </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal inmodal fade" id="modelEdit" role="dialog">
+
+</div>
+
+<div class="modal inmodal fade" id="modelDelete" role="dialog">
+
+</div>
+@section Scripts
+{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+           
+        
+            $('.btn-add').on('click', function () {
+                $.ajax({
+                    url: '@Url.Action("Add", "SetupShiftTime")',
+                    type: 'GET',
+                    data: {},
+                    success: function (result) {
+                        console.log(result)
+                        $("#modelAdd").html(result);
+                        $("#modelAdd").modal('show');
+                    },
+                    error: function () {
+                    }
+                });
+            })
+
+
+            $('#tblShift tbody').on('click', '.btn-edit', function () {
+                var shiftId = $(this).attr('value');
+                $.ajax({
+                    url: '@Url.Action("Edit", "SetupShiftTime")',
+                    type: 'GET',
+                    data: { id: shiftId },
+                    success: function (result) {
+                        console.log(result)
+                        $("#modelEdit").html(result);
+                        $("#modelEdit").modal('show');
+                    },
+                    error: function () {
+                    }
+                });
+            })
+            $('#tblShift tbody').on('click', '.btn-delete', function () {
+                var shiftId = $(this).attr('value');
+                $.ajax({
+                    url: '@Url.Action("Delete", "SetupShiftTime")',
+                    type: 'GET',
+                    data: { id: shiftId },
+                    success: function (result) {
+                        console.log(result)
+                        $("#modelDelete").html(result);
+                        $("#modelDelete").modal('show');
+                    },
+                    error: function () {
+                    }
+                });
+            })
+        })
+    </script>
+}
+
+
+
+

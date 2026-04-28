@@ -1,0 +1,179 @@
+﻿@model eAttendance.Models.AspNetUserModel
+    @{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Reset Email/Pasword";
+}
+<div class="wrapper wrapper-content">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <div class="row wrapper white-bg page-heading hidden-print">
+                        <div class="col-lg-10">
+                            <h2>पासवर्ड  सेटअप </h2>
+                            <ol class="breadcrumb ">
+                                <li>
+                                    <a href="@Url.Action("Index","Home")">घर</a>
+                                </li>
+                                <li>
+                                    <a>कर्मचारी </a>
+                                </li>
+                                <li class="active">
+                                    <strong>रिसेट ईमेल\पासवर्ड </strong>
+                                </li>
+                            </ol>
+                        </div>
+                        @*<div class="col-lg-2">
+                            <h2>&nbsp;</h2>
+                            <div class="ibox-tools hidden-print">
+                                <button class="btn btn-primary btn-sm btn-add">नयाँ बनाउनु </button>
+                            </div>
+                        </div>*@
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="project-list">
+                        <table id="tblReset" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>क्र सं</th>
+                                    <th>@eAttendance.Service.MenuService.EmailId</th>
+                                    <th>कर्मचारी</th>
+                                    <th>कार्य</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                @{int count = 0;}
+                                @foreach (var m in Model.AspNetUserList)
+                                {
+                                    count += 1;
+                                    <tr>
+                                        <td>@count</td>
+                                        <td class="project-title">
+                                            <a href="">@m.Email</a>
+                                        </td>
+                                        @{var employeeName = eAttendance.Utility.GetEmployeeNameByEmail(m.Email);}
+                                        <td>@employeeName</td>
+                                        
+                                        <td class="project-actions hidden-print">
+                                            <button value="@m.Email" type="button" class="btn-edit btn btn-primary btn-sm"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm"></span> </button>
+                                            <button value="@m.Email" class="btn-reset btn btn-info btn-sm"><i class="fa fa-lock"></i><span class="hidden-xs hidden-sm"></span> </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal fade" id="modelEditEmail" role="dialog">
+    @{Html.RenderAction("EditEmail", "Account");}
+</div>
+<div class="modal inmodal fade" id="modelResetPassword" role="dialog">
+    @{Html.RenderAction("ResetPassword", "Account");}
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            
+          
+            $('.btn-edit').on('click', function () {
+                var email = $(this).attr('value');
+                $.ajax({
+                    url: '@Url.Action("EditEmail", "Account")',
+                    type: 'GET',
+                    data: { Email: email,Code:0 },
+                    success: function (result) {
+                        console.log(result)
+                        $("#modelEditEmail").html(result);
+                        $("#modelEditEmail").modal('show');
+                    },
+                    error: function () {
+                    }
+                });
+            })
+            $('.btn-reset').on('click', function () {
+                var email = $(this).attr('value');
+                $.ajax({
+                    url: '@Url.Action("ResetPassword", "Account")',
+                    type: 'GET',
+                    data: { Email: email },
+                    success: function (result) {
+                        console.log(result)
+                        $("#modelResetPassword").html(result);
+                        $("#modelResetPassword").modal('show');
+                    },
+                    error: function () {
+                    }
+                });
+            })
+        })
+     </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

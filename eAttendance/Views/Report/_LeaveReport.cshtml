@@ -1,0 +1,135 @@
+﻿@using ReportService
+@model  eAttendance.ReportModel.EmployeeAttendanceList
+@{
+    eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
+}
+<div id="DataTables_Table_0_wrapper" class="dataTable form-inline no-margins table-responsive">
+    @if (Model.OfficeId != 0)
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-condensed">
+                <thead>
+
+                    <tr class="no-borders bg-white">
+                        <td colspan="9" class="no-borders bg-white text-center">
+                            <img src="@Url.Content("~/Images/Emblem_of_Nepal.png")" width="80" height="80" />
+                            <h4>नेपाल सरकार</h4>
+                            <h5>
+                                @if (Model.OfficeId > 0)
+                                {
+                                    @eAttendance.Utility.GetOfficeIdNameWithSelect(User).First(w => w.Value == Model.OfficeId.ToString()).Text
+
+
+                                }
+                                else
+                                {
+                                    <text>सबै</text>
+                                }
+                            </h5>
+                            <h5>
+                                @if (Model.OfficeId > 0)
+                                {
+                                    @db.OfficeSetUp.Where(x => x.OfficeId == Model.OfficeId).FirstOrDefault().Address
+                                }
+                            </h5>
+
+                            <h5>( @eAttendance.Service.MenuService.DailyPresentAttendanceReport )</h5>
+                        </td>
+                    </tr>
+
+                    <tr class='no-border-row bg-white'>
+
+                        <td colspan="9">
+                            <table class="table no-borders no-margins">
+
+
+                                <tr class="no-border-row">
+                                    @*<td class="no-borders">@eAttendance.Service.MenuService.FiscalYear: @Utility.GetFiscalList().Where(x => x.Value == Model.YearId.ToString()).FirstOrDefault().Text</td>*@
+
+                                    <td class="no-borders">कार्यालय: @Html.Raw((Model.OfficeId > 0) ? eAttendance.Utility.GetOfficeInfoByOfficeId(Model.OfficeId).OfficeName : "सबै")</td>
+                                    <td class="no-borders">सेवा: @Html.Raw((Model.ServiceId > 0) ? eAttendance.Utility.GetServiceByServiceId(Model.ServiceId).ServiceName : "सबै")</td>
+                                    <td class="no-borders">शाखा: @Html.Raw((Model.BranchId > 0) ? eAttendance.Utility.GetBranchByMainBranchId(Model.BranchId).BranchName : "सबै")</td>
+                                </tr>
+                                <tr class="no-border-row">
+                                    <td class="no-borders">तह: @Html.Raw((Model.LevelId > 0) ? eAttendance.Utility.GetLevelByLevelId(Model.LevelId).LevelName : "सबै")</td>
+                                    <td class="no-borders">पद: @Html.Raw((Model.DesignationId > 0) ? eAttendance.Utility.GetDesignationByDesignationId(Model.DesignationId).DesignationName : "सबै")</td>
+                                    <td class="no-borders">कर्मचारी: @Html.Raw((Model.EmployeeId > 0) ? eAttendance.Utility.GetEmployeeInfoByEmnployeeId(Model.EmployeeId).EmployeeNameNp : "सबै")</td>
+                                    <td class="no-borders"></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-center">क्र सं</th>
+                        <th class="text-center">पद</th>
+                        <th class="text-center">@eAttendance.Service.MenuService.EmployeeName</th>
+                        <th class="text-center">@eAttendance.Service.MenuService.LeaveType</th>
+                        <th class="text-center">गत सालको बाँकी</th>
+                        <th class="text-center">तोकीएको</th>
+                        <th class="text-center">जम्मा</th>
+                        <th class="text-center">लिएको</th>
+                        <th class="text-center">बाकी</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                                int count = 0;
+                                string CodeName = string.Empty;
+                    }
+
+
+                    @foreach (var m in Model.EmployeeAttendanceLists)
+                    {
+
+
+                        var employee =
+db.EmployeeInfo.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault();
+
+
+                        CodeName = employee.EmployeeNameNp + "[" + employee.EmployeeNo + "]";
+
+
+                        string fromDate = Model._nFromDate;
+                        string toDate = Model._nToDate;
+
+                        int yearId = Model.YearId;
+                        var leave = ReportService.GetEmployeeLeaveSummaryByEmployeeIdAndFiscalYearId(m.EmployeeId, fromDate,toDate);//GetEmployeeLeaveSummary(m.EmployeeId, yearId);
+                        count += 1;
+                        int rowspan = leave.Count + 1;
+                        <tr>
+                            <td rowspan="@rowspan">@EnglishToNepaliNumber.ConvertToNepaliNumber(count) </td>
+                            <td rowspan="@rowspan">@Html.Raw(eAttendance.Utility.GetDesignationByDesignationId(m.DesignationId).DesignationName ?? "")</td>
+                            <td rowspan="@rowspan">@CodeName</td>
+                            @if (leave.Count <= 0)
+                            {
+                                <td colspan="6" class="text-danger">कर्मचारीको बिदा रेकर्ड भेटेन!</td>
+                            }
+                        </tr>
+
+                        foreach (var l in leave)
+                        {
+                            <tr>
+                                <td>@l.LeaveTypeName</td>
+                                <td>@l.LastYear</td>
+                                <td>@l.ThisYear</td>
+                                <td>@l.Total</td>
+                                <td>@l.TakenLeave</td>
+                                <td>@l.RemainingLeave</td>
+                            </tr>
+                        }
+                    }
+
+                    @if (count == 0)
+                    {
+                        <tr>
+                            <td class="text-center alert-info" colspan="9">@eAttendance.Service.MenuService.NoRecordFound</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+

@@ -1,0 +1,269 @@
+﻿@model eAttendance.ViewModel.EmployeeViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Employee Information";
+    var ajaxOption = new AjaxOptions
+    {
+        UpdateTargetId = "DetailandSetting",
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "loading",
+        OnBegin = "OnBegin",
+        OnComplete = "OnComplete",
+        OnFailure = "OnFailure"
+
+    };
+}
+<script src="~/Scripts/bootstrap-wizard/js/jquery.bootstrap.wizard.min.js"></script>
+<link href="~/Scripts/bootstrap-wizard/css/custom.wizard.css" rel="stylesheet" />
+<script type="text/javascript">
+    function OnBegin() {
+        $('ul.vertical.tabs li.active').removeClass();
+        $("#DetailandSetting").fadeTo('slow', 0.5);
+        var targetUrl = this.url;
+        var sourceLink = null;
+        // loop through all action links applicable
+        $('ul.vertical.tabs li a').each(function () {
+            var href = $(this).attr('href');
+            if (targetUrl.indexOf(href) > -1) {
+                sourceLink = $(this);
+
+                return false;
+            }
+        });
+
+        sourceLink.parent().addClass('active');
+
+
+
+    }
+    function OnSuccess(formName) {
+
+        $(formName).removeData("validator");
+        $(formName).removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse(formName);
+
+    }
+    function OnFailure(request, error) {
+        if (request.status == 401) {
+            window.location.reload();
+            //            window.location.replace(request.getResponseHeader('Location'));
+
+        } else {
+            //            alert(request.responseText.toString());
+        }
+    }
+    function OnComplete(request, status) {
+        $("#DetailandSetting").fadeTo('slow', 1);
+
+    }
+</script>
+    <div class="modal-content">
+        <div class="modal-header">
+            <ol class="breadcrumb">
+                <li class="animated fadeInUp">कर्मचारी</li>
+                <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupDistrict")">कर्मचारी सेटअप</a></li>
+                <li class="animated fadeInRight">कर्मचारी विवरण सच्याउनुहोस्</li>
+
+            </ol>
+        </div>
+    </div>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-8">
+        <h2>कर्मचारी सम्पादन</h2>
+
+    </div>
+    <div class="col-lg-4">
+        <div class="title-action">
+            <a href="@Url.Action("Index","EmployeeInfo")" class="btn btn-primary btn-sm btn-add">फिर्ता  जानुहोस् </a>
+        </div>
+    </div>
+
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+
+
+
+
+        <div class="col-md-12 col-sm-12">
+
+            <section id="wizard">
+                <div id="rootwizard">
+                    <div class="navbar">
+                        <div class="navbar-inner">
+                            <div class="register-container">
+                                <ul class="bwizard-steps">
+
+                                    <li class="active"><a href="#PersonalInfo" data-toggle="tab"> विवरण </a></li>
+                                    <li><a href="#OfficeInfo" data-toggle="tab"> कार्यालय विवरण</a></li>
+                                    <li><a href="#AddressInfo" data-toggle="tab">ठेगाना </a></li>
+                                    <li><a href="#ShiftInfo" data-toggle="tab">सिफ्ट</a></li>
+                                    <li><a href="#RoleInfo" data-toggle="tab">रोल </a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="PersonalInfo" class="tab-pane active">
+                                        <div class="panel-body">
+                                            @{Html.RenderAction("EditProfile", "EmployeeInfo", new { @id = Model.EmployeeInfo.EmployeeId });}
+                                        </div>
+                                    </div>
+                                    <div id="OfficeInfo" class="tab-pane">
+                                        <div class="panel-body">
+                                            @{Html.RenderAction("EditOfficeInfo", "EmployeeInfo", new { @id = Model.EmployeeInfo.EmployeeId });}
+                                        </div>
+                                    </div>
+                                    <div id="AddressInfo" class="tab-pane">
+                                        <div class="panel-body">
+                                            @{Html.RenderAction("EditAddressInfo", "EmployeeInfo", new { @id = Model.EmployeeInfo.EmployeeId });}
+                                        </div>
+                                    </div>
+                                    <div id="ShiftInfo" class="tab-pane">
+                                        <div class="panel-body">
+                                            @{Html.RenderAction("EditShiftInfo", "EmployeeInfo", new { @id = Model.EmployeeInfo.EmployeeId });}
+                                        </div>
+                                    </div>
+                                    <div id="RoleInfo" class="tab-pane">
+                                        <div class="panel-body">
+                                            @{Html.RenderAction("EditRoles", "EmployeeInfo", new { @EmployeeId = Model.EmployeeInfo.EmployeeId });}
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+    </div>
+
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            toastr.options = {
+                "progressBar": true,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            var hasMessage = '@TempData["HasMessage"]';
+            if (hasMessage) {
+                Command: toastr["@TempData["MessageType"]"]("@TempData["Message"]", "@TempData["MessageHeader"]")
+            }
+
+            $(".chosen-select").chosen({ width: '100%' });
+            $(function () {
+                $('#Back').click(function (e) {
+                    e.preventDefault();
+                    history.go(-1);
+                });
+            });
+
+
+
+
+
+            $('.nepali-calendar').nepaliDatePicker();
+
+        });
+
+    </script>
+
+    <script type="text/javascript">
+    /* AssignEmployeeLeave*/
+    var getAssignedLeave = function () {
+        $.ajax({
+            url: '@Url.Action("AssignEmployeeLeave", "EmployeeInfo")',
+            type: 'POST',
+            data: { id: '@ViewBag.EmployeeId' },
+            beforeSend: function () {
+
+            },
+            complete: function () {
+
+            },
+            success: function (result) {
+                $('#tabLeaves').html(result);
+            },
+            error: function () {
+                alert('Error occured while loading employee leave');
+            }
+        });
+    };
+
+    var saveAssignedLeave = function () {
+        var table = document.getElementById("assignLeave");
+        var assignemployeeleave = [];
+        for (var i = 1, row; row = table.rows[i]; i++) {
+            //iterate through rows
+            //rows would be accessed using the "row" variable assigned in the for loop
+            assignemployeeleave.push(
+             {
+                 LeaveApplicationId: $(row).attr("data-id"),
+                 FiscalYearId: 0,
+                 EmployeeId: '@ViewBag.EmployeeId',
+                 LeaveTypeId: $(row).attr("data-leavetypeid"),
+                 OpenningBalance: $(row.cells[1]).find('input').val(),
+                 NoOfLeave: $(row.cells[2]).find('input').val(),
+                 CreatedBy: '',
+                 CreatedDate: null,
+                 ModifiedBy: '',
+                 ModifiedDate: null,
+                 Status: 1
+             });
+        }
+
+        $.ajax({
+            url: '@Url.Action("SaveAssignEmployeeLeave", "EmployeeInfo")',
+            type: 'POST',
+            data: { 'assignemployeeleave': assignemployeeleave },
+            beforeSend: function () {
+
+            },
+            complete: function () {
+
+            },
+            success: function (result) {
+                Command: toastr['success']("डाटा सफलतापूर्वक सुरक्षित गरिएको छ।", "सफलता सन्देश !")
+                getAssignedLeave();
+            },
+            error: function () {
+                Command: toastr['error']("डाटा बचत गर्दा त्रुटि भयो।", "त्रुटि सन्देश !")
+            }
+        });
+    };
+
+    $(document).on('click', '#btnSaveLeave', function () {
+        saveAssignedLeave();
+    });
+    </script>
+}

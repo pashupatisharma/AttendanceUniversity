@@ -1,0 +1,56 @@
+﻿@model eAttendance.Models.DesignationSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">सेटअप</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupDesignation")">पद सेटअप</a></li>
+            <li class="animated fadeInRight">नयाँ पद बनाउनुहोस्</li>
+
+        </ol>
+    </div>
+</div>
+@using (Html.BeginForm("Add", "SetupDesignation", FormMethod.Post, new { @id = "frmAddDesignation", @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Partial("_Common")
+
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".chosen-select").chosen({ width: '100%' });
+
+            $('#OfficeId').chosen().change(function () {
+                var officeId = $(this).val();
+                // Loading Level
+                $.getJSON("@Url.Action("GetLevelByOfficeId","Report")", { OfficeId: officeId },
+                 function (data) {
+                     $("#LevelId").empty();
+                     var $prevGroup, prevGroupName;
+                     $.each(data, function () {
+                         if (this.Group == null) { $("<option />").val(this.Value).text(this.Text).appendTo('#LevelId'); }
+                         else {
+                             if (prevGroupName != this.Group.Name) { $prevGroup = $('<optgroup />').prop('label', this.Group.Name).appendTo('#LevelId'); }
+                             $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                             prevGroupName = this.Group.Name;
+                         }
+                     });
+                     $("#LevelId").trigger('chosen:updated');
+                 });
+            });
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" })
+
+        });
+    </script>
+}
+
+
+
+
+
+

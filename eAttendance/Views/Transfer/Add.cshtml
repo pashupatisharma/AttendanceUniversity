@@ -1,0 +1,112 @@
+﻿@model eAttendance.Models.TransferModel
+@{
+    //ViewBag.Title = "Add";
+    Layout = Layout = "~/Views/Shared/_Blank.cshtml";
+}
+
+<div class="modal-dialog ">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">थप  स्थानान्तरण</h4>
+            <small class="font-bold"></small>
+        </div>
+        <div class=" col-md-offset-3">
+            सरुवा प्रकार
+            <div class="btn-group" data-toggle="buttons">
+
+                <label class="btn btn-primary active">
+                    <input type="radio" name="Transfer-view" id="btnInternal" autocomplete="off" value="2" checked> <i class="fa fa-table"></i>
+                    आन्तरिक
+                </label>
+
+
+                <label class="btn btn-primary ">
+                    <input type="radio" name="Transfer-view" id="btnExternal" autocomplete="off" value="1"> <i class="fa fa-calendar-o"></i>
+                    बाह्य
+                </label>
+            </div>
+        </div>
+
+
+        <div id="Internal-view" class="ibox" style="display:block;">
+       
+        </div>
+        <div id="External-view" class="ibox" style="display:block;">
+         
+           
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+        </div>
+            </div>
+        </div>
+
+
+
+        @section scripts
+{
+            <script>
+                $(document).ready(function () {
+                    $(".chosen-select").chosen({ width: '100%' });
+                    $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+                    $('#EmployeeId').change(function () {
+                        LoadDefaultValue(this.value);
+                    });
+
+                    $('input[name="Transfer-view"]').on('change', function (event, state) {
+                        var v = $(this).val();
+                        if (v == 1) {
+                            $('#Internal-view').hide(500);
+                            $('#External-view').show(500);
+                        }
+                        else {
+                            $('#External-view').hide(500);
+                            $('#Internal-view').show(500);
+                        }
+                    });
+
+
+                    $(document).on('click', 'btn-primary', function () {
+                        var transferId = $(this).attr('value');
+                        $.ajax({
+                            url: '@Url.Action("Add", "Transfer")',
+                            type: 'GET',
+                            data: { id: transferId },
+                            success: function (result) {
+                                $("#modelAdd").html(result);
+                                $("#modelAdd").modal('show');
+
+                            },
+                            error: function () {
+                            }
+                        });
+
+                    });
+
+                    function LoadDefaultValue(EmployeeId) {
+                        debugger
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("LoadDefaultValue", "Transfer")',
+                            data: "{'EmployeeId':'" + EmployeeId + "'}",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: 'json',
+                            cache: false,
+                            success: function (data) {
+                                $('#FromOfficeId').val(data[0].FromOfficeId);
+                                $('#FromBranchId').val(data[0].FromBranchId);
+                                $('#FromServiceId').val(data[0].FromServiceId);
+                                $('#FromLevelId').val(data[0].FromLevelId);
+                                $('#FromDesignationId').val(data[0].FromDesignationId);
+                            },
+                            error: function () {
+                                //alert("Failed to load Item");
+                            }
+                        });
+                    }
+
+                });
+            </script>
+        }

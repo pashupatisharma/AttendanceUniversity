@@ -1,0 +1,253 @@
+﻿@model eAttendance.Models.VisitApplication
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">@eAttendance.Service.MenuService.VisitPosting</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("EditVisitPosting", "VisitApplication", FormMethod.Post, new { @id = "frmEditVisitApplication" }))
+        {
+            <div class="modal-body">
+                @Html.HiddenFor(m => m.VisitApplicationId)
+                @Html.HiddenFor(m=> m.ApplicationDate)
+                @Html.HiddenFor(m=>m.ApprovedStatus)
+                @Html.HiddenFor(m=>m.RecomenderStatus)
+                @Html.HiddenFor(m => m.CreatedBy)
+                @Html.HiddenFor(m => m.CreatedDate)
+                <div class="row">
+                    <div class="col-md-8 b-r">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="control-ladbel">@Html.DisplayNameFor(m => m.EmployeeId)</label>
+                                @{var officeid = eAttendance.EmployeeProvider.GetOfficeIdByUserId(User.Identity.Name);}
+                                @Html.DropDownListFor(m => m.EmployeeId, Utility.GetEmployeeListBYUserSuper(officeid, User), new { @class = "chosen-select form-control" })
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label">@Html.DisplayNameFor(m => m.VisitTypeId)</label>
+                                @Html.DropDownListFor(m => m.VisitTypeId, eAttendance.Utility.GetSetupVisitTypeIdNameByWithAllOrWithSelect(), new { @class = "chosen-select form-control" })
+                            </div>
+                            <div class="form-group col-md-6 ">
+                                <label class="control-label">@Html.DisplayNameFor(m => m.NFromDate)</label>
+                                @Html.TextBoxFor(m => m.NFromDate, "{0:yyyy/MM/dd }", new {@id="EditVisitPosting_FromDate",@class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99"})@*, @id = "endDate" })*@
+                            </div>
+                            <div class="form-group  col-md-6">
+                                <label class="control-label">@Html.DisplayNameFor(m => m.NToDate)</label>
+                                @Html.TextBoxFor(m => m.NToDate, "{0:yyyy/MM/dd }", new {@id="EditVisitPosting_ToDate" ,@class = "form-control inputmask nepali-calendar", @mask = "9999-99-99" })
+                            </div>
+                            <div class="form-group  col-md-12">
+                                <label class="control-label">@Html.DisplayNameFor(m => m.Subject)</label>
+                                @Html.TextBoxFor(m => m.Subject, new { @class = "form-control" })
+                            </div>
+                            <div class="form-group  col-md-12">
+                                <label class="control-label">@Html.DisplayNameFor(m => m.Message)</label>
+                                @Html.TextAreaFor(m => m.Message, new { @class = "form-control", style = "height:160px;" })
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <div class="ibox-content">
+                                    <div>
+                                        @*<div>
+                                            <span class="font-bold">Remaining Visit</span>
+                                            <small class="pull-right">
+                                                <label id="lblVisitBalance" class="control-label">0</label>
+                                            </small>
+                                        </div>*@
+                                        <div class="progress progress-small" style="height: 5px;">
+                                            <div style="width: 100%; height:5px;" class="progress-bar"></div>
+                                        </div>
+                                        @*<div>
+                                            <span class="font-bold">Total Visit</span>
+                                            <small class="pull-right">
+                                                <label class="control-label" id="lblTotalDays">0</label>
+                                            </small>
+                                        </div>*@
+                                        <div class="progress progress-small" style="height: 5px;">
+                                            <div style="width: 100%;" class="progress-bar progress-bar-danger"></div>
+                                        </div>
+                                        <div>
+                                            <span class="font-bold">Days Count</span>
+                                            <small class="pull-right">
+                                                <label class="control-label" id="EditVisitPosting_lblDaysCount">0</label>
+                                            </small>
+                                        </div>
+                                        <div class="progress progress-small" style="height: 5px;">
+                                            <div style="width: 100%;" class="progress-bar progress-bar-navy-light"></div>
+                                        </div>
+                                    </div>
+                                    <label style="color:red" id="lblMessageEdit"></label>
+                                </div>
+                            </div>
+
+                            <div class="form-group  col-md-12">
+                                <label class="control-label">@Html.DisplayNameFor(m => m.Recomender)</label>
+                                @Html.DropDownListFor(m => m.Recomender, eAttendance.Utility.GetEmployeeIdWithAll(), new { @class = "chosen-select form-control" })
+                            </div>
+                            <div class="form-group  col-md-12">
+                                <label class="control-label">@Html.DisplayNameFor(m => m.ApprovedBy)</label>
+                                @Html.DropDownListFor(m => m.ApprovedBy, eAttendance.Utility.GetApproverEmployeeIdName(User), new { @class = "chosen-select form-control" })
+                            </div>
+                            <div class="form-group  col-md-12">
+                                <label class="control-label">@Html.DisplayNameFor(m => m.NApprovedDate)</label>
+                                @Html.TextBoxFor(m => m.NApprovedDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", @mask = "9999-99-99", @id = "NApprovedDate_Edit" })
+                            </div>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+            </div>
+        }
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/Scripts/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.nepali-calendar').nepaliDatePicker(
+                {
+                    onChange: function () {
+                        CalculateDays();
+                    }
+                });
+            $(".chosen-select").chosen({ width: '100%' });
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" })
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+            });
+
+            $(document).on('change', '#EditVisitPosting_FromDate', function () {
+                CalculateDays();
+            });
+
+            $(document).on('change', '#EditVisitPosting_ToDate', function () {
+                CalculateDays();
+            });
+
+            //$('.nepali-calendar').on('change', function () {
+            //    var fromDate = $('#EditVisitPosting_FromDate').val() == null ? "" : $('#EditVisitPosting_FromDate').val();
+            //    var toDate = $('#EditVisitPosting_ToDate').val() == null ? "" : $('#EditVisitPosting_ToDate').val();
+            //    CalculateDays(fromDate, toDate);
+            //});
+
+            $("#frmEditVisitApplication").validate({
+                rules: {
+                    EmployeeName: {
+                        required: true,
+                        minlength: 3,
+                        remote: {
+                            url: "@Url.Action("CheckDuplicate", "VisitApplication")",
+                            type: "POST",
+                            data: {
+                                EmployeeName: function () {
+                                    return $('#frmEditVisitApplication').find('#EmployeeName').val()
+                                },
+                                Id: function () { return $('#EmployeeId').val() }
+                            }
+                        }
+                    },
+                    NApprovedDate: {
+                        required: true,
+                    },
+                    NFromDate: {
+                        required: true,
+                    },
+                    NToDate: {
+                        required: true,
+                    },
+                    EmployeeId: {
+                        min: 1
+                    },
+                    VisitTypeId: {
+                        min: 1
+                    },
+                    Recomender: {
+                        min: 1
+                    },
+                    ApprovedBy: {
+                        min: 1
+                    }
+                },
+                messages: {
+                    EmployeeId: {
+                        min: 'कृपया विकल्प चयन गर्नुहोस्',
+                        remote: "Duplicate employee name found. Please use another name."
+                    },
+                    EmployeeId: {
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    VisitTypeId: {
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    ApprovedBy: {
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    Recomender: {
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    NApprovedDate: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्'
+                    },
+                    NFromDate: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्'
+                    },
+                    NToDate: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्'
+                    },
+                }
+            });
+
+            function CalculateDays() {
+                debugger;
+                $("#lblMessageEdit").html('');
+                var fromDate = $('#EditVisitPosting_FromDate').val() == null ? "" : $('#EditVisitPosting_FromDate').val();
+                var toDate = $('#EditVisitPosting_ToDate').val() == null ? "" : $('#EditVisitPosting_ToDate').val();
+                if (fromDate != '' && toDate != '') {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("CountDays", "VisitApplication")',
+                        data: "{'NFromDate':'" + fromDate + "','NToDate':'" + toDate + "'}",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: 'json',
+                        cache: false,
+                        success: function (data) {
+                            console.log(data)
+                            if (data.Flag == 2) {
+                                var fDate = $("#frmEditVisitApplication").find("#EditVisitPosting_FromDate").val();
+                                $("#frmEditVisitApplication").find("#EditVisitPosting_ToDate").val(fDate);
+                            }
+                            else if (data.Flag == 3) {
+                                $("#lblMessageEdit").html('');
+                                $("#frmEditVisitApplication").find("#EditVisitPosting_FromDate").val('');
+                                $("#frmEditVisitApplication").find("#EditVisitPosting_ToDate").val('');
+                                $("#lblMessageEdit").html('चयन गरिएको मिति वर्तमान चलिरहेको आर्थिकमा हुनुपर्छ ।');
+                            }
+                            $('#EditVisitPosting_lblDaysCount').html(data.Result);
+                        },
+                        error: function () {
+                            //alert("Failed to load Item");
+                        }
+                    });
+                }
+            }
+
+        });
+        $('.inputmask').inputmask({
+            mask: '9999-99-99'
+        })
+    </script>
+}
+
+

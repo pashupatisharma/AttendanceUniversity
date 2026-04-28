@@ -1,0 +1,81 @@
+﻿@model eAttendance.Models.OfficeDeviceSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">सेटअप</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupOfficeDevice")"> कार्यालय उपकरण सेटअप</a></li>
+            <li class="animated fadeInRight">नयाँ कार्यालय उपकरण थप्नुहोस्</li>
+
+        </ol>
+    </div>
+</div>
+
+        @using (Html.BeginForm("Add", "SetupOfficeDevice", FormMethod.Post, new { @id = "AddOfficeDeviceForm", @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Partial("_Common")
+
+        }
+ 
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".chosen-select").chosen({ width: '100%' });
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+            function DeviceType_chosen() {
+                var dropdown1 = document.getElementById('DeviceType');
+                var textbox = document.getElementById('LicenseNo');
+                if (dropdown1.selectedIndex == 1) {
+                    textbox.value = "1261";
+                } else if (dropdown1.selectedIndex == 2) {
+                    textbox.value = "1";
+                }
+            }
+            $('#DeviceType').change(function () {
+                if (this.value == 1) {
+
+                    document.getElementById('Port').value = '5005';
+                }
+                else if (this.value = 2) {
+
+                    document.getElementById('Port').value = '4370';
+                }
+                else {
+
+                    document.getElementById('Port').value = '5005';
+                }
+            });
+
+
+            $("#frmAddOfficeDevice").validate({
+                rules: {
+
+                    OfficeId: {
+                        min: 1
+                    },
+                    DeviceIp: {
+                        required: true,
+                        minlength: 3
+                    },
+                    Port: {
+                        required: true,
+                        minlength: 3
+                    }
+                },
+                messages: {
+                    DeviceNo: {
+                        remote: "Duplicate  device no found. Please use another name."
+                    },
+                    OfficeId: {
+                        min: "Please select an option."
+                    },
+                }
+            });
+        });
+    </script>
+}
+

@@ -1,0 +1,138 @@
+﻿@model eAttendance.Models.EmployeeOfficeDetail
+@{
+    <link href="~/Content/plugins/nepalidatepicker/nepali.datepicker.css" rel="stylesheet" />
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+@using (Html.BeginForm("EditOfficeInfo", "EmployeeInfo", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.EmployeeId)
+    @Html.HiddenFor(m => m.OfficeInfoId)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.NEffectiveDate)</label>
+                                @Html.TextBoxFor(m => m.NEffectiveDate, new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99", @placeholder = "____-__-__" })
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.OfficeId)</label>
+                                @Html.DropDownListFor(m => m.OfficeId, eAttendance.Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.BranchId)</label>
+                                @Html.DropDownListFor(m => m.BranchId, eAttendance.Utility.GetBranchIdName(User), new { @class = "chosen-select form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.ServiceId)</label>
+                                @Html.DropDownListFor(m => m.ServiceId, eAttendance.Utility.GetServiceIdName(User), new { @class = "chosen-select form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.LevelId)</label>
+                                @Html.DropDownListFor(m => m.LevelId, Utility.GetLevelIdName(), new { @class = "chosen-select form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.DesignationId)</label>
+                                @Html.DropDownListFor(m => m.DesignationId, Utility.GetDesignationIdName(User), new { @class = "chosen-select form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.Remarks)</label>
+                                @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" id="btnSaveAddress" class="btn btn-primary" type="button" title="बचत गर्नु">बचत गर्नु</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+    </div>
+}
+@section scripts
+{
+    <script>
+
+        $(document).ready(function () {
+            $('#showHideByStatus').hide();
+
+            if ($("#isChecked").prop("checked")) {
+                $('#showHideByStatus').show();
+            }
+            else {
+                $('#showHideByStatus').hide();
+            };
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+            });
+
+            $(".chosen-select").chosen({ width: '100%' });
+
+
+            $('#OfficeId').change(function () {
+                // Loading Branch
+                $.getJSON("@Url.Action("GetBranch", "Utility")", { withAll: false, withSelect: true },
+                  function (data) {
+                      $("#BranchId").empty();
+                      var $prevGroup, prevGroupName;
+                      $.each(data, function () {
+                          if (this.Group == null) { $("<option />").val(this.Value).text(this.Text).appendTo('#BranchId'); }
+                          else {
+                              if (prevGroupName != this.Group.Name)
+                              { $prevGroup = $('<optgroup />').prop('label', this.Group.Name).appendTo('#BranchId'); }
+                              $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                              prevGroupName = this.Group.Name;
+                          }
+                      });
+                      $("#BranchId").trigger('chosen:updated');
+                  });
+            });
+
+            $('#LevelId').change(function () {
+                // Loading Designation
+                var levelId = $(this).val();
+                $.getJSON("@Url.Action("GetDesignationByLevelId", "Utility")", { LevelId: levelId, withAll: false, withSelect: true },
+                 function (data) {
+                     $("#DesignationId").empty();
+                     var $prevGroup, prevGroupName;
+                     $.each(data, function () {
+                         if (this.Group == null) { $("<option />").val(this.Value).text(this.Text).appendTo('#DesignationId'); }
+                         else {
+                             if (prevGroupName != this.Group.Name) { $prevGroup = $('<optgroup />').prop('label', this.Group.Name).appendTo('#DesignationId'); }
+                             $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                             prevGroupName = this.Group.Name;
+                         }
+                     });
+                     $("#DesignationId").trigger('chosen:updated');
+                 });
+            });
+        });
+    </script>
+}

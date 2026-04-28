@@ -1,0 +1,156 @@
+﻿@model eAttendance.ReportModel.EmployeeAttendanceList
+@{
+    eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
+}
+<div id="DataTables_Table_0_wrapper" class="dataTable form-inline no-margins table-responsive">
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-condensed no-top-border no-top-margin">
+            <thead>
+                <tr class="no-borders bg-white">
+                    <td colspan="9" class="no-borders bg-white text-center">
+                        <img src="@Url.Content("~/Images/Emblem_of_Nepal.png")"  width="80" height="80"/>
+                        <h4>नेपाल सरकार</h4>
+
+
+                        <h5>
+                            @if (Model.OfficeId > 0)
+                            {
+                                @eAttendance.Utility.GetOfficeInfoByOfficeId(Model.OfficeId).OfficeName
+
+
+                            }
+                            else
+                            {
+                                <text>सबै</text>
+                            }
+                        </h5>
+                        <h5>
+                            @if (Model.OfficeId > 0)
+                            {
+                                @db.OfficeSetUp.Where(x => x.OfficeId == Model.OfficeId).FirstOrDefault().Address
+                            }
+                        </h5>
+
+
+
+                        <h5>( @eAttendance.Service.MenuService.DailyPresentAttendanceReport )</h5>
+                    </td>
+                </tr>
+
+                <tr class='no-border-row bg-white'>
+
+                    <td colspan="9">
+                        <table class="table no-borders no-margins">
+
+
+                            <tr class="no-border-row">
+                                <td class="no-borders">@eAttendance.Service.MenuService.Date: @Model.nLogDate</td>
+                                <td class="no-borders">कार्यालय: @Html.Raw((Model.OfficeId > 0) ? eAttendance.Utility.GetOfficeInfoByOfficeId(Model.OfficeId).OfficeName : "सबै")</td>
+                                <td class="no-borders">सेवा: @Html.Raw((Model.ServiceId > 0) ? eAttendance.Utility.GetServiceByServiceId(Model.ServiceId).ServiceName : "सबै")</td>
+                                <td class="no-borders">शाखा: @Html.Raw((Model.BranchId > 0) ? eAttendance.Utility.GetBranchByMainBranchId(Model.BranchId).BranchName : "सबै")</td>
+                            </tr>
+                            <tr class="no-border-row">
+                                <td class="no-borders">तह: @Html.Raw((Model.LevelId > 0) ? eAttendance.Utility.GetLevelByLevelId(Model.LevelId).LevelName : "सबै")</td>
+                                <td class="no-borders">पद: @Html.Raw((Model.DesignationId > 0) ? eAttendance.Utility.GetDesignationByDesignationId(Model.DesignationId).DesignationName : "सबै")</td>
+                                <td class="no-borders">कर्मचारी: @Html.Raw((Model.EmployeeId > 0) ? eAttendance.Utility.GetEmployeeInfoByEmnployeeId(Model.EmployeeId).EmployeeNameNp : "सबै")</td>
+                                <td class="no-borders"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+        </table>
+        <table id="dtDailyAttendance" class="table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="text-center">@eAttendance.Service.MenuService.SNo</th>
+                    <th rowspan="2" class="text-center">पद</th>
+                    <th rowspan="2" class="text-center">@eAttendance.Service.MenuService.EmployeeName</th>
+                    <th rowspan="2" class="text-center">@eAttendance.Service.MenuService.ShiftName</th>
+                    <th colspan="2" class="text-center">समय</th>
+                    <th colspan="2" class="text-center">समयको कैफियत</th>
+                    <th rowspan="2" class="text-center">@eAttendance.Service.MenuService.WorkedHour</th>
+                    <th rowspan="2" class="text-center">@eAttendance.Service.MenuService.Remarks</th>
+                </tr>
+                <tr>
+                    <th class="text-center">आएको</th>
+                    <th class="text-center">गएको</th>
+                    <th class="text-center">आएको</th>
+                    <th class="text-center">गएको</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @{int count = 0;
+           }
+                @foreach (var m in Model.EmployeeAttendanceLists)
+                {
+                     
+                    count += 1;
+                    var shift = db.SetupShiftTime.Where(w => w.ShiftTimeId == m.ShiftTimeId).FirstOrDefault();
+                    string color = "";
+                    <tr style="background:@color;">
+                        <td class="text-center">@Html.Raw(count)</td>
+                        <td>@Html.Raw(Utility.GetDesignationByDesignationId(m.DesignationId).DesignationName ?? "")</td>
+                        <td>@Html.Raw(m.EmployeeNameAndCodeNp ?? "")</td>
+                        <td class="text-center">@Html.Raw(m.StatusType == 1 ? (((shift != null) ? shift.ShiftStartTime : "00:00") + "-" + ((shift != null) ? shift.ShiftEndTime : "00:00")) : "")</td>
+                        <td class="text-center">@(m.StatusType == 1 ? (m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? m.CheckIn.Value.ToString(@"hh\:mm") : "" : "")</td>
+                        <td class="text-center">@(m.StatusType == 1 ? (m.CheckOut != TimeSpan.Zero && m.CheckOut != null) ? m.CheckOut.Value.ToString(@"hh\:mm") : "" : "")</td>
+                        <td>@m.CheckInRemarks</td>
+                        <td class="col-md-2">@m.CheckOutRemarks</td>
+                        <td class="text-center">
+                            @if (m.CheckIn != TimeSpan.Zero && m.CheckIn != null && m.CheckOut != TimeSpan.Zero && m.CheckOut != null)
+                            {
+                                @Html.Raw(m.StatusType == 1 ? (m.CheckOut - m.CheckIn).Value.ToString(@"hh\:mm") : "")
+                            }
+                        </td>
+                        <td>
+                            @if (m.StatusType == 1)
+                            {
+                                @Html.Raw("उपस्थित");
+                            }
+                            else if (m.StatusType == 4)
+                            {
+                                @Html.Raw("सरुवा भएको या कार्यालय संग सम्बन्धित नरहेको");
+                            }
+                            else
+                            {
+                                string remarks = "";
+                                if (m.Holiday != null && m.Holiday.Length > 0)
+                                {
+                                    remarks += m.Holiday + " ";
+                                }
+
+                                if (m.OnLeave != null && m.OnLeave.Length > 0)
+                                {
+                                    remarks += m.OnLeave + " ";
+                                }
+                                if (m.OnVisit != null && m.OnVisit.Length > 0)
+                                {
+                                    remarks += m.OnVisit + " ";
+                                }
+                                if (m.WorkType == 3)
+                                {
+                                    remarks += "सप्ताह" + " ";
+                                }
+
+                                if (remarks.Length == 0)
+                                {
+                                    remarks = "अनुपस्थित";
+                                }
+                                @Html.Raw(remarks);
+                            }
+                        </td>
+                    </tr>
+                
+                }
+                @if (count == 0)
+                {
+                    <tr>
+                        <td colspan="10" class="text-center font-bold">@eAttendance.Service.MenuService.NoRecordFound</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

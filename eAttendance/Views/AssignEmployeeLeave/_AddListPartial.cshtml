@@ -1,0 +1,112 @@
+﻿@model eAttendance.Models.EmployeeInfo
+@using eAttendance.Helper
+@{
+    eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
+}
+@using (Html.BeginCollectionItem("EmployeeInfo.EmoloyeeList"))
+{
+    @Html.HiddenFor(m => m.EmployeeId)
+    <tr>
+        <td style="vertical-align: inherit;" employeeid="@Model.EmployeeId">@Model.EmployeeNameNp</td>
+
+        @for (int i = 0; i < Model.LeaveTypes.Count; i++)
+        {
+
+            @Html.HiddenFor(m => Model.LeaveTypes[i].LeaveTypeId)
+            int leavetypeid = Model.LeaveTypes[i].LeaveTypeId;
+
+
+            var assignLeave = db.AssignEmployeeLeave.Where(w => w.LeaveTypeId == leavetypeid && w.EmployeeId == Model.EmployeeId && w.FiscalYearId==Model.FiscalYearId).FirstOrDefault();
+
+            if (assignLeave != null)
+            {
+                Model.LeaveTypes[i].LeaveApplicationId = assignLeave.LeaveApplicationId;
+                @Html.HiddenFor(m => Model.LeaveTypes[i].LeaveApplicationId, new { value = assignLeave.LeaveApplicationId })
+            }
+            else
+            {
+
+                @Html.HiddenFor(m => Model.LeaveTypes[i].LeaveApplicationId)}
+
+            if (assignLeave != null)
+            {
+                Model.LeaveTypes[i].OpenningBalance = assignLeave.OpenningBalance;
+                Model.LeaveTypes[i].NoOfLeave = assignLeave.NoOfLeave;
+
+                <td assignleaveid="@Model.LeaveTypes[i].LeaveApplicationId" leavetypeid="@Model.LeaveTypes[i].LeaveTypeId" assigntype="lastyear">
+
+
+                    @Html.TextBoxFor(m => Model.LeaveTypes[i].OpenningBalance, new { @class = "form-control input-sm text-center OpeningBalance" })
+
+
+                </td>
+
+
+                <td assignleaveid="@Model.LeaveTypes[i].LeaveApplicationId" leavetypeid="@Model.LeaveTypes[i].LeaveTypeId" assigntype="thisyear">
+                    @Html.TextBoxFor(m => Model.LeaveTypes[i].NoOfLeave, new { @class = "form-control input-sm text-center NoofLeave" })
+                </td>
+
+
+            }
+            else
+            {
+                var leaveTypeSetUp = db.LeaveTypeSetUp.Where(w => w.LeaveTypeId == leavetypeid);
+                var em = db.EmployeeInfo.Where(x => x.EmployeeId == Model.EmployeeId).FirstOrDefault();
+                if (em.Gender == 1)
+                {
+                    leaveTypeSetUp = leaveTypeSetUp.Where(x => x.ApplicableFor == 1 || x.ApplicableFor == 2);
+                }
+                else
+                {
+                    leaveTypeSetUp = leaveTypeSetUp.Where(x => x.ApplicableFor == 1 || x.ApplicableFor == 3);
+                }
+                var fis = db.FiscalYearSetUp.Where(x => x.FiscalYearId < Model.FiscalYearId).FirstOrDefault();
+                if (fis != null)
+                {
+
+                    var lea = db.LeaveApplication.Where(x => x.FromDate >= fis.FromDate && x.ToDate <= fis.ToDate && x.EmployeeId == Model.EmployeeId).ToList();
+                    if (lea.Count > 0)
+                    {
+                        decimal val = lea.Sum(x => x.TotalDays);
+
+                        var aa = leaveTypeSetUp.Where(x => x.IsTransferable).FirstOrDefault();
+                        if (aa != null)
+                        {
+                            var bb = aa.MaximumLimit - val;
+                            if (bb > 0)
+                            {
+                                Model.LeaveTypes[i].OpenningBalance = bb;
+                            }
+                        }
+
+                      
+
+
+                    }
+
+                }
+                if (leaveTypeSetUp.FirstOrDefault() != null)
+                {
+
+
+
+                    Model.LeaveTypes[i].NoOfLeave = leaveTypeSetUp.FirstOrDefault().MaximumLimit;
+                }
+
+                <td assignleaveid="0" leavetypeid="@Model.LeaveTypes[i].LeaveTypeId" assigntype="lastyear">
+
+                    @Html.TextBoxFor(m => Model.LeaveTypes[i].OpenningBalance, new { @class = "form-control input-sm text-center OpeningBalance" })
+                </td>
+                <td assignleaveid="0" leavetypeid="@Model.LeaveTypes[i].LeaveTypeId" assigntype="thisyear">
+                    @Html.TextBoxFor(m => Model.LeaveTypes[i].NoOfLeave, new { @class = "form-control input-sm text-center NoofLeave" })
+                </td>
+
+
+            }
+        }
+
+
+    </tr>
+
+}
+

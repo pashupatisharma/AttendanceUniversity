@@ -1,0 +1,28 @@
+﻿@model eAttendance.Models.OfficeSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">सेटअप</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","OfficeSetup")">कार्यलय सेटअप</a></li>
+            <li class="animated fadeInRight">कार्यालय सच्याउनुहोस्</li>
+
+        </ol>
+    </div>
+</div>
+
+@using (Html.BeginForm("Edit", "OfficeSetup", FormMethod.Post, new { @id = "frmEditOffice", @class = "form-horizontal" }))
+{
+
+    @Html.HiddenFor(m => m.OfficeId)
+    @Html.HiddenFor(m => m.CreatedBy)
+    @Html.HiddenFor(m => m.CreatedDate)
+
+    @Html.Partial("_Common")
+
+
+
+}
+

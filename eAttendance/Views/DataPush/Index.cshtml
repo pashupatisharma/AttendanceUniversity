@@ -1,0 +1,127 @@
+﻿@model  eAttendance.Helper.MachineBLL
+
+@{
+    ViewBag.Title = "Report GoodsReceivedReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+
+
+
+
+
+<div class="fixed-assets-report-wrap">
+    <div class="fixed-assets-report-title"><h2>Device List</h2></div>
+    <div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px;
+    top: 0px; width: 100%; height: 100%; background-color: #666666; z-index: 30001;
+    opacity: .8; filter: alpha(opacity=70); display: none">
+        <p style="position: absolute; top: 30%; left: 40%; color: White; text-align: center;">
+            <img src="~/Images/ajax-loading.gif" />
+            <br />
+            Loading Please Wait...........
+        </p>
+    </div>
+
+
+    @using (Ajax.BeginForm("Index", "DataPush", new AjaxOptions { HttpMethod = "Post", OnBegin = "ShowLoader", OnComplete = "EndLoader", OnSuccess = "OnSuccess" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="wrapper wrapper-content padding-top-md">
+            <div class="row">
+
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>Device List</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="project-list">
+                            <table id="tblLevel" class="table table-hover table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>क्र.सं</th>
+                                        <th>Check The Box</th>
+                                        <th>Office Name</th>
+                                        <th>Device Ip</th>
+                                        <th>Port No</th>
+                                        <th>Last time  Data Push</th>
+
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @{ int count = 0;}
+
+                                    @for (int i = 0; i < Model.MachineList.Count; i++)
+                                    {
+
+                                        @Html.HiddenFor(m => Model.MachineList[i].DeviceIp)
+                                        @Html.HiddenFor(m => Model.MachineList[i].Port)
+                                        @Html.HiddenFor(m => Model.MachineList[i].OfficeId)
+                                        <tr>
+                                            <td>@Html.Raw((count += 1))</td>
+                                            <td>
+                                                @Html.CheckBoxFor(m => Model.MachineList[i].IsChecked)
+                                            </td>
+
+                                            <td class="project-title">
+                                                @Model.MachineList[i].OfficeName
+                                            </td>
+                                            <td> @Model.MachineList[i].DeviceIp</td>
+                                            <td> @Model.MachineList[i].Port</td>
+                                            <td> @Model.MachineList[i].LastImportDate</td>
+
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <input type="submit" value="Push" />
+        </div>
+
+
+
+    }
+</div>
+@section Scripts
+{
+
+
+    <script type="text/javascript">
+
+
+        function ShowLoader() {
+
+            $("#divLoading").show();
+
+
+
+
+
+
+        }
+        function OnSuccess(Message) {
+            alert(Message);
+           
+        }
+        function EndLoader() {
+            $("#divLoading").hide();
+
+
+        }
+
+
+
+
+    </script>
+}

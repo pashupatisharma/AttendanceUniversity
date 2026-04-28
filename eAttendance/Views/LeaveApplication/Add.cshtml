@@ -1,0 +1,163 @@
+﻿@model eAttendance.Models.LeaveApplication
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">बिदाको निबेदन </h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("Add", "LeaveApplication", FormMethod.Post, new { @id = "LeaveApplicationAddForm"}))
+        {
+           @Html.Partial("_Common")
+        }
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/Scripts/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        $('.nepali-calendar').nepaliDatePicker();
+        $(".chosen-select").chosen({ width: '100%' });
+
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+        });
+
+    
+        });
+        $("#LeaveApplicationAddForm").find("#LeaveTypeId").change(function () {
+            
+            $("#LeaveApplicationAddForm").find("#endDate").val('');
+            $("#LeaveApplicationAddForm").find("#NToDate").val('');
+            var employeeId = $("#LeaveApplicationAddForm").find("#EmployeeId").val();
+            if (employeeId<=0) {
+                employeeId = -007;
+            }
+            LoadLeaveBalance(employeeId, this.value)
+        });
+
+        $("#LeaveApplicationAddForm").find('#endDate').change(function () {
+            //debugger;
+           // alert(this.value);
+            var fromDate = this.value;
+            var toDate = $("#LeaveApplicationAddForm").find("#NToDate").val();
+            var leaveTypeId = $("#LeaveApplicationAddForm").find("#LeaveTypeId").val();
+            var remainingLeave = document.getElementById('lblLeaveBalance').innerHTML;
+            LoadTotalApplyLeave(fromDate, toDate, leaveTypeId, remainingLeave);
+        });
+
+        $("#LeaveApplicationAddForm").find('#NToDate').change(function () {
+            //debugger;
+            //alert(this.value);
+            var fromDate = $("#LeaveApplicationAddForm").find("#endDate").val();
+            var toDate = this.value;
+            var leaveTypeId = $("#LeaveApplicationAddForm").find("#LeaveTypeId").val();
+            var remainingLeave = document.getElementById('lblLeaveBalance').innerHTML;
+            LoadTotalApplyLeave(fromDate, toDate, leaveTypeId, remainingLeave);
+        });
+
+        function LoadLeaveBalance(employeeId, leaveTypeId) {
+            
+            $("#lblErrorMessage").html('');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadLeaveBalance", "JsonRequest")',
+            data: "{'employeeId':'" + employeeId + "','leaveTypeId':'" + leaveTypeId + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+             
+                $("#LeaveApplicationAddForm").find("#lblLeaveBalance").html(data.LeaveBalance);
+                $("#LeaveApplicationAddForm").find("#lblTotalDaysAdd").html(data.TotalLeave);
+            },
+            error: function () {
+            }
+        });
+    }
+        function LoadLeaveType(employeeId) {
+            $("#lblErrorMessage").html('');
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("LoadLeaveType", "LeaveApplication")',
+            data: "{'employeeId':'" + employeeId + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                //debugger;
+                $("#frmAddLeaveApplication").find('#LeaveTypeId').get(0).options.length = 0;
+                $("#frmAddLeaveApplication").find('#LeaveTypeId').get(0).options[0] = new Option("Select Leave Type", "0");
+                $.map(data, function (item) {
+                    $("#frmAddLeaveApplication").find('#LeaveTypeId').get(0).options[$('#LeaveTypeId').get(0).options.length] = new Option(item.Text, item.Value);
+                });
+                $("#frmAddLeaveApplication").find('#LeaveTypeId').trigger("chosen:updated");
+            },
+            error: function () {
+                alert("Failed to load Item");
+            }
+        });
+    }
+        function LoadTotalApplyLeave(fromDate, toDate, leaveTypeId, remainingLeave) {
+            //debugger;
+            if (!leaveTypeId > 0) {
+                return;
+            }
+            $("#lblErrorMessage").html('');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadTotalApplyingLeave", "JsonRequest")',
+                data: "{'fromDate':'" + fromDate + "','toDate':'" + toDate + "','leaveTypeId':'" + leaveTypeId + "','remainingLeave':'" + remainingLeave + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    //debugger;
+                    if (data.Flag == 2) {
+                        $("#lblErrorMessage").html('');
+                        var fDate = $("#LeaveApplicationAddForm").find("#endDate").val();
+                        $("#LeaveApplicationAddForm").find("#NToDate").val(fDate);
+                        $("#lblErrorMessage").html('कर्मचारीको बिदाको सीमा अघिक हुनुभएन ।');
+                    }
+                    if (data.Flag == 3) {
+                        $("#lblErrorMessage").html('');
+                        var fDate = $("#LeaveApplicationAddForm").find("#endDate").val();
+                        $("#LeaveApplicationAddForm").find("#NToDate").val(fDate);
+                    }
+                    if (data.Flag == 4) {
+                        $("#lblErrorMessage").html('');
+                        $("#LeaveApplicationAddForm").find("#endDate").val('');
+                        $("#LeaveApplicationAddForm").find("#NToDate").val('');
+                        $("#lblErrorMessage").html('कर्मचारीको बिदाको सीमा अघिक हुनुभएन ।');
+                    }
+                },
+                error: function () {
+                    //alert("Failed to load Item");
+                }
+            });
+        }
+
+    $('.inputmask').inputmask({
+        mask: '9999-99-99'
+    });
+    function DisableAction() {
+        $("#LeaveApplicationAddForm").find("#endDate").attr("disabled", "disabled");
+        $("#LeaveApplicationAddForm").find("#NToDate").attr("disabled", "disabled");
+
+    }
+    function EnableAction() {
+        $("#LeaveApplicationAddForm").find("#endDate").attr("disabled", false);
+        $("#LeaveApplicationAddForm").find("#NToDate").attr("disabled", false);
+    }
+    </script>
+}
+
+
+
+

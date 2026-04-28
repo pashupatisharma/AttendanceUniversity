@@ -1,0 +1,684 @@
+﻿@model eAttendance.Models.TaskSchedule
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Schedule";
+    eAttendance.Models.WeekForMonth calendar = (eAttendance.Models.WeekForMonth)ViewBag.Calendar;
+}
+@section head {
+<link href="~/Scripts/plugins/fullcalendar/css/fullcalendar.css" rel="stylesheet" />
+<link href="~/Scripts/plugins/fullcalendar/css/fullcalendar.print.css" rel="stylesheet" media="print" />
+}
+<div class="row wrapper white-bg page-heading hidden-print">
+    <div class="col-lg-10">
+        <h2>Schedule </h2>
+        <ol class="breadcrumb ">
+            <li>
+                <a href="@Url.Action("Index","Home")">घर</a>
+            </li>
+            <li>
+                <a>सामान्य  सेटअप </a>
+            </li>
+            <li class="active">
+                <strong>Schedule </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+    <div class="col-lg-2 col-sm-2">
+    <div class="hidden-print title-action">
+            <button class="btn btn-primary btn-add"> थप्नुहोस् </button>
+      
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content padding-top-md">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="tableView" class="ibox" style="display:none;">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="project-list">
+                            <table id="tblSchedule" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>क्र सं</th>
+                                        <th>@Html.DisplayNameFor(m => m.EmployeeId)</th>
+                                        <th>@Html.DisplayNameFor(m => m.Task)</th>
+                                        <th>@Html.DisplayNameFor(m => m.FromTime)</th>
+                                        <th>@Html.DisplayNameFor(m => m.ToTime)</th>
+
+                                        <th class="hidden-print text-center">कार्य </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{int count = 0;}
+                                    @foreach (var m in Model.TaskScheduleList)
+                                {
+                                    count += 1;
+                                <tr>
+                                    <td>@count</td>
+                                    <td class="project-title">
+                                        <a href="">@eAttendance.Utility.GetEmployeeInfoName().FirstOrDefault(w => w.Value == m.EmployeeId.ToString()).Text</a>
+                                    </td>
+                                    <td>@m.Task</td>
+                                    <td>@m.FromTime</td>
+                                    <td>@m.ToTime</td>
+
+                                    <td class="project-actions hidden-print col-md-2">
+                                        <button value="@m.TaskId" type="button" class="btn-edit btn btn-primary btn-sm"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm"></span> </button>
+                                        <button value="@m.TaskId" class="btn-delete btn btn-sm btn-danger"><i class="fa fa-remove"></i><span class="hidden-xs hidden-sm"></span> </button>
+                                    </td>
+                                </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>CEO SCHEDULE </h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                @*<i class="fa fa-chevron-up"></i>*@
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                @*<i class="fa fa-wrench"></i>*@
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li>
+                                    <a href="#">Config option 1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Config option 2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                @*<i class="fa fa-times"></i>*@
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div id="calendar"></div>
+                        <div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*<div id="calendarView" class="ibox-content" style="display:block;">
+                <div id="component-header" class="row">
+                    <div class="col-md-2 col-sm-2">
+                        <a id="@calendar.prevMonth" class="month fc-prev-button fc-button fc-state-default btn btn-primary fc-corner-left"><span class="fc-icon fc-icon-left-single-arrow"></span></a>
+                    </div>
+                    <div class="col-md-8 col-sm-8 text-center fc-date-button">
+                        @{
+                            var nDate = NepaliDateConverter.ConvertToNepali(DateTime.Today.Date);
+                            var month = Utility.NepaliMonthList().ToList().Find(w => w.Value == nDate.Month.ToString()).Text;
+                        }
+                        <h2> @Html.Raw(month) @Html.Raw(nDate.Year) </h2>
+                    </div>
+                    <div class="col-md-2 col-sm-2">
+                        <a id="@calendar.nextMonth" class="month fc-next-button fc-button fc-state-default btn btn-primary fc-corner-right pull-right"><span class="fc-icon fc-icon-right-single-arrow"></span></a>
+                    </div>
+                </div>
+
+                <div>
+                    <table id="component-table" class="table table-bordered table-calendar">
+                        <thead>
+                            <tr>
+                                <th>आईतवार</th>
+                                <th>सोमबार</th>
+                                <th>मंगलवार</th>
+                                <th>बुद्धबार</th>
+                                <th>बिहीवार</th>
+                                <th>शुक्रबार </th>
+                                <th>शनिबार</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="week1">
+                                @{ var today = NepaliDateConverter.ConvertToNepali(DateTime.Today.Date).ToString();}
+                                @foreach (var item in calendar.Week1)
+                                {
+                                    if (item != null)
+                                    {
+                                        var schedule = Model.TaskScheduleList.Where(x => x.NDate == item.Date.ToString());
+                                        
+                                        if (item.daycolumn == 0 || item.daycolumn == 6)
+                                        {
+                                            if (item.Date.ToString() == today)
+                                            {
+                                                <td class="weekend selected">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @if (schedule.Any())
+                                                    {
+                                                        foreach (var sch in schedule)
+                                                        {
+                                                            <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                        }
+                                                    }
+                                                </td>
+                                            }
+                                            else
+                                            {
+
+                                                <td class="weekend">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @if (schedule.Any())
+                                                    {
+                                                        foreach (var sch in schedule)
+                                                        {
+                                                             <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                        }
+                                                    }
+                                                </td>
+                                            }
+                                        }
+                                        else if (item.Date != NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                        {
+                                            <td>
+                                                <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                @if (schedule.Any())
+                                                {
+                                                    foreach (var sch in schedule)
+                                                    {
+                                                         <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                    }
+                                                }
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="selected">
+                                                <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                @if (schedule.Any())
+                                                {
+                                                    foreach (var sch in schedule)
+                                                    {
+                                                         <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                    }
+                                                }
+                                            </td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                            </tr>
+                            <tr id="week2">
+                                @foreach (var item in calendar.Week2)
+                                {
+                                    if (item != null)
+                                    {
+                                       var schedule = Model.TaskScheduleList.Where(x => x.NDate == item.Date.ToString());
+                                        
+                                        if (item.daycolumn == 0 || item.daycolumn == 6)
+                                        {
+                                            if (item.Date.ToString() == today)
+                                            {
+                                                <td class="weekend selected">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @if (schedule.Any())
+                                                    {
+                                                        foreach (var sch in schedule)
+                                                        {
+                                                             <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                        }
+                                                    }
+                                                </td>
+                                            }
+                                            else
+                                            {
+
+                                                <td class="weekend">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @if (schedule.Any())
+                                                    {
+                                                        foreach (var sch in schedule)
+                                                        {
+                                                             <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                        }
+                                                    }
+                                                </td>
+                                            }
+                                        }
+                                        else if (item.Date != NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                        {
+                                            <td>
+                                                <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                @if (schedule.Any())
+                                                {
+                                                    foreach (var sch in schedule)
+                                                    {
+                                                         <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                    }
+                                                }
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="selected">
+                                                <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                @if (schedule.Any())
+                                                {
+                                                    foreach (var sch in schedule)
+                                                    {
+                                                         <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                    }
+                                                }
+                                            </td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                            </tr>
+                            <tr id="week3">
+                                @foreach (var item in calendar.Week3)
+                                {
+                                    if (item != null)
+                                    {
+                                       var schedule = Model.TaskScheduleList.Where(x => x.NDate == item.Date.ToString());
+                                        
+                                        if (item.daycolumn == 0 || item.daycolumn == 6)
+                                        {
+                                            if (item.Date.ToString() == today)
+                                            {
+                                                <td class="weekend selected">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @if (schedule.Any())
+                                                    {
+                                                        foreach (var sch in schedule)
+                                                        {
+                                                             <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                        }
+                                                    }
+                                                </td>
+                                            }
+                                            else
+                                            {
+
+                                                <td class="weekend">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @if (schedule.Any())
+                                                    {
+                                                        foreach (var sch in schedule)
+                                                        {
+                                                             <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                        }
+                                                    }
+                                                </td>
+                                            }
+                                        }
+                                        else if (item.Date != NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                        {
+                                            <td>
+                                                <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                @if (schedule.Any())
+                                                {
+                                                    foreach (var sch in schedule)
+                                                    {
+                                                         <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                    }
+                                                }
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="selected">
+                                                <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                @if (schedule.Any())
+                                                {
+                                                    foreach (var sch in schedule)
+                                                    {
+                                                         <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                    }
+                                                }
+                                            </td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                            </tr>
+                            <tr id="week4">
+                                @foreach (var item in calendar.Week4)
+                                {
+                                    if (item != null)
+                                    {
+                                       var schedule = Model.TaskScheduleList.Where(x => x.NDate == item.Date.ToString());
+                                        
+                                        if (item.daycolumn == 0 || item.daycolumn == 6)
+                                        {
+
+                                            if (item.Date.ToString() == today)
+                                            {
+                                                <td class="weekend selected">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @if (schedule.Any())
+                                                    {
+                                                        foreach (var sch in schedule)
+                                                        {
+                                                             <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                        }
+                                                    }
+                                                </td>
+                                            }
+                                            else
+                                            {
+
+                                                <td class="weekend">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @if (schedule.Any())
+                                                    {
+                                                        foreach (var sch in schedule)
+                                                        {
+                                                             <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                        }
+                                                    }
+                                                </td>
+                                            }
+                                        }
+                                        else if (item.Date != NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                        {
+                                            <td>
+                                                <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                @if (schedule.Any())
+                                                {
+                                                    foreach (var sch in schedule)
+                                                    {
+                                                         <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                    }
+                                                }
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="selected">
+                                                <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                @if (schedule.Any())
+                                                {
+                                                    foreach (var sch in schedule)
+                                                    {
+                                                         <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                    }
+                                                }
+                                            </td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                            </tr>
+                            <tr id="week5">
+                                @foreach (var item in calendar.Week5)
+                                {
+                                    if (item != null)
+                                    {
+                                       var schedule = Model.TaskScheduleList.Where(x => x.NDate == item.Date.ToString());
+                                        
+                                        if (item.daycolumn == 0 || item.daycolumn == 6)
+                                        {
+                                            if (item.Date.ToString() == today)
+                                            {
+                                                <td class="weekend selected">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @if (schedule.Any())
+                                                    {
+                                                        foreach (var sch in schedule)
+                                                        {
+                                                             <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                        }
+                                                    }
+                                                </td>
+                                            }
+                                            else
+                                            {
+
+                                                <td class="weekend">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @if (schedule.Any())
+                                                    {
+                                                        foreach (var sch in schedule)
+                                                        {
+                                                             <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                        }
+                                                    }
+                                                </td>
+                                            }
+                                        }
+                                        else if (item.Date != NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                        {
+                                            <td>
+                                                <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                @if (schedule.Any())
+                                                {
+                                                    foreach (var sch in schedule)
+                                                    {
+                                                         <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                    }
+                                                }
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="selected">
+                                                <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                @if (schedule.Any())
+                                                {
+                                                    foreach (var sch in schedule)
+                                                    {
+                                                         <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                    }
+                                                }
+                                            </td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                            </tr>
+                            <tr id="week6">
+                                @if (calendar.Week6 != null)
+                                {
+                                    foreach (var item in calendar.Week6)
+                                    {
+                                        if (item != null)
+                                        {
+                                           var schedule = Model.TaskScheduleList.Where(x => x.NDate == item.Date.ToString());
+                                            
+                                            if (item.daycolumn == 0 || item.daycolumn == 6)
+                                            {
+                                                if (item.Date.ToString() == today)
+                                                {
+                                                    <td class="weekend selected">
+                                                        <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                        @if (schedule.Any())
+                                                        {
+                                                            foreach (var sch in schedule)
+                                                            {
+                                                                 <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                            }
+                                                        }
+                                                    </td>
+                                                }
+                                                else
+                                                {
+
+                                                    <td class="weekend">
+                                                        <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                        @if (schedule.Any())
+                                                        {
+                                                            foreach (var sch in schedule)
+                                                            {
+                                                                 <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                            }
+                                                        }
+                                                    </td>
+                                                }
+                                            }
+                                            else if (item.Date != NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
+                                            {
+                                                <td>
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3></a>
+                                                    @if (schedule.Any())
+                                                    {
+                                                        foreach (var sch in schedule)
+                                                        {
+                                                             <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                        }
+                                                    }
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="selected">
+                                                    <a id="@item.dateStr" class="dt"><h3>@item.dtDay</h3> </a>
+                                                    @if (schedule.Any())
+                                                    {
+                                                        foreach (var sch in schedule)
+                                                        {
+                                                             <span class="label label-primary">@sch.Task (@sch.FromTime - @sch.ToTime)</span>
+                                                        }
+                                                    }
+                                                </td>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                    }
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>*@
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal fade" id="modelAdd" role="dialog">
+</div>
+<div class="modal inmodal fade" id="modelEdit" role="dialog">
+</div>
+<div class="modal inmodal fade" id="modelDelete" role="dialog">
+</div>
+
+@section Scripts
+{
+<script src="~/Scripts/plugins/fullcalendar/moment.min.js"></script>
+<script src="~/Scripts/plugins/fullcalendar/fullcalendar.min.js"></script>
+    @*<script src="~/Scripts/Calendar/Index.js"></script>*@
+ 
+    <script type="text/javascript">
+        $(document).ready(function () {
+    
+            $('input[name="calendar-view"]').on('change', function (event, state) {
+                debugger;
+                var v = $(this).val();
+                if (v == 1) {
+                    $('#tableView').hide(500);
+                    $('#calendarView').show(500);
+                }
+                else {
+                    $('#calendarView').hide(500);
+                    $('#tableView').show(500);
+                }
+            });
+          
+            $('.btn-add').on('click', function () {
+               
+                $.ajax({
+                    url: '@Url.Action("Add", "TaskSchedule")',
+                    type: 'GET',
+                    data: {},
+                    success: function (result) {
+                        $("#modelAdd").html(result);
+                        $("#modelAdd").modal('show');
+                    },
+                    error: function () {
+                    }
+                });
+            })
+            $('#tblSchedule tbody').on('click', '.btn-edit', function () {
+                var serviceId = $(this).attr('value');
+                $.ajax({
+                    url: '@Url.Action("Edit", "TaskSchedule")',
+                    type: 'GET',
+                    data: { id: serviceId },
+                    success: function (result) {
+                        console.log(result)
+                        $("#modelEdit").html(result);
+                        $("#modelEdit").modal('show');
+                    },
+                    error: function () {
+                    }
+                });
+            })
+            $('#tblSchedule tbody').on('click', '.btn-delete', function () {
+                var serviceId = $(this).attr('value');
+                $.ajax({
+                    url: '@Url.Action("Delete", "TaskSchedule")',
+                    type: 'GET',
+                    data: { id: serviceId },
+                    success: function (result) {
+                        console.log(result)
+                        $("#modelDelete").html(result);
+                        $("#modelDelete").modal('show');
+                    },
+                    error: function () {
+                    }
+                });
+            })
+            //var date = new Date();
+            //var d = date.getDate();
+            //var m = date.getMonth();
+            //var y = date.getFullYear();
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                editable: true,
+                droppable: true, // this allows things to be dropped onto the calendar
+                drop: function () {
+                    // is the "remove after drop" checkbox checked?
+                    if ($('#drop-remove').is(':checked')) {
+                        // if so, remove the element from the "Draggable Events" list
+                        $(this).remove();
+                    }
+                },
+                events: [
+                   
+                ],
+            });
+           
+        })
+    </script>
+}
+
+
+
+
+
+

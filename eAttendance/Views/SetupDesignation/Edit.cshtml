@@ -1,0 +1,25 @@
+﻿@model eAttendance.Models.DesignationSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">सेटअप</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupDesignation")">पद सेटअप</a></li>
+            <li class="animated fadeInRight">पद सच्याउनुहोस्</li>
+
+        </ol>
+    </div>
+</div>
+@using (Html.BeginForm("Edit", "SetupDesignation", FormMethod.Post, new { @id = "frmEditDesignation", @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.DesignationId)
+
+    @Html.HiddenFor(m => m.CreatedBy)
+    @Html.HiddenFor(m => m.CreatedDate)
+    @Html.Partial("_Common")
+
+}
+

@@ -1,0 +1,315 @@
+﻿@model eAttendance.Models.LeaveApplication
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">@eAttendance.Service.MenuService.LeavePosting</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("EditLeavePosting", "LeaveApplication", FormMethod.Post, new { @id = "frmEditLeaveApplication" }))
+        {
+
+            @Html.HiddenFor(m => m.LeaveApplicationId)
+            @Html.HiddenFor(m => m.ApplicationDate)
+            @Html.HiddenFor(m => m.ApprovedStatus)
+            @Html.HiddenFor(m => m.RecomenderStatus)
+            @Html.HiddenFor(m => m.CreatedBy)
+            @Html.HiddenFor(m => m.CreatedDate)
+            @Html.HiddenFor(m => m.EmployeeId)
+            @Html.Partial("_CommonLeavePosting")
+        }
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('.nepali-calendar').nepaliDatePicker(
+                {
+                    onChange: function () {
+                        OnDateChangeEvent();
+                    }
+                });
+
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+
+            $(".chosen-select").chosen({ width: '100%' });
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+            });
+
+            $(function loaded() {
+                //debugger;
+                //LeaveApplicationId
+                var employeeId = $("#frmEditLeaveApplication").find("#EmployeeId").val();
+                var leaveTypeId = $("#frmEditLeaveApplication").find("#LeaveTypeId").val();
+                var leaveApplicationId = $("#frmEditLeaveApplication").find("#LeaveApplicationId").val();
+                DisableAction();
+                LoadLeaveBalance(employeeId, leaveTypeId, leaveApplicationId);
+            });
+
+            $("#frmEditLeaveApplication").find("#EmployeeId").change(function () {
+                //debugger;
+                LoadLeaveType(this.value);
+                var leaveTypeId = $("#frmEditLeaveApplication").find("#LeaveTypeId").val();
+                var leaveApplicationId = $("#frmEditLeaveApplication").find("#LeaveApplicationId").val();
+                LoadLeaveBalance(this.value, leaveTypeId, leaveApplicationId);
+                $("#frmEditLeaveApplication").find("#NFromDateEdit").val('');
+                $("#frmEditLeaveApplication").find("#NToDateEdit").val('');
+                $("#frmEditLeaveApplication").find("#lblTotalDays").html('0');
+                $("#frmEditLeaveApplication").find("#lblTotalHolidays").html('0');
+                $("#frmEditLeaveApplication").find("#lblTotalSaturdays").html('0');
+            });
+
+            $("#frmEditLeaveApplication").find("#LeaveTypeId").change(function () {
+                var employeeId = $("#frmEditLeaveApplication").find("#EmployeeId").val();
+                DisableAction();
+                var leaveApplicationId = $("#frmEditLeaveApplication").find("#LeaveApplicationId").val();
+                LoadLeaveBalance(employeeId, this.value, leaveApplicationId);
+                $("#frmEditLeaveApplication").find("#NFromDateEdit").val('');
+                $("#frmEditLeaveApplication").find("#NToDateEdit").val('');
+                $("#frmEditLeaveApplication").find("#lblTotalDays").html('0');
+                $("#frmEditLeaveApplication").find("#lblTotalHolidays").html('0');
+                $("#frmEditLeaveApplication").find("#lblTotalSaturdays").html('0');
+            });
+
+            $("#frmEditLeaveApplication").find('#NFromDateEdit').change(function () {
+                OnDateChangeEvent();
+            });
+
+            $("#frmEditLeaveApplication").find('#NToDateEdit').change(function () {
+                OnDateChangeEvent();
+            });
+
+            function OnDateChangeEvent() {
+                var fromDate = $("#frmEditLeaveApplication").find("#NFromDateEdit").val();
+                var toDate = $("#frmEditLeaveApplication").find("#NToDateEdit").val();
+                var leaveTypeId = $("#frmEditLeaveApplication").find("#LeaveTypeId").val();
+                var remainingLeave = document.getElementById('lblLeaveBalanceEdit').innerHTML;
+                LoadTotalApplyLeave(fromDate, toDate, leaveTypeId, remainingLeave);
+            }
+
+            function LoadLeaveType(employeeId) {
+                //debugger;
+                $("#lblErrorMessageEdit").html('');
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("LoadLeaveTypeByEmployeeId", "JsonRequest")',
+                    data: "{'employeeId':'" + employeeId + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        //debugger;
+                        var a = data.length;
+                        if (a <= 1) {
+                            $("#lblErrorMessageEdit").html('* छनौट भएको कर्मचारीको बिदा सेटअप भएकोछैन् । कृपया छनौट भएको कर्मचारीको बिदा सेटअप मिलाउनुहोस् ।');
+                        }
+
+                        $("#frmEditLeaveApplication").find('#LeaveTypeId').empty();
+                        var options = "";
+                        $.map(data, function (item) {
+                            options += "<option value=" + item.Value + ">" + item.Text + "</option>";
+                        });
+                        $("#frmEditLeaveApplication").find('#LeaveTypeId').html(options);
+                        $("#frmEditLeaveApplication").find('#LeaveTypeId').trigger("chosen:updated");
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+            function LoadLeaveBalance(employeeId, leaveTypeId, leaveApplicationId) {
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("LoadLeaveBalance", "JsonRequest")',
+                    data: "{'employeeId':'" + employeeId + "','leaveTypeId':'" + leaveTypeId + "','LeaveApplicationId':'" + leaveApplicationId + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        $("#frmEditLeaveApplication").find("#lblAssignedLeave").html(data.TotalLeave);
+                        $("#frmEditLeaveApplication").find("#lblTotalLeaveTaken").html(data.TakenLeave);
+                        $("#frmEditLeaveApplication").find("#lblLeaveBalanceEdit").html(data.LeaveBalance);
+                        $("#lblErrorMessageEdit").html('');
+                        if (data.TotalLeave == 0 && leaveTypeId > 1) {
+                            $("#lblErrorMessageEdit").html('* छनौट भएको कर्मचारीको बिदा सेटअप भएकोछैन् । कृपया छनौट भएको कर्मचारीको बिदा सेटअप मिलाउनुहोस् ।');
+                        }
+                        EnableAction();
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+            function LoadTotalApplyLeave(fromDate, toDate, leaveTypeId, remainingLeave, tag) {
+                if (!leaveTypeId > 0) {
+                    return;
+                }
+                $("#lblErrorMessageEdit").html('');
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("LoadTotalApplyingLeave", "JsonRequest")',
+                    data: "{'fromDate':'" + fromDate + "','toDate':'" + toDate + "','leaveTypeId':'" + leaveTypeId + "','remainingLeave':'" + remainingLeave + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        //debugger;
+                        //if (tag != 1) {
+                        if (data.Flag == 2) {
+                            var fDate = $("#frmEditLeaveApplication").find("#NFromDateEdit").val();
+                            $("#frmEditLeaveApplication").find("#NToDateEdit").val(fDate);
+                            ReLoadTotalApplyLeave();
+                            $("#lblErrorMessageEdit").html('कर्मचारीको बिदाको सीमा अघिक हुनुभएन ।');
+                        }
+                        if (data.Flag == 3) {
+                            var fDate = $("#frmEditLeaveApplication").find("#NFromDateEdit").val();
+                            $("#frmEditLeaveApplication").find("#NToDateEdit").val(fDate);
+                            ReLoadTotalApplyLeave();
+                        }
+                        if (data.Flag == 4) {
+                            $("#lblErrorMessageEdit").html('');
+                            $("#frmEditLeaveApplication").find("#NFromDateEdit").val('');
+                            $("#frmEditLeaveApplication").find("#NToDateEdit").val('');
+                            ReLoadTotalApplyLeave();
+                            $("#lblErrorMessageEdit").html('कर्मचारीको बिदाको सीमा अघिक हुनुभएन ।');
+                        }
+                        if (data.Flag == 5) {
+                            $("#lblErrorMessageEdit").html('');
+                            $("#frmEditLeaveApplication").find("#NFromDateEdit").val('');
+                            $("#frmEditLeaveApplication").find("#NToDateEdit").val('');
+                            ReLoadTotalApplyLeave();
+                            $("#lblErrorMessageEdit").html('चयन गरिएको मिति वर्तमान चलिरहेको आर्थिकमा हुनुपर्छ ।');
+                        }
+                        //}
+                        $("#frmEditLeaveApplication").find("#lblTotalDays").html(data.TotalLeave);
+                        $("#frmEditLeaveApplication").find("#lblTotalHolidays").html(data.TotalHolidays);
+                        $("#frmEditLeaveApplication").find("#lblTotalSaturdays").html(data.TotalSaturdays);
+                        if ($("#frmEditLeaveApplication").find("#NFromDateEdit").val() != $("#frmEditLeaveApplication").find("#NToDateEdit").val()) {
+                            HideIsHalfDay(2);
+                        }
+                        else { HideIsHalfDay(1); }
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+            function ReLoadTotalApplyLeave() {
+                var fromDate = $("#frmEditLeaveApplication").find("#NFromDateEdit").val();
+                var toDate = $("#frmEditLeaveApplication").find("#NToDateEdit").val();
+                var leaveTypeId = $("#frmEditLeaveApplication").find("#LeaveTypeId").val();
+                var remainingLeave = document.getElementById('lblLeaveBalanceEdit').innerHTML;
+                LoadTotalApplyLeave(fromDate, toDate, leaveTypeId, remainingLeave, 0);
+            }
+
+
+
+            function HideIsHalfDay(type) {
+                //debugger;
+
+                if (type == 1) {
+                    $("#IsHalfDayEdit").attr("disabled", false);
+                    $("#IsHalfDayEdit").prop('value', true);
+                }
+                else if (type == 2) {
+                    $("#IsHalfDayEdit").prop('value', false);
+                    $(".icheckbox_square-blue").attr("class", "icheckbox_square-blue");
+                    $("#IsHalfDayEdit").attr("disabled", true);
+                }
+            }
+
+            $("#frmEditLeaveApplication").validate({
+                rules: {
+                    EmployeeName: {
+                        required: true,
+                        minlength: 3,
+                        remote: {
+                            url: "@Url.Action("CheckDuplicate", "LeaveApplication")",
+                            type: "POST",
+                            data: {
+                                EmployeeName: function () {
+                                    return $('#frmEditLeaveApplication').find('#EmployeeName').val()
+                                },
+                                Id: function () { return $('#EmployeeId').val() }
+                            }
+                        }
+                    },
+                    EmployeeId: {
+                        required: true,
+                        min: 1
+                    },
+                    LeaveTypeId: {
+                        required: true,
+                        min: 1
+                    },
+                    Recomender: {
+                        required: true,
+                        min: 1
+                    },
+                    ApprovedBy: {
+                        required: true,
+                        min: 1
+                    },
+                    NApplicationDate: {
+                        required: true,
+                    },
+                    NFromDate: {
+                        required: true,
+
+                    },
+                    NToDate: {
+                        required: true,
+
+                    },
+                    NApprovedDate: {
+                        required: true
+                    }
+                },
+                messages: {
+                    EmployeeId: {
+                        remote: "Duplicate employee name found. Please use another name."
+                    },
+                    EmployeeId: {
+                        min: "कृपया विकल्प चयन गर्नुहोस्"
+                    },
+                    LeaveTypeId: {
+                        min: "कृपया विकल्प चयन गर्नुहोस्"
+                    },
+                    Recomender: {
+                        min: "कृपया विकल्प चयन गर्नुहोस्"
+                    },
+                    ApprovedBy: {
+                        min: "कृपया विकल्प चयन गर्नुहोस्"
+                    },
+                    NFromDate: {
+                        required: 'कृपया विकल्प चयन गर्नुहोस्',
+
+                    },
+                    NToDate: {
+                        required: 'कृपया विकल्प चयन गर्नुहोस्',
+
+                    },
+                    NApprovedDate: {
+                        required: 'कृपया विकल्प चयन गर्नुहोस्',
+                    }
+                }
+            });
+        });
+        $('.inputmask').inputmask({
+            mask: '9999-99-99'
+        });
+    </script>
+}
+
+

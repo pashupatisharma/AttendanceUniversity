@@ -1,0 +1,527 @@
+﻿@model eAttendance.ViewModel.DashboardViewModel
+@{
+    ViewBag.Title = "EmployeeDashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h3 class="label label-success pull-right">महिना/ साल</h3>
+                    <h5>उपस्थिती</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h2 class="no-margins"> @Model.EmployeeAttendanceSummaryForDashboard.WDTM / @Model.EmployeeAttendanceSummaryForDashboard.WDTY </h2>
+                            <div class="font-bold text-navy">
+                                <i class="fa fa-level-up"></i> <small>जम्मा काम गर्ने दिन</small>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <h2 class="no-margins"> @Model.EmployeeAttendanceSummaryForDashboard.PTM / @Model.EmployeeAttendanceSummaryForDashboard.PTY </h2>
+                            <div class="font-bold text-navy">
+                                @Html.Raw((Model.EmployeeAttendanceSummaryForDashboard.PTM / ((Model.EmployeeAttendanceSummaryForDashboard.WDTM == 0) ? 1 : Model.EmployeeAttendanceSummaryForDashboard.WDTM)) * 100)% /
+                                @Html.Raw((Model.EmployeeAttendanceSummaryForDashboard.PTY / ((Model.EmployeeAttendanceSummaryForDashboard.WDTY == 0) ? 1 : Model.EmployeeAttendanceSummaryForDashboard.WDTY)) * 100)%
+                                <i class="fa fa-level-up"></i> <small>उपस्थिती</small>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <h2 class="no-margins"> @Model.EmployeeAttendanceSummaryForDashboard.ATM / @Model.EmployeeAttendanceSummaryForDashboard.ATY  </h2>
+                            <div class="font-bold text-navy">
+                                @Html.Raw((Model.EmployeeAttendanceSummaryForDashboard.ATM / ((Model.EmployeeAttendanceSummaryForDashboard.WDTM == 0) ? 1 : Model.EmployeeAttendanceSummaryForDashboard.WDTM)) * 100)% /
+                                @Html.Raw((Model.EmployeeAttendanceSummaryForDashboard.ATY / ((Model.EmployeeAttendanceSummaryForDashboard.WDTY == 0) ? 1 : Model.EmployeeAttendanceSummaryForDashboard.WDTY)) * 100)%
+
+                                <i class="fa fa-level-up"></i> <small>अनुपस्थित</small>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <h2 class="no-margins"> @Model.EmployeeAttendanceSummaryForDashboard.VTM / @Model.EmployeeAttendanceSummaryForDashboard.VTY  </h2>
+                            <div class="font-bold text-navy">
+                                @Html.Raw((Model.EmployeeAttendanceSummaryForDashboard.VTM / ((Model.EmployeeAttendanceSummaryForDashboard.WDTM == 0) ? 1 : Model.EmployeeAttendanceSummaryForDashboard.WDTM)) * 100)% /
+                                @Html.Raw((Model.EmployeeAttendanceSummaryForDashboard.VTY / ((Model.EmployeeAttendanceSummaryForDashboard.WDTY == 0) ? 1 : Model.EmployeeAttendanceSummaryForDashboard.WDTY)) * 100)%
+                                <i class="fa fa-level-up"></i>
+                                <small>निरिक्षण</small>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <h2 class="no-margins">@Model.EmployeeAttendanceSummaryForDashboard.LTM / @Model.EmployeeAttendanceSummaryForDashboard.LTY  </h2>
+                            <div class="font-bold text-navy">
+                                @Html.Raw((Model.EmployeeAttendanceSummaryForDashboard.LTM / ((Model.EmployeeAttendanceSummaryForDashboard.WDTM == 0) ? 1 : Model.EmployeeAttendanceSummaryForDashboard.WDTM)) * 100)% /
+                                @Html.Raw((Model.EmployeeAttendanceSummaryForDashboard.LTY / ((Model.EmployeeAttendanceSummaryForDashboard.WDTY == 0) ? 1 : Model.EmployeeAttendanceSummaryForDashboard.WDTM)) * 100)%
+                                <i class="fa fa-level-up"></i> <small>बिदा</small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <h2 class="no-margins"> @Model.EmployeeAttendanceSummaryForDashboard.HTM / @Model.EmployeeAttendanceSummaryForDashboard.HTY  </h2>
+                            <div class="font-bold text-navy">
+                                <i class="fa fa-level-up"></i>
+                                <small>सार्वजनिक बिदा</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="row">
+
+
+        <div class="col-lg-12">
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Current Attendance</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content no-padding">
+
+                            <div class="full-height-scroll" style="overflow: hidden; width: auto; height: 100%;">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover no-margins">
+                                        <thead>
+                                            <tr>
+                                                <th><small>Date</small></th>
+                                                <th class="text-center"><small>In Time</small></th>
+                                                <th class="text-center"><small>Out Time</small></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var m in Model.EmployeeAttendanceList.OrderByDescending(w => w.LogDate))
+                                            {
+                                                <tr>
+                                                    @if (m.LogDate <= DateTime.Now.Date)
+                                                    {
+                                                        <td><small>@eAttendance.NepaliDateConverter.ConvertToNepali(m.LogDate.Date)</small></td>
+                                                        <td class="text-center"><small>@m.CheckIn</small></td>
+                                                        <td class="text-center"><small>@m.CheckOut</small></td>
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Leave Taken</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content no-padding">
+                            <ul class="todo-list m-t small-list">
+                                @if (Model.LeaveApplicationList != null)
+                                {
+                                    int employeeId = Utility.GetEmployeeIdByUserName(User.Identity.Name);
+                                    foreach (var a in Model.LeaveApplicationList.Where(m => m.EmployeeId == employeeId && m.Status == 1 && m.ApprovedStatus == 2))
+                                    {
+                                        <li>
+                                            <span class="m-l-xs">@Html.Raw(eAttendance.Utility.GetSetupLeaveTypeIdName(User).FirstOrDefault(w => w.Value == ((a.LeaveTypeId != null && a.LeaveTypeId > 0) ? a.LeaveTypeId.ToString() : "-")).Text) </span>
+                                            <small class="label label-primary pull-right"><i class="fa fa-clock-o"></i> @((a.FromDate.Value.Year >= 1913 && a.FromDate.Value.Year <= 2042) ? eAttendance.NepaliDateConverter.ConvertToNepali(a.FromDate.Value) : NepaliDateConverter.ConvertToNepali(DateTime.Today.Date)) - @((a.ToDate.Value.Year >= 1913 && a.ToDate.Value.Year <= 2042) ? eAttendance.NepaliDateConverter.ConvertToNepali(a.ToDate.Value) : NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))  </small>
+                                        </li>
+                                    }
+                                }
+
+                            
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (User.IsInRole("Approver") || User.IsInRole("Recommendatory"))
+    {
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="ibox chat-view">
+                    <div class="ibox-title">
+                        <span class="pull-right text-muted"></span>
+                        @eAttendance.Service.MenuService.LeaveApplication
+                    </div>
+                    @if (Model.LeaveApplicationList != null)
+                    {
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="chat-discussion">
+                                        @foreach (var leave in Model.LeaveApplicationList.Where(w => w.RecomenderStatus == 1 || w.ApprovedStatus == 1 && w.RecomenderStatus != 3))
+                                        {
+                                            int UserId = Utility.GetEmployeeIdByUserName(User.Identity.Name);
+                                            if (UserId == leave.ApprovedBy || UserId == leave.Recomender)
+                                            {
+                                                <div class="chat-message chat_area" id="@leave.LeaveApplicationId">
+                                                    <img class="message-avatar" src="~/Images/user-sm.png" alt="">
+                                                    <div class="message">
+                                                        <a class="message-author" href="#">
+                                                            @Html.Raw((leave.EmployeeId == null || leave.EmployeeId <= 0) ? "-" : eAttendance.Utility.GetEmployeeIdNameWithAll(User).FirstOrDefault(d => d.Value == leave.EmployeeId.ToString()).Text)
+                                                        </a>
+                                                        <span class="message-date"> @NepaliDateConverter.ConvertToNepali(leave.ApplicationDate.Value.Date) </span>
+                                                        <span class="message-content">
+                                                            मिति : @NepaliDateConverter.ConvertToNepali(leave.FromDate.Value.Date) - @NepaliDateConverter.ConvertToNepali(leave.ToDate.Value.Date)
+                                                        </span>
+                                                        <span class="message-content">
+                                                            विषय: @leave.Subject
+                                                        </span>
+                                                        <br />
+                                                        <span class="message-content">
+                                                            @leave.Message
+                                                        </span>
+                                                        <hr />
+                                                        <div class="message-content">
+                                                            @if (User.IsInRole("Recommendatory") && leave.RecomenderStatus == 1 && leave.Recomender == UserId)
+                                                            {
+                                                                <button id="btnRecomend" value="@leave.LeaveApplicationId" type="button" class="btn btn-success btn-xs btn-click">
+                                                                    Recomend
+                                                                </button>
+                                                                <button id="btnRejectRecoment" value="@leave.LeaveApplicationId" type="button" class="btn btn-danger btn-xs btn-rej-click">Reject</button>
+                                                            }
+                                                            @if (User.IsInRole("Approver") && leave.RecomenderStatus == 2 && leave.ApprovedBy == UserId && leave.ApprovedStatus == 1)
+                                                            {
+                                                                <button id="btnApprove" value="@leave.LeaveApplicationId" type="button" class="btn btn-success btn-xs btn-leav-approve-click">Approve</button>
+                                                                <button id="btnRejectApprove" value="@leave.LeaveApplicationId" type="button" class="btn btn-danger btn-xs btn-leav-reject-click">Reject</button>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="ibox chat-view">
+                    <div class="ibox-title">
+                        <span class="pull-right text-muted"></span>
+                        @eAttendance.Service.MenuService.VisitApplication
+                    </div>
+                    @if (Model.VisitApplicationList != null)
+                    {
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="chat-discussion">
+                                        @foreach (var visit in Model.VisitApplicationList.Where(w => w.RecomenderStatus == 1 || w.ApprovedStatus == 1 && w.RecomenderStatus != 3))
+                                        {
+                                            int UserId = Utility.GetEmployeeIdByUserName(User.Identity.Name);
+                                            if (UserId == visit.ApprovedBy || UserId == visit.Recomender)
+                                            {
+                                                <div class="chat-message chat_area_visit" id="@visit.VisitApplicationId">
+                                                    <img class="message-avatar" src="~/Images/user-sm.png" alt="">
+                                                    <div class="message">
+                                                        <a class="message-author" href="#">
+                                                            @Html.Raw((visit.EmployeeId == null || visit.EmployeeId <= 0) ? "-" : eAttendance.Utility.GetEmployeeIdNameWithAll(User).FirstOrDefault(d => d.Value == visit.EmployeeId.ToString()).Text)
+                                                        </a>
+                                                        <span class="message-date"> @NepaliDateConverter.ConvertToNepali(visit.ApplicationDate.Date) </span>
+                                                        <span class="message-content">
+                                                            मिति : @NepaliDateConverter.ConvertToNepali(visit.FromDate.Date) - @NepaliDateConverter.ConvertToNepali(visit.ToDate.Date)
+                                                        </span>
+                                                        <span class="message-content">
+                                                            विषय: @visit.Subject
+                                                        </span>
+                                                        <br />
+                                                        <span class="message-content">
+                                                            @visit.Message
+                                                        </span>
+                                                        <hr />
+                                                        <div class="message-content">
+                                                            @if (User.IsInRole("Recommendatory") && visit.RecomenderStatus == 1 && visit.Recomender == UserId)
+                                                            {
+                                                                <button id="btnRecomend" value="@visit.VisitApplicationId" type="button" class="btn btn-success btn-xs btn-visit-recomend-click">Recomend</button>
+                                                                <button id="btnRejectRecoment" value="@visit.VisitApplicationId" type="button" class="btn btn-danger btn-xs btn-visit-recomend-reject-click">Reject</button>
+                                                            }
+                                                            @if (User.IsInRole("Approver") && visit.RecomenderStatus == 2 && visit.ApprovedStatus == 1 && visit.ApprovedBy == UserId)
+                                                            {
+                                                                <button id="btnApprove" type="button" value="@visit.VisitApplicationId" class="btn btn-success btn-xs btn-visit-approve-click">Approve</button>
+                                                                <button id="btnRejectApprove" type="button" value="@visit.VisitApplicationId" class="btn btn-danger btn-xs btn-visit-approve-reject-click">Reject</button>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+
+    }
+</div>
+@section scripts
+{
+    <script>
+    $(function () {
+        // Initialize slimscroll for right sidebar
+        // Add slimscroll to element
+        $('.full-height-scroll').slimscroll({
+            height: '100%'
+        })
+    });
+
+    $(document).ready(function () {
+        $(".btn-click").click(function () {
+            //alert($(this).attr("value"));
+            var leaveApplicationId = $(this).attr("value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("RecommendLeaveApplicationById", "LeaveApplication")',
+                data: "{'leaveApplicationId':'" + leaveApplicationId + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data == 1) {
+                        var divs = document.getElementsByClassName('chat_area'),
+                        i = divs.length;
+                        while (i) {
+                            i -= 1;
+                            if (divs[i].getAttribute('id') == leaveApplicationId) {
+                                divs[i].parentNode.removeChild(divs[i]);
+                            }
+                        }
+                    }
+                },
+                error: function () {
+                    //alert("Failed to load Item");
+                }
+            });
+        });
+        $(".btn-rej-click").click(function () {
+            //alert($(this).attr("value"));
+            var leaveApplicationId = $(this).attr("value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("RecommendLeaveApplicationRejectById", "LeaveApplication")',
+                data: "{'leaveApplicationId':'" + leaveApplicationId + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data == 1) {
+
+                        var divs = document.getElementsByClassName('chat_area'),
+                        i = divs.length;
+                        while (i) {
+                            i -= 1;
+                            if (divs[i].getAttribute('id') == leaveApplicationId) {
+                                divs[i].parentNode.removeChild(divs[i]);
+                            }
+                        }
+                    }
+                },
+                error: function () {
+                    //alert("Failed to load Item");
+                }
+            });
+        });
+        $(".btn-leav-approve-click").click(function () {
+            //alert($(this).attr("value"));
+            var leaveApplicationId = $(this).attr("value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ApproveLeaveApplicationById", "LeaveApplication")',
+                data: "{'leaveApplicationId':'" + leaveApplicationId + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data == 1) {
+
+                        var divs = document.getElementsByClassName('chat_area'),
+                        i = divs.length;
+                        while (i) {
+                            i -= 1;
+                            if (divs[i].getAttribute('id') == leaveApplicationId) {
+                                divs[i].parentNode.removeChild(divs[i]);
+                            }
+                        }
+                    }
+                },
+                error: function () {
+                    //alert("Failed to load Item");
+                }
+            });
+        });
+        $(".btn-leav-reject-click").click(function () {
+            //alert($(this).attr("value"));
+            var leaveApplicationId = $(this).attr("value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ApproveLeaveApplicationRejectById", "LeaveApplication")',
+                data: "{'leaveApplicationId':'" + leaveApplicationId + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data == 1) {
+
+                        var divs = document.getElementsByClassName('chat_area'),
+                        i = divs.length;
+                        while (i) {
+                            i -= 1;
+                            if (divs[i].getAttribute('id') == leaveApplicationId) {
+                                divs[i].parentNode.removeChild(divs[i]);
+                            }
+                        }
+                    }
+                },
+                error: function () {
+                    //alert("Failed to load Item");
+                }
+            });
+        });
+        $(".btn-visit-recomend-click").click(function () {
+            //alert($(this).attr("value"));
+            var visitApplicationId = $(this).attr("value");
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("RecommendVisitApplicationById", "VisitApplication")',
+                    data: "{'visitApplicationId':'" + visitApplicationId + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        if (data == 1) {
+
+                            var divs = document.getElementsByClassName('chat_area_visit'),
+                            i = divs.length;
+                            while (i) {
+                                i -= 1;
+                                if (divs[i].getAttribute('id') == visitApplicationId) {
+                                    divs[i].parentNode.removeChild(divs[i]);
+                                }
+                            }
+                        }
+                    },
+                    error: function () {
+                        //alert("Failed to load Item");
+                    }
+                });
+        });
+        $(".btn-visit-recomend-reject-click").click(function () {
+            //alert($(this).attr("value"));
+            var visitApplicationId = $(this).attr("value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("RecommendVisitApplicationRejectById", "VisitApplication")',
+                data: "{'visitApplicationId':'" + visitApplicationId + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data == 1) {
+
+                        var divs = document.getElementsByClassName('chat_area_visit'),
+                        i = divs.length;
+                        while (i) {
+                            i -= 1;
+                            if (divs[i].getAttribute('id') == visitApplicationId) {
+                                divs[i].parentNode.removeChild(divs[i]);
+                            }
+                        }
+                    }
+                },
+                error: function () {
+                    //alert("Failed to load Item");
+                }
+            });
+        });
+        $(".btn-visit-approve-click").click(function () {
+            //alert($(this).attr("value"));
+            var visitApplicationId = $(this).attr("value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ApproveVisitApplicationById", "VisitApplication")',
+                data: "{'visitApplicationId':'" + visitApplicationId + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data == 1) {
+
+                        var divs = document.getElementsByClassName('chat_area_visit'),
+                        i = divs.length;
+                        while (i) {
+                            i -= 1;
+                            if (divs[i].getAttribute('id') == visitApplicationId) {
+                                divs[i].parentNode.removeChild(divs[i]);
+                            }
+                        }
+                    }
+                },
+                error: function () {
+                    //alert("Failed to load Item");
+                }
+            });
+        });
+        $(".btn-visit-approve-reject-click").click(function () {
+            //alert($(this).attr("value"));
+            var visitApplicationId = $(this).attr("value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ApproveVisitApplicationRejectById", "VisitApplication")',
+                data: "{'visitApplicationId':'" + visitApplicationId + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data == 1) {
+
+                        var divs = document.getElementsByClassName('chat_area_visit'),
+                        i = divs.length;
+                        while (i) {
+                            i -= 1;
+                            if (divs[i].getAttribute('id') == visitApplicationId) {
+                                divs[i].parentNode.removeChild(divs[i]);
+                            }
+                        }
+                    }
+                },
+                error: function () {
+                    //alert("Failed to load Item");
+                }
+            });
+        });
+    })
+</script>
+}

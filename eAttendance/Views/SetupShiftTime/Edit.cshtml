@@ -1,0 +1,151 @@
+﻿@model eAttendance.Models.SetupShiftTime
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">सम्पादन सिफ्ट टाईम </h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("Edit", "SetupShiftTime", FormMethod.Post, new { @id = "frmEditShiftTime" }))
+        {
+            @Html.HiddenFor(m => m.ShiftId)
+            @Html.HiddenFor(m => m.CreatedBy)
+            @Html.HiddenFor(m => m.CreatedDate)
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 b-r">
+                        <div class="form-group">
+                            <label class="control-label">@Html.DisplayNameFor(m => m.OfficeId)</label>
+                            @Html.DropDownListFor(m => m.OfficeId, eAttendance.Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ShiftName)</label>
+                            @Html.TextBoxFor(m => m.ShiftName, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.Alias)</label>
+                            @Html.TextBoxFor(m => m.Alias, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ShiftStartTime)</label>
+                            @Html.TextBoxFor(m => m.ShiftStartTime, new { @class = "form-control", data_mask = "99:99" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ShiftEndTime)</label>
+                            @Html.TextBoxFor(m => m.ShiftEndTime, new { @class = "form-control", data_mask = "99:99" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ShiftHours)</label>
+                            @Html.TextBoxFor(m => m.ShiftHours, new { @class = "form-control", data_mask = "99:99" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        @*<div class="form-group">
+                                <label >@Html.DisplayNameFor(m => m.BreakStartTime)</label>
+                                    @Html.TextBoxFor(m => m.BreakStartTime, new { @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                <label >@Html.DisplayNameFor(m => m.BreakEndTime)</label>
+                                    @Html.TextBoxFor(m => m.BreakEndTime, new { @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                <label >@Html.DisplayNameFor(m => m.BreakDuration)</label>
+                                    @Html.TextBoxFor(m => m.BreakDuration, new { @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                <label >@Html.DisplayNameFor(m => m.BreakLateInAfter)</label>
+                                    @Html.TextBoxFor(m => m.BreakLateInAfter, new { @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                <label >@Html.DisplayNameFor(m => m.BreakEarlyOutBefore)</label>
+                                    @Html.TextBoxFor(m => m.BreakEarlyOutBefore, new { @class = "form-control" })
+                            </div>*@
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ShiftLateInAfter)</label>
+                            @Html.TextBoxFor(m => m.ShiftLateInAfter, new { @class = "form-control", data_mask = "99:99" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ShiftEarlyOutBefore)</label>
+                            @Html.TextBoxFor(m => m.ShiftEarlyOutBefore, new { @class = "form-control", data_mask = "99:99" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.OverTimeBefore)</label>
+                            @Html.TextBoxFor(m => m.OverTimeBefore, new { @class = "form-control", data_mask = "99:99" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.OverTimeAfter)</label>
+                            @Html.TextBoxFor(m => m.OverTimeAfter, new { @class = "form-control", data_mask = "99:99" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.DisplayOrder)</label>
+                            @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.IsDefault)</label>
+                            <div>
+                                @Html.CheckBoxFor(m => m.IsDefault, new { @class = "from-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+            </div>
+        }
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".chosen").chosen({ width: '100%', disable_search_threshold: 10 });
+            $(".chosen-select").chosen({ width: '100%' });
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" })
+
+            $("#frmEditShiftTime").validate({
+                rules: {
+                    ShiftName: {
+                        required: true,
+                        minlength: 3,
+                        remote: {
+                            url: "@Url.Action("CheckDuplicate", "SetupShiftTime")",
+                            type: "POST",
+                            data: {
+                                ShiftName: function () {
+                                    return $('#frmEditShiftTime').find('#ShiftName').val()
+                                },
+                                Id: function () { return $('#ShiftId').val() },
+                                OfficeId: function () {
+                                    return $('#frmEditShiftTime').find("#OfficeId").val();
+                                }
+                            }
+                        }
+                    },
+                    OfficeId: {
+                        min: 1
+                    },
+                    Alias: {
+                        required: true,
+                    },
+                    DisplayOrder: {
+                        required: true,
+                        number: true,
+                    }
+                },
+                messages: {
+                    OfficeId: {
+                        min: "Please select an option."
+                    },
+                    ShiftName: {
+                        remote: "Duplicate shift name found. Please use another name."
+                    }
+                }
+            });
+        });
+    </script>
+}

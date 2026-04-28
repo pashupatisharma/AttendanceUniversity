@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="PushLogRefrence">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="devicedata" type="tns:ArrayOfLogDataBLL" />
+            <s:element minOccurs="0" maxOccurs="1" name="DeviceIp" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="lastimportdate" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="machineobj" type="tns:MachineBLL" />
+            <s:element minOccurs="0" maxOccurs="1" name="dbmessage" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfLogDataBLL">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="LogDataBLL" nillable="true" type="tns:LogDataBLL" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="LogDataBLL">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="OfficeId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="OfficeDeviceId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="IpAddress" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EnrollNumber" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="VerifyMode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InOutMode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="dwYear" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="dwMonth" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="dwDay" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="dwHour" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="dwMinute" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="dwSecond" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Workcode" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="LogDateList" type="tns:ArrayOfLogDataBLL" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MachineBLL">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="OfficeId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="OfficeName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="OfficeDeviceId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="MachineId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeviceIp" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeviceNo" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Port" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LicenseNo" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="LastImportDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="MachineList" type="tns:ArrayOfMachineBLL" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsChecked" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfMachineBLL">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MachineBLL" nillable="true" type="tns:MachineBLL" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="PushLogRefrenceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PushLogRefrenceResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllMachine">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAllMachineResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllMachineResult" type="tns:ArrayOfMachineBLL" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="PushLogRefrenceSoapIn">
+    <wsdl:part name="parameters" element="tns:PushLogRefrence" />
+  </wsdl:message>
+  <wsdl:message name="PushLogRefrenceSoapOut">
+    <wsdl:part name="parameters" element="tns:PushLogRefrenceResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllMachineSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllMachine" />
+  </wsdl:message>
+  <wsdl:message name="GetAllMachineSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllMachineResponse" />
+  </wsdl:message>
+  <wsdl:portType name="LogPushSoap">
+    <wsdl:operation name="PushLogRefrence">
+      <wsdl:input message="tns:PushLogRefrenceSoapIn" />
+      <wsdl:output message="tns:PushLogRefrenceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMachine">
+      <wsdl:input message="tns:GetAllMachineSoapIn" />
+      <wsdl:output message="tns:GetAllMachineSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="LogPushSoap" type="tns:LogPushSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="PushLogRefrence">
+      <soap:operation soapAction="http://tempuri.org/PushLogRefrence" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMachine">
+      <soap:operation soapAction="http://tempuri.org/GetAllMachine" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="LogPushSoap12" type="tns:LogPushSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="PushLogRefrence">
+      <soap12:operation soapAction="http://tempuri.org/PushLogRefrence" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMachine">
+      <soap12:operation soapAction="http://tempuri.org/GetAllMachine" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LogPush">
+    <wsdl:port name="LogPushSoap" binding="tns:LogPushSoap">
+      <soap:address location="http://localhost:51947/LogPush.asmx" />
+    </wsdl:port>
+    <wsdl:port name="LogPushSoap12" binding="tns:LogPushSoap12">
+      <soap12:address location="http://localhost:51947/LogPush.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

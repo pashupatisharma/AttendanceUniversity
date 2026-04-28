@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eAttendance", "eAttendance\eAttendance.csproj", "{FD75A2CE-689E-4F97-8B7D-0FE7745C196A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD75A2CE-689E-4F97-8B7D-0FE7745C196A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD75A2CE-689E-4F97-8B7D-0FE7745C196A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD75A2CE-689E-4F97-8B7D-0FE7745C196A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FD75A2CE-689E-4F97-8B7D-0FE7745C196A}.Debug|x64.Build.0 = Debug|Any CPU
+		{FD75A2CE-689E-4F97-8B7D-0FE7745C196A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD75A2CE-689E-4F97-8B7D-0FE7745C196A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD75A2CE-689E-4F97-8B7D-0FE7745C196A}.Release|x64.ActiveCfg = Release|Any CPU
+		{FD75A2CE-689E-4F97-8B7D-0FE7745C196A}.Release|x64.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {869A7F57-EA22-48DE-AEBA-61E60A1A91EE}
+	EndGlobalSection
+EndGlobal

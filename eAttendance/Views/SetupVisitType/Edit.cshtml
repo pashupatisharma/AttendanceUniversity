@@ -1,0 +1,44 @@
+﻿@model eAttendance.Models.VisitTypeSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">काज</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupVisitType")">काज प्रकार सेटअप</a></li>
+            <li class="animated fadeInRight">काज प्रकार सच्याउनुहोस्</li>
+
+        </ol>
+    </div>
+</div>
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">थप निरिक्षण प्रकार </h4>
+        <small class="font-bold"></small>
+    </div>
+    @using (Html.BeginForm("Edit", "SetupVisitType", FormMethod.Post, new { @id = "frmEditVisitApplication", @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.VisitTypeId)
+        @Html.Partial("_Common");
+
+    }
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".chosen-select").chosen({ width: '100%' });
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+            });
+
+        });
+    </script>
+}

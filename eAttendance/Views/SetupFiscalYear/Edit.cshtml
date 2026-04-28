@@ -1,0 +1,38 @@
+﻿@model eAttendance.Models.FiscalYearSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">सेटअप</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupFiscalYear")">आर्थिक वर्ष सेटअप</a></li>
+            <li class="animated fadeInRight">आर्थिक वर्ष सच्याउनुहोस्</li>
+
+        </ol>
+    </div>
+</div>
+
+@using (Html.BeginForm("Edit", "SetupFiscalYear", FormMethod.Post, new { @id = "frmEditFiscalYear", @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Partial("_Common");
+
+    @Html.HiddenFor(m => m.FiscalYearId)
+    @Html.HiddenFor(m => m.CreatedBy)
+    @Html.HiddenFor(m => m.CreatedDate)
+
+}
+
+@section scripts
+{
+
+    <script>
+
+        $(document).ready(function () {
+            $('.nepali-calendar').nepaliDatePicker();
+
+
+        });
+    </script>
+}

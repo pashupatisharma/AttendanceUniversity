@@ -1,0 +1,161 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Setup Branch";
+}
+<div class="row wrapper white-bg page-heading hidden-print">
+    <div class="modal-content">
+        <div class="modal-header">
+            <ol class="breadcrumb">
+                <li class="animated fadeInUp">सेटअप</li>
+                <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupBranch")">शाखा सेटअप</a></li>
+                <li class="animated fadeInRight">शाखाका सूचीहरु</li>
+
+            </ol>
+        </div>
+    </div>
+
+    <div class="col-lg-10">
+        <h2>शाखा सेटअप</h2>
+
+    </div>
+    <div class="col-lg-2">
+        <div class="title-action hidden-print">
+            <button class="btn btn-primary btn-sm btn-add" onclick="location.href = '@Url.Action("Add","SetupBranch")'">नयाँ बनाउनु </button>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content padding-top-md">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header bg-info">
+                    <h2 class="m-b-0 text-info">शाखा सेटअप </h2>
+                </div>
+                <div class="card-body">
+
+                    <div class="wrapper wrapper-content padding-top-md">
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                @using (Html.BeginForm("Index", "SetupBranch", FormMethod.Get, new { @class = "form-view-data", @id = "frmEmployeeInfo" }))
+                                {
+                                    <div class="input-group">
+                                        <input type="text" placeholder="" name="searchString" class="form-control" value="@ViewBag.CurrentFilter">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-primary" type="submit">
+                                                <i class="fa fa-filter"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                        <br />
+                        <table id="tblBranch" class="table table-condensed table-color table-color  ">
+                            <thead>
+                                <tr>
+                                    <th>क्र सं</th>
+
+                                    <th>शाखा</th>
+                                    <th>छोटकरी नाम</th>
+
+                                    <th>विवरण</th>
+                                    <th class="hidden-print text-center">कार्य</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int count = 0;}
+                                @foreach (var m in ViewBag.OnePageOfBranches)
+                                {
+                                    count += 1;
+                                    <tr>
+                                        <td>@count</td>
+
+                                        <td>@m.BranchName</td>
+                                        <td>@m.Alias</td>
+
+                                        <td>@m.Description</td>
+                                        <td class="project-actions hidden-print col-md-2">
+                                            <button type="button" class="btn-edit btn btn-primary btn-sm" onclick="location.href = '@Url.Action("Edit","SetupBranch",new { @id=m.BranchId})'"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm"></span> </button>
+                                            <button value="@m.BranchId" class="btn-delete btn btn-sm btn-danger"><i class="fa fa-remove"></i><span class="hidden-xs hidden-sm"></span> </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="pull-left">
+                                    @{ var pager = (IPagedList)ViewBag.OnePageOfBranches;}
+                                    page @(pager.PageCount < pager.PageNumber ? 0 : pager.PageNumber) of @pager.PageCount
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                @Html.PagedListPager((IPagedList)ViewBag.OnePageOfBranches, page => Url.Action("Index", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal inmodal fade" id="modelDelete" role="dialog">
+
+</div>
+@section Scripts
+{
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        toastr.options = {
+            "progressBar": true,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        var hasMessage = '@TempData["HasMessage"]';
+        if (hasMessage)
+        {
+            Command: toastr["@TempData["MessageType"]"]("@TempData["Message"]", "@TempData["MessageHeader"]")
+        }
+
+
+        $('#tblBranch tbody').on('click', '.btn-delete', function () {
+            var branchId = $(this).attr('value');
+            $.ajax({
+                url: '@Url.Action("Delete", "SetupBranch")',
+                type: 'GET',
+                data: { id: branchId },
+                success: function (result) {
+                    console.log(result)
+                    $("#modelDelete").html(result);
+                    $("#modelDelete").modal('show');
+                },
+                error: function () {
+                }
+            });
+        })
+    })
+    </script>
+
+}
+
+
+
+

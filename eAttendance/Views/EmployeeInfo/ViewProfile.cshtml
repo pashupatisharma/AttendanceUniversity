@@ -1,0 +1,213 @@
+﻿@model eAttendance.ViewModel.EmployeeViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+     
+        <ol class="breadcrumb">
+            <li>
+                <a href="index-2.html">Home</a>
+            </li>
+            <li>
+                <a>Employee</a>
+            </li>
+            <li class="active">
+                <strong>Profile</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row animated fadeInRight">
+        <div class="col-md-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h4>Profile Information</h4>
+                </div>
+                <div class="ibox-content no-padding border-left-right">
+                    <img alt="image" class="img-responsive" src="~/Images/user-image.jpg" height="100" width="100">
+                </div>
+                <div class="ibox-content profile-content">
+                    <h4><strong>&nbsp;&nbsp;&nbsp;&nbsp;@Html.Raw(Model.EmployeeInfo.EmployeeNameNp)</strong></h4>
+                    <p>
+                        <i class="fa fa-calendar"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        @if (Model.EmployeeInfo.DateOfBirth != null)
+                        {
+                            @Html.Raw((Model.EmployeeInfo.DateOfBirth != null || Model.EmployeeInfo.DateOfBirth > new DateTime(1900, 1, 1)) ? "-" : Model.EmployeeInfo.DateOfBirth.Value.ToShortDateString())
+
+                        }
+                    </p>
+
+                    <p>
+                        <i class="fa fa-phone"></i>&nbsp;&nbsp;&nbsp;&nbsp;@Html.Raw(Model.EmployeeInfo.MobileNumber)
+                    </p>
+                    <p> <i class="fa fa-envelope"></i>&nbsp;&nbsp;&nbsp;&nbsp;@Html.Raw(Model.EmployeeInfo.EmailId)</p>
+                </div>
+            </div>
+            <br />
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h4>कार्यालय विवरण</h4>
+                </div>
+                <div class="ibox-content no-padding">
+                    <div>
+                        <table class="table table-striped table-condensed table-hover">
+                            <tbody>
+                                <tr>
+                                    <th><div><span>@Html.DisplayNameFor(model => model.EmployeeOfficeInfo.OfficeId)</span></div></th>
+                                    <th>:</th>
+                                    <td><p>@eAttendance.Utility.GetOfficeInfoByOfficeId(Model.EmployeeOfficeInfo.OfficeId).OfficeName</p></td>
+
+                                </tr>
+                                <tr>
+                                    <th> @Html.DisplayNameFor(model => model.EmployeeOfficeInfo.BranchId)</th>
+                                    <th>:</th>
+                                    <td>
+                                        <p>
+                                            @eAttendance.Utility.GetBranchByMainBranchId(Model.EmployeeOfficeInfo.BranchId).BranchName
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th> @Html.DisplayNameFor(model => model.EmployeeOfficeInfo.DepartmentId)</th>
+                                    <th>:</th>
+                                    <td><p>@Html.Raw((Model.EmployeeOfficeInfo.DepartmentId != null && Model.EmployeeOfficeInfo.DepartmentId != 0) ? eAttendance.Utility.GetDepartmentIdName().First(w => w.Value == Model.EmployeeOfficeInfo.DepartmentId.ToString()).Text : "-")</p></td>
+                                </tr>
+                                <tr>
+                                    <th> @Html.DisplayNameFor(model => model.EmployeeOfficeInfo.LevelId)</th>
+                                    <th>:</th>
+                                    <td><p>@Html.Raw((Model.EmployeeOfficeInfo.LevelId != null && Model.EmployeeOfficeInfo.LevelId != 0) ? eAttendance.Utility.GetLevelIdName().First(w => w.Value == Model.EmployeeOfficeInfo.LevelId.ToString()).Text : "-")</p></td>
+                                </tr>
+                                <tr>
+                                    <th> @Html.DisplayNameFor(model => model.EmployeeOfficeInfo.DesignationId)</th>
+                                    <th>:</th>
+                                    <td><p> @eAttendance.Utility.GetDesignationByDesignationId(Model.EmployeeOfficeInfo.DesignationId).DesignationName</td>
+                                </tr>
+
+                            </tbody>
+                            <tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h4>
+                       Permanent Address
+                    </h4>
+                </div>
+                <div class="ibox-content">
+                    <div>
+                        <table class="table table-striped table-hover">
+                            <tbody>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.EmployeeInfo.PZone)</th>
+                                    <th>:</th>
+                                    <td><p>@Html.Raw((Model.EmployeeInfo.PZone != null && Model.EmployeeInfo.PZone != 0) ? eAttendance.Utility.GetZoneList().First(w => w.Value == Model.EmployeeInfo.PZone.ToString()).Text : "-")</p></td>
+
+                                </tr>
+                                <tr>
+                                    <th> @Html.DisplayNameFor(model => model.EmployeeInfo.PDistrict)</th>
+                                    <th>:</th>
+                                    <td><p>@Html.Raw((Model.EmployeeInfo.PDistrict != null && Model.EmployeeInfo.PDistrict != 0) ? eAttendance.Utility.GetDistrictList().First(w => w.Value == Model.EmployeeInfo.PDistrict.ToString()).Text : "-")</p></td>
+                                </tr>
+                                <tr>
+                                    <th> @Html.DisplayNameFor(model => model.EmployeeInfo.PVdc)</th>
+                                    <th>:</th>
+                                    <td><p>@Html.Raw((Model.EmployeeInfo.PVdc))
+                                </tr>
+                                <tr>
+                                    <th> @Html.DisplayNameFor(model => model.EmployeeInfo.PWardNo)</th>
+                                    <th>:</th>
+                                    <td><p>@Html.Raw((Model.EmployeeInfo.PWardNo))
+                                </tr>
+                            </tbody>
+                            <tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h4>Temporary Address</h4>
+
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <table class="table table-striped table-hover">
+                            <tbody>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.EmployeeInfo.TZone)</th>
+                                    <th>:</th>
+                                    <td><p>@Html.Raw((Model.EmployeeInfo.TZone != null && Model.EmployeeInfo.TZone != 0) ? eAttendance.Utility.GetZoneList().First(w => w.Value == Model.EmployeeInfo.TZone.ToString()).Text : "-")</p></td>
+
+                                </tr>
+                                <tr>
+                                    <th> @Html.DisplayNameFor(model => model.EmployeeInfo.TDistrict)</th>
+                                    <th>:</th>
+                                    <td><p>@Html.Raw((Model.EmployeeInfo.TDistrict != null && Model.EmployeeInfo.TDistrict != 0) ? eAttendance.Utility.GetDistrictList().First(w => w.Value == Model.EmployeeInfo.TDistrict.ToString()).Text : "-")</p></td>
+                                </tr>
+                                <tr>
+                                    <th> @Html.DisplayNameFor(model => model.EmployeeInfo.TVdc)</th>
+                                    <th>:</th>
+                                    <td><p>@Html.Raw((Model.EmployeeInfo.TVdc))
+                                </tr>
+                                <tr>
+                                    <th> @Html.DisplayNameFor(model => model.EmployeeInfo.TWardNo)</th>
+                                    <th>:</th>
+                                    <td><p>@Html.Raw((Model.EmployeeInfo.TWardNo))
+                                </tr>
+
+
+                            </tbody>
+                            <tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h4>Shift Information</h4>
+
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        @if (Model.EmployeeShiftTime != null)
+                        {
+                            <table class="table table-striped table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => model.EmployeeShiftTime.EffectiveDate)</th>
+                                        <th>:</th>
+                                        <td><p>@Html.Raw((Model.EmployeeShiftTime.EffectiveDate))
+                                    </tr>
+                                    <tr>
+                                        <th> @Html.DisplayNameFor(model => model.EmployeeShiftTime.ShiftId)</th>
+                                        <th>:</th>
+                                        <td><p></p></td>
+                                    </tr>
+
+                                </tbody>
+                                <tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

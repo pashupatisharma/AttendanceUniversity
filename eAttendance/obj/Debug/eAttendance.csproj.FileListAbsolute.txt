@@ -1,0 +1,575 @@
+E:\Mphasis Projects\Attendance\eAttendance\bin\eAttendance.dll.config
+E:\Mphasis Projects\Attendance\eAttendance\bin\eAttendance.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\eAttendance.pdb
+E:\Mphasis Projects\Attendance\eAttendance\bin\Antlr3.Runtime.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\EntityFramework.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\EntityFramework.SqlServer.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.AspNet.Identity.Core.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.AspNet.Identity.Owin.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Security.Cookies.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Security.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Security.Facebook.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Security.Google.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Security.OAuth.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Security.Twitter.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Web.Infrastructure.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Newtonsoft.Json.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\Owin.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\PagedList.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\PagedList.Mvc.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\System.Web.Helpers.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\System.Web.Mvc.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\System.Web.Optimization.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\System.Web.Razor.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\System.Web.WebPages.Deployment.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\System.Web.WebPages.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\System.Web.WebPages.Razor.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\WebGrease.dll
+E:\Mphasis Projects\Attendance\eAttendance\bin\System.Web.Helpers.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\System.Web.Mvc.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\System.Web.Optimization.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\System.Web.Razor.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\System.Web.WebPages.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\System.Web.WebPages.Deployment.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\System.Web.WebPages.Razor.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\Newtonsoft.Json.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\Antlr3.Runtime.pdb
+E:\Mphasis Projects\Attendance\eAttendance\bin\EntityFramework.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\EntityFramework.SqlServer.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.AspNet.Identity.Core.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.AspNet.Identity.Owin.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Security.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Security.Facebook.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Security.Cookies.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Security.OAuth.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Security.Google.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Security.Twitter.xml
+E:\Mphasis Projects\Attendance\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+E:\Mphasis Projects\Attendance\eAttendance\obj\Debug\eAttendance.csprojResolveAssemblyReference.cache
+E:\Mphasis Projects\Attendance\eAttendance\obj\Debug\eAttendance.Migrations.inirt5frr.resources
+E:\Mphasis Projects\Attendance\eAttendance\obj\Debug\eAttendance.csproj.GenerateResource.Cache
+E:\Mphasis Projects\Attendance\eAttendance\obj\Debug\eAttendance.dll
+E:\Mphasis Projects\Attendance\eAttendance\obj\Debug\eAttendance.pdb
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\eAttendance.dll.config
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\eAttendance.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\eAttendance.pdb
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Antlr3.Runtime.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\EntityFramework.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\EntityFramework.SqlServer.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.AspNet.Identity.Core.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.AspNet.Identity.Owin.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Cookies.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Facebook.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Google.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.OAuth.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Twitter.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Web.Infrastructure.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Newtonsoft.Json.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Owin.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\PagedList.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\PagedList.Mvc.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\System.Web.Helpers.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\System.Web.Mvc.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\System.Web.Optimization.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\System.Web.Razor.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\System.Web.WebPages.Deployment.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\System.Web.WebPages.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\System.Web.WebPages.Razor.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\WebGrease.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\System.Web.Helpers.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\System.Web.Mvc.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\System.Web.Optimization.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\System.Web.Razor.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\System.Web.WebPages.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\System.Web.WebPages.Deployment.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\System.Web.WebPages.Razor.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Newtonsoft.Json.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Antlr3.Runtime.pdb
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\EntityFramework.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\EntityFramework.SqlServer.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.AspNet.Identity.Core.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.AspNet.Identity.Owin.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Facebook.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Cookies.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.OAuth.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Google.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Twitter.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\obj\Debug\eAttendance.dll
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\obj\Debug\eAttendance.pdb
+E:\Mphsis\eAttendance\NewAttendance\eAttendance\obj\Debug\eAttendance.csprojResolveAssemblyReference.cache
+E:\Mphasis Projects\E-Attendence\eAttendance\obj\Debug\eAttendance.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\obj\Debug\eAttendance.pdb
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\eAttendance.dll.config
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\eAttendance.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\eAttendance.pdb
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Antlr3.Runtime.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\EntityFramework.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\EntityFramework.SqlServer.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.AspNet.Identity.Core.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.AspNet.Identity.Owin.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Cookies.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Facebook.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Google.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.OAuth.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Twitter.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Web.Infrastructure.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Newtonsoft.Json.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Owin.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\PagedList.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\PagedList.Mvc.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\System.Web.Helpers.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\System.Web.Mvc.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\System.Web.Optimization.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\System.Web.Razor.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\System.Web.WebPages.Deployment.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\System.Web.WebPages.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\System.Web.WebPages.Razor.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\WebGrease.dll
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\System.Web.Helpers.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\System.Web.Mvc.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\System.Web.Optimization.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\System.Web.Razor.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\System.Web.WebPages.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\System.Web.WebPages.Deployment.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\System.Web.WebPages.Razor.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Newtonsoft.Json.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Antlr3.Runtime.pdb
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\EntityFramework.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\EntityFramework.SqlServer.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.AspNet.Identity.Core.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.AspNet.Identity.Owin.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Facebook.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Cookies.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.OAuth.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Google.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Twitter.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+E:\Mphasis Projects\E-Attendence\eAttendance\obj\Debug\eAttendance.Migrations.intiwer.resources
+E:\Mphasis Projects\E-Attendence\eAttendance\obj\Debug\eAttendance.csproj.GenerateResource.Cache
+E:\Mphsis\NewAttendance\eAttendance\bin\eAttendance.dll.config
+E:\Mphsis\NewAttendance\eAttendance\bin\eAttendance.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\eAttendance.pdb
+E:\Mphsis\NewAttendance\eAttendance\bin\Antlr3.Runtime.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\EntityFramework.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\EntityFramework.SqlServer.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.AspNet.Identity.Core.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.AspNet.Identity.Owin.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Cookies.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Facebook.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Google.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.OAuth.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Twitter.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Web.Infrastructure.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Newtonsoft.Json.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\Owin.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\PagedList.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\PagedList.Mvc.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\System.Web.Helpers.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\System.Web.Mvc.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\System.Web.Optimization.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\System.Web.Razor.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\System.Web.WebPages.Deployment.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\System.Web.WebPages.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\System.Web.WebPages.Razor.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\WebGrease.dll
+E:\Mphsis\NewAttendance\eAttendance\bin\System.Web.Helpers.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\System.Web.Mvc.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\System.Web.Optimization.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\System.Web.Razor.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\System.Web.WebPages.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\System.Web.WebPages.Deployment.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\System.Web.WebPages.Razor.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\Newtonsoft.Json.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\Antlr3.Runtime.pdb
+E:\Mphsis\NewAttendance\eAttendance\bin\EntityFramework.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\EntityFramework.SqlServer.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.AspNet.Identity.Core.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.AspNet.Identity.Owin.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Facebook.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Cookies.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.OAuth.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Google.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.Twitter.xml
+E:\Mphsis\NewAttendance\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+E:\Mphsis\NewAttendance\eAttendance\obj\Debug\eAttendance.csprojResolveAssemblyReference.cache
+E:\Mphsis\NewAttendance\eAttendance\obj\Debug\eAttendance.dll
+E:\Mphsis\NewAttendance\eAttendance\obj\Debug\eAttendance.pdb
+E:\Mphsis\NewAttendance\eAttendance\obj\Debug\eAttendance.Migrations.sdfsdfdsfsdf.resources
+E:\Mphsis\NewAttendance\eAttendance\obj\Debug\eAttendance.csproj.GenerateResource.Cache
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\eAttendance.dll.config
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\eAttendance.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\eAttendance.pdb
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Antlr3.Runtime.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\EntityFramework.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\EntityFramework.SqlServer.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.AspNet.Identity.Core.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.AspNet.Identity.Owin.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Security.Cookies.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Security.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Security.Facebook.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Security.Google.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Security.OAuth.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Security.Twitter.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Web.Infrastructure.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Newtonsoft.Json.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Owin.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\PagedList.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\PagedList.Mvc.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\System.Web.Helpers.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\System.Web.Mvc.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\System.Web.Optimization.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\System.Web.Razor.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\System.Web.WebPages.Deployment.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\System.Web.WebPages.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\System.Web.WebPages.Razor.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\WebGrease.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\System.Web.Helpers.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\System.Web.Mvc.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\System.Web.Optimization.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\System.Web.Razor.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\System.Web.WebPages.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\System.Web.WebPages.Deployment.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\System.Web.WebPages.Razor.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Newtonsoft.Json.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Antlr3.Runtime.pdb
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\EntityFramework.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\EntityFramework.SqlServer.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.AspNet.Identity.Core.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.AspNet.Identity.Owin.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Security.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Security.Facebook.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Security.Cookies.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Security.OAuth.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Security.Google.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Security.Twitter.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+E:\Mphasis Projects\E-Attendance\eAttendance\obj\Debug\eAttendance.csprojResolveAssemblyReference.cache
+E:\Mphasis Projects\E-Attendance\eAttendance\obj\Debug\eAttendance.dll
+E:\Mphasis Projects\E-Attendance\eAttendance\obj\Debug\eAttendance.pdb
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\eAttendance.dll.config
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\eAttendance.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\eAttendance.pdb
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Antlr3.Runtime.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\EntityFramework.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\EntityFramework.SqlServer.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.AspNet.Identity.Core.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.AspNet.Identity.Owin.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Cookies.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Facebook.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Google.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.OAuth.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Twitter.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Web.Infrastructure.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Newtonsoft.Json.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Owin.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\PagedList.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\PagedList.Mvc.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\System.Web.Helpers.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\System.Web.Mvc.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\System.Web.Optimization.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\System.Web.Razor.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\System.Web.WebPages.Deployment.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\System.Web.WebPages.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\System.Web.WebPages.Razor.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\WebGrease.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\System.Web.Helpers.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\System.Web.Mvc.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\System.Web.Optimization.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\System.Web.Razor.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\System.Web.WebPages.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\System.Web.WebPages.Deployment.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\System.Web.WebPages.Razor.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Newtonsoft.Json.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Antlr3.Runtime.pdb
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\EntityFramework.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\EntityFramework.SqlServer.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.AspNet.Identity.Core.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.AspNet.Identity.Owin.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Facebook.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Cookies.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.OAuth.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Google.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Twitter.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+E:\Mphsis\NEWAttendanceSumip\eAttendance\obj\Debug\eAttendance.dll
+E:\Mphsis\NEWAttendanceSumip\eAttendance\obj\Debug\eAttendance.pdb
+E:\Mphsis\NEWAttendanceSumip\eAttendance\obj\Debug\eAttendance.csprojResolveAssemblyReference.cache
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\eAttendance.dll.config
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\eAttendance.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\eAttendance.pdb
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Antlr3.Runtime.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\EntityFramework.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\EntityFramework.SqlServer.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.AspNet.Identity.Core.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.AspNet.Identity.Owin.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Cookies.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Facebook.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Google.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.OAuth.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Twitter.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Web.Infrastructure.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Newtonsoft.Json.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Owin.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\PagedList.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\PagedList.Mvc.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\System.Web.Helpers.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\System.Web.Mvc.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\System.Web.Optimization.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\System.Web.Razor.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\System.Web.WebPages.Deployment.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\System.Web.WebPages.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\System.Web.WebPages.Razor.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\WebGrease.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\System.Web.Helpers.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\System.Web.Mvc.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\System.Web.Optimization.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\System.Web.Razor.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\System.Web.WebPages.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\System.Web.WebPages.Deployment.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\System.Web.WebPages.Razor.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Newtonsoft.Json.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Antlr3.Runtime.pdb
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\EntityFramework.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\EntityFramework.SqlServer.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.AspNet.Identity.Core.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.AspNet.Identity.Owin.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Facebook.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Cookies.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.OAuth.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Google.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.Twitter.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\obj\Debug\eAttendance.csprojResolveAssemblyReference.cache
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\obj\Debug\eAttendance.dll
+D:\Mphasis Projects\New Updated\E-Attendence\eAttendance\obj\Debug\eAttendance.pdb
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\eAttendance.dll.config
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\eAttendance.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\eAttendance.pdb
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Antlr3.Runtime.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\EntityFramework.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\EntityFramework.SqlServer.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.AspNet.Identity.Core.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.AspNet.Identity.Owin.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Cookies.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Facebook.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Google.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.OAuth.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Twitter.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Web.Infrastructure.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Newtonsoft.Json.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Owin.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\PagedList.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\PagedList.Mvc.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\System.Web.Helpers.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\System.Web.Mvc.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\System.Web.Optimization.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\System.Web.Razor.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\System.Web.WebPages.Deployment.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\System.Web.WebPages.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\System.Web.WebPages.Razor.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\WebGrease.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\System.Web.Helpers.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\System.Web.Mvc.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\System.Web.Optimization.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\System.Web.Razor.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\System.Web.WebPages.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\System.Web.WebPages.Deployment.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\System.Web.WebPages.Razor.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Newtonsoft.Json.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Antlr3.Runtime.pdb
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\EntityFramework.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\EntityFramework.SqlServer.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.AspNet.Identity.Core.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.AspNet.Identity.Owin.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Facebook.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Cookies.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.OAuth.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Google.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.Twitter.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\Attendance\NEWAttendanceSumip\eAttendance\obj\Debug\eAttendance.csprojResolveAssemblyReference.cache
+D:\Attendance\NEWAttendanceSumip\eAttendance\obj\Debug\eAttendance.dll
+D:\Attendance\NEWAttendanceSumip\eAttendance\obj\Debug\eAttendance.pdb
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\eAttendance.dll.config
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\eAttendance.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\eAttendance.pdb
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Antlr3.Runtime.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\EntityFramework.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\EntityFramework.SqlServer.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.AspNet.Identity.Core.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.AspNet.Identity.Owin.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Security.Cookies.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Security.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Security.Facebook.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Security.Google.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Security.OAuth.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Security.Twitter.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Web.Infrastructure.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Newtonsoft.Json.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Owin.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\PagedList.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\PagedList.Mvc.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\System.Web.Helpers.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\System.Web.Mvc.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\System.Web.Optimization.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\System.Web.Razor.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\System.Web.WebPages.Deployment.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\System.Web.WebPages.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\System.Web.WebPages.Razor.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\WebGrease.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\System.Web.Helpers.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\System.Web.Mvc.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\System.Web.Optimization.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\System.Web.Razor.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\System.Web.WebPages.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\System.Web.WebPages.Deployment.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\System.Web.WebPages.Razor.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Newtonsoft.Json.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Antlr3.Runtime.pdb
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\EntityFramework.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\EntityFramework.SqlServer.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.AspNet.Identity.Core.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.AspNet.Identity.Owin.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Security.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Security.Facebook.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Security.Cookies.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Security.OAuth.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Security.Google.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Security.Twitter.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\obj\Debug\eAttendance.csprojResolveAssemblyReference.cache
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\obj\Debug\eAttendance.dll
+D:\Mphasis Projects\Old Project\AttendanceLatest\AttendanceLatest\eAttendance\obj\Debug\eAttendance.pdb
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\eAttendance.dll.config
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\eAttendance.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\eAttendance.pdb
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Antlr3.Runtime.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\EntityFramework.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\EntityFramework.SqlServer.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.AspNet.Identity.Core.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.AspNet.Identity.Owin.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Security.Cookies.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Security.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Security.Facebook.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Security.Google.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Security.OAuth.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Security.Twitter.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Web.Infrastructure.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Newtonsoft.Json.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Owin.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\PagedList.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\PagedList.Mvc.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\System.Web.Helpers.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\System.Web.Mvc.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\System.Web.Optimization.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\System.Web.Razor.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\System.Web.WebPages.Deployment.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\System.Web.WebPages.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\System.Web.WebPages.Razor.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\WebGrease.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\System.Web.Helpers.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\System.Web.Mvc.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\System.Web.Optimization.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\System.Web.Razor.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\System.Web.WebPages.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\System.Web.WebPages.Deployment.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\System.Web.WebPages.Razor.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Newtonsoft.Json.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Antlr3.Runtime.pdb
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\EntityFramework.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\EntityFramework.SqlServer.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.AspNet.Identity.Core.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.AspNet.Identity.Owin.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Host.SystemWeb.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Security.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Security.Facebook.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Security.Cookies.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Security.OAuth.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Security.Google.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Security.Twitter.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\obj\Debug\eAttendance.csprojResolveAssemblyReference.cache
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\obj\Debug\eAttendance.dll
+F:\Mphsis\LatestServerProject\AttendanceManagmentSystem\eAttendance\obj\Debug\eAttendance.pdb

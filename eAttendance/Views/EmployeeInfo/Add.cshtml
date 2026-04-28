@@ -1,0 +1,355 @@
+﻿@using System.Collections.Generic;
+@using eAttendance.Models;
+@model eAttendance.ViewModel.EmployeeViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="modal-content">
+    <div class="modal-content">
+        <div class="modal-header">
+            <ol class="breadcrumb">
+                <li class="animated fadeInUp">कर्मचारी</li>
+                <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupDistrict")">कर्मचारी सेटअप</a></li>
+                <li class="animated fadeInRight">नयाँ कर्मचारी विवरण थप्नुहोस्</li>
+
+            </ol>
+        </div>
+    </div>
+
+    <div class="wrapper wrapper-content no-borders no-padding">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox no-margins">
+                    <div class="ibox-content col-md-12">
+                        @using (Html.BeginForm("Add", "EmployeeInfo", FormMethod.Post, new { @id = "frmAddEmployeeInfo", @class = "wizard-big wizard clearfix" }))
+                        {
+                            <div class="wizard-big wizard clearfix" style="width:auto;">
+
+                                <section>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h3 class="m-t-none m-b">@eAttendance.Service.MenuService.AccountInformation</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>इमेल आइढी<span class="text-danger">*</span> </label>
+                                                @Html.TextBoxFor(m => m.RegisterViewModel.Email, new { @placeholder = "Enter Email Address", @class = "form-control required email" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>पासवर्ड<span class="text-danger">*</span></label>
+                                                @Html.PasswordFor(m => m.RegisterViewModel.Password, new { @placeholder = "Password", @class = "form-control required" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label> पासवर्ड सुनिश्चित <span class="text-danger">*</span></label>
+                                                @Html.PasswordFor(m => m.RegisterViewModel.ConfirmPassword, new { @placeholder = "Confirm Password", @class = "form-control required" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h3 class="m-t-none m-b">कर्मचारी विवरण</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>@Html.DisplayNameFor(m => m.EmployeeInfo.EmployeeNo) <span class="text-danger">*</span></label>
+                                                @Html.TextBoxFor(m => m.EmployeeInfo.EmployeeNo, new { @class = "form-control required", @placeholder = "Enrollment No" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="firstname">@Html.DisplayNameFor(m => m.EmployeeInfo.EmployeeNameNp) <span class="text-danger">*</span></label>
+                                                @Html.TextBoxFor(m => m.EmployeeInfo.EmployeeNameNp, new { @class = "form-control required", @placeholder = "Employee Name" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="firstname">@Html.DisplayNameFor(m => m.EmployeeInfo.EmployeeName) </label>
+                                                @Html.TextBoxFor(m => m.EmployeeInfo.EmployeeName, new { @class = "form-control", @placeholder = "EmployeeName" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>@Html.DisplayNameFor(m => m.EmployeeInfo.Gender)</label>
+                                                @Html.DropDownListFor(m => m.EmployeeInfo.Gender, eAttendance.Utility.GetGender(), new { @class = "chosen form-control", data_placeholder = "I am" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.NEffectiveDate) *</label>
+                                                @Html.TextBoxFor(m => m.EmployeeOfficeInfo.NEffectiveDate, "{0:yyyy-MM-dd }", new { @class = "form-control inputmask", data_mask = "9999-99-99" })
+                                                @Html.HiddenFor(m => m.EmployeeOfficeInfo.EffectiveDate)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h3 class="m-t-none m-b">कार्यलय विवरण</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.OfficeId)*</label>
+                                                @Html.DropDownListFor(m => m.EmployeeOfficeInfo.OfficeId, eAttendance.Utility.GetOfficeIdName(User), new { @class = "chosen-select form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.BranchId)</label>
+                                                @Html.DropDownListFor(m => m.EmployeeOfficeInfo.BranchId, eAttendance.Utility.GetBranchIdName(User), new { @class = "chosen-select form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.ServiceId)*</label>
+                                                @Html.DropDownListFor(m => m.EmployeeOfficeInfo.ServiceId, eAttendance.Utility.GetServiceIdName(), new { @class = "chosen-select form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.LevelId)*</label>
+                                                @Html.DropDownListFor(m => m.EmployeeOfficeInfo.LevelId, eAttendance.Utility.GetLevelIdName(), new { @class = "chosen-select form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label>@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.DesignationId)*</label>
+                                                @Html.DropDownListFor(m => m.EmployeeOfficeInfo.DesignationId, eAttendance.Utility.GetDesignationIdNameList(), new { @class = "chosen-select form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-12">
+                                            <div class="form-group">
+                                                <label>@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.Remarks)</label>
+                                                @Html.TextAreaFor(m => m.EmployeeOfficeInfo.Remarks, new { @class = "form-control" })
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </section>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="window.location.href='@Url.Action("Index","EmployeeInfo")'">Back</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+
+
+
+
+
+        $(document).ready(function () {
+
+
+
+            $('#RegisterViewModel_Email').change(function () {
+
+                var email = $('#RegisterViewModel_Email').val();
+
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CheckUserName", "Utility")',
+
+                    data: {
+                        "UserName": email
+
+
+                    },
+
+                    cache: false,
+                    success: function (data) {
+                        if (data == true) {
+                            alert("EmailId already exist please try another")
+                            $("#RegisterViewModel_Email").val(null)
+                        }
+                    }
+
+
+
+                });
+            });
+
+
+
+
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+     
+            var hasMessage = '@TempData["HasMessage"]';
+            if (hasMessage) {
+                Command: toastr["@TempData["MessageType"]"]("@TempData["Message"]", "@TempData["MessageHeader"]")
+            }
+            // Form
+            var form = $("#frmAddEmployeeInfo");
+            form.validate({
+                errorPlacement: function errorPlacement(error, element) { element.before(error); },
+                rules: {
+                    'RegisterViewModel.Password': {
+                        required: true,
+                        minlength: 6
+                    },
+                    'EmployeeOfficeInfo.OfficeId': {
+                        min: 1
+                    },
+                    'RegisterViewModel.ConfirmPassword': {
+                        equalTo: '#RegisterViewModel_Password'
+                    },
+
+                    'EmployeeOfficeInfo.NEffectiveDate': {
+                        required: true
+                    },
+                    'EmployeeOfficeInfo.OfficeId': {
+                        required: true,
+                        min: 1
+                    },
+                    'EmployeeOfficeInfo.BranchId': {
+                        required: true,
+                        min: 1
+                    },
+                    'EmployeeOfficeInfo.ServiceId': {
+                        required: true,
+                        min: 1
+                    },
+                    'EmployeeOfficeInfo.LevelId': {
+                        required: true,
+                        min: 1
+                    },
+                    'EmployeeOfficeInfo.DesignationId': {
+                        required: true,
+                        min: 1
+                    }
+                },
+                messages: {
+                    'RegisterViewModel.Email': {
+                        remote: "username or email is not available."
+                    },
+                    'EmployeeInfo.EmployeeNo': {
+                        remote: "duplicate employee no found."
+                    },
+                    'EmployeeOfficeInfo.OfficeId': {
+                        min: "Please select an option."
+                    },
+                    'EmployeeOfficeInfo.NEffectiveDate': {
+                        required: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    'EmployeeOfficeInfo.OfficeId': {
+                        required: 'कृपया विकल्प चयन गर्नुहोस्',
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    'EmployeeOfficeInfo.BranchId': {
+                        required: 'कृपया विकल्प चयन गर्नुहोस्',
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    'EmployeeOfficeInfo.ServiceId': {
+                        required: 'कृपया विकल्प चयन गर्नुहोस्',
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    'EmployeeOfficeInfo.LevelId': {
+                        required: 'कृपया विकल्प चयन गर्नुहोस्',
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    'EmployeeOfficeInfo.DesignationId': {
+                        required: 'कृपया विकल्प चयन गर्नुहोस्',
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    }
+                }
+            });
+
+
+
+
+            $(".chosen").chosen({ width: '100%', disable_search_threshold: 10 });
+            $(".chosen-select").chosen({ width: '100%' });
+
+            $('.nepali-calendar').nepaliDatePicker();
+
+
+
+
+            $('#EmployeeOfficeInfo_OfficeId').change(function () {
+                // Loading Branch
+                $.getJSON("@Url.Action("GetBranch", "Utility")", { withAll: false, withSelect: true },
+                  function (data) {
+                      $("#EmployeeOfficeInfo_BranchId").empty();
+                      var $prevGroup, prevGroupName;
+                      $.each(data, function () {
+                          if (this.Group == null) { $("<option />").val(this.Value).text(this.Text).appendTo('#EmployeeOfficeInfo_BranchId'); }
+                          else {
+                              if (prevGroupName != this.Group.Name)
+                              { $prevGroup = $('<optgroup />').prop('label', this.Group.Name).appendTo('#EmployeeOfficeInfo_BranchId'); }
+                              $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                              prevGroupName = this.Group.Name;
+                          }
+                      });
+                      $("#EmployeeOfficeInfo_BranchId").trigger('chosen:updated');
+                  });
+                //LoadBranch(this.value);
+            });
+
+
+
+            $('#EmployeeOfficeInfo_LevelId').change(function () {
+                // Loading Designation
+                var levelId = $(this).val();
+                $.getJSON("@Url.Action("GetDesignationByLevelId", "Utility")", { LevelId: levelId, withAll: false, withSelect: true },
+                 function (data) {
+                     $("#EmployeeOfficeInfo_DesignationId").empty();
+                     var $prevGroup, prevGroupName;
+                     $.each(data, function () {
+                         if (this.Group == null) { $("<option />").val(this.Value).text(this.Text).appendTo('#EmployeeOfficeInfo_DesignationId'); }
+                         else {
+                             if (prevGroupName != this.Group.Name) { $prevGroup = $('<optgroup />').prop('label', this.Group.Name).appendTo('#EmployeeOfficeInfo_DesignationId'); }
+                             $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                             prevGroupName = this.Group.Name;
+                         }
+                     });
+                     $("#EmployeeOfficeInfo_DesignationId").trigger('chosen:updated');
+                 });
+            });
+
+
+
+
+        });
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+

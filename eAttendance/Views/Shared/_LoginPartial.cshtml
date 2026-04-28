@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+      
+        <li class="dropdown no-borders">
+            <a class="dropdown-toggle count-info dropdown-header" data-toggle="dropdown" href="#">
+                <img alt="image" class="img-circle img-responsive" src="@Url.Content("~/Images/user-image.jpg")"/>
+                <i class="fa fa-angle-down text-white"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user animated fadeInUp no-borders bounce">
+                <li class="no-margins list-user">
+                    <div class="widget-head-color-box blue-bg p-lg text-center no-borders">
+                        <img alt="profile" class="img-circle circle-border m-b-sm" src="@Url.Content("~/Images/user-image.jpg")">
+                        <h2 class="font-bold no-margins">
+                            @Html.ActionLink(User.Identity.GetUserName() + "!", "", "", routeValues: null, htmlAttributes: new { title = "Manage", @class = "text-white" })
+                        </h2>
+                    </div>
+                </li>
+                @if (User.IsInRole("Employee"))
+                {
+                   
+
+                    <li>
+                        <a href="@Url.Action("ViewProfile", "EmployeeInfo", new { id = Utility.GetEmployeeIdByUserId(User.Identity.GetUserId()) })"
+                           class="btn btn-outline btn-success dim" type="button">
+                            <i class="fa fa-user"></i> &nbsp;
+                            Profile
+                        </a>
+                    </li>
+                }
+                <li>
+                    <a href="@Url.Action("Manage", "Account")" class="dim">
+                        <i class="fa fa-lock"></i> &nbsp;
+                        ChangePassword
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:document.getElementById('logoutForm').submit()" class="dim">
+                        <i class="fa fa-sign-out"></i> &nbsp;
+                        SignOut
+                    </a>
+                </li>
+                <li></li>
+            </ul>
+        </li>
+    }
+}
+else
+{
+    <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+    <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+}
+

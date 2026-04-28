@@ -1,0 +1,91 @@
+﻿@model eAttendance.ViewModel.EmployeeViewModel
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+    ViewBag.Title = "Employee Information";
+}
+<style>
+    label.error {
+        float: right;
+        font-size: 10.5px;
+    }
+</style>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title"><i></i>बाह्य सरुवा </h4>
+            <small class="font-bold"></small>
+        </div><!---->
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@eAttendance.Service.MenuService.Enrollment *</label>:
+                        @Html.DisplayFor(m => m.EmployeeInfo.EmployeeNo, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@eAttendance.Service.MenuService.EmployeeNameEng *</label>:
+                        @Html.DisplayFor(m => m.EmployeeInfo.EmployeeName, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.OfficeName)</label>:
+                        @Html.DisplayFor(m => m.EmployeeOfficeInfo.OfficeName, new { @class = "chosen-select form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.OfficeName)</label>
+                        @Html.DropDownListFor(m => m.EmployeeOfficeInfo.OfficeId, eAttendance.Utility.GetOfficeIdName(), new { @id = "ReTransfer_OfficeId", @class = "chosen-select form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.MainBranchName)</label>:
+                        @Html.DisplayFor(m => m.EmployeeOfficeInfo.MainBranchName, new { @class = "chosen-select form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.BranchName)</label>:
+                        @Html.DisplayFor(m => m.EmployeeOfficeInfo.BranchName, new { @class = "chosen-select form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.LevelName)</label>:
+                        @Html.DisplayFor(m => m.EmployeeOfficeInfo.LevelName, new { @class = "chosen-select form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.DesignationName)</label>:
+                        @Html.DisplayFor(m => m.EmployeeOfficeInfo.DesignationName, new { @class = "chosen-select" })
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.ServiceName)</label>:
+                        @Html.DisplayFor(m => m.EmployeeOfficeInfo.ServiceName, new { @class = "chosen-select form-control" })
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+

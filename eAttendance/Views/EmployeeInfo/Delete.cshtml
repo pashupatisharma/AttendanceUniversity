@@ -1,0 +1,63 @@
+﻿@model eAttendance.Models.EmployeeInfo
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title"><i class="fa fa-question-circle fa-2x"></i></h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("Delete", "EmployeeInfo", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken();
+            <div class="modal-body">
+                @Html.HiddenFor(m => m.EmployeeId)
+                @Html.HiddenFor(m=> m.EmployeeNo)
+                @Html.HiddenFor(m => m.EmployeeName)
+                @Html.HiddenFor(m=> m.EmployeeNameNp)
+                @Html.HiddenFor(m => m.DateOfBirth)
+                @Html.HiddenFor(m => m.Gender)
+                @Html.HiddenFor(m => m.MaritalStatus)
+                @Html.HiddenFor(m => m.BloodGroup)
+                @Html.HiddenFor(m=> m.EmailId)
+                @Html.HiddenFor(m => m.PhoneNumber)
+                @Html.HiddenFor(m => m.MobileNumber)
+                @Html.HiddenFor(m => m.Qualification)
+                @Html.HiddenFor(m => m.UserId)
+                @Html.HiddenFor(m => m.PZone)
+                @Html.HiddenFor(m => m.PDistrict)
+                @Html.HiddenFor(m => m.PVdc)
+                @Html.HiddenFor(m => m.PWardNo)
+                @Html.HiddenFor(m => m.TZone)
+                @Html.HiddenFor(m => m.TDistrict)
+                @Html.HiddenFor(m => m.TVdc)
+                @Html.HiddenFor(m => m.TWardNo)
+                @Html.HiddenFor(m => m.NationalityId)
+                @Html.HiddenFor(m => m.EntryDate)
+                @Html.HiddenFor(m=> m.DisplayOrder)
+                @Html.HiddenFor(m=> m.CreatedBy)
+                @Html.HiddenFor(m=> m.CreatedDate)
+                @Html.HiddenFor(m=> m.ModifiedBy)
+                @Html.HiddenFor(m=> m.ModifiedDate)
+                @Html.HiddenFor(m=> m.Status)
+                @if (Model.Status == 2)
+                {
+                    <h3 class="text-center">तपाईं सक्रिय गर्न निश्चित हुनुहुन्छ ?</h3>  
+                }
+                else
+                {
+                    <h3 class="text-center">तपाईं निष्क्रिय गर्न निश्चित हुनुहुन्छ ?</h3>                   
+                }
+                
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">हो </button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">होइन</button>
+            </div>
+        }
+    </div>
+</div>
+
+

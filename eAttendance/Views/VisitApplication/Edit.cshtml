@@ -1,0 +1,63 @@
+﻿@model eAttendance.Models.VisitApplication
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">काज आवेदन सम्पादन </h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("Edit", "VisitApplication", FormMethod.Post, new { @id = "VisitApplicationEditForm", @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.VisitApplicationId)
+            @Html.HiddenFor(m => m.CreatedBy)
+            @Html.HiddenFor(m => m.CreatedDate)
+            @Html.HiddenFor(m=>m.EmployeeId)
+
+            @Html.Partial("_Common")
+
+        }
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/Scripts/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".chosen-select").chosen({ width: '100%' });
+            $('#EditNApplicationDate').nepaliDatePicker();
+            $('#EditNFromDate').nepaliDatePicker();
+            $('#EditNToDate').nepaliDatePicker();
+
+            $("#VisitApplicationEditForm").validate({
+                rules: {
+                    EmployeeName: {
+                        required: true,
+                        minlength: 3,
+                        remote: {
+                            url: "@Url.Action("CheckDuplicate", "VisitApplication")",
+                            type: "POST",
+                            data: {
+                                EmployeeName: function () {
+                                    return $('#VisitApplicationEditForm').find('#EmployeeName').val()
+                                },
+                                Id: function () { return $('#EmployeeId').val() }
+                            }
+                        }
+                    },
+                },
+                messages: {
+                    EmployeeId: {
+                        remote: "Duplicate employee name found. Please use another name."
+                    }
+                }
+            });
+        });
+        $('.inputmask').inputmask({
+            mask: '9999-99-99'
+        })
+    </script>
+}

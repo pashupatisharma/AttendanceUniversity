@@ -1,0 +1,67 @@
+﻿@model eAttendance.Models.FiscalYearSetUp
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header bg-info">
+            <h2 class="m-b-0 text-info">थप   वर्ष</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+
+                    @Html.DisplayNameFor(m => m.FiscalYearName)
+                    @Html.TextBoxFor(m => m.FiscalYearName, new { @class = "form-control" })
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+
+                    @Html.DisplayNameFor(m => m.FiscalYearCode)
+                    @Html.TextBoxFor(m => m.FiscalYearCode, new { @class = "form-control" })
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+                    @Html.DisplayNameFor(m => m.Description)
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+
+                    @Html.DisplayNameFor(m => m.NFromDate)
+                    @Html.TextBoxFor(m => m.NFromDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99" })
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    @Html.DisplayNameFor(m => m.NToDate)
+
+                    @Html.TextBoxFor(m => m.NToDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99" })
+
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    @Html.DisplayNameFor(m => m.IsActive)
+
+                    @Html.DropDownList("IsActive", eAttendance.Utility.GetActiveStatus(), new { @class = "chosen-select form-control chosen-select" })
+
+                    @Html.ValidationMessageFor(m => m.IsActive)
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                 @Html.DisplayNameFor(m => m.DisplayOrder)
+
+                    @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.DisplayOrder)
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="location.href='@Url.Action("Index","SetupFiscalYear")'">Back</button>
+            </div>
+        </div>
+    </div>
+</div>

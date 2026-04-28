@@ -1,0 +1,45 @@
+﻿@model eAttendance.Models.LeaveApplication
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">मेटाउन बिदाको निबेदन</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("Delete", "LeaveApplication", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.HiddenFor(m => m.LeaveApplicationId)
+            @Html.HiddenFor(m=> m.EmployeeId)
+            @Html.HiddenFor(m=> m.ApplicationDate)
+            @Html.HiddenFor(m=> m.LeaveTypeId)
+            @Html.HiddenFor(m=> m.Subject)
+            @Html.HiddenFor(m=> m.FromDate)
+            @Html.HiddenFor(m=> m.ToDate)
+            @Html.HiddenFor(m=> m.IsHalfDay)
+            @Html.HiddenFor(m=> m.TotalDays)
+            @Html.HiddenFor(m=> m.Message)
+            @Html.HiddenFor(m=> m.Recomender)
+            @Html.HiddenFor(m=> m.RecomenderStatus)
+            @Html.HiddenFor(m=> m.RecomendedDate)
+            @Html.HiddenFor(m=> m.ApprovedBy)
+            @Html.HiddenFor(m=> m.ApprovedStatus)
+            @Html.HiddenFor(m=> m.ApplicationDate)
+            @Html.HiddenFor(m=> m.Type)
+            @Html.HiddenFor(m=> m.CreatedBy)
+            @Html.HiddenFor(m=> m.CreatedDate)
+            <div class="modal-body">
+                <p><i class="fa fa-question-circle"></i>तपाईं मेटाउन निश्चित हुनुहुन्छ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">हो </button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">होइन</button>
+            </div>
+        }
+    </div>
+</div>
+
+
+

@@ -1,0 +1,73 @@
+﻿@model eAttendance.Models.Document
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">कागजात थप</h4>
+            <small class="font-bold"></small>
+        </div>
+       
+
+            @using (Html.BeginForm("Add", "Document", FormMethod.Post, new { enctype = "multipart/form-data", @id = "frmAddDocument", @class = "form-horizontal" }))
+                        {
+                @Html.HiddenFor(m => m.EmployeeId)
+                 @Html.AntiForgeryToken()
+                    <div class="modal-body">
+                        
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.CategoryId)</label>
+                            <div class="col-sm-9">
+                                @Html.DropDownListFor(m => m.CategoryId, eAttendance.Utility.GetDocumentCatogoryIdWithAll(), new { @class = "chosen-select form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.DocumentFullName)</label>
+                            <div class="col-sm-9">
+                                @Html.TextBoxFor(m => m.DocumentFullName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.ContentType)</label>
+                            <div class="col-sm-9">
+
+                                @Html.TextBoxFor(m => m.ContentType, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="file" class="col-sm-3 control-label">अपलोड फाइल</label>
+                            <div class="col-sm-9">
+                                <input type="file" name="file" id="file" style="width: 100%;" />
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+    </div>
+                        }
+                    
+        </div>
+    </div>
+
+    @section scripts
+
+    {
+         <script>
+    $(document).ready(function () {
+        $(".chosen").chosen({ width: '100%', disable_search_threshold: 10 });
+        $(".chosen-select").chosen({ width: '100%' });
+
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" })
+      
+    });
+
+</script>
+    
+    }

@@ -1,0 +1,20 @@
+﻿@model eAttendance.Models.LevelSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">सेटअप</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupLevel")">श्रेणी सेटअप</a></li>
+            <li class="animated fadeInRight">नयाँ श्रेणी बनाउनुहोस्</li>
+
+        </ol>
+    </div>
+</div>
+@using (Html.BeginForm("Add", "SetupLevel", FormMethod.Post, new { @id = "AddLevelForm", @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Partial("_Common");
+
+}

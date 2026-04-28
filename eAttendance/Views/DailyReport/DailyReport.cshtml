@@ -1,0 +1,242 @@
+﻿@model IEnumerable<eAttendance.ReportModels.DailyPresentList>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Index";
+}
+<style>
+    hr {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        border: 0;
+        border-top: 1px solid #eee;
+    }
+</style>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-8 col-md-8 col-sm-8">
+        <h2>@eAttendance.Service.MenuService.DailyAttendanceReport</h2>
+        <ol class="breadcrumb">
+            <li><a href="@Url.Action("Index","Home")">घर</a></li>
+            <li>@eAttendance.Service.MenuService.Report</li>
+            <li class="active"><strong>@eAttendance.Service.MenuService.DailyAttendanceReport</strong></li>
+        </ol>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+        <div class="title-action">
+            <button href="btn-Export-xls" class="btn btn-primary btn-sm" onclick="tableToExcel('divprint', 'Daily Report')"><i class=" fa fa-file-excel-o"></i> Export </button>
+            <button id="btnPrint" type="button" class="btn btn-primary btn-sm"><i class="fa fa-print"></i> Print </button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInDown no-margins no-padding padding-top-md">
+            <div class="ibox float-e-margins no-margins">
+                <div class="ibox-title">
+                   
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content no-border-bottom">
+                    @using (Ajax.BeginForm("SearchDailyReport", "DailyReport", new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "divprint" }))
+                    {
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="control-label">@eAttendance.Service.MenuService.Date</label>
+                                    @Html.TextBox("nLogDate", "", new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="control-label">कार्यालय</label>
+                                    @Html.DropDownList("officeId", eAttendance.Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control chosen-select" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="control-label">शाखा</label>
+                                    @Html.DropDownList("branchId", eAttendance.Utility.GetBranchAndMainBranchWithAll(User), new { @class = "chosen-select form-control chosen-select" })
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label ">सेवा</label>
+                                    @Html.DropDownList("serviceId", eAttendance.Utility.GetServiceIdNameWithAll(User), new { @class = "chosen-select form-control chosen-select" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="control-label">तह</label>
+                                    @Html.DropDownList("levelId", eAttendance.Utility.GetLevelIdNameWithAll(User), new { @class = "chosen-select form-control chosen-select" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="control-label">पद</label>
+                                    @Html.DropDownList("designationId", eAttendance.Utility.GetDesignationIdNameWithAll(User), new { @class = "chosen-select form-control chosen-select" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="control-label">कर्मचारी</label>
+                                    @Html.DropDownList("empId", eAttendance.Utility.GetEmployeeIdNameWithAll(User), new { @class = "chosen-select form-control chosen-select" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group margin-top-25">
+                                    <button type="submit" class="btn-Search btn btn-primary btn-rounded btn-outline fa fa-search"> खोज्नुहोस्</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div id="divprint" class="ibox-content p-xl no-padding">
+                <div id="DataTables_Table_0_wrapper" class="dataTable form-inline no-margins table-responsive">
+                    @if (Model != null)
+                    {
+                        <table class="table table-bordered no-borders" id="dtDailyAttendance" role="grid" aria-describedby="DataTables_Table_0_info">
+                            <thead>
+                                <tr class="no-borders bg-white">
+                                    <td colspan="9" class="no-borders bg-white text-center">
+                                        <img src="@Url.Content("~/Images/Emblem_of_Nepal.png")" />
+                                        <h4>नेपाल सरकार</h4>
+                                        <h5>@eAttendance.Utility.GetOfficeIdNameWithSelect(User).First(w => w.Value == ((Request["officeId"] != null) ? Request["officeId"] : "0")).Text</h5>
+                                        <h5>( @eAttendance.Service.MenuService.DailyAttendanceReport )</h5>
+                                    </td>
+                                </tr>
+                                <tr class="no-borders bg-white">
+                                    <td colspan="9" class="no-borders bg-white">
+                                        <hr />
+                                    </td>
+                                </tr>
+                                <tr class="no-borders bg-white">
+                                    <td colspan="9" class="bg-white no-borders">
+                                        <div class="col-md-12">
+                                            <div class="col-sm-3 col-lg-3 col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">@eAttendance.Service.MenuService.Date: </label>
+                                                    <label class="control-label" id="lblNLogDate">@Html.Raw(Request["nLogDate"])</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 col-lg-3 col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">कार्यालय: </label>
+                                                    <label class="control-label" id="lblOfficeName">@eAttendance.Utility.GetOfficeIdNameWithSelect(User).First(w => w.Value == ((Request["officeId"] != null) ? Request["officeId"] : "0")).Text</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-lg-3 col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label ">सेवा: </label>
+                                                    <label class="control-label" id="lblServiceName">@eAttendance.Utility.GetServiceIdNameWithAll(User).First(w => w.Value == ((Request["serviceId"] != null) ? Request["serviceId"] : "0")).Text</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 col-lg-3 col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">शाखा: </label>
+                                                    <label id="lblBranchName" class="control-label">@eAttendance.Utility.GetBranchAndMainBranchWithAll(User).First(w => w.Value == ((Request["branchId"] != null) ? Request["branchId"] : "0")).Text</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 col-lg-3 col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">तह: </label>
+                                                    <label id="lblLevelName" class="control-label">@eAttendance.Utility.GetLevelIdNameWithAll(User).First(w => w.Value == ((Request["levelId"] != null) ? Request["levelId"] : "0")).Text</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 col-lg-3 col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">पद: </label>
+                                                    <label id="lblDesignationName" class="control-label">@eAttendance.Utility.GetDesignationIdNameWithAll(User).First(w => w.Value == ((Request["designationId"] != null) ? Request["designationId"] : "0")).Text</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 col-lg-3 col-md-3">
+                                                <div class="form-group">
+                                                    <label class="control-label">कर्मचारी: </label>
+                                                    <label id="lblEmployeeName" class="control-label">@eAttendance.Utility.GetEmployeeIdNameWithAll(User).First(w => w.Value == ((Request["empId"] != null) ? Request["empId"] : "0")).Text</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th rowspan="2" class="text-center">क्र सं</th>
+                                    <th rowspan="2">पद</th>
+                                    <th rowspan="2">कर्मचारी</th>
+                                    <th rowspan="2">@eAttendance.Service.MenuService.ShiftName</th>
+                                    <th colspan="2" class="text-center">@eAttendance.Service.MenuService.Time</th>
+                                    <th colspan="2" class="text-center">@eAttendance.Service.MenuService.TimeRemarks</th>
+                                    <th rowspan="2" class="text-center">@eAttendance.Service.MenuService.WorkedHour </th>
+                                </tr>
+                                <tr role="row">
+                                    <th class="text-center">आएको</th>
+                                    <th class="text-center">गएको</th>
+                                    <th class="text-center">आएको</th>
+                                    <th class="text-center">गएको</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int count = 0;}
+                                @foreach (var m in Model)
+                                {
+                                    count += 1;
+                                    <tr class="gradeA odd" role="row">
+                                        <td class="sorting_1 text-center">@Utility.ConvertToNepaliNumber(count)</td>
+                                        <td> @m.DesignationName </td>
+                                        <td> @m.EmployeeName </td>
+                                        <td>@Utility.ConvertToNepaliString(m.ShiftTime)</td>
+                                        <td class="text-center">@Utility.ConvertToNepaliString((m.InDateTime == DateTime.MinValue) ? "" : m.InDateTime.ToString("hh:mm.F"))</td>
+                                        <td class="text-center">@Html.Raw(Utility.ConvertToNepaliString((m.OutDateTime.TimeOfDay != m.InDateTime.TimeOfDay) ? m.OutDateTime.ToString("hh:mm.F") : ""))</td>
+                                        <td class="text-center">@Utility.ConvertToNepaliString(m.InRemarks)</td>
+                                        <td class="text-center">@Utility.ConvertToNepaliString(m.OutRemarks)</td>
+                                        <td>@m.WorkedHour</td>
+                                    </tr>
+                                }
+                                @if (count == 0)
+                                {
+                                    <tr>
+                                        <td class="text-center alert-info" colspan="9">
+                                            <strong> @eAttendance.Service.MenuService.NoRecordFound </strong>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $(function () {
+            $('.nepali-calendar').nepaliDatePicker();
+            $(".chosen").chosen({ width: '100%', disable_search_threshold: 10 });
+            $(".chosen-select").chosen({ width: '100%' });
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" })
+
+            function searchCategories() {
+                var searchWord = $('#val').val();
+
+                $.ajax({
+                    url: '/Category/SearchCategories?searchString=' + searchWord,
+                    type: 'GET',
+                    sucess: function (data) {
+                        alert('Koppling');
+                    }
+                });
+            }
+        });
+    </script>
+}
+    
+

@@ -1,0 +1,106 @@
+﻿@model eAttendance.Models.ServiceSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Setup Service";
+}
+<div class="row wrapper white-bg page-heading hidden-print">
+    <div class="modal-content">
+        <div class="modal-header">
+            <ol class="breadcrumb">
+                <li class="animated fadeInUp">सेटअप</li>
+                <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupService")">सेवा सेटअप</a></li>
+                <li class="animated fadeInRight">सेवाका सूचीहरु</li>
+
+            </ol>
+        </div>
+    </div>
+
+    <div class="col-lg-10">
+        <h2>सेवा सेटअप </h2>
+
+    </div>
+    <div class="col-lg-2">
+        <div class="title-action hidden-print">
+            <button class="btn btn-primary btn-sm btn-add" onclick="location.href='@Url.Action("Add","SetupService")'">नयाँ बनाउनु </button>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header bg-info">
+            <h2 class="m-b-0 text-info">सेवा सेटअप </h2>
+        </div>
+        <div class="card-body">
+
+            <table id="tblService" class="table table-hover table-condensed table-color ">
+                <thead>
+                    <tr>
+                        <th>क्र सं</th>
+                        <th>@Html.DisplayNameFor(m => m.ServiceName)</th>
+                        <th>@Html.DisplayNameFor(m => m.Alias)</th>
+                        <th>@Html.DisplayNameFor(m => m.Description)</th>
+                        <th class="hidden-print text-center">कार्य </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{int count = 0;}
+                    @foreach (var m in Model.ServiceSetUpList.OrderBy(m => m.DisplayOrder))
+                    {
+                        count += 1;
+                        <tr>
+                            <td>@count</td>
+                            <td class="project-title">
+                                <strong>@m.ServiceName </strong> <br />
+                            </td>
+                            <td>@m.Alias</td>
+                            <td>@m.Description</td>
+                            <td class="project-actions hidden-print col-md-2">
+                                <button type="button" class="btn-edit btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit","SetupService",new { @id=m.ServiceId})'"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm"></span> </button>
+                                <button value="@m.ServiceId" class="btn-delete btn btn-sm btn-danger"><i class="fa fa-remove"></i><span class="hidden-xs hidden-sm"></span> </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal inmodal fade" id="modelDelete" role="dialog">
+</div>
+
+@section Scripts
+{
+
+    <script type="text/javascript">
+            $(document).ready(function () {
+          
+ 
+
+                $('#tblService tbody').on('click', '.btn-delete', function () {
+                    var serviceId = $(this).attr('value');
+                    $.ajax({
+                        url: '@Url.Action("Delete", "SetupService")',
+                        type: 'GET',
+                        data: { id: serviceId },
+                        success: function (result) {
+                            console.log(result)
+                            $("#modelDelete").html(result);
+                            $("#modelDelete").modal('show');
+                        },
+                        error: function () {
+                        }
+                    });
+                })
+            })
+    </script>
+}
+
+
+
+
+
+

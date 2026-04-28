@@ -1,0 +1,52 @@
+﻿@model eAttendance.Models.AspNetUserRoleModel
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+@using (Html.BeginForm("EditEmpUserRoles", "EmployeeInfo"))
+{
+    @Html.HiddenFor(m => m.EmployeeId)
+    @Html.HiddenFor(m => m.UserId)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-xs-12">
+
+                            @for (int i = 0; i < Model.AspNetRoleList.Count; i++)
+                            {
+
+                                var exist = Model.AspNetUserRoleList.Where(x => x.RoleId == Model.AspNetRoleList[i].Id).FirstOrDefault();
+
+                                if (exist != null)
+                                {
+                                    Model.AspNetRoleList[i].IsCheck = true;
+                                    @Html.CheckBoxFor(m => Model.AspNetRoleList[i].IsCheck)
+                                    @Html.HiddenFor(m => Model.AspNetRoleList[i].Name)
+                                }
+                                else
+                                {
+                                    @Html.CheckBoxFor(m => Model.AspNetRoleList[i].IsCheck)
+                                    @Html.HiddenFor(m => Model.AspNetRoleList[i].Name)
+                                }
+                                <label for="@Model.AspNetRoleList[i].Name">
+                                    @Model.AspNetRoleList[i].Name
+                                </label>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="submit" id="btnSaveAddress" class="btn btn-primary" type="button" title="बचत गर्नु">बचत गर्नु</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+}

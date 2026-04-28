@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>LumenWorksCsvReader</id>
+    <version>4.0.0</version>
+    <title>LumenWorks CSV Reader</title>
+    <authors>Sébastien Lorion, Paul Hatcher</authors>
+    <owners>Sébastien Lorion, Paul Hatcher</owners>
+    <licenseUrl>http://opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>https://github.com/phatcher/CsvReader</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An extended version of LumenWorks.Frameworks.IO</description>
+    <summary />
+    <releaseNotes>Support .NET Framework 2.0+ and .NET Standard 1.3+
+Use DateTime.TryParseExact if needed (@milcondoin)
+Override column capability (@spintronic)
+Fix handling of duplicate headers (@jonreis)
+Reduced exception overhead (@spintronic)
+Added NullBytesRemoval functionality to reduce memory usage and runtime (@andrewpsy)
+Use StringBuilder instead of string concatenation to speed up reading of huge cell (@andrewpsy)
+Fixed: Exception in GetFieldType() when hasHeaders is false (@molopony)
+Fixed: Exception when reading data and hasHeaders is false (@molopony)
+Fixed: ArgumentOutOfRangeException when hasHeaders is false (@molopony)</releaseNotes>
+    <copyright>Copyright © 2005 Sébastien Lorion, 2014 Paul Hatcher</copyright>
+    <tags>CSV</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework2.0" />
+      <group targetFramework=".NETFramework3.5" />
+      <group targetFramework=".NETFramework4.5" />
+      <group targetFramework=".NETFramework4.6.1" />
+      <group targetFramework="Unsupported0.0">
+        <dependency id="NETStandard.Library" version="1.6.1" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

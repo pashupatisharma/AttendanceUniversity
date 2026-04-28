@@ -1,0 +1,65 @@
+﻿@model eAttendance.Models.LeaveApplication
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+
+            @Html.HiddenFor(m => m.EmployeeId)
+            <div class="form-group col-md-6">
+                <label class="control-label">@Html.DisplayNameFor(m => m.LeaveTypeId)</label>
+                @Html.DropDownListFor(m => m.LeaveTypeId, eAttendance.Utility.GetLeaveType(), "छान्नुहोस्", new { @class = "chosen-select form-control" })
+            </div>
+            <div class="form-group col-md-6">
+                <div class="m-t-sm">
+                    <div class="col-md-6 b-r">
+
+                        <div class="font-bold">@eAttendance.Service.MenuService.Remainings</div>
+                        <label id="lblLeaveBalance" class="control-label">0</label>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <div class="font-bold">@eAttendance.Service.MenuService.TotalDays</div>
+                        <label class="control-label lbl-TotalDays" id="lblTotalDaysAdd">0</label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group col-md-6 ">
+            <label class="control-label">@Html.DisplayNameFor(m => m.NFromDate)</label>
+            @Html.TextBoxFor(m => m.NFromDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99", @id = "endDate" })
+        </div>
+        <div class="form-group  col-md-6">
+            <label class="control-label">@Html.DisplayNameFor(m => m.NToDate)</label>
+            @Html.TextBoxFor(m => m.NToDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", @mask = "9999-99-99" })
+        </div>
+        <div class="form-group  col-md-6">
+            <label class="control-label">@Html.DisplayNameFor(m => m.Subject)</label>
+            @Html.TextBoxFor(m => m.Subject, new { @class = "form-control" })
+        </div>
+        <div class="form-group col-md-6">
+            <label>@Html.DisplayNameFor(m => m.IsHalfDay)</label><br /><br />
+            @Html.CheckBoxFor(m => m.IsHalfDay, new { @style = "position: absolute; opacity: 0;" })
+        </div>
+
+        <div class="form-group  col-md-12">
+            <label class="control-label">@Html.DisplayNameFor(m => m.Message)</label>
+            @Html.TextAreaFor(m => m.Message, new { @class = "form-control" })
+        </div>
+        <div class="form-group  col-md-6">
+            <label class="control-label">@Html.DisplayNameFor(m => m.Recomender)</label>
+            @Html.DropDownListFor(m => m.Recomender, eAttendance.Utility.GetEmployeeRecommederListAll(User), new { @class = "chosen-select form-control" })
+        </div>
+        <div class="form-group  col-md-6">
+            <label class="control-label">@Html.DisplayNameFor(m => m.ApprovedBy)</label>
+            @Html.DropDownListFor(m => m.ApprovedBy, eAttendance.Utility.GetEmployeeApproverListAll(User), new { @class = "chosen-select form-control" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="control-label text-danger" id="lblErrorMessage"></label>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="submit" id="btnSave_Add" class="btn btn-primary btn-sm">बचत गर्नु</button>
+    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+</div>

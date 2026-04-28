@@ -1,0 +1,24 @@
+﻿@model eAttendance.Models.ServiceSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">सेटअप</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupService")">सेवा सेटअप</a></li>
+            <li class="animated fadeInRight">सेवा सच्याउनुहोस्</li>
+
+        </ol>
+    </div>
+</div>
+@using (Html.BeginForm("Edit", "SetupService", FormMethod.Post, new { @id = "frmEditService", @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ServiceId)
+    @Html.HiddenFor(m => m.CreatedBy)
+    @Html.HiddenFor(m => m.CreatedDate)
+    @Html.Partial("_Common");
+
+
+}

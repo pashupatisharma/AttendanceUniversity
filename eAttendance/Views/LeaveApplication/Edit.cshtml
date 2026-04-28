@@ -1,0 +1,75 @@
+﻿@model eAttendance.Models.LeaveApplication
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">सम्पादन बिदाको निबेदन</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("Edit", "LeaveApplication", FormMethod.Post, new { @id = "LeaveApplicationEditForm" }))
+        {
+
+            @Html.HiddenFor(m => m.LeaveApplicationId)
+            @Html.HiddenFor(m => m.ApplicationDate)
+            @Html.HiddenFor(m => m.CreatedBy)
+            @Html.HiddenFor(m => m.CreatedDate)
+            @Html.Partial("_Common");
+        }
+
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/Scripts/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.nepali-calendar').nepaliDatePicker();
+            $(".chosen-select").chosen({ width: '100%' });
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+            });
+
+        
+        });
+        function pageLoad() {
+         
+            function ButtonCheck() {
+                alert("Phase Two");
+                var totalday = $('#frmEditLeaveApplication').find('#lblTotalDays').val();
+                if (totalday == 0) {
+                    document.getElementById("btnSave").disabled = true;
+                }
+            }
+        }
+
+        $("#LeaveApplicationEditForm").find("#LeaveTypeId").change(function () {
+            var employeeId = -007;
+            LoadLeaveBalance(employeeId, this.value)
+        });
+        function LoadLeaveBalance(employeeId, leaveTypeId) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadLeaveBalance", "LeaveApplication")',
+                data: "{'employeeId':'" + employeeId + "','leaveTypeId':'" + leaveTypeId + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    $("#LeaveApplicationEditForm").find("#lblLeaveBalanceEdit").html(data.LeaveBalance);
+                    $("#LeaveApplicationEditForm").find("#lblTotalDaysEdit").html(data.TotalLeave);
+                },
+                error: function () {
+                    //alert("Failed to load Item");
+                }
+            });
+        }
+        $('.inputmask').inputmask({
+            mask: '9999-99-99'
+        })
+    </script>
+}

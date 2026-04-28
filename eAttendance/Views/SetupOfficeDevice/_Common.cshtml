@@ -1,0 +1,57 @@
+﻿@model eAttendance.Models.OfficeDeviceSetUp
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header bg-info">
+            <h2 class="m-b-0 text-info">थप कार्यालय उपकरण  </h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+                    @Html.DisplayNameFor(m => m.OfficeId)
+                    @Html.DropDownListFor(m => m.OfficeId, eAttendance.Utility.GetOfficeIdName(User), new { @class = "chosen-select form-control" })
+
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+                    @Html.DisplayNameFor(m => m.DeviceType)
+                    @Html.DropDownListFor(m => m.DeviceType, Utility.GetDeviceType(), new { @class = "chosen-select form-control" })
+
+
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+
+                    @Html.DisplayNameFor(m => m.LicenseNo)
+                    @Html.TextBoxFor(m => m.LicenseNo, new { @class = "form-control" })
+
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+                    @Html.DisplayNameFor(m => m.DeviceNo)
+                    @Html.TextBoxFor(m => m.DeviceNo, new { @class = "form-control" })
+
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+
+                    @Html.DisplayNameFor(m => m.DeviceIp)
+                    @Html.TextBoxFor(m => m.DeviceIp, new { @class = "form-control device-ip" })
+
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+                    @Html.DisplayNameFor(m => m.Port)
+                    @Html.TextBoxFor(m => m.Port, new { @class = "form-control" })
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="location.href='@Url.Action("Index","SetupOfficeDevice")'">बन्द गर्नु</button>
+            </div>
+        </div>
+    </div>
+</div>
+

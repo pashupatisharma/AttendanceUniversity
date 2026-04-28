@@ -1,0 +1,22 @@
+﻿@model eAttendance.Models.Shift
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">सेटअप</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupShift")">शिफ्ट सेटअप</a></li>
+            <li class="animated fadeInRight">शिफ्ट सच्याउनुहोस्</li>
+
+        </ol>
+    </div>
+</div>
+@using (Html.BeginForm("Edit", "SetupShift", FormMethod.Post, new { @id = "frmEditSetupShift", @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ShiftId)
+    @Html.Partial("_Common")
+
+}
+

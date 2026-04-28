@@ -1,0 +1,64 @@
+﻿@model eAttendance.Models.EmployeeShiftTime
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+@using (Html.BeginForm("EditShiftInfo", "EmployeeInfo", FormMethod.Post, new { @id = "frmEditShiftTime" }))
+{
+    @Html.HiddenFor(m => m.EmployeeId)
+    @Html.HiddenFor(m => m.OfficeId)
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.NEffectiveDate)</label>
+                                @Html.TextBoxFor(m => m.NEffectiveDate, new { @id = "ShiftNEffectiveDate", @class = "form-control nepali-calendar required", data_mask = "9999-99-99" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.ShiftId)</label>
+                                @Html.DropDownListFor(m => m.ShiftId, Utility.GetShiftIdName(), new { @class = " chosen-select form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.Remarks)</label>
+                                @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" id="btnSaveAddress" class="btn btn-primary" type="button" title="बचत गर्नु">बचत गर्नु</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#ShiftNEffectiveDate").nepaliDatePicker();
+            $("#frmEditShiftTime").validate({
+                rules: {
+                    Shift_EffectiveDate: {
+                        required: true,
+                    },
+                },
+                messages: {
+                }
+            });
+        });
+    </script>
+}

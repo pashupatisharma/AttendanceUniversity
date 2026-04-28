@@ -1,0 +1,142 @@
+﻿@model eAttendance.Models.FiscalYearSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Setup Fiscal Year";
+}
+<div class="wrapper wrapper-content">
+    <div class="modal-content">
+        <div class="modal-header">
+            <ol class="breadcrumb">
+                <li class="animated fadeInUp">सेटअप</li>
+                <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupFiscalYear")">आर्थिक वर्ष सेटअप</a></li>
+                <li class="animated fadeInRight">आर्थिक वर्षका सूचीहरु</li>
+
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <div class="row wrapper white-bg page-heading hidden-print">
+                        <div class="col-lg-10">
+                            <h2> वर्ष सेटअप </h2>
+
+                        </div>
+                        <div class="col-lg-2">
+                            <h2>&nbsp;</h2>
+                            <div class="ibox-tools hidden-print">
+                                <button class="btn btn-primary btn-sm btn-add" onclick="location.href='@Url.Action("Add","SetupFiscalYear")'">नयाँ बनाउनु </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="project-list">
+                        <table id="tblFiscalYear" class="table table-condensed table-hover table-color ">
+                            <thead>
+                                <tr>
+                                    <th>क्र सं</th>
+                                    <th>@Html.DisplayNameFor(m => m.FiscalYearName)</th>
+                                    <th>@Html.DisplayNameFor(m => m.FiscalYearCode)</th>
+                                    <th>@Html.DisplayNameFor(m => m.FromDate)</th>
+                                    <th>@Html.DisplayNameFor(m => m.ToDate)</th>
+                                    <th>@Html.DisplayNameFor(m => m.IsActive)</th>
+
+                                    <th class="hidden-print">कार्य </th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                @{int count = 0;}
+                                @foreach (var m in Model.SetupFiscalYearList)
+                                {
+                                    count += 1;
+                                    <tr>
+                                        <td>@count</td>
+                                        <td class="project-title">
+                                            <a href="">@m.FiscalYearName</a>
+                                        </td>
+                                        <td>@m.FiscalYearCode</td>
+                                        <td>@((m.FromDate.Value.Year >= 1913 && m.FromDate.Value.Year <= 2042) ? eAttendance.NepaliDateConverter.ConvertToNepali(m.FromDate.Value) : NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))</td>
+                                        <td>@((m.ToDate.Value.Year >= 1913 && m.ToDate.Value.Year <= 2042) ? eAttendance.NepaliDateConverter.ConvertToNepali(m.ToDate.Value) : NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))</td>
+                                        <td>
+                                            @Html.Raw((m.IsActive == true) ? "<label class='label label-success lblActive' data-id='" + m.FiscalYearId + "'>सक्रिय</label>" : "<label class='label label-danger lblInActive' data-id='" + m.FiscalYearId + "'>निष्क्रिय <fa class='fa fa-hand-o-up'></fa></label>")
+                                        </td>
+                                        <td class="project-actions hidden-print">
+                                            <button type="button" class="btn-edit btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit","SetupFiscalYear",new {@id=m.FiscalYearId })'"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm"></span> </button>
+                                            <button value="@m.FiscalYearId" class="btn-delete btn btn-sm btn-danger"><i class="fa fa-remove"></i><span class="hidden-xs hidden-sm"></span> </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal fade" id="modelDelete" role="dialog">
+  
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+           
+
+
+
+       
+        
+
+            $('.btn-delete').on('click', function () {
+                var fiscalYearId = $(this).attr('value');
+                $.ajax({
+                    url: '@Url.Action("Delete", "SetupFiscalYear")',
+                    type: 'GET',
+                    data: { id: fiscalYearId },
+                    success: function (result) {
+                        console.log(result)
+                        $("#modelDelete").html(result);
+                        $("#modelDelete").modal('show');
+                    },
+                    error: function () {
+                    }
+                });
+            });
+
+            $('.lblInActive').on('click', function () {
+                var fiscalYearId = $(this).attr("data-id");               
+                $.ajax({
+                    url: '@Url.Action("ActiveFiscalYear", "SetupFiscalYear")',
+                    type: 'POST',
+                    data: { id: fiscalYearId },
+                    success: function (result) {
+                        if(result.success)
+                        {
+                            Command: toastr['success'](result.message, "सफलता सन्देश")
+                            window.location.reload();
+                        }
+                        else
+                        {
+                            Command: toastr['error'](result.message, "सफलता सन्देश")
+                        }
+                    },
+                    error: function () {
+                        Command: toastr['error']('बचत गर्दा त्रुटि भयो', "असफल सन्देश")
+                    }
+                });
+            });
+        })
+</script>
+}
+
+
+
+
+
+

@@ -1,0 +1,47 @@
+﻿@model eAttendance.Models.LevelSetUp
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header bg-info">
+            <h2 class="m-b-0 text-info">श्रेणी थप  </h2>
+        </div>
+        <div class="card-body">
+            <fieldset>
+                <legend></legend>
+                <div class="row">
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        @Html.DisplayNameFor(m => m.LevelName)
+                        @Html.TextBoxFor(m => m.LevelName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.LevelName)
+                    </div>
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        @Html.DisplayNameFor(m => m.Alias)
+                        @Html.TextBoxFor(m => m.Alias, new { @class = "form-control" })
+                    </div>
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        @Html.DisplayNameFor(m => m.Description)
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                    </div>
+
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        @Html.DisplayNameFor(m => m.DisplayOrder)
+                        @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control" })
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="location.href='@Url.Action("Index","SetupLevel")'">Back</button>
+                </div>
+
+            </fieldset>
+        </div>
+    </div>
+</div>

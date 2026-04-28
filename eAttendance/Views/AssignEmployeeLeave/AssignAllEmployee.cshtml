@@ -1,0 +1,154 @@
+﻿@model eAttendance.Models.AssignEmployeeLeave
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Assign All Employee Leave";
+}
+<div class="row wrapper white-bg page-heading hidden-print">
+    <div class="col-lg-10">
+        <h2>@eAttendance.Service.MenuService.AssignAllEmployeeLeave</h2>
+        <ol class="breadcrumb ">
+           
+            <li>
+                <a>@eAttendance.Service.MenuService.GeneralSetup</a>
+            </li>
+            <li class="active">
+                <strong>@eAttendance.Service.MenuService.AssignAllEmployeeLeave</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content no-padding padding-top-md">
+    <div class="row">
+        <div class="col-lg-12">
+          
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="project-list">
+                        <div class="panel-body">
+                            @using (Html.BeginForm("AssignAllEmployee", "AssignEmployeeLeave", FormMethod.Post, new { enctype = "multipart/form-data", @id = "frmAssignAllEmployee", @class = "form-horizontal" }))
+                            {
+                                <div class="row">
+                                    <div class="col-lg-6 b-r">
+                                      
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.Year)</label>
+                                            <div class="col-sm-9">
+                                                @Html.DropDownListFor(m => m.Year, eAttendance.Utility.YearListWithSelect(), new { @class = "chosen-select form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.OfficeId)</label>
+                                            <div class="col-sm-9">
+                                                @Html.DropDownList("officeId", eAttendance.Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control chosen-select" })
+                                            </div>
+                                            <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.LeaveTypeId)</label>
+                                          
+                                                @for (int i = 1; i <= Model.SetupLeaveTypeModelList.Count(); i++)
+                                                {
+                                                    <div class="col-sm-9 pull-right checkbox i-checks pull-right">
+                                                        &nbsp;
+                                                        <input id="Leave_@i" type="checkbox" name="LeaveType_@Model.SetupLeaveTypeModelList[i-1].LeaveTypeId" value="true" />
+                                                        <span>@Model.SetupLeaveTypeModelList[i - 1].LeaveTypeName</span>
+                                                      
+                                                        @*<input type="checkbox" name="test" value="LeaveType" checked="checked" />
+                                                        <span>@Model.SetupLeaveTypeModelList[1].LeaveTypeName</span>*@
+                                                    </div>
+                                                }
+                                                    
+                                            </div>
+                                         <div class="modal-footer">
+                                              <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                                              <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+                                         </div>
+                            
+                        </div>
+                    </div>
+                            }    
+                </div>
+                            }
+                           
+            </div>
+        </div>
+    </div>
+</div>
+     </div>
+ </div>
+   
+@section scripts
+{
+    <script src="~/Scripts/plugins/jasny/jasny-bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function () {
+        $(".chosen-select").chosen({ width: '100%' });
+        $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+        });
+        var officeId = $(this).val();
+        $("#frmAddAssignEmployeeLeave").validate({
+            rules: {
+                FiscalYearId: {
+                    required: true,
+                    minlength: 3,
+                    remote: {
+                        url: "@Url.Action("CheckDuplicate", "AssignEmployeeLeave")",
+                        type: "POST",
+                        data: {
+                            FiscalYearId: function () {
+                                return $("#FiscalYearId").val();
+                            }
+                        }
+                    }
+                },
+                Year: {
+                    min: 1
+                },
+                EmployeeId: {
+                    required: true,
+                    min: 1
+                },
+                LeaveTypeId: {
+                    min: 1
+                }
+
+            },
+            messages: {
+                EmployeeId: {
+                    remote: "Duplicate employee name found. Please use another name."
+                },
+                Year: {
+                    min: "Please select an option."
+                },
+                EmployeeId: {
+                    min: "Please select an option."
+                },
+                LeaveTypeId: {
+                    min: "Please select an option."
+                }
+            }
+        });
+        $('#LeaveTypeId').change(function () {
+            LoadDefaultValue(this.value);
+        });
+
+        function LoadDefaultValue(leaveTypeId) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadDefaultValue", "AssignEmployeeLeave")',
+                data: "{'leaveTypeId':'" + leaveTypeId + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    $('#NoOfLeave').val(data);
+                },
+                error: function () {
+                    //alert("Failed to load Item");
+                }
+            });
+        }
+    });
+</script>
+
+}

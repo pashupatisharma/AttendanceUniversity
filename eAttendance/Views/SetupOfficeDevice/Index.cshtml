@@ -1,0 +1,116 @@
+﻿@model eAttendance.Models.OfficeDeviceSetUp
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Setup Office Device";
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <ol class="breadcrumb">
+            <li class="animated fadeInUp">सेटअप</li>
+            <li class="animated fadeInLeft"><a href="@Url.Action("Index","SetupOfficeDevice")"> कार्यालय उपकरण सेटअप</a></li>
+            <li class="animated fadeInRight">कार्यालय उपकरणका सूचीहरु</li>
+
+        </ol>
+    </div>
+</div>
+
+<div class="row wrapper white-bg page-heading hidden-print">
+    <div class="col-lg-10">
+        <h2>कार्यालय उपकरण सेटअप</h2>
+
+    </div>
+    <div class="col-lg-2">
+        <div class="title-action hidden-print">
+            <button class="btn btn-primary btn-sm btn-add" onclick="location.href='@Url.Action("Add","SetupOfficeDevice")'">नयाँ बनाउनु </button>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content padding-top-md">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5> कार्यालय उपकरण सेटअप </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="project-list">
+                        <table id="officeDeviceList" class="table table-hover  table-condensed table-color ">
+                            <thead>
+                                <tr>
+                                    <th>क्र सं</th>
+                                    <th>@Html.DisplayNameFor(m => m.OfficeId)</th>
+
+                                    <th>DeviceType</th>
+                                    <th>@Html.DisplayNameFor(m => m.DeviceNo)</th>
+                                    <th>@Html.DisplayNameFor(m => m.DeviceIp)</th>
+                                    <th>@Html.DisplayNameFor(m => m.Port)</th>
+                                    <th class="hidden-print text-center">कार्य </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{int count = 0;}
+
+                                @foreach (var m in Model.SetupOfficeDeviceList)
+                                {
+                                    count += 1;
+
+                                    <tr>
+                                        <td>@count</td>
+
+                                        <td>@m.OfficeSetUp.OfficeName</td>
+
+                                        <td>@Html.Raw(m.DeviceType == 1 ? "Time Watch" : "ZK Device")</td>
+                                        <td>@m.DeviceNo</td>
+                                        <td>@m.DeviceIp</td>
+                                        <td>@m.Port</td>
+
+                                        <td class="project-actions hidden-print col-md-2">
+                                            <button type="button" class="btn-edit btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit","SetupOfficeDevice",new { @id=m.OfficeDeviceId})'"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm"></span> </button>
+                                            <button value="@m.OfficeDeviceId" class="btn-delete btn btn-sm btn-danger"><i class="fa fa-remove"></i><span class="hidden-xs hidden-sm"></span> </button>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal inmodal fade" id="modelDelete" role="dialog">
+
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+        
+
+        
+
+            $('#officeDeviceList tbody').on('click', '.btn-delete', function () {
+                var officedeviceId = $(this).attr('value');
+
+                $.ajax({
+                    url: '@Url.Action("Delete", "SetupOfficeDevice")',
+                    type: 'GET',
+                    data: { id: officedeviceId },
+                    success: function (result) {
+                        console.log(result)
+                        $("#modelDelete").html(result);
+                        $("#modelDelete").modal('show');
+                    },
+                    error: function () {
+                    }
+                });
+            })
+        })
+    </script>
+}

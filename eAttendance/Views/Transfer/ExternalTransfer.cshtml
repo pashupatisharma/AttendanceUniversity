@@ -1,0 +1,267 @@
+﻿@model eAttendance.Models.TransferModel
+@{
+    Layout = Layout = "~/Views/Shared/_Blank.cshtml";
+}
+    <script type="text/javascript">
+    $(function () {
+        $('#frmOfficeId').on('change', function (e) {
+
+
+            var nYearId = 0;
+            var nMonthId = 0;
+                var officeId = $("#frmOfficeId").val();
+            var branchId = 0;
+            var serviceId = 0;
+            var levelId = 0;
+            var designationId = 0;
+
+
+                //int year, int month, int officeId, int branchId = 0, int serviceId = 0, int levelId = 0, int designationId = 0, bool withAll = false, bool withSelect = false
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetEmployeeOfSelectedOffice", "Report")',
+                    data: "{'year':'" + nYearId + "','month':'" + nMonthId + "','officeId':'" + officeId + "','branchId':'" + branchId + "','serviceId':'" + serviceId + "','levelId':'" + levelId + "','designationId':'" + designationId + "','withAll':'" + true + "','withSelect':'" + false + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        debugger;
+                        $("#empId").empty();
+                        var $prevGroup, prevGroupName;
+                        $.each(data, function () {
+                            if (this.Group == null) { $("<option />").val(this.Value).text(this.Text).appendTo('#empId'); }
+                            else {
+                                if (prevGroupName != this.Group.Name) { $prevGroup = $('<optgroup />').prop('label', this.Group.Name).appendTo('#empId'); }
+                                $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                                prevGroupName = this.Group.Name;
+                            }
+                        });
+                        $("#empId").trigger('chosen:updated');
+                    },
+                    error: function () {
+                        alert("Failed to load Item");
+                    }
+                });
+
+        });
+    });
+    </script>
+<div class="modal-dialog ">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">थप  स्थानान्तरण</h4>
+            <small class="font-bold"></small>
+        </div>
+        @using (Html.BeginForm("ExternalTransfer", "Transfer", FormMethod.Post, new { @id = "ExternalTransferView",@class="validate" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromOfficeId)</label>
+
+                            @Html.DropDownListFor(m => m.FromOfficeId, eAttendance.Utility.GetOfficeIdName(User),"छान्नुहोस्", new { @class = "TxtFrmOfficeId form-control chosen", @id = "frmOfficeId" })
+                        </div>
+
+               
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label">@Html.DisplayNameFor(m => m.NTransferDateTime)</label>
+                            @Html.TextBoxFor(m => m.NTransferDateTime, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99", @id = "NTransferDateTimeExternalAdd" })
+                        </div>
+                        </div>
+                    </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            @Html.HiddenFor(m => m.TransferType, new { @Value = "2" })
+                            <label class="control-label text-center">@Html.DisplayNameFor(m => m.EmployeeId)</label>
+                            @Html.DropDownListFor(m => m.EmployeeId, eAttendance.Utility.GetEmployeeIdWithAll(), "छान्नुहोस्", new { @class = "chosen form-control", @id = "empId" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromBranchId)</label>
+                            @Html.DropDownListFor(m => m.FromBranchId, eAttendance.Utility.GetBranchIdName(User), new { @class = "TxtFrmBranchId form-control", @id = "frmBranchId" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromServiceId)</label>
+                            @Html.DropDownListFor(m => m.FromServiceId, eAttendance.Utility.GetServiceIdName(), new { @class = "TxtFrmServiceId form-control chosen", @id = "frmServiceId" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromLevelId)</label>
+                            @Html.DropDownListFor(m => m.FromLevelId, eAttendance.Utility.GetLevelIdName(), new { @class = "TxtFrmLevelId form-control chosen", @id = "frmLevelId" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.FromDesignationId)</label>
+                            @Html.DropDownListFor(m => m.FromDesignationId, eAttendance.Utility.GetDesignationIdNameList(), new { @class = "TxtFrmDesignationId form-control chosen", @id = "frmDesignationId" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToOfficeName)</label>
+                            @Html.TextBoxFor(m => m.ToOfficeName, new { @class = "chosen-select form-control", @id = "toOfficeId" })
+                        </div>
+
+                        @*<div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToMainBranchName)</label>
+                            @Html.TextBoxFor(m => m.ToMainBranchName, new { @class = "form-control", style = "height:30px" })
+                        </div>*@
+
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToBranchName)</label>
+                            @Html.TextBoxFor(m => m.ToBranchName, new { @class = "form-control", @id = "toBranchId" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToServiceName)</label>
+                            @Html.TextBoxFor(m => m.ToServiceName, new { @class = "form-control", @id = "toServiceId" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToLevelName)</label>
+                            @Html.TextBoxFor(m => m.ToLevelName, new { @class = "form-control", @id = "toLevelId" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.ToDesignationName)</label>
+                            @Html.TextBoxFor(m => m.ToDesignationName, new { @class = "form-control", @id = "toDesignationId" })
+                        </div>
+                        
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.Remarks)</label>
+                            @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('.nepali-calendar').nepaliDatePicker();
+            $.validator.setDefaults({ ignore: ":hidden:not(select)" });
+            $(".chosen").chosen({width:'100%'});
+            $("#ExternalTransferView").validate({
+                rules: {
+                    empId: {
+                        min: 1
+                    },
+                    frmOfficeId: {
+                        required: true,
+                    },
+                    toOfficeId: {
+                        required: true,
+                    },
+                    NTransferDateTimeExternalAdd: { required: true, }
+                },
+                messages: {
+                    empId: {
+                        min: 'कृपया विकल्प चयन गर्नुहोस्'
+                    },
+                    frmOfficeId: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्'
+                    },
+                    toOfficeId: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्'
+                    },
+                    NTransferDateTimeExternalAdd: {
+                        required: 'कृपया आवश्यक जानकारी भर्नुहोस्'
+                    }
+
+                }
+            });
+            
+        });
+        
+        $(document).on('change', '#empId', function () {
+            debugger;
+            loadSelectedEmployeeOfficeInfo(this.value);
+            LoadDefaultValue(this.value);
+        });
+
+        function LoadDefaultValue(EmployeeId) {
+            debugger;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("LoadDefaultValue", "Transfer")',
+                data: "{'EmployeeId':'" + EmployeeId + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    $('#frmOfficeId').val(data[0].FromOfficeId);
+                    $('#frmBranchId').val(data[0].FromBranchId);
+                    $('#frmServiceId').val(data[0].FromServiceId);
+                    $('#frmLevelId').val(data[0].FromLevelId);
+                    $('#frmDesignationId').val(data[0].FromDesignationId);
+                    $("#frmOfficeId").trigger('chosen:upadated');
+                    $("#frmBranchId").trigger('chosen:updated');
+                    $("#frmServiceId").trigger('chosen:updated');
+                    $("#frmLevelId").trigger('chosen:updated');
+                    $("#frmDesignationId").trigger('chosen:updated');
+                },
+                error: function () {
+                    //alert("Failed to load Item");
+                }
+            });
+        };
+        function loadSelectedEmployeeOfficeInfo(employeeId) {
+            debugger;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("loadSelectedEmployeeOfficeInfo", "Transfer")',
+                data: "{'EmployeeId':'" + employeeId + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    $('#frmOfficeId').val(data.OfficeId);
+                    $('#frmBranchId').val(data.BranchId);
+                    $('#frmServiceId').val(data.ServiceId);
+                    $('#frmLevelId').val(data.LevelId);
+                    $('#frmDesignationId').val(data.DesignationId);
+                },
+                error: function () {
+                    //alert("Failed to load Item");
+                }
+            });
+        };
+
+        $(document).on('change', '#frmLevelId', function () {
+            var levelId = $(this).val();
+            $.getJSON("@Url.Action("GetDesignationByLevelId", "Utility")", { LevelId: levelId, withAll: false, withSelect: true },
+             function (data) {
+                 $("#frmDesignationId").empty();
+                 var $prevGroup, prevGroupName;
+                 $.each(data, function () {
+                     if (this.Group == null) { $("<option />").val(this.Value).text(this.Text).appendTo('#frmDesignationId'); }
+                     else {
+                         if (prevGroupName != this.Group.Name) { $prevGroup = $('<optgroup />').prop('label', this.Group.Name).appendTo('#frmDesignationId'); }
+                         $("<option />").val(this.Value).text(this.Text).appendTo($prevGroup);
+                         prevGroupName = this.Group.Name;
+                     }
+                 });
+                 $("#frmDesignationId").trigger('chosen:updated');
+             });
+        });
+    </script>
+}

@@ -1,0 +1,125 @@
+﻿@model eAttendance.Models.Document
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+
+       @Scripts.Render("~/bundles/dropzone")
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Dropzone Area</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li>
+                                    <a href="#">Config option 1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Config option 2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content" style="height:400px">
+                        <form action="~/Document/Test" method="post" enctype="multipart/form-data" id="dropZone" class="dropzone dz-drag-hover dz-clickable">
+                           
+                            <div class="fallback dropzone-previews">
+                            <input name="file" type="file" multiple />
+                                
+                            <button type="submit" class="btn btn-primary pull-right">Submit this form!</button>
+                            <div class="dz-default dz-message"><span>Drop files here to upload</span>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+       
+
+
+
+
+            @*<div class="modal-body">
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.EmployeeId)</label>
+                        <div class="col-sm-9">
+
+                            @Html.DropDownListFor(m => m.EmployeeId, Utility.GetEmployeeIdWithAll(), new { @class = "chosen-select form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.DocumentFullName)</label>
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(m => m.DocumentFullName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.CategoryId)</label>
+                        <div class="col-sm-9">
+                            @Html.DropDownListFor(m => m.CategoryId, Utility.GetDocumentCatogoryIdWithAll(), new { @class = "chosen-select form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">@Html.DisplayNameFor(m => m.ContentType)</label>
+                        <div class="col-sm-9">
+
+                            @Html.TextBoxFor(m => m.ContentType, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="file" class="col-sm-3 control-label">अपलोड फाइल</label>
+                        <div class="col-sm-9">
+                            <input type="file" name="file" id="file" style="width: 100%;" />
+                        </div>
+
+                    </div>
+
+                </div>*@
+            @*<div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">बचत गर्नु</button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">बन्द गर्नु</button>
+            </div>*@
+      
+            
+@section scripts
+{
+<script type="text/javascript">
+    $(document).ready(function () {
+        //your code here
+        $(function () {
+         $('#dropZone').fileinput({
+             url: '@Url.Action("UploadFiles")',
+             paramname: 'files',
+             maxFiles: 5,
+             dragOver: function () {
+                 $('#dropZone').css('background', 'blue');
+             },
+             dragLeave: function () {
+                 $('#dropZone').css('background', 'gray');
+             },
+             drop: function () {
+                 $('#dropZone').css('background', 'gray');
+             },
+             afterAll: function () {
+                 $('#dropZone').html('The file(s) have been uploaded successfully!');
+             },
+             uploadFinished: function (i, file, response, time) {
+                 $('#uploadResult').append('<li>' + file.name + '</li>');
+             }
+         });
+     });
+    })
+    
+         </script>
+}

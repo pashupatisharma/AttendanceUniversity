@@ -1,0 +1,159 @@
+﻿@model eAttendance.Models.RolePermissionsModel
+
+<div class="mail-box" style="margin-bottom:0px;">    
+    <table class="table table-hover table-mail">
+        <thead>
+            <tr>
+                <td class="check-mail">
+                    @if(Model.SetupPermission.Count()==Model.RolePermissions.Count(w=>w.AccessType==true))
+                    { 
+                        <input type="checkbox" class="i-checks" name="checkall" id="checkall" checked />
+                    }
+                    else
+                    {
+                        <input type="checkbox" class="i-checks" name="checkall" id="checkall"/>
+                    }
+                </td>
+                <td>
+                    <strong> भूमिका </strong> 
+                </td>
+                <td>
+                    <strong> @eAttendance.Service.MenuService.Description </strong>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rpm in Model.SetupPermission)
+            {
+                <tr class="read">
+                    <td class="check-mail">
+                        @{var role=Model.RolePermissions.Find(w=>w.PermissionId==rpm.PermissionId); }
+                        @if (role !=null && role.AccessType==true)
+                        {
+                            <input type="checkbox" class="i-checks" name="selectedRoles" checked app-permission="@role.PermissionId" app-role="@role.RoleId" />
+                        }
+                        else
+                        {
+                            <input type="checkbox" class="i-checks" name="selectedRoles" app-permission="@rpm.PermissionId" app-role="@Model.RoleId"/>
+                        }
+                    </td>
+                    <td class="mail-ontact">@rpm.PermissionName</td>
+                    <td class="mail-subject">@rpm.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+        });
+
+        $('input[name=checkall]').on('ifChecked', function () {           
+            var sThisVal = 0;
+            $('input:checkbox[name=selectedRoles]').each(function () {
+                if (this.checked==false) {
+                    var roleId = $(this).attr('app-role');
+                    var permissionId = $(this).attr('app-permission');
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("SaveRolePermissions", "Account", null, Request.Url.Scheme)',
+                        data: { roleId: roleId, permissionId: permissionId },
+                        async:false,
+                        beforeSend: function () {
+                            // this is where we append a loading image
+                            $(this).html('<div class="text-center"><i class="fa fa-spinner fa-spin fa-1x"></i>Saving...</div>');
+                        },
+                        success: function (data) {
+                            Command: toastr["success"]("Permission added to role successfully.", "Success!")
+                        },
+                        error: function () {
+                            // failed request; give feedback to user
+                            $(this).html('<p class="error"><strong>Oops!</strong> Try that again in a few moments.</p>');
+                        }
+                    });
+                }
+            });
+            $('input[name=selectedRoles]').iCheck('check');           
+        });
+
+        $('input[name=selectedRoles]').on('ifChecked', function () {
+            var roleId = $(this).attr('app-role');
+            var permissionId = $(this).attr('app-permission');
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("SaveRolePermissions", "Account", null, Request.Url.Scheme)',
+                data: { roleId: roleId, permissionId: permissionId },
+                async: false,
+                beforeSend: function () {
+                    // this is where we append a loading image
+                    $(this).html('<div class="text-center"><i class="fa fa-spinner fa-spin fa-1x"></i>Saving...</div>');
+                },
+                success: function (data) {
+                    // successful request; do something with the data                        
+                    Command: toastr["success"]("Permission added to role successfully.", "Success!")
+                },
+                error: function () {
+                    // failed request; give feedback to user
+                    Command: toastr["danger"]("Error acured while adding permission to role.", "Error !")
+                }
+            });
+        });
+
+        $('input[name=checkall]').on('ifUnchecked', function () {          
+            var sThisVal = 0;
+            $('input:checkbox[name=selectedRoles]').each(function () {
+                if (this.checked) {
+                    var roleId = $(this).attr('app-role');
+                    var permissionId = $(this).attr('app-permission');
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("UpdateRolePermissions", "Account", null, Request.Url.Scheme)',
+                        data: { roleId: roleId, permissionId: permissionId },
+                        async: false,
+                        beforeSend: function () {
+                            // this is where we append a loading image
+                            $(this).html('<div class="text-center"><i class="fa fa-spinner fa-spin fa-1x"></i>Saving...</div>');
+                        },
+                        success: function (data) {
+                            // successful request; do something with the data                        
+                            Command: toastr["success"]("Permission removed from role successfully.", "Success!")
+                        },
+                        error: function () {
+                            // failed request; give feedback to user
+                            Command: toastr["danger"]("Error acured while removing permission from role.", "Error !")
+                        }
+                    });
+                }
+            });
+            $('input[name=selectedRoles]').iCheck('uncheck');
+          
+        });
+
+        $('input[name=selectedRoles]').on('ifUnchecked', function () {
+            var roleId = $(this).attr('app-role');
+            var permissionId = $(this).attr('app-permission');
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("UpdateRolePermissions", "Account", null, Request.Url.Scheme)',
+                data: { roleId: roleId, permissionId: permissionId },
+                async: false,
+                beforeSend: function () {
+                    // this is where we append a loading image
+                    $(this).html('<div class="text-center"><i class="fa fa-spinner fa-spin fa-1x"></i>Saving...</div>');
+                },
+                success: function (data) {
+                    // successful request; do something with the data                        
+                    Command: toastr["success"]("Permission removed from role successfully.", "Success!")
+                },
+                error: function () {
+                    // failed request; give feedback to user
+                    Command: toastr["danger"]("Error acured while removing permission from role.", "Error !")
+                }
+            });
+        });
+      
+    })
+</script>

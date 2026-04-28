@@ -1,0 +1,169 @@
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe.config
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.pdb
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.dll
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Licensing.dll
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.dll
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.xml
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.xml
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.DataEmpty.resources
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Master.resources
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Properties.Resources.resources
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.GenerateResource.cache
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CoreCompileInputs.cache
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CopyComplete
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.exe
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.pdb
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csprojAssemblyReference.cache
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe.config
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.pdb
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.dll
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Licensing.dll
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.dll
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.xml
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.xml
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csprojAssemblyReference.cache
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.DataEmpty.resources
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Master.resources
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Properties.Resources.resources
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.GenerateResource.cache
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CoreCompileInputs.cache
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CopyComplete
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.exe
+D:\MphasisProject\AttendanceWithService\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.pdb
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe.config
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.pdb
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.dll
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Licensing.dll
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.dll
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.xml
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.xml
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csprojAssemblyReference.cache
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.DataEmpty.resources
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Master.resources
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Properties.Resources.resources
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.GenerateResource.cache
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CoreCompileInputs.cache
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CopyComplete
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.exe
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.pdb
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe.config
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.pdb
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.dll
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Licensing.dll
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.dll
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.xml
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.xml
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.DataEmpty.resources
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Master.resources
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Properties.Resources.resources
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.GenerateResource.cache
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CoreCompileInputs.cache
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CopyComplete
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.exe
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.pdb
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.AssemblyReference.cache
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.AssemblyReference.cache
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.SuggestedBindingRedirects.cache
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.DataEmpty.resources
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Master.resources
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Properties.Resources.resources
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.GenerateResource.cache
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CoreCompileInputs.cache
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe.config
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.pdb
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.dll
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Licensing.dll
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.dll
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.xml
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.xml
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CopyComplete
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.exe
+D:\Mphasis Projects\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.pdb
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.DataEmpty.resources
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Master.resources
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Properties.Resources.resources
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.GenerateResource.cache
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CoreCompileInputs.cache
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.exe
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.pdb
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe.config
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.pdb
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.dll
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Licensing.dll
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.dll
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.xml
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.xml
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CopyComplete
+E:\MphasisProject\MphasisOnLineProject\AttendanceMKNB\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.AssemblyReference.cache
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe.config
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.pdb
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.dll
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Licensing.dll
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.dll
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.xml
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.xml
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.DataEmpty.resources
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Master.resources
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Properties.Resources.resources
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.GenerateResource.cache
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CoreCompileInputs.cache
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CopyComplete
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.exe
+E:\MphasisProject\NewServerProject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.pdb
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe.config
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.pdb
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.dll
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Licensing.dll
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.dll
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.xml
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.xml
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.DataEmpty.resources
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Master.resources
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Properties.Resources.resources
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.GenerateResource.cache
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CoreCompileInputs.cache
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CopyComplete
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.exe
+E:\officeproject\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.pdb
+E:\software\Attendance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe.config
+E:\software\Attendance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe
+E:\software\Attendance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.pdb
+E:\software\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.dll
+E:\software\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Licensing.dll
+E:\software\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.dll
+E:\software\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.xml
+E:\software\Attendance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.xml
+E:\software\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.DataEmpty.resources
+E:\software\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Master.resources
+E:\software\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Properties.Resources.resources
+E:\software\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.GenerateResource.cache
+E:\software\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CoreCompileInputs.cache
+E:\software\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CopyComplete
+E:\software\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.exe
+E:\software\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.pdb
+E:\software\Attendance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.AssemblyReference.cache
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe.config
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.exe
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\bin\Release\BioMetrixCore.pdb
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.dll
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Licensing.dll
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.dll
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Core.WinForms.xml
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\bin\Release\Syncfusion.Shared.Base.xml
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.DataEmpty.resources
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Master.resources
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.Properties.Resources.resources
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.GenerateResource.cache
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CoreCompileInputs.cache
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.CopyComplete
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.exe
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.pdb
+E:\software\New Server\Attandance\BioMatrix\BioMetrixCore\obj\Release\BioMetrixCore.csproj.AssemblyReference.cache

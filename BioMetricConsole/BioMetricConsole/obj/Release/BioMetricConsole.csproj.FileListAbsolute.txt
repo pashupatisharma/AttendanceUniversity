@@ -1,0 +1,63 @@
+F:\Mphsis\LatestServerProject\AttendanceShiftWithService\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe.config
+F:\Mphsis\LatestServerProject\AttendanceShiftWithService\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe
+F:\Mphsis\LatestServerProject\AttendanceShiftWithService\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.pdb
+F:\Mphsis\LatestServerProject\AttendanceShiftWithService\BioMetricConsole\BioMetricConsole\obj\Release\Interop.zkemkeeper.dll
+F:\Mphsis\LatestServerProject\AttendanceShiftWithService\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.ResolveComReference.cache
+F:\Mphsis\LatestServerProject\AttendanceShiftWithService\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.CoreCompileInputs.cache
+F:\Mphsis\LatestServerProject\AttendanceShiftWithService\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.exe
+F:\Mphsis\LatestServerProject\AttendanceShiftWithService\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.pdb
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe.config
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.pdb
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMetricConsole\BioMetricConsole\obj\Release\Interop.zkemkeeper.dll
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.ResolveComReference.cache
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.CoreCompileInputs.cache
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.exe
+F:\Mphsis\LatestServerProject\AttendanceWithService\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.pdb
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe.config
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.pdb
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.CoreCompileInputs.cache
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.exe
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.pdb
+D:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csprojAssemblyReference.cache
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe.config
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.pdb
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.CoreCompileInputs.cache
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.exe
+E:\MphasisProject\MphasisOnLineProject\AttendacneManagmentSystem\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.pdb
+D:\Mphasis Projects\Attendance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe.config
+D:\Mphasis Projects\Attendance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe
+D:\Mphasis Projects\Attendance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.pdb
+D:\Mphasis Projects\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.AssemblyReference.cache
+D:\Mphasis Projects\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.SuggestedBindingRedirects.cache
+D:\Mphasis Projects\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.CoreCompileInputs.cache
+D:\Mphasis Projects\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.exe
+D:\Mphasis Projects\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.pdb
+E:\MphasisProject\NewServerProject\Attendance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe.config
+E:\MphasisProject\NewServerProject\Attendance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe
+E:\MphasisProject\NewServerProject\Attendance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.pdb
+E:\MphasisProject\NewServerProject\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.CoreCompileInputs.cache
+E:\MphasisProject\NewServerProject\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.exe
+E:\MphasisProject\NewServerProject\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.pdb
+E:\MphasisProject\NewServerProject\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.AssemblyReference.cache
+E:\officeproject\Attendance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe.config
+E:\officeproject\Attendance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe
+E:\officeproject\Attendance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.pdb
+E:\officeproject\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.CoreCompileInputs.cache
+E:\officeproject\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.exe
+E:\officeproject\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.pdb
+E:\software\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.CoreCompileInputs.cache
+E:\software\Attendance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe.config
+E:\software\Attendance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe
+E:\software\Attendance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.pdb
+E:\software\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.exe
+E:\software\Attendance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.pdb
+E:\software\New Server\Attandance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe.config
+E:\software\New Server\Attandance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.exe
+E:\software\New Server\Attandance\BioMetricConsole\BioMetricConsole\bin\Release\BioMetricConsole.pdb
+E:\software\New Server\Attandance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.AssemblyReference.cache
+E:\software\New Server\Attandance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.csproj.CoreCompileInputs.cache
+E:\software\New Server\Attandance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.exe
+E:\software\New Server\Attandance\BioMetricConsole\BioMetricConsole\obj\Release\BioMetricConsole.pdb
