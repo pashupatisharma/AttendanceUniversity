@@ -43,7 +43,7 @@ namespace eAttendance.Controllers
 
 
 
-        public ActionResult Add(int SetupShiftId = 0, int OfficeId = 0)
+        public ActionResult Add(int SetupShiftId = 0, int OfficeId = 0, int ShiftTypeId = 0)
         {
             List<SetupShiftTime> list = new List<SetupShiftTime>();
             if (SetupShiftId == 0)
@@ -51,7 +51,13 @@ namespace eAttendance.Controllers
                 SetupShiftId = db.Shift.FirstOrDefault().ShiftId;
             }
 
-            List<SetupShiftTime> source = db.SetupShiftTime.Where(x => x.ShiftId == SetupShiftId && x.OfficeId == OfficeId).Where(x => x.Status == 1).ToList();
+            // NEW: filter by ShiftTypeId
+            List<SetupShiftTime> source = db.SetupShiftTime
+                .Where(x => x.ShiftId == SetupShiftId
+                         && x.OfficeId == OfficeId
+                         && x.Status == 1
+                         && (ShiftTypeId == 0 || x.ShiftTypeId == ShiftTypeId)) // <-- ADDED
+                .ToList();
             Func<SetupShiftTime, bool> predicate = null;
 
             for (int i = 1; i <= 7; i++)
@@ -63,11 +69,12 @@ namespace eAttendance.Controllers
                 {
                     predicate = x => x.WeekDay == i;
                 }
-
+                
                 var d = source.Where(x => x.WeekDay == i).FirstOrDefault();
                 if (d != null)
                 {
                     item.ShiftTimeId = d.ShiftTimeId;
+                    item.ShiftTypeId = ShiftTypeId; // <-- ADDED (bind to view)
                     item.IsWeekOff = d.IsWeekOff;
                     item.ShiftStartTime = d.ShiftStartTime;
                     item.ShiftEndTime = d.ShiftEndTime;
@@ -128,6 +135,7 @@ namespace eAttendance.Controllers
                 list.Add(item);
             }
             ViewBag.SelectedShiftId = SetupShiftId.ToString();
+            ViewBag.SelectedShiftTypeId = ShiftTypeId; // <-- ADDED
             return base.View(list);
         }
 
@@ -140,7 +148,7 @@ namespace eAttendance.Controllers
 
 
         [HttpPost]
-        public ActionResult Add(int SetupShiftId, int? OfficeId, List<SetupShiftTime> list)
+        public ActionResult Add(int SetupShiftId, int? OfficeId, int ShiftTypeId, List<SetupShiftTime> list)
         {
             try
             {
@@ -159,11 +167,13 @@ namespace eAttendance.Controllers
                         foreach (SetupShiftTime item in list)
                         {
                             Func<SetupShiftTime, bool> predicate = null;
+                            item.ShiftTypeId = ShiftTypeId;
                             if (item.ShiftTimeId <= 0)
                             {
                                 SetupShiftTime model = new SetupShiftTime
                                 {
                                     ShiftId = SetupShiftId,
+                                    ShiftTypeId = ShiftTypeId, // <-- ADDED
                                     OfficeId = new int?(office.OfficeId),
                                     ShiftName = sname,
                                     WeekDay = item.WeekDay,
@@ -193,6 +203,7 @@ namespace eAttendance.Controllers
 
                                 SetupShiftTime model = db.SetupShiftTime.Where(x => x.ShiftTimeId == item.ShiftTimeId).FirstOrDefault();
                                 model.ShiftTimeId = item.ShiftTimeId;
+                                model.ShiftTypeId = item.ShiftTypeId; // <-- ADDED
                                 model.OfficeId = new int?(office.OfficeId);
                                 model.ShiftId = item.ShiftId;
                                 model.WeekDay = item.WeekDay;
@@ -214,11 +225,14 @@ namespace eAttendance.Controllers
                     foreach (SetupShiftTime item in list)
                     {
                         Func<SetupShiftTime, bool> predicate = null;
+                        item.ShiftTypeId = ShiftTypeId;
+
                         if (item.ShiftTimeId <= 0)
                         {
                             SetupShiftTime model = new SetupShiftTime
                             {
                                 ShiftId = SetupShiftId,
+                                ShiftTypeId = ShiftTypeId, // <-- ADDED
                                 OfficeId = OfficeId,
                                 ShiftName = sname,
                                 WeekDay = item.WeekDay,
@@ -248,7 +262,7 @@ namespace eAttendance.Controllers
 
                             SetupShiftTime model = db.SetupShiftTime.Where(x => x.ShiftTimeId == item.ShiftTimeId).FirstOrDefault();
                             model.ShiftTimeId = item.ShiftTimeId;
-
+                            model.ShiftTypeId = item.ShiftTypeId; // <-- ADDED
                             model.ShiftId = item.ShiftId;
                             model.WeekDay = item.WeekDay;
                             model.IsWeekOff = item.IsWeekOff;

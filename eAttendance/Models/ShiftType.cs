@@ -13,7 +13,7 @@ namespace eAttendance.Models
         public int ShiftTypeId { get; set; }
 
         [Required] 
-        public string Name { get; set; } // Summer / Winter
+        public string Name { get; set; } // Morning/Day
 
         public bool IsActive { get; set; }
 

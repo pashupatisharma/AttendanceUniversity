@@ -13,7 +13,7 @@ namespace eAttendance.Models
         public int ShiftId { get; set; }
 
         [StringLength(100), Required, Display(Name = "सिफ्टको नाम  ")]
-        public string ShiftName { get; set; }
+        public string ShiftName { get; set; }  //Summer/Winter
 
         [Display(Name = "स्थिति ")]
         public bool Status { get; set; }

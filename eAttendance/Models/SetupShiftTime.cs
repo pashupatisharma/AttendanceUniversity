@@ -81,6 +81,12 @@ namespace eAttendance.Models
 
         public int flage { get; set; }
 
+        public int? ShiftTypeId { get; set; }  // NEW
+
+        [ForeignKey("ShiftTypeId")]
+        public virtual ShiftType ShiftType { get; set; }
+
+
         [NotMapped()]
         public List<SetupShiftTime> SetupShiftTimeList { get; set; }
     }

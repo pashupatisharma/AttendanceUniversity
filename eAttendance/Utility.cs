@@ -285,6 +285,14 @@ namespace eAttendance
             }
         }
 
+        public static IEnumerable<SelectListItem> GetShiftTypeList()
+        {
+            using (ApplicationDbContext entities = new ApplicationDbContext())
+            {
+                return new SelectList(entities.ShiftType.ToList(), "ShiftTypeId", "Name");
+            }
+        }
+
         public static IEnumerable<SelectListItem> YearListWithSelect()
         {
             throw new NotImplementedException();

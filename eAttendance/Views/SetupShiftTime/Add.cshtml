@@ -32,6 +32,9 @@
 
                 @Html.DropDownList("OfficeId", eAttendance.Utility.GetOfficeIdName(User), "छान्नुहोस्", new { @class = "chosen-select form-control" })
             </div>
+            <div class="ibox-content ibox-heading ibox-title">
+                @Html.DropDownList("ShiftTypeId", eAttendance.Utility.GetShiftTypeList(), "छान्नुहोस्", new { @class = "chosen-select form-control", id = "ShiftTypeId" })
+            </div>
             <div class="ibox-content inspinia-timeline valueFields">
                 @for (var i = 0; i < 7; i++)
                 {
@@ -39,6 +42,7 @@
                         @Html.Hidden("list[" + i + "].ShiftTimeId", Model[i].ShiftTimeId)
                         @Html.Hidden("list[" + i + "].ShiftId", Model[i].ShiftId)
                         @Html.Hidden("list[" + i + "].WeekDay", Model[i].WeekDay)
+                        @Html.Hidden("list[" + i + "].ShiftTypeId", Model[i].ShiftTypeId)
                         <div class="row">
                             <div class="col-xs-3 date">
                                 <i>
@@ -191,13 +195,22 @@
 
             });
 
-            function GetShiftTimeByOfficeId(shiftTimeID, OfficeId) {
+           function GetShiftTimeByOfficeId(shiftTimeID, OfficeId) {
+                var shiftTypeId = $("#ShiftTypeId").val(); // <-- ADDED
 
-                if (shiftTimeID > 0 && OfficeId > 0) {
-                    window.location = '@Url.Action("Add","SetupShiftTime")' + '?SetupShiftId=' + shiftTimeID + '&OfficeId=' + OfficeId;
-
+                if (shiftTimeID > 0 && OfficeId > 0 && shiftTypeId > 0) {
+                    window.location = '@Url.Action("Add","SetupShiftTime")'
+                        + '?SetupShiftId=' + shiftTimeID
+                        + '&OfficeId=' + OfficeId
+                        + '&ShiftTypeId=' + shiftTypeId; // <-- ADDED
                 }
-            }
+                        }
+
+            $('#ShiftTypeId').on('change', function () {
+                var shiftTimeID = $("#SetupShiftId").val();
+                var OfficeId = $("#OfficeId").val();
+                GetShiftTimeByOfficeId(shiftTimeID, OfficeId);
+            });
 
             $('.txtShiftEndTime').change(function () {
                 var val = this.value;
