@@ -93,9 +93,11 @@ namespace eAttendance
                 modelEmployeeOfficeInfo.ModifiedDate = DateTime.Now;
                 entities.EmployeeOfficeDetail.Add(modelEmployeeOfficeInfo);
 
+                var shiftTypeId = modelEmployeeShiftTime.ShiftTypeId;
                 modelEmployeeShiftTime = new EmployeeShiftTime();
                 modelEmployeeShiftTime.EmployeeId = model.EmployeeId;
                 modelEmployeeShiftTime.EffectiveDate = DateTime.Now;
+                modelEmployeeShiftTime.ShiftTypeId = shiftTypeId;
                 modelEmployeeShiftTime.Stauts = 1;
                 modelEmployeeShiftTime.CreatedDate = DateTime.Now;
                 modelEmployeeShiftTime.ModifiedDate = DateTime.Now;

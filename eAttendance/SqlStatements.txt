@@ -37,3 +37,187 @@ ADD CONSTRAINT FK_EmployeeShiftTimes_ShiftType
 FOREIGN KEY (ShiftTypeId)
 REFERENCES ShiftTypes(ShiftTypeId);
 GO
+
+
+
+////////////////////  This part if for functions. Before it just checked shiftId .With altered function below it will check for both ShiftId and ShiftTypeId
+
+-- =============================================
+-- 1. func_GetShiftId
+-- =============================================
+ALTER FUNCTION [dbo].[func_GetShiftId]
+    (@EmployeeId int, @logDate date, @officeId int)
+RETURNS INT
+BEGIN
+    DECLARE @result int;
+    DECLARE @ShiftId int;
+    DECLARE @ShiftTypeId int;
+    DECLARE @ShiftTimeId int;
+
+    -- Get ShiftId from yearly schedule
+    SELECT TOP 1 @ShiftId = ShiftId 
+    FROM YearlyShifts 
+    WHERE @logDate BETWEEN StartDate AND EndDate 
+    AND OfficeId = @officeId
+    ORDER BY StartDate DESC;
+
+    -- If no yearly shift found, return null gracefully
+    IF @ShiftId IS NULL
+        RETURN NULL;
+
+    -- Get employee's ShiftTypeId (Morning/Day etc.)
+    SELECT TOP 1 @ShiftTypeId = ShiftTypeId 
+    FROM EmployeeShiftTimes 
+    WHERE EmployeeId = @EmployeeId 
+    AND Stauts = 1
+    AND EffectiveDate <= @logDate
+    ORDER BY EffectiveDate DESC;
+
+    -- Get ShiftTimeId filtered by ShiftTypeId
+    -- If ShiftTypeId is null, falls back to any matching row
+    SELECT TOP 1 @ShiftTimeId = ShiftTimeId 
+    FROM SetupShiftTimes
+    WHERE ShiftId = @ShiftId 
+    AND [WeekDay] = DATEPART(WEEKDAY, @logDate)
+    AND (@ShiftTypeId IS NULL OR ShiftTypeId = @ShiftTypeId)
+    AND Status = 1
+    ORDER BY ShiftTimeId ASC;
+
+    SET @result = @ShiftTimeId;
+    RETURN @result;
+END
+GO
+
+-- =============================================
+-- 2. funcGetInRemarks
+-- =============================================
+ALTER FUNCTION [dbo].[funcGetInRemarks]
+(
+    @EmployeeId int,
+    @LogDate datetime,
+    @officeId int
+)
+RETURNS nvarchar(500)
+AS
+BEGIN
+    DECLARE @result nvarchar(500);
+
+    DECLARE @ShiftId int;
+    SELECT TOP 1 @ShiftId = ShiftId 
+    FROM YearlyShifts 
+    WHERE @LogDate BETWEEN StartDate AND EndDate 
+    AND OfficeId = @officeId
+    ORDER BY StartDate DESC;
+
+    -- If no yearly shift found, return empty
+    IF @ShiftId IS NULL
+        RETURN '';
+
+    -- Get employee's ShiftTypeId
+    DECLARE @ShiftTypeId int;
+    SELECT TOP 1 @ShiftTypeId = ShiftTypeId 
+    FROM EmployeeShiftTimes 
+    WHERE EmployeeId = @EmployeeId 
+    AND Stauts = 1
+    AND EffectiveDate <= CAST(@LogDate AS DATE)
+    ORDER BY EffectiveDate DESC;
+
+    DECLARE @StartTime time, @EndTime time, @LateInAfter time, @EarlyOutBefore time;
+    SELECT TOP 1
+        @StartTime = ShiftStartTime,
+        @EndTime = ShiftEndTime,
+        @LateInAfter = ShiftLateInAfter,
+        @EarlyOutBefore = ShiftEarlyOutBefore
+    FROM SetupShiftTimes
+    WHERE ShiftId = @ShiftId 
+    AND [WeekDay] = DATEPART(WEEKDAY, @LogDate)
+    AND (@ShiftTypeId IS NULL OR ShiftTypeId = @ShiftTypeId)
+    AND Status = 1
+    ORDER BY ShiftTimeId ASC;
+
+    -- If no shift timing found, return empty
+    IF @StartTime IS NULL OR @LateInAfter IS NULL
+        RETURN '';
+
+    DECLARE @InTime time;
+    SET @InTime = CAST(DATEPART(HH, @LogDate) AS nvarchar(2)) 
+                + ':' 
+                + CAST(DATEPART(MINUTE, @LogDate) AS nvarchar(2));
+
+    IF (@InTime >= @StartTime AND @InTime <= @LateInAfter)
+        SET @result = N'समयमा';
+    ELSE IF (@InTime < @StartTime)
+        SET @result = CAST(DATEDIFF(MINUTE, @InTime, @StartTime) AS nvarchar(20)) + N' मिनेट छिटो आएको';
+    ELSE IF (@InTime > @LateInAfter)
+        SET @result = CAST(DATEDIFF(MINUTE, @StartTime, @InTime) AS nvarchar(20)) + N' मिनेट ढिलो आएको';
+
+    RETURN @result;
+END
+GO
+
+-- =============================================
+-- 3. funcGetOutRemarks
+-- =============================================
+ALTER FUNCTION [dbo].[funcGetOutRemarks]
+(
+    @EmployeeId int,
+    @LogDate datetime,
+    @officeId int
+)
+RETURNS nvarchar(500)
+AS
+BEGIN
+    DECLARE @result nvarchar(500);
+
+    DECLARE @ShiftId int;
+    SELECT TOP 1 @ShiftId = ShiftId 
+    FROM YearlyShifts 
+    WHERE @LogDate BETWEEN StartDate AND EndDate 
+    AND OfficeId = @officeId
+    ORDER BY StartDate DESC;
+
+    -- If no yearly shift found, return empty
+    IF @ShiftId IS NULL
+        RETURN '';
+
+    -- Get employee's ShiftTypeId
+    DECLARE @ShiftTypeId int;
+    SELECT TOP 1 @ShiftTypeId = ShiftTypeId 
+    FROM EmployeeShiftTimes 
+    WHERE EmployeeId = @EmployeeId 
+    AND Stauts = 1
+    AND EffectiveDate <= CAST(@LogDate AS DATE)
+    ORDER BY EffectiveDate DESC;
+
+    DECLARE @StartTime time, @EndTime time, @LateInAfter time, @EarlyOutBefore time;
+    SELECT TOP 1
+        @StartTime = ShiftStartTime,
+        @EndTime = ShiftEndTime,
+        @LateInAfter = ShiftLateInAfter,
+        @EarlyOutBefore = ShiftEarlyOutBefore
+    FROM SetupShiftTimes
+    WHERE ShiftId = @ShiftId 
+    AND [WeekDay] = DATEPART(WEEKDAY, @LogDate)
+    AND (@ShiftTypeId IS NULL OR ShiftTypeId = @ShiftTypeId)
+    AND Status = 1
+    ORDER BY ShiftTimeId ASC;
+
+    -- If no shift timing found, return empty
+    IF @EndTime IS NULL OR @EarlyOutBefore IS NULL
+        RETURN '';
+
+    DECLARE @OutTime time;
+    SET @OutTime = CAST(DATEPART(HH, @LogDate) AS nvarchar(2)) 
+                + ':' 
+                + CAST(DATEPART(MINUTE, @LogDate) AS nvarchar(2));
+
+    IF (@OutTime >= @EarlyOutBefore AND @OutTime <= @EndTime)
+        SET @result = N'समयमा';
+    ELSE IF (@OutTime < @EarlyOutBefore)
+        SET @result = CAST(DATEDIFF(MINUTE, @OutTime, @EarlyOutBefore) AS nvarchar(20)) + N' मिनेट छिटो गएको';
+    ELSE IF (@OutTime > @EndTime)
+        SET @result = CAST(DATEDIFF(MINUTE, @EndTime, @OutTime) AS nvarchar(20)) + N' मिनेट ढिलो गएको';
+
+    RETURN @result;
+END
+GO
