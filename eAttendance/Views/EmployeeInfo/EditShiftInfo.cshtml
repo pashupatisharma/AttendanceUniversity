@@ -21,7 +21,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>@Html.DisplayNameFor(m => m.ShiftId)</label>
-                                @Html.DropDownListFor(m => m.ShiftId, Utility.GetShiftIdName(), new { @class = " chosen-select form-control" })
+                                @Html.DropDownListFor(m => m.ShiftId, Utility.GetShiftIdName(),"--Select--", new { @class = " chosen-select form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.ShiftTypeId)</label>
+                                @Html.DropDownListFor(m => m.ShiftTypeId, Utility.GetShiftTypeList(), "--Select--", new { @class = " chosen-select form-control" })
                             </div>
                         </div>
                         <div class="col-md-12">

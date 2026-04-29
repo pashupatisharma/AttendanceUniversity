@@ -28,3 +28,12 @@ SET ShiftTypeId = 2
 WHERE ShiftTypeId IS NULL;
 GO
 
+ALTER TABLE EmployeeShiftTimes
+ADD ShiftTypeId INT NULL;
+GO
+
+ALTER TABLE EmployeeShiftTimes
+ADD CONSTRAINT FK_EmployeeShiftTimes_ShiftType
+FOREIGN KEY (ShiftTypeId)
+REFERENCES ShiftTypes(ShiftTypeId);
+GO

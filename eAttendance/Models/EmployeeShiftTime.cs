@@ -17,7 +17,8 @@ namespace eAttendance.Models
         public virtual Shift Shift { get; set; }
         public int Stauts { get; set; }
 
-
+        public int? ShiftTypeId { get; set; }
+        public virtual ShiftType ShiftType { get; set; }
         public string Remarks { get; set; }
 
         public  string  NEffectiveDate { get; set; }

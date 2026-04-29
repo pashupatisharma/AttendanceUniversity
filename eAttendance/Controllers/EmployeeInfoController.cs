@@ -766,6 +766,7 @@ namespace eAttendance.Controllers
                 {
                     model2.EffectiveDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(model.NEffectiveDate));
                     model2.ShiftId = model.ShiftId;
+                    model2.ShiftTypeId = model.ShiftTypeId;
                     model2.Remarks = model.Remarks;
                     model2.ModifiedBy = userIdByUserName;
                     model2.ModifiedDate = DateTime.Now;
