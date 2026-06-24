@@ -264,3 +264,16 @@ th.verticalTableHeader  {
   float: right;
   left: -90px;
 }
+
+#side-menu li.active > a {
+    background-color: #161931;
+    color: #fff !important;
+    font-weight: 600;
+}
+#side-menu a.active {
+    background: #161931;
+    color: #fff !important;
+}
+    #side-menu li.active > a i {
+        color: #fff !important;
+    }

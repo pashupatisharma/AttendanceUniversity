@@ -354,15 +354,15 @@
 
 
                     @*@if (User.IsInRole("Admin")|| User.IsInRole("SuperAdmin"))
-            {
-                <li>
-                    <a href="#"><i class="fa fa-calculator"></i> <span class="nav-label">उपकरण</span><span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level collapse">
-                        <li><a href="@Url.Action("Index","DataPush")">Push Log</a></li>
-                    </ul>
-                </li>
+                        {
+                            <li>
+                                <a href="#"><i class="fa fa-calculator"></i> <span class="nav-label">उपकरण</span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse">
+                                    <li><a href="@Url.Action("Index","DataPush")">Push Log</a></li>
+                                </ul>
+                            </li>
 
-            }*@
+                        }*@
                 </ul>
             </div>
         </nav>
@@ -434,20 +434,23 @@
                 $("body").toggleClass("sidebar-collapsed");
             });
 
-            // Maintain active menu highlight
-            //$('#side-menu ul li').find('a').each(function () {
-            //    var link = new RegExp($(this).attr('href'));
-            //    if (link.test(document.location.href)) {
-            //        if (!$(this).parents().hasClass('active')) {
-            //            $(this).parents('li').addClass('menu-open');
-            //            $(this).parents().addClass("active");
-            //            $(this).addClass("active");
-            //        }
-            //    }
-            //});
+            //Highlight Active menu and folder
 
+         var currentUrl = window.location.pathname.toLowerCase();
 
+            $('#side-menu a').each(function () {
 
+                var href = $(this).attr('href');
+
+                if (href && href !== '#' &&
+                    currentUrl === $('<a>').attr('href', href)[0].pathname.toLowerCase()) {
+
+                    $(this).addClass('active');
+
+                    $(this).parents('li').addClass('active');
+                    $(this).parents('ul').addClass('in');
+                }
+            });
 
 
         });

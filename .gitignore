@@ -3,3 +3,7 @@
 ################################################################################
 
 /.vs/eAttendance/FileContentIndex
+/.vs/
+/eAttendance/bin
+/eAttendance/obj
+/eAttendance/obj/Release/DesignTimeResolveAssemblyReferences.cache
