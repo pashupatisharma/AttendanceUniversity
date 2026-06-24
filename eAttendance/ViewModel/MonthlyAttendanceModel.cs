@@ -78,5 +78,6 @@ namespace eAttendance.ViewModel
         public int ServiceDisplayOrder { get; set; }
 
         public int DesignationDisplayOrder { get; set; }
+        public int? ShiftTypeId { get; internal set; }
     }
 }

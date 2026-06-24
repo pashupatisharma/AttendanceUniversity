@@ -80,52 +80,57 @@ namespace eAttendance
         public static IEnumerable<SelectListItem> GetZoneList()
         {
 
-            return new SelectList(new[] { new {
-        Id = "0",
-        Value = "छान्नुहोश "
-    }, new {
-        Id = "2",
-        Value = "मेची"
-    }, new {
-        Id = "3",
-        Value = "कोशी"
-    }, new {
-        Id = "4",
-        Value = "सगरमाथा"
-    }, new {
-        Id = "5",
-        Value = "जनकपुर"
-    }, new {
-        Id = "6",
-        Value = "बागमति"
-    }, new {
-        Id = "7",
-        Value = "नारायणी"
-    }, new {
-        Id = "8",
-        Value = "गण्डकी"
-    }, new {
-        Id = "9",
-        Value = "लुम्विनी"
-    }, new {
-        Id = "10",
-        Value = "धवलागिरी"
-    }, new {
-        Id = "11",
-        Value = "राप्ती"
-    }, new {
-        Id = "12",
-        Value = "कर्णाली"
-    }, new {
-        Id = "13",
-        Value = "भेरी"
-    }, new {
-        Id = "14",
-        Value = "सेती"
-    }, new {
-        Id = "15",
-        Value = "महाकाली"
-    } }, "id", "Value");
+            ApplicationDbContext context = new ApplicationDbContext();
+            return new SelectList(context.ZoneSetUp.ToList(), "ZoneId", "ZoneName");
+
+
+
+    //        return new SelectList(new[] { new {
+    //    Id = "0",
+    //    Value = "छान्नुहोश "
+    //}, new {
+    //    Id = "2",
+    //    Value = "मेची"
+    //}, new {
+    //    Id = "3",
+    //    Value = "कोशी"
+    //}, new {
+    //    Id = "4",
+    //    Value = "सगरमाथा"
+    //}, new {
+    //    Id = "5",
+    //    Value = "जनकपुर"
+    //}, new {
+    //    Id = "6",
+    //    Value = "बागमति"
+    //}, new {
+    //    Id = "7",
+    //    Value = "नारायणी"
+    //}, new {
+    //    Id = "8",
+    //    Value = "गण्डकी"
+    //}, new {
+    //    Id = "9",
+    //    Value = "लुम्विनी"
+    //}, new {
+    //    Id = "10",
+    //    Value = "धवलागिरी"
+    //}, new {
+    //    Id = "11",
+    //    Value = "राप्ती"
+    //}, new {
+    //    Id = "12",
+    //    Value = "कर्णाली"
+    //}, new {
+    //    Id = "13",
+    //    Value = "भेरी"
+    //}, new {
+    //    Id = "14",
+    //    Value = "सेती"
+    //}, new {
+    //    Id = "15",
+    //    Value = "महाकाली"
+    //} }, "id", "Value");
 
         }
 
@@ -290,6 +295,15 @@ namespace eAttendance
             using (ApplicationDbContext entities = new ApplicationDbContext())
             {
                 return new SelectList(entities.ShiftType.ToList(), "ShiftTypeId", "Name");
+            }
+        }
+
+
+        public static ShiftType GetShiftTypeListById(int?id)
+        {
+            using (ApplicationDbContext entities = new ApplicationDbContext())
+            { 
+                return entities.ShiftType.Where(x => x.ShiftTypeId == id).FirstOrDefault();
             }
         }
 

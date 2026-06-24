@@ -21,7 +21,7 @@ namespace eAttendance.Models
         [Display(Name = "हेराउने क्रम  ")]
         public int DisplayOrder { get; set; }
 
-        [Display(Name = "अञ्चल")]
+        [Display(Name = "प्रदेश")]
         public int ZoneId { get; set; }
 
         public string CreatedBy { get; set; }

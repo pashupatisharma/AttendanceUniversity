@@ -115,16 +115,27 @@ namespace eAttendance.Controllers
 
                                     if (string.IsNullOrEmpty(enrollNo))
                                         continue;
+                                   var emp = (from x in db.EmployeeInfo
+                                           join y in db.EmployeeOfficeDetail on x.EmployeeId equals y.EmployeeId
+                                           where x.EmployeeNo == enrollNo && y.OfficeId == device.OfficeId && x.Status != 2
+                                           select new EmployeeInfoReport
+                                           {
+                                               EmployeeId = x.EmployeeId,
+                                               OfficeId=y.OfficeId
+                                           }).FirstOrDefault();
 
-                                    var emp = db.EmployeeInfo.FirstOrDefault(x => x.EmployeeNo == enrollNo);
-                                    if (emp == null) continue;
 
-                                    var office = db.EmployeeOfficeDetail.FirstOrDefault(x => x.EmployeeId == emp.EmployeeId);
-                                    if (office == null) continue;
+
+
+                                    //var emp = db.EmployeeInfo.FirstOrDefault(x => x.EmployeeNo == enrollNo);
+                                    //if (emp == null) continue;
+
+                                    //var office = db.EmployeeOfficeDetail.FirstOrDefault(x => x.EmployeeId == emp.EmployeeId);
+                                    //if (office == null) continue;
 
                                     db.AttendanceLog.Add(new AttendanceLog
                                     {
-                                        OfficeId = (int)office.OfficeId,
+                                        OfficeId = (int)emp.OfficeId,
                                         OfficeDeviceId = device.OfficeDeviceId,
                                         IpAddress = device.DeviceIp,
                                         EnrollNumber = enrollNo,

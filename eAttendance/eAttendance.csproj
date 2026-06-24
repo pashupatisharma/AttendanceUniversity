@@ -219,6 +219,7 @@
     <Compile Include="Controllers\PeriodicAttendanceReportController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SetupBranchController.cs" />
+    <Compile Include="Controllers\SetupDailyShiftController.cs" />
     <Compile Include="Controllers\SetupDesignationController.cs" />
     <Compile Include="Controllers\SetupDistrictController.cs" />
     <Compile Include="Controllers\SetupFiscalYearController.cs" />
@@ -287,6 +288,7 @@
     <Compile Include="Models\ServiceSetUp.cs" />
     <Compile Include="Models\SetupShiftTime.cs" />
     <Compile Include="Models\Shift.cs" />
+    <Compile Include="Models\ShiftType.cs" />
     <Compile Include="Models\TaskSchedule.cs" />
     <Compile Include="Models\TransferModel.cs" />
     <Compile Include="Models\VisitApplication.cs" />
@@ -569,6 +571,7 @@
     <Content Include="Content\nepali.datepicker.v4.0.8\nepali.datepicker.v4.0.8.min.js" />
     <Content Include="DLL\zkemkeeper.dll" />
     <Content Include="Images\Emblem_of_Nepal.png" />
+    <Content Include="Images\Emblem_of_Nepal.png-removebg.png" />
     <Content Include="Images\login-bg.jpeg" />
     <Content Include="Images\Nepalflag.gif" />
     <Content Include="Images\sidebar-1.jpg" />
@@ -625,6 +628,10 @@
     <Content Include="Views\EmployeeInfo\UploadExcelFile.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\SetupDailyShift\Add.cshtml" />
+    <Content Include="Views\SetupDailyShift\Delete.cshtml" />
+    <Content Include="Views\SetupDailyShift\Edit.cshtml" />
+    <Content Include="Views\SetupDailyShift\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\animate.css" />

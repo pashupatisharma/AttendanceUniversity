@@ -74,9 +74,9 @@ namespace eAttendance.Service
             public static string EmailId = "इमेल आइढी";
          
             public static string UserId = "युजरको नाम";
-            public static string Pzone = "स्थायी अञ्चल";
+            public static string Pzone = "स्थायी प्रदेश";
           
-            public static string Tzone = "अस्थायी अञ्चल";
+            public static string Tzone = "अस्थायी प्रदेश";
            
             public static string Nationality = "राष्ट्रियता";
             public static string Status = "स्थिति";

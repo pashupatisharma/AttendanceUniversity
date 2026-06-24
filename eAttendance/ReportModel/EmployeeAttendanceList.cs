@@ -7,6 +7,8 @@ namespace eAttendance.ReportModel
 {
     public class EmployeeAttendanceList
     {
+        public int? ShiftTypeId { get; set; }
+
         // Properties
         public int? EmployeeId { get; set; }
 

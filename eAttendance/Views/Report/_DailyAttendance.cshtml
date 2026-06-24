@@ -53,8 +53,9 @@
                             <tr class="no-border-row">
                                 <td class="no-borders">तह: @Html.Raw((Model.LevelId > 0) ? eAttendance.Utility.GetLevelByLevelId(Model.LevelId).LevelName : "सबै")</td>
                                 <td class="no-borders">पद: @Html.Raw((Model.DesignationId > 0) ? eAttendance.Utility.GetDesignationByDesignationId(Model.DesignationId).DesignationName : "सबै")</td>
+                                <td class="no-borders">शिफ्ट: @Html.Raw((Model.ShiftTypeId > 0) ? eAttendance.Utility.GetShiftTypeListById(Model.ShiftTypeId).Name : "सबै")</td>
                                 <td class="no-borders">कर्मचारी: @Html.Raw((Model.EmployeeId > 0) ? eAttendance.Utility.GetEmployeeInfoByEmnployeeId(Model.EmployeeId).EmployeeNameNp : "सबै")</td>
-                                <td class="no-borders"></td>
+                             
                             </tr>
                         </table>
                     </td>

@@ -1,4 +1,5 @@
-﻿using eAttendance.ReportModel;
+﻿using eAttendance.Models;
+using eAttendance.ReportModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,7 +101,7 @@ namespace eAttendance.Controllers
 
 
         [HttpPost]
-        public ActionResult DailyAttendanceReport(EmployeeAttendanceList model)
+        public ActionResult DailyAttendanceReport(EmployeeAttendanceList model, int ShiftTypeId=0)
         {
             DateTime date = DateTime.Now.Date;
 
@@ -143,6 +144,10 @@ namespace eAttendance.Controllers
                 if (model.DesignationId > 0)
                 {
                     source = source.Where(x => x.DesignationId == model.DesignationId);
+                }
+                if (ShiftTypeId > 0)
+                {
+                    source = source.Where(x => x.ShiftTypeId == ShiftTypeId);
                 }
 
                 if (model.EmployeeId > 0)

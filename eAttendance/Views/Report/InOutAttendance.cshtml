@@ -74,20 +74,20 @@
                             <div class="row">
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="control-label">साल</label>
-                                        @Html.DropDownListFor(m => m.YearId, Utility.NepaliYearList(), new { @class = "form-control chosen-select" })
+                                        <label class="control-label">साल <span class="text-danger">*</span> </label>
+                                        @Html.DropDownListFor(m => m.YearId, Utility.NepaliYearList(), new { @class = "form-control chosen-select",@required= "required" })
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="control-label">@eAttendance.Service.MenuService.Month</label>
-                                        @Html.DropDownListFor(m => m.MonthId, Utility.NepaliMonthList(), new { @class = "form-control chosen-select" })
+                                        <label class="control-label">@eAttendance.Service.MenuService.Month <span class="text-danger">*</span> </label>
+                                        @Html.DropDownListFor(m => m.MonthId, Utility.NepaliMonthList(), new { @class = "form-control chosen-select", @required = "required" })
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="control-label">कार्यालय</label>
-                                        @Html.DropDownListFor(m => m.OfficeId, Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control" })
+                                        <label class="control-label">कार्यालय <span class="text-danger">*</span> </label>
+                                        @Html.DropDownListFor(m => m.OfficeId, Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control", @required = "required" })
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
@@ -113,6 +113,12 @@
                                     <div class="form-group">
                                         <label class="control-label">पद</label>
                                         @Html.DropDownListFor(m => m.DesignationId, Enumerable.Empty<SelectListItem>(), new { @class = "chosen-select form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>शिफ्ट </label>
+                                        @Html.DropDownList("ShiftTypeId", Utility.GetShiftTypeList(), "सबै", new { @class = " chosen-select form-control" })
                                     </div>
                                 </div>
                                 <div class="col-sm-3">

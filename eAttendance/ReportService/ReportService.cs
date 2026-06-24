@@ -28,6 +28,9 @@ namespace ReportService
                     obj.LevelId = (int)m.LevelId;
                     obj.LevelDisplayOrder = dbnew.LevelSetUp.Where(x => x.LevelId == m.LevelId).FirstOrDefault().DisplayOrder;
                     obj.EmployeeId = (int)m.EmployeeId;
+                    var shifttype = dbnew.EmployeeShiftTime.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault();
+                    if(shifttype!=null)
+                    obj.ShiftTypeId = shifttype.ShiftTypeId;
                     obj.BranchId = (int)m.BranchId;
                     obj.ServiceId = (int)m.ServiceId;
                     obj.ServiceDisplayOrder = dbnew.ServiceSetUp.Where(x => x.ServiceId == m.ServiceId).FirstOrDefault().DisplayOrder;
@@ -57,6 +60,9 @@ namespace ReportService
                     obj.LevelId = (int)m.LevelId;
                     obj.LevelDisplayOrder = dbnew.LevelSetUp.Where(x => x.LevelId == m.LevelId).FirstOrDefault().DisplayOrder;
                     obj.EmployeeId = (int)m.EmployeeId;
+                    var shifttype = dbnew.EmployeeShiftTime.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault();
+                    if (shifttype != null)
+                        obj.ShiftTypeId = shifttype.ShiftTypeId;
                     obj.BranchId = (int)m.BranchId;
                     obj.ServiceId = (int)m.ServiceId;
                     obj.ServiceDisplayOrder = dbnew.ServiceSetUp.Where(x => x.ServiceId == m.ServiceId).FirstOrDefault().DisplayOrder;
@@ -91,6 +97,9 @@ namespace ReportService
                     obj.LevelId = (int)item.LevelId;
                     obj.LevelDisplayOrder = dbnew.LevelSetUp.Where(x => x.LevelId == item.LevelId).FirstOrDefault().DisplayOrder;
                     obj.EmployeeId = (int)item.EmployeeId;
+                    var shifttype = dbnew.EmployeeShiftTime.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
+                    if (shifttype != null)
+                        obj.ShiftTypeId = shifttype.ShiftTypeId;
                     obj.BranchId = (int)item.BranchId;
                     obj.ServiceId = (int)item.ServiceId;
                     obj.ServiceDisplayOrder = dbnew.ServiceSetUp.Where(x => x.ServiceId == item.ServiceId).FirstOrDefault().DisplayOrder;
@@ -123,6 +132,9 @@ namespace ReportService
                     obj.LevelId = (int)m.LevelId;
                     obj.LevelDisplayOrder = dbnew.LevelSetUp.Where(x => x.LevelId == m.LevelId).FirstOrDefault().DisplayOrder;
                     obj.EmployeeId = (int)m.EmployeeId;
+                    var shifttype = dbnew.EmployeeShiftTime.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault();
+                    if (shifttype != null)
+                        obj.ShiftTypeId = shifttype.ShiftTypeId;
                     obj.BranchId = (int)m.BranchId;
                     obj.ServiceId = (int)m.ServiceId;
                     obj.ServiceDisplayOrder = dbnew.ServiceSetUp.Where(x => x.ServiceId == m.ServiceId).FirstOrDefault().DisplayOrder;

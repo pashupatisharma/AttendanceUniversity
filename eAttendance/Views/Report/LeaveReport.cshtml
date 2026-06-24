@@ -79,9 +79,9 @@
 
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label class="control-label">कार्यालय</label>
+                                        <label class="control-label">कार्यालय <span class="text-danger">*</span> </label>
 
-                                        @Html.DropDownList("officeId", eAttendance.Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control chosen-select" })
+                                        @Html.DropDownList("officeId", eAttendance.Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control chosen-select",@required="required" })
                                     </div>
                                 </div>
 

@@ -53,7 +53,7 @@ namespace eAttendance.Models
         [Display(Name = "प्रयोगकर्ता ")]
         public string UserId { get; set; }
 
-        [Display(Name = "स्थायी अञ्चल")]
+        [Display(Name = "स्थायी प्रदेश")]
         public int? PZone { get; set; }
 
         [Display(Name = "स्थायी जिल्ला ")]
@@ -65,7 +65,7 @@ namespace eAttendance.Models
         [Display(Name = "स्थायी वार्ड")]
         public int? PWardNo { get; set; }
 
-        [Display(Name = "अस्थायी अञ्चल")]
+        [Display(Name = "अस्थायी प्रदेश")]
         public int? TZone { get; set; }
 
         [Display(Name = "अस्थायी जिल्ला")]
@@ -159,7 +159,7 @@ namespace eAttendance.Models
          [Display(Name = "प्रयोगकर्ता ")]
          public string UserId { get; set; }
 
-         [Display(Name = "स्थायी अञ्चल")]
+         [Display(Name = "स्थायी प्रदेश")]
          public int? PZone { get; set; }
 
          [Display(Name = "स्थायी जिल्ला ")]
@@ -171,7 +171,7 @@ namespace eAttendance.Models
          [Display(Name = "स्थायी वार्ड")]
          public int? PWardNo { get; set; }
 
-         [Display(Name = "अस्थायी अञ्चल")]
+         [Display(Name = "अस्थायी प्रदेश")]
          public int? TZone { get; set; }
 
          [Display(Name = "अस्थायी जिल्ला")]

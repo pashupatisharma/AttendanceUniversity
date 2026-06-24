@@ -410,7 +410,10 @@ namespace eAttendance.Controllers
                     userId = db.Users.Where(x => x.UserName == model.RegisterViewModel.Email).FirstOrDefault().Id;
 
                     if (!string.IsNullOrEmpty(userId))
+
                     {
+                        UserManager.AddToRole(userId, "Employee");
+
                         EmployeeInfo empinfo = new EmployeeInfo();
 
                         empinfo.EmployeeNo = model.EmployeeInfo.EmployeeNo;
