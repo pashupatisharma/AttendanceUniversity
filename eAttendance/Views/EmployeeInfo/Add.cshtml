@@ -87,7 +87,7 @@
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label>@Html.DisplayNameFor(m => m.EmployeeOfficeInfo.NEffectiveDate) *</label>
-                                                @Html.TextBoxFor(m => m.EmployeeOfficeInfo.NEffectiveDate, "{0:yyyy-MM-dd }", new { @class = "form-control inputmask", data_mask = "9999-99-99" })
+                                                @Html.TextBoxFor(m => m.EmployeeOfficeInfo.NEffectiveDate, "{0:yyyy-MM-dd }", new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99" })
                                                 @Html.HiddenFor(m => m.EmployeeOfficeInfo.EffectiveDate)
                                             </div>
                                         </div>

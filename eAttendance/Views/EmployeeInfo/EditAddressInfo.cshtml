@@ -13,13 +13,13 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 <label>@Html.DisplayNameFor(m => m.PZone)</label>
-                                @Html.DropDownListFor(m => m.PZone, eAttendance.Utility.GetZoneList(), new { @class = "chosen-select form-control" })
+                                @Html.DropDownListFor(m => m.PZone, eAttendance.Utility.GetZoneList(),"Select", new { @class = "chosen-select form-control" })
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 <label>@Html.DisplayNameFor(m => m.TZone)</label>
-                                @Html.DropDownListFor(m => m.TZone, eAttendance.Utility.GetZoneList(), new { @class = " chosen-select form-control" })
+                                @Html.DropDownListFor(m => m.TZone, eAttendance.Utility.GetZoneList(), "Select", new { @class = " chosen-select form-control" })
                             </div>
                         </div>
 
@@ -117,7 +117,7 @@
             function LoadTDistrict(zoneid) {
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("LoadTDistrict", "EmployeeInfo")',
+                    url: '@Url.Action("LoadDistrict", "EmployeeInfo")',
                     data: "{'zoneid':'" + zoneid + "'}",
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',

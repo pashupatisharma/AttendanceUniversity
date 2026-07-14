@@ -16,6 +16,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.IO;
 using System.Data.OleDb;
+using System.Web.Mvc.Ajax;
 
 namespace eAttendance.Controllers
 {
@@ -35,9 +36,28 @@ namespace eAttendance.Controllers
 
         }
 
+
         public UserManager<ApplicationUser> UserManager { get; private set; }
 
         private ApplicationDbContext db = new ApplicationDbContext();
+
+
+
+        [HttpPost]
+        public JsonResult LoadDistrict(int zoneid)
+        {
+            var districtList = db.DistrictSetUp
+                                 .Where(x => x.ZoneId == zoneid && x.Status == 0)
+                                 .OrderBy(x => x.DisplayOrder)
+                                 .Select(x => new SelectListItem
+                                 {
+                                     Value = x.DistrictId.ToString(),      // or DistrictCode if preferred
+                                     Text = x.DistrictName
+                                 })
+                                 .ToList();
+
+            return Json(districtList, JsonRequestBehavior.AllowGet);
+        }
 
         // GET: /EmployeeInfo/
 
@@ -292,10 +312,11 @@ namespace eAttendance.Controllers
 
                             while (dr.Read())
                             {
+                                var dbnew = new ApplicationDbContext();
                                 try
                                 {
-                                    var Email = dr[13].ToString() + "gmail.com";
-                                    var password = "password" + dr[13].ToString();
+                                    var Email = dr[8].ToString();
+                                    var password = "password" + dr[7].ToString();
                                     string userIdByUserName = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
                                     var user = new ApplicationUser() { UserName = Email };
                                     var result = await UserManager.CreateAsync(user, password);
@@ -307,33 +328,63 @@ namespace eAttendance.Controllers
 
                                         if (!string.IsNullOrEmpty(userId))
                                         {
+
+                                            UserManager.AddToRole(userId, "Employee");
+
                                             EmployeeInfo empinfo = new EmployeeInfo();
 
-                                            empinfo.EmployeeNo = dr[13].ToString();
+                                            empinfo.EmployeeNo = dr[7].ToString();
+                                            int shifttypeId = 2;
+                                            if (dr[9] != null)
+                                            {
+                                               if (dr[9].ToString() == "Day")
+                                                {
+                                                    shifttypeId = 2;
+                                                }
+                                                else { shifttypeId = 1; }
+                                            }
+                                           // var shifttypeid = Convert.ToInt32(dr[9].ToString());
                                             empinfo.EmailId = Email;
-                                            empinfo.EmployeeNameNp = dr[1].ToString();
-                                            empinfo.EmployeeName = dr[2].ToString();
+                                            empinfo.EmployeeNameNp = dr[0].ToString();
+                                            empinfo.EmployeeName = dr[1].ToString();
                                             empinfo.UserId = userId;
                                             empinfo.GenerateReport = 1;
                                             empinfo.Status = 1;
-                                            if (dr[18].ToString() == "Male") { empinfo.Gender = 1; } else { empinfo.Gender = 2; }
+                                            if (dr[2].ToString() == "Male") { empinfo.Gender = 1; } else { empinfo.Gender = 2; }
 
                                             empinfo.CreatedBy = userIdByUserName;
                                             empinfo.CreatedDate = DateTime.Now;
                                             empinfo.ModifiedBy = userIdByUserName;
                                             empinfo.ModifiedDate = DateTime.Now;
 
-                                            db.EmployeeInfo.Add(empinfo);
-                                            db.SaveChanges();
+                                            dbnew.EmployeeInfo.Add(empinfo);
+                                            dbnew.SaveChanges();
 
                                             int maxempid = db.EmployeeInfo.Max(z => z.EmployeeId);
 
+                                            var level = dr[5].ToString();
+                                            var designation = dr[6].ToString();
                                             EmployeeOfficeDetail modelEmployeeOfficeInfo = new EmployeeOfficeDetail();
                                             modelEmployeeOfficeInfo.EmployeeId = maxempid;
-                                            modelEmployeeOfficeInfo.OfficeId = Convert.ToInt32(dr[4].ToString());
-                                            modelEmployeeOfficeInfo.DepartmentId = Convert.ToInt32(dr[6].ToString());
-                                            modelEmployeeOfficeInfo.LevelId = Convert.ToInt32(dr[11].ToString());
-                                            modelEmployeeOfficeInfo.DesignationId = Convert.ToInt32(dr[7].ToString()); ;
+                                            modelEmployeeOfficeInfo.OfficeId = Convert.ToInt32(dr[3].ToString());
+                                            // modelEmployeeOfficeInfo.DepartmentId = null;
+                                            if (dr[4] != null)
+                                            {
+
+                                                var branchName = dr[4].ToString().ToString();
+                                                int branchid = AddBrabch(branchName);
+                                                modelEmployeeOfficeInfo.BranchId = branchid;
+                                            }
+                                            else
+                                            {
+                                                modelEmployeeOfficeInfo.BranchId = null;
+
+                                            }
+
+
+                                            modelEmployeeOfficeInfo.LevelId = SaveAndGetNewLevel(level);
+                                            modelEmployeeOfficeInfo.ServiceId = 4;
+                                            modelEmployeeOfficeInfo.DesignationId = SaveAndGetNewDesignation(designation, level);
                                             modelEmployeeOfficeInfo.ServiceId = null;
                                             modelEmployeeOfficeInfo.CreatedDate = DateTime.Now;
                                             DateTime time = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format("2037-12-02"));
@@ -343,15 +394,17 @@ namespace eAttendance.Controllers
                                             modelEmployeeOfficeInfo.Status = 1;
                                             modelEmployeeOfficeInfo.CreatedDate = DateTime.Now;
                                             modelEmployeeOfficeInfo.ModifiedDate = DateTime.Now;
-                                            db.EmployeeOfficeDetail.Add(modelEmployeeOfficeInfo);
+                                            dbnew.EmployeeOfficeDetail.Add(modelEmployeeOfficeInfo);
 
-                                            db.SaveChanges();
+                                            dbnew.SaveChanges();
+
+                                            shifttypeofEmployee(shifttypeId, maxempid);
                                         }
                                     }
-                                }
-                                catch
+                                } 
+                                catch(Exception ex)
                                 {
-
+                                    string thismessage = ex.Message.ToString();
                                 }
 
 
@@ -363,6 +416,107 @@ namespace eAttendance.Controllers
 
             }
             return RedirectToAction("Index");
+        }
+
+
+
+        public void shifttypeofEmployee(int shifttypeId, int EmployeeId)
+        {
+            var dbnew = new ApplicationDbContext();
+            var shiftTypeId = shifttypeId;
+            var modelEmployeeShiftTime = new EmployeeShiftTime();
+            modelEmployeeShiftTime.EmployeeId = EmployeeId;
+            modelEmployeeShiftTime.EffectiveDate = DateTime.Now;
+            modelEmployeeShiftTime.ShiftTypeId = shiftTypeId;
+            modelEmployeeShiftTime.Stauts = 1;
+            modelEmployeeShiftTime.CreatedDate = DateTime.Now;
+            modelEmployeeShiftTime.ModifiedDate = DateTime.Now;
+            dbnew.EmployeeShiftTime.Add(modelEmployeeShiftTime);
+            dbnew.SaveChanges();
+        }
+
+
+
+        public int AddBrabch(string BranchName)
+        {
+            var dbnew = new ApplicationDbContext();
+
+            string userIdByUserName = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
+          
+            var data = dbnew.BranchSetUp.Where(x => x.BranchName == BranchName).FirstOrDefault();
+            if (data != null) { return data.BranchId; }
+            else
+            {
+
+                var branchsetup = new BranchSetUp();
+                branchsetup.ParentBranchId = 1;
+
+                branchsetup.CreatedDate = DateTime.Now;
+                branchsetup.ModifiedDate = DateTime.Now;
+                branchsetup.CreatedBy = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
+                branchsetup.ModifiedBy = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
+                db.BranchSetUp.Add(branchsetup);
+                dbnew.SaveChanges();
+                int maxid = dbnew.BranchSetUp.Max(x => x.BranchId);
+                return maxid;
+
+
+            }
+        }
+        public int SaveAndGetNewLevel(string levelname)
+        {
+            var dbnew = new ApplicationDbContext();
+            string userIdByUserName = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
+     
+            var data = dbnew.LevelSetUp.Where(x => x.LevelName == levelname).FirstOrDefault();
+            if (data != null) { return data.LevelId; }
+            else
+            {
+                LevelSetUp levelsetup = new LevelSetUp();
+                levelsetup.LevelName = levelname;
+                levelsetup.CreatedDate = DateTime.Now;
+                levelsetup.ModifiedDate = DateTime.Now;
+                levelsetup.CreatedBy = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
+                levelsetup.ModifiedBy = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
+                levelsetup.DisplayOrder = 1;
+                levelsetup.Status = 1;
+                dbnew.LevelSetUp.Add(levelsetup);
+                dbnew.SaveChanges();
+                int maxid = dbnew.LevelSetUp.Max(x => x.LevelId);
+                return maxid;
+            }
+
+
+
+        }
+
+        public int SaveAndGetNewDesignation(string DesignationName, string levelname)
+        {
+            var dbnew = new ApplicationDbContext();
+            string userIdByUserName = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
+
+            var data = dbnew.DesignationSetUp.Where(x => x.DesignationName == DesignationName).FirstOrDefault();
+            if (data != null) { return data.DesignationId; }
+            else
+            {
+                DesignationSetUp designationSetUp = new DesignationSetUp();
+                designationSetUp.LevelId = SaveAndGetNewLevel(levelname);
+                designationSetUp.DesignationName = DesignationName;
+
+                designationSetUp.CreatedDate = DateTime.Now;
+                designationSetUp.ModifiedDate = DateTime.Now;
+                designationSetUp.CreatedBy = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
+                designationSetUp.ModifiedBy = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
+                designationSetUp.DisplayOrder = 1;
+                designationSetUp.Status = 1;
+                dbnew.DesignationSetUp.Add(designationSetUp);
+                dbnew.SaveChanges();
+                int maxid = dbnew.DesignationSetUp.Max(x => x.DesignationId);
+                return maxid;
+            }
+
+
+
         }
 
 

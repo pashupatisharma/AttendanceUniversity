@@ -47,6 +47,10 @@ namespace eAttendance.Controllers
                 {
                     source = source.Where(x => x.EmployeeId == model.EmployeeId).ToList();
                 }
+                if(model.ShiftTypeId > 0)
+                {
+                    source = source.Where(x => x.ShiftTypeId == model.ShiftTypeId).ToList();
+                }
 
                 model.EmployeeAttendanceLists = source;
             }

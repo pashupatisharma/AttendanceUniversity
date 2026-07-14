@@ -11,6 +11,7 @@
         </div>
         @using (Html.BeginForm("Delete", "SetupLeaveType", FormMethod.Post, new { @class = "form-horizontal" }))
         {
+            @Html.AntiForgeryToken()
             <div class="modal-body">
                 @Html.HiddenFor(m => m.LeaveTypeId)
                 @Html.HiddenFor(m => m.LeaveTypeName)
