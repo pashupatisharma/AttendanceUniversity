@@ -63,7 +63,59 @@ namespace eAttendance.Controllers
                 yearlyshift.EndDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(yearlyshift.NEndDate));
                 yearlyshift.flag = 0;
 
-                db.YearlyShift.Add(yearlyshift);
+                if (yearlyshift.OfficeId == null)
+                {
+                    var offices = db.OfficeSetUp
+                        .Where(x => x.Status == 1)
+                        .ToList();
+
+                    foreach (var office in offices)
+                    {
+                        bool exists = db.YearlyShift.Any(x =>
+                            x.OfficeId == office.OfficeId &&
+                            x.ShiftId == yearlyshift.ShiftId &&
+                            x.StartDate == yearlyshift.StartDate &&
+                            x.EndDate == yearlyshift.EndDate &&
+                            x.Status == 1);
+
+                        if (exists)
+                            continue;
+
+                        var model = new YearlyShift
+                        {
+                            OfficeId = office.OfficeId,
+                            FiscalYearId = yearlyshift.FiscalYearId,
+                            ShiftId = yearlyshift.ShiftId,
+                            NStartDate = yearlyshift.NStartDate,
+                            NEndDate = yearlyshift.NEndDate,
+                            StartDate = yearlyshift.StartDate,
+                            EndDate = yearlyshift.EndDate,
+                            CreatedBy = yearlyshift.CreatedBy,
+                            CreatedDate = yearlyshift.CreatedDate,
+                            ModifiedBy = yearlyshift.ModifiedBy,
+                            ModifiedDate = yearlyshift.ModifiedDate,
+                            Status = yearlyshift.Status,
+                            flag = yearlyshift.flag
+                        };
+
+                        db.YearlyShift.Add(model);
+                    }
+                }
+                else
+                {
+                    bool exists = db.YearlyShift.Any(x =>
+                        x.OfficeId == yearlyshift.OfficeId &&
+                        x.ShiftId == yearlyshift.ShiftId &&
+                        x.StartDate == yearlyshift.StartDate &&
+                        x.EndDate == yearlyshift.EndDate &&
+                        x.Status == 1);
+
+                    if (!exists)
+                    {
+                        db.YearlyShift.Add(yearlyshift);
+                    }
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

@@ -5,12 +5,6 @@
 /.vs/eAttendance/FileContentIndex
 /.vs/
 /eAttendance/bin
+/eAttendance/bin*
 /eAttendance/obj
-/eAttendance/obj/Release/DesignTimeResolveAssemblyReferences.cache
-/.vs/eAttendance/config/applicationhost.config
-/eAttendance/obj/Release/TempPE/Connected Services.UpdateSoftwareInformation.Reference.cs.dll
-/eAttendance/obj/Release/DesignTimeResolveAssemblyReferences.cache
-/eAttendance/obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
-/eAttendance/obj/Release/eAttendance.csproj.AssemblyReference.cache
-/eAttendance/eAttendance.csproj
-/eAttendance/Web.config
+/eAttendance/obj*

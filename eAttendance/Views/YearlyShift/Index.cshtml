@@ -38,6 +38,7 @@
                             <thead>
                                 <tr>
                                     <th>क्र सं</th>
+                                    <th>@Html.DisplayNameFor(m => m.OfficeId) </th>
 
                                     <th>@Html.DisplayNameFor(m => m.FiscalYearId)</th>
                                     <th>@Html.DisplayNameFor(m => m.StartDate)</th>
@@ -54,6 +55,7 @@
                                     count += 1;
                                     <tr>
                                         <td>@count</td>
+                                        <td>@m.OfficeSetUp.OfficeName </td>
 
                                         <td>@Html.Raw((m.FiscalYearId <= 0) ? "-" : eAttendance.Utility.GetFiscalList().FirstOrDefault(d => d.Value == m.FiscalYearId.ToString()).Text)</td>
 
