@@ -19,12 +19,13 @@ namespace eAttendance.Controllers
 
 
 
-        public ActionResult GetTodayAttendanceCount()
+        public ActionResult GetTodayAttendanceCount(int? OfficeId)
         {
             using (ApplicationDbContext entities = new ApplicationDbContext())
             {
 
                 int? officeIdByUserName = EmployeeProvider.GetOfficeIdByUserId(User.Identity.Name);
+                if (officeIdByUserName == null) { officeIdByUserName = OfficeId; }
                 var date = DateTime.Now.Date;
                 var listall = new List<AttendanceCountModel>();
                 if(officeIdByUserName==null)
@@ -202,6 +203,7 @@ namespace eAttendance.Controllers
                                                   }).ToList<VisitApplicationModel>();
                 }
             }
+            
 
             return base.View(model);
         }

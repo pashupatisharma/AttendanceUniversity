@@ -18,29 +18,30 @@
                                 @Html.TextBoxFor(m => m.NEffectiveDate, new { @id = "ShiftNEffectiveDate", @class = "form-control nepali-calendar required", data_mask = "9999-99-99" })
                             </div>
                         </div>
+                        @*<div class="col-md-6">
+                                <div class="form-group">
+                                    <label>@Html.DisplayNameFor(m => m.ShiftId)</label>
+                                    @Html.DropDownListFor(m => m.ShiftId, Utility.GetShiftIdName(), "--Select--", new { @class = " chosen-select form-control" })
+                                </div>
+                            </div>*@
+
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>@Html.DisplayNameFor(m => m.ShiftId)</label>
-                                @Html.DropDownListFor(m => m.ShiftId, Utility.GetShiftIdName(), "--Select--", new { @class = " chosen-select form-control" })
+                                <label>@Html.DisplayNameFor(m => m.ShiftTypeId)</label>
+                                @Html.DropDownListFor(m => m.ShiftTypeId, Utility.GetShiftTypeList(), "--Select--", new { @class = " chosen-select form-control" })
                             </div>
                         </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>@Html.DisplayNameFor(m => m.ShiftTypeId)</label>
-                                    @Html.DropDownListFor(m => m.ShiftTypeId, Utility.GetShiftTypeList(), "--Select--", new { @class = " chosen-select form-control" })
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>@Html.DisplayNameFor(m => m.Remarks)</label>
-                                    @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control" })
-                                </div>
-                            </div>
-                            </div>
-                       
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(m => m.Remarks)</label>
+                                @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
                 <div class="ibox-footer">
                     <div class="row">
                         <div class="col-md-12">
