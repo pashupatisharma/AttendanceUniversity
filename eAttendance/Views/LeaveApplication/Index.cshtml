@@ -36,7 +36,7 @@
                                 <tr>
                                     <th>क्र सं</th>
                                     <th>@Html.DisplayNameFor(m => m.ApplicationDate)</th>
-                                    <th>@Html.DisplayNameFor(m=> m.EmployeeId)</th>
+                                    <th>@Html.DisplayNameFor(m => m.EmployeeId)</th>
                                     <th>@Html.DisplayNameFor(m => m.Subject)</th>
                                     <th>@Html.DisplayNameFor(m => m.FromDate)</th>
                                     <th>@Html.DisplayNameFor(m => m.ToDate)</th>
@@ -55,7 +55,7 @@
                                             @((m.ApplicationDate.Value.Year >= 1913 && m.ApplicationDate.Value.Year <= 2042) ? eAttendance.NepaliDateConverter.ConvertToNepali(m.ApplicationDate.Value.Date) : NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
                                         </td>
                                         <td>@Html.Raw(eAttendance.Utility.GetEmployeeIdWithAll().FirstOrDefault(w => w.Value == ((m.EmployeeId != null && m.EmployeeId > 0) ? m.EmployeeId.ToString() : "0")).Text) </td>
-                                       
+
                                         <td>@m.Subject</td>
                                         <td>
                                             @((m.FromDate.Value.Year >= 1913 && m.FromDate.Value.Year <= 2042) ? eAttendance.NepaliDateConverter.ConvertToNepali(m.FromDate.Value.Date) : NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
@@ -63,19 +63,24 @@
                                         <td>
                                             @((m.ToDate.Value.Year >= 1913 && m.ToDate.Value.Year <= 2042) ? eAttendance.NepaliDateConverter.ConvertToNepali(m.ToDate.Value.Date) : NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
                                         </td>
-                                    
-                                            <td>@Html.Raw(Utility.GetEmployeeIdWithAll().FirstOrDefault(w => w.Value == ((m.ApprovedBy != null && m.ApprovedBy > 0) ? m.ApprovedBy.ToString() : "0")).Text) </td>
 
+                                        <td>
+                                            @if (Model.ApprovedBy != null)
+                                            {
 
-                                 
+                                                @Html.Raw(Utility.GetEmployeeIdWithAll().FirstOrDefault(w => w.Value == ((m.ApprovedBy != null && m.ApprovedBy > 0) ? m.ApprovedBy.ToString() : "0")).Text)
+
+                                            }
+                                        </td>
+
                                         <td class="project-actions hidden-print text-center">
                                             <button value="@m.LeaveApplicationId" type="button" class="btn-edit btn btn-primary btn-sm">
-                                                <i class="fa fa-pencil"></i> 
-                                                <span class="hidden-xs hidden-sm"></span> 
+                                                <i class="fa fa-pencil"></i>
+                                                <span class="hidden-xs hidden-sm"></span>
                                             </button>
                                             <button value="@m.LeaveApplicationId" class="btn-delete btn btn-sm btn-danger">
                                                 <i class="fa fa-remove"></i>
-                                                <span class="hidden-xs hidden-sm"></span> 
+                                                <span class="hidden-xs hidden-sm"></span>
                                             </button>
                                         </td>
                                     </tr>
@@ -106,7 +111,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-  
+
             $('.btn-add').on('click',
                 function() {
                     $.ajax({

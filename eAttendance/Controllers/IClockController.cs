@@ -55,64 +55,13 @@ namespace eAttendance.Controllers
                         string deviceType = "UNKNOWN";
                         string deviceSerial = string.Empty;
 
-                        // Detect device type
-                        if (!string.IsNullOrEmpty(sn))
-                        {
-                            deviceType = "ZKTECO_ADMS";
-                        }
-                        else if (rawBody.TrimStart().StartsWith("{")) // JSON -> Hikvision
-                        {
-                            deviceType = "HIKVISION";
-                        }
+                    
 
 
-                        if (deviceType == "HIKVISION")
-                        {
-                            WriteLog("Hikvision JSON Detected");
-                            dynamic json = Newtonsoft.Json.JsonConvert.DeserializeObject(rawBody);
-                            deviceSerial = json?.DeviceSerialNo?.ToString();
-
-                            if (string.IsNullOrEmpty(deviceSerial))
-                                return new HttpStatusCodeResult(400, "DeviceSerialNo missing");
-
-                            var device = db.OfficeDeviceSetUp.FirstOrDefault(x => x.DeviceNo == deviceSerial);
-                            if (device == null)
-                                return new HttpStatusCodeResult(404, "Device not registered");
-
-                            string employeeNo = json?.EmployeeNo?.ToString() ?? json?.employeeNoString?.ToString();
-                            string passTime = json?.PassTime?.ToString() ?? json?.time?.ToString();
-                            DateTime punchTime = DateTime.Now;
-                            DateTime.TryParse(passTime, out punchTime);
-
-                            if (!string.IsNullOrEmpty(employeeNo))
-                            {
-                                var emp = db.EmployeeInfo.FirstOrDefault(x => x.EmployeeNo == employeeNo);
-                                if (emp != null)
-                                {
-                                    var office = db.EmployeeOfficeDetail.FirstOrDefault(x => x.EmployeeId == emp.EmployeeId);
-                                    if (office != null)
-                                    {
-                                        db.AttendanceLog.Add(new AttendanceLog
-                                        {
-                                            OfficeId = (int)office.OfficeId,
-                                            OfficeDeviceId = device.OfficeDeviceId,
-                                            IpAddress = device.DeviceIp,
-                                            EnrollNumber = employeeNo,
-                                            EmployeeId = emp.EmployeeId,
-                                            InOutMode = "0",
-                                            VerifyMode = "0",
-                                            DateTime = punchTime,
-                                            Status = 1
-                                        });
-                                    }
-                                }
-                            }
-                        }
+                  
 
 
-                        else
-                        {
-
+                     
                             //var device = db.OfficeDeviceSetUp.FirstOrDefault(x => x.DeviceNo == sn);
                             //if (device == null)
                             //    return new HttpStatusCodeResult(404, "Device not registered");
@@ -188,7 +137,7 @@ namespace eAttendance.Controllers
                                 }
                             }
 
-                        }
+                        
 
                         db.SaveChanges();
                     }
