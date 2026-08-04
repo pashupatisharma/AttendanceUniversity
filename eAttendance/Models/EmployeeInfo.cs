@@ -14,7 +14,7 @@ namespace eAttendance.Models
         [NotMapped]
         public int? FiscalYearId { get; set; }
 
-        [Display(Name = "सन्केत नम्बर ")]
+        [Display(Name = "सङ्केत नम्बर")]
         public string EmployeeNo { get; set; }
 
         [StringLength(100, MinimumLength = 3), Display(Name = "कर्मचारीको नाम"), Required]

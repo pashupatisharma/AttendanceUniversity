@@ -10,13 +10,13 @@
             <thead>
                 @{
 
-        int nYear = Model.YearId;
-        int nMonth = Model.MonthId;
+                    int nYear = Model.YearId;
+                    int nMonth = Model.MonthId;
 
 
-        DateTime[] date = NepaliDateConverter.GetMonth(nYear, nMonth);
-        int dayinmonth = Convert.ToInt32((date[1] - date[0]).TotalDays) + 1;
-        int totalcolumn = dayinmonth + 3;
+                    DateTime[] date = NepaliDateConverter.GetMonth(nYear, nMonth);
+                    int dayinmonth = Convert.ToInt32((date[1] - date[0]).TotalDays) + 1;
+                    int totalcolumn = dayinmonth + 3;
                 }
                 <tr class="no-borders bg-white">
                     <td colspan="@totalcolumn" class="no-borders bg-white text-center">
@@ -55,7 +55,7 @@
                                 <td class="no-borders">पद: @Html.Raw((Model.DesignationId > 0) ? eAttendance.Utility.GetDesignationByDesignationId(Model.DesignationId).DesignationName : "सबै")</td>
                                 <td class="no-borders">शिफ्ट: @Html.Raw((Model.ShiftTypeId > 0) ? eAttendance.Utility.GetShiftTypeListById(Model.ShiftTypeId).Name : "सबै")</td>
                                 <td class="no-borders">कर्मचारी: @Html.Raw((Model.EmployeeId > 0) ? eAttendance.Utility.GetEmployeeInfoByEmnployeeId(Model.EmployeeId).EmployeeNameNp : "सबै")</td>
-                            
+
                             </tr>
 
                         </table>
@@ -93,13 +93,13 @@
                         </th>
                     }
                 </tr>
-               
+
             </thead>
             <tbody>
                 @{ int count = 0;
-                 DateTime[] datetime = NepaliDateConverter.GetMonth(nYear, nMonth);
-                 DateTime FromDate = datetime[0];
-                 DateTime ToDate = datetime[1];
+                    DateTime[] datetime = NepaliDateConverter.GetMonth(nYear, nMonth);
+                    DateTime FromDate = datetime[0];
+                    DateTime ToDate = datetime[1];
                 }
 
                 @if (Model != null)
@@ -116,7 +116,7 @@
 
                         decimal PresentdaysCount = 0;
                         decimal AbsentdaysCount = 0;
-                        
+
                         decimal VisitdaysCount = 0;
                         decimal LeavedaysCount = 0;
 
@@ -128,7 +128,7 @@
                             <td>@CodeName</td>
                             @foreach (var m in attendance.OrderBy(w => w.DesignationId))
                             {
-                             
+
                                 var data = db.TransferModel.Where(x => x.TransferDateTime <= m.LogDate).Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault();
                                 if (data != null)
                                 {
@@ -186,6 +186,7 @@
                                     {
                                         @Html.Raw("सरु")
                                     }
+
                                     else if (m.StatusType == 1)
                                     {
                                         PresentdaysCount += 1;
@@ -205,14 +206,14 @@
                                             LeavedaysCount += 1;
                                             string[] l = m.OnLeave.Split(' ');
                                             remarks += m.OnLeave + " "; //"बि"; //l[0].PadLeft(1) + (l.Length > 1 ? "." + l[1].PadLeft(1) : "");
-                                            //remarks += m.OnLeave;
+                                                                        //remarks += m.OnLeave;
                                         }
                                         if (m.OnVisit != null && m.OnVisit.Length > 0)
                                         {
                                             VisitdaysCount += 1;
                                             string[] v = m.OnVisit.Split(' ');
                                             remarks += m.OnVisit + " "; //"का"; //v[0].PadLeft(1) + (v.Length > 1 ? "." + v[1].PadLeft(1) : "");
-                                            //remarks += m.OnVisit;
+                                                                        //remarks += m.OnVisit;
                                         }
                                         if (m.WorkType == 3)
                                         {
@@ -228,14 +229,14 @@
                                     }
                                 </td>
                             }
-                                <td>@PresentdaysCount</td>
+                            <td>@PresentdaysCount</td>
                             <td>
                                 @VisitdaysCount
                             </td>
                             <td>
                                 @LeavedaysCount
                             </td>
-                                <td>@AbsentdaysCount</td>
+                            <td>@AbsentdaysCount</td>
                         </tr>
                     }
                     if (count == 0)

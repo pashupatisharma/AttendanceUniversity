@@ -15,7 +15,7 @@
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
                                 <label>@Html.DisplayNameFor(m => m.EmployeeNo)</label>
-                                @Html.TextBoxFor(m => m.EmployeeNo, new { @class = "form-control required" })
+                                @Html.TextBoxFor(m => m.EmployeeNo, new { @class = "form-control required", @style = "font-family:'Comic Sans MS'" })
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-4">
@@ -121,8 +121,8 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label>इमेल आइढी<span class="text-danger">*</span> </label>
-                                @Html.TextBoxFor(m => m.RegisterViewModel.Email, new { @placeholder = "Enter Email Address", @class = "form-control required email",@readonly="readonly" })
+                                <label>इमेल आइडी<span class="text-danger">*</span> </label>
+                                @Html.TextBoxFor(m => m.RegisterViewModel.Email, new { @placeholder = "Enter Email Address", @class = "form-control required email",@readonly="readonly", @style = "font-family:'Comic Sans MS'" })
                             </div>
                         </div>
                         <div class="col-sm-4">

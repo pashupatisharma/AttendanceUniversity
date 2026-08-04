@@ -77,7 +77,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var m in Model)
+            @foreach (var m in Model.Where(x=>x.OfficeName!= "सुदूरपश्चिम विश्वविद्यालय"))
             {
                 <tr>
                     <td class="text-center">@Html.Raw(EnglishToNepaliNumber.ConvertToNepaliNumber(sno++))</td>
@@ -97,6 +97,26 @@
                     <td class="text-center text-muted"><strong>@EnglishToNepaliNumber.ConvertToNepaliNumber(m.InactiveEmployee)</strong></td>
                 </tr>
             }
+            @{
+                var totalEmployee = Model.Sum(x => x.TotalEmployee);
+                var present = Model.Sum(x => x.Present);
+                var leave = Model.Sum(x => x.OnLeave);
+                var visit = Model.Sum(x => x.OnVisit);
+                var active = Model.Sum(x => x.ActiveEmployee);
+                var inactive = Model.Sum(x => x.InactiveEmployee);
+                var absent = Math.Max(0, active - (present + leave + visit));
+            }
+
+            <tr style="background:#ECEFF1;font-weight:bold;">
+                <td colspan="2" class="text-center">जम्मा</td>
+                <td class="text-center">@EnglishToNepaliNumber.ConvertToNepaliNumber(totalEmployee)</td>
+                <td class="text-center text-success">@EnglishToNepaliNumber.ConvertToNepaliNumber(present)</td>
+                <td class="text-center text-danger">@EnglishToNepaliNumber.ConvertToNepaliNumber(absent)</td>
+                <td class="text-center text-warning">@EnglishToNepaliNumber.ConvertToNepaliNumber(leave)</td>
+                <td class="text-center" style="color:#9C27B0">@EnglishToNepaliNumber.ConvertToNepaliNumber(visit)</td>
+                <td class="text-center text-info">@EnglishToNepaliNumber.ConvertToNepaliNumber(active)</td>
+                <td class="text-center text-muted">@EnglishToNepaliNumber.ConvertToNepaliNumber(inactive)</td>
+            </tr>
         </tbody>
     </table>
 </div>

@@ -116,7 +116,7 @@
                         <th class="col-md-1">पद</th>
                         <th>कर्मचारी</th>
 
-                        <th>इमेल आइढी</th>
+                        <th>इमेल आइडी</th>
                         <th>लिंग</th>
 
                         <th>लिंग</th>
@@ -151,14 +151,14 @@
 
 
                             <td class="project-title">
-                                @m.EmployeeName [@m.EmployeeNo]
+                                @m.EmployeeName  [ <text style="font-family:'Comic Sans MS'">@m.EmployeeNo</text>]
                                 <br />
                                 @if (office != null)
                                 {
                                     @Html.Raw(office.OfficeSetUp.OfficeName)
                                 }
                             </td>
-                            <td>@m.EmailId</td>
+                            <td  style = "font-family:'Comic Sans MS'">@m.EmailId</td>
                             <td>
                                 <span class="text-center">
                                     @if (m.Gender == 1)

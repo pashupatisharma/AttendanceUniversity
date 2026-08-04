@@ -606,7 +606,6 @@
     <Content Include="Images\ajax-loading.gif" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Views\Report\_Visit.cshtml" />
     <Content Include="Views\Transfer\IndexExternalTransfer.cshtml" />
     <Content Include="Views\SetupBranch\_Common.cshtml" />
     <Content Include="Views\SetupDesignation\_Common.cshtml" />
@@ -620,7 +619,6 @@
     <Content Include="Views\SetupShiftTime\_Common.cshtml" />
     <Content Include="Views\SetupVisitType\_Common.cshtml" />
     <Content Include="Views\VisitApplication\_Common.cshtml" />
-    <Content Include="Views\Report\_PeriodicAttendance.cshtml" />
     <Content Include="Views\Home\EmployeeDashboard.cshtml" />
     <Content Include="Views\Home\_AttendanceChart.cshtml" />
     <Content Include="Views\DataPush\Index.cshtml" />
@@ -632,6 +630,26 @@
     <Content Include="Views\SetupDailyShift\Delete.cshtml" />
     <Content Include="Views\SetupDailyShift\Edit.cshtml" />
     <Content Include="Views\SetupDailyShift\Index.cshtml" />
+    <Content Include="Views\Report\_Anual.cshtml" />
+    <Content Include="Views\Report\_DailyAbsentAttendance.cshtml" />
+    <Content Include="Views\Report\_DailyAttendance.cshtml" />
+    <Content Include="Views\Report\_DailyPresentAttendance.cshtml" />
+    <Content Include="Views\Report\_InOutAttendance.cshtml" />
+    <Content Include="Views\Report\_LateInEarlyOutAttendance.cshtml" />
+    <Content Include="Views\Report\_LeaveReport.cshtml" />
+    <Content Include="Views\Report\_MonthlyAttendance.cshtml" />
+    <Content Include="Views\Report\_PeriodicAttendance.cshtml" />
+    <Content Include="Views\Report\_Visit.cshtml" />
+    <Content Include="Views\Report\AnualReport.cshtml" />
+    <Content Include="Views\Report\DailyAbsentAttendanceReport.cshtml" />
+    <Content Include="Views\Report\DailyAttendanceReport.cshtml" />
+    <Content Include="Views\Report\DailyPresentAttendanceReport.cshtml" />
+    <Content Include="Views\Report\InOutAttendance.cshtml" />
+    <Content Include="Views\Report\LateInEarlyOutAttendanceReport.cshtml" />
+    <Content Include="Views\Report\LeaveReport.cshtml" />
+    <Content Include="Views\Report\MonthlyAttendance.cshtml" />
+    <Content Include="Views\Report\PeriodicAttendanceReport.cshtml" />
+    <Content Include="Views\Report\VisitReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\animate.css" />
@@ -1058,16 +1076,6 @@
     <Content Include="Views\LeaveApplication\EditLeavePosting.cshtml" />
     <Content Include="Views\LeaveApplication\Index.cshtml" />
     <Content Include="Views\LeaveApplication\LeavePosting.cshtml" />
-    <Content Include="Views\Report\AnualReport.cshtml" />
-    <Content Include="Views\Report\DailyAbsentAttendanceReport.cshtml" />
-    <Content Include="Views\Report\DailyAttendanceReport.cshtml" />
-    <Content Include="Views\Report\DailyPresentAttendanceReport.cshtml" />
-    <Content Include="Views\Report\InOutAttendance.cshtml" />
-    <Content Include="Views\Report\LateInEarlyOutAttendanceReport.cshtml" />
-    <Content Include="Views\Report\LeaveReport.cshtml" />
-    <Content Include="Views\Report\MonthlyAttendance.cshtml" />
-    <Content Include="Views\Report\PeriodicAttendanceReport.cshtml" />
-    <Content Include="Views\Report\VisitReport.cshtml" />
     <Content Include="Views\SetupBranch\Add.cshtml" />
     <Content Include="Views\SetupBranch\Delete.cshtml" />
     <Content Include="Views\SetupBranch\Edit.cshtml" />
@@ -1149,14 +1157,6 @@
     <Content Include="Scripts\plugins\dataTables\media\images\Sorting icons.psd" />
     <Content Include="Views\DailyReport\DailyReport.cshtml" />
     <Content Include="Views\DailyReport\_PresentList.cshtml" />
-    <Content Include="Views\Report\_LateInEarlyOutAttendance.cshtml" />
-    <Content Include="Views\Report\_Anual.cshtml" />
-    <Content Include="Views\Report\_DailyAbsentAttendance.cshtml" />
-    <Content Include="Views\Report\_DailyAttendance.cshtml" />
-    <Content Include="Views\Report\_DailyPresentAttendance.cshtml" />
-    <Content Include="Views\Report\_InOutAttendance.cshtml" />
-    <Content Include="Views\Report\_LeaveReport.cshtml" />
-    <Content Include="Views\Report\_MonthlyAttendance.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DateConversion\" />

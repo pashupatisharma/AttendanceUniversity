@@ -17,7 +17,7 @@ namespace eAttendance.Models
         [Display(Name = "कर्मचारीको आईडी")]
         public int? EmployeeId { get; set; }
 
-        public int EmployeeNo { get; set; }
+        public string EmployeeNo { get; set; }
 
         [Display(Name = "कर्मचारीको नाम")]
         public string EmployeeName { get; set; }

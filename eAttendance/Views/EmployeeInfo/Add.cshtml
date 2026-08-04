@@ -35,8 +35,8 @@
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <div class="form-group">
-                                                <label>इमेल आइढी<span class="text-danger">*</span> </label>
-                                                @Html.TextBoxFor(m => m.RegisterViewModel.Email, new { @placeholder = "Enter Email Address", @class = "form-control required email" })
+                                                <label>इमेल आइडी<span class="text-danger">*</span> </label>
+                                                @Html.TextBoxFor(m => m.RegisterViewModel.Email, new { @placeholder = "Enter Email Address", @class = "form-control required email", @style = "font-family:'Comic Sans MS'" })
                                             </div>
                                         </div>
                                         <div class="col-sm-4">
@@ -61,7 +61,7 @@
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label>@Html.DisplayNameFor(m => m.EmployeeInfo.EmployeeNo) <span class="text-danger">*</span></label>
-                                                @Html.TextBoxFor(m => m.EmployeeInfo.EmployeeNo, new { @class = "form-control required", @placeholder = "Enrollment No" })
+                                                @Html.TextBoxFor(m => m.EmployeeInfo.EmployeeNo, new { @class = "form-control required", @placeholder = "Enrollment No", @style = "font-family:'Comic Sans MS'" })
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
