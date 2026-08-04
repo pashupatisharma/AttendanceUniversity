@@ -287,7 +287,7 @@ namespace eAttendance.Controllers
 
 
 
-        public JsonResult LoadLeaveBalance(int employeeId, int leaveTypeId, int LeaveApplicationId = 0)
+        public JsonResult LoadLeaveBalance(int? employeeId, int? leaveTypeId, int LeaveApplicationId = 0)
         {
             ApplicationDbContext entities = new ApplicationDbContext();
 
