@@ -240,8 +240,13 @@
                                 }
 
                             }
+                            @{
+                                int totalHours = (int)totalDailyHours.TotalHours;
+                                int totalMinutes = totalDailyHours.Minutes;
+                                string formattedTotal = totalHours.ToString("00") + ":" + totalMinutes.ToString("00");
+                            }
                             <!-- Total at the end -->
-                            <td style="padding:0px;">@totalDailyHours.ToString(@"hh\:mm")</td>
+                            <td style="padding:0px;">@formattedTotal</td>
                         </tr>
                     }
                     if (count == 0)
