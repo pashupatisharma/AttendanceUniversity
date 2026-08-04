@@ -88,6 +88,7 @@
                             @NepaliDateConverter.ConvertToNepaliShortDayName(date[0].AddDays(i - 1)) <br />
                         </th>
                     }
+                    <th rowspan="2" class="text-center">कुल क.स</th>
                 </tr>
                 <tr>
                     @for (int i = 1; i <= dayinmonth; i++)
@@ -111,6 +112,8 @@
                     string CodeName = string.Empty;
                     foreach (var e in Model.EmployeeAttendanceLists)
                     {
+                        // Reset for each employee
+                        TimeSpan totalDailyHours = TimeSpan.Zero;
 
                         var employee =
                             db.EmployeeInfo.Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault();
@@ -229,14 +232,22 @@
                                         @Html.Raw(remarks);
                                     }
                                 </td>
+                                // First pass: calculate total hours
 
+                                if (m.StatusType == 1 && m.CheckOut != TimeSpan.Zero && m.CheckOut != null && m.CheckIn != TimeSpan.Zero && m.CheckIn != null)
+                                {
+                                    totalDailyHours += (m.CheckOut - m.CheckIn).Value;
+                                }
 
                             }
+                            <!-- Total at the end -->
+                            <td style="padding:0px;">@totalDailyHours.ToString(@"hh\:mm")</td>
                         </tr>
                     }
                     if (count == 0)
                     {
                         <tr>
+
                             <td class="text-center alert-info" colspan="35">@eAttendance.Service.MenuService.NoRecordFound</td>
                         </tr>
                     }
