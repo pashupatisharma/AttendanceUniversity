@@ -23,7 +23,14 @@
     </div>
     <div class="col-lg-2 col-sm-2">
         <div class="title-action hidden-print">
-            <button class="btn btn-primary btn-add">नयाँ बनाउनु </button>
+            <ol class="breadcrumb">
+
+                <li class="btn btn-primary"><a href="@Url.Action("AddLeavePosting","LeaveApplication")">नयाँ बनाउनु </a></li>
+
+
+            </ol>
+
+            @*<button class="btn btn-primary btn-add" onclick="@Url.Action("AddLeavePosting","LeaveApplication")">नयाँ बनाउनु </button>*@
         </div>
     </div>
 </div>
@@ -157,11 +164,27 @@
                                             @((m.ToDate.Value.Year >= 1913 && m.ToDate.Value.Year <= 2042) ? eAttendance.NepaliDateConverter.ConvertToNepali(m.ToDate.Value.Date) : NepaliDateConverter.ConvertToNepali(DateTime.Today.Date))
                                         </td>
 
-                                        <td class="project-actions hidden-print text-center">
-                                            <button value="@m.LeaveApplicationId" type="button" class="btn-edit btn btn-primary btn-sm">
+                                        <td class="project-actions hidden-print text-center" style="white-space:nowrap">
+
+                                            @*<button value="@m.LeaveApplicationId" type="button" class="btn-edit btn btn-primary btn-sm" onclick="@Url.Action("EditLeavePosting", "LeaveApplication")">
                                                 <i class="fa fa-pencil"></i>
                                                 <span class="hidden-xs hidden-sm"></span>
-                                            </button>
+                                            </button>*@
+
+                                            <ol class="breadcrumb">
+
+                                                <li class="btn-edit btn btn-primary btn-sm">
+                                                    <a href="@Url.Action("EditLeavePosting", "LeaveApplication", new {@id=m.LeaveApplicationId})">
+                                                        <i class="fa fa-pencil"></i>
+                                                        <span class="hidden-xs hidden-sm"></span>
+                                                    </a>
+                                                </li>
+
+
+                                            </ol>
+
+
+
                                             <button value="@m.LeaveApplicationId" class="btn-delete btn btn-sm btn-danger">
                                                 <i class="fa fa-remove"></i>
                                                 <span class="hidden-xs hidden-sm"></span>
@@ -322,7 +345,7 @@
             serverParams.contractID = $("#empId").val();
 
 
-            $('.btn-edit').on('click', function () {
+            @*$('.btn-edit').on('click', function () {
                 var leaveApplicationId = $(this).attr('value');
                 $.ajax({
                     url: '@Url.Action("EditLeavePosting", "LeaveApplication")',
@@ -338,7 +361,7 @@
 
                     }
                 });
-            });
+            });*@
 
             $('.btn-delete').on('click', function () {
                 var leaveApplicationId = $(this).attr('value');
@@ -360,7 +383,7 @@
 
 
             function GenerateRows() {
-           
+
             }
             $('#nFromDate').on('change', function () {
                 var fromDate = $('#nFromDate').val() == null ? "" : $('#nFromDate').val();
@@ -374,9 +397,9 @@
                 CompareDate(fromDate, toDate, 2);
             });
 
-      
 
-            $('.btn-add').on('click', function () {
+
+            @*$('.btn-add').on('click', function () {
                 $.ajax({
                     url: '@Url.Action("AddLeavePosting", "LeaveApplication")',
                     type: 'GET',
@@ -389,7 +412,7 @@
                     error: function () {
                     }
                 });
-            })
+            })*@
             function CompareDate(fromDate, toDate, type) {
 
                 if (fromDate != '' && toDate != '') {
