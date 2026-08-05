@@ -165,101 +165,146 @@ namespace eAttendance.Controllers
         }
 
         [Authorize(Roles = "Admin,SuperAdmin")]
-        public ActionResult LeavePosting(string nFromDate, string nToDate, string officeId, string branchId, string serviceId, string levelId, string designationId, string empId, string sortOrder, int? pageSize, int? page)
+        public ActionResult LeavePosting(
+    string nFromDate,
+    string nToDate,
+    string officeId,
+    string branchId,
+    string serviceId,
+    string levelId,
+    string designationId,
+    string empId,
+    string sortOrder,
+    int? pageSize,
+    int? page)
         {
-            int? _officeId = EmployeeProvider.GetOfficeIdByUserId(User.Identity.Name);
-
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = (sortOrder == "Date") ? "date_desc" : "Date";
-          
-            ViewBag.CurrentFilter = empId;
 
-            // OPTIMIZED: Use Include() for eager loading instead of N+1 queries
-            IQueryable<LeaveApplication> query = db.LeaveApplication
-                .Include(x => x.EmployeeInfo)
-                .Include(x => x.EmployeeOfficeDetail);
+            page = page ?? 1;
+            int pageNumber = page.Value;
+            int pageLength = pageSize ?? 10;
 
-            int? officeid = 0;
-            int EmployeeId = 0;
-            try
-            {
-                var userId = User.Identity.Name;
-                var userid = db.Users.Where(x => x.UserName == userId).FirstOrDefault().Id;
+            int? currentOfficeId = null;
 
-                var employee = db.EmployeeInfo.Where(x => x.UserId == userid).FirstOrDefault();
-                if (employee != null)
-                {
-                    EmployeeId = employee.EmployeeId;
-                    officeid = db.EmployeeOfficeDetail.Where(x => x.EmployeeId == employee.EmployeeId).FirstOrDefault().OfficeId;
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-
-            // Apply filters at database level before materializing
             if (User.IsInRole("Admin"))
             {
-                query = query.Where(x => x.EmployeeOfficeDetail.OfficeId == officeid);
+                var userName = User.Identity.Name;
+
+                currentOfficeId =
+                    (from u in db.Users
+                     join e in db.EmployeeInfo on u.Id equals e.UserId
+                     join o in db.EmployeeOfficeDetail on e.EmployeeId equals o.EmployeeId
+                     where u.UserName == userName
+                     select (int?)o.OfficeId).FirstOrDefault();
             }
 
-            if (!string.IsNullOrEmpty(nFromDate))
+            var query =
+                from leave in db.LeaveApplication
+                join emp in db.EmployeeInfo
+                    on leave.EmployeeId equals emp.EmployeeId
+                join offices in db.EmployeeOfficeDetail
+                    on leave.EmployeeId equals offices.EmployeeId into officeJoin
+                from offices in officeJoin.DefaultIfEmpty()
+                select new
+                {
+                    Leave = leave,
+                    Employee = emp,
+                    Office = offices
+                };
+
+            //=========================
+            // Filters
+            //=========================
+
+            if (User.IsInRole("Admin") && currentOfficeId.HasValue)
             {
-                DateTime frmDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(nFromDate));
-                query = query.Where(x => x.FromDate >= frmDate);
+                query = query.Where(x => x.Office.OfficeId == currentOfficeId.Value);
             }
 
-            if (!string.IsNullOrEmpty(nToDate))
+            if (!string.IsNullOrWhiteSpace(nFromDate))
             {
-                DateTime Todate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(nToDate));
-                query = query.Where(x => x.ToDate <= Todate);
+                DateTime fromDate = NepaliDateConverter.ConvertToEnglish(
+                    NepaliDateConverter.Format(nFromDate));
+
+                query = query.Where(x => x.Leave.FromDate >= fromDate);
             }
 
-            if (!string.IsNullOrWhiteSpace(empId) && empId != "0")
+            if (!string.IsNullOrWhiteSpace(nToDate))
             {
-                int newempid = int.Parse(empId.Trim());
-                query = query.Where(x => x.EmployeeId == newempid);
+                DateTime toDate = NepaliDateConverter.ConvertToEnglish(
+                    NepaliDateConverter.Format(nToDate));
+
+                query = query.Where(x => x.Leave.ToDate <= toDate);
             }
 
-            if (!string.IsNullOrEmpty(officeId) && officeId != "0")
+            if (int.TryParse(empId, out int employeeId) && employeeId > 0)
             {
-                int neweofficeId = int.Parse(officeId.Trim());
-                query = query.Where(x => x.EmployeeOfficeDetail.OfficeId == neweofficeId);
+                query = query.Where(x => x.Leave.EmployeeId == employeeId);
             }
 
-            if (!string.IsNullOrEmpty(branchId))
+            if (int.TryParse(officeId, out int office) && office > 0)
             {
-                int newbranchId = int.Parse(branchId.Trim());
-                query = query.Where(x => x.EmployeeOfficeDetail.BranchId == newbranchId);
+                query = query.Where(x => x.Office.OfficeId == office);
             }
 
-            if (!string.IsNullOrEmpty(serviceId) && serviceId != "0")
+            if (int.TryParse(branchId, out int branch) && branch > 0)
             {
-                int newserviceId = int.Parse(serviceId.Trim());
-                query = query.Where(x => x.EmployeeOfficeDetail.ServiceId == newserviceId);
+                query = query.Where(x => x.Office.BranchId == branch);
             }
 
-            if (!string.IsNullOrEmpty(levelId) && levelId != "0")
+            if (int.TryParse(serviceId, out int service) && service > 0)
             {
-                int newlevel = int.Parse(levelId.Trim());
-                query = query.Where(x => x.EmployeeOfficeDetail.LevelId == newlevel);
+                query = query.Where(x => x.Office.ServiceId == service);
             }
 
-            if (!string.IsNullOrEmpty(designationId) && designationId != "0")
+            if (int.TryParse(levelId, out int level) && level > 0)
             {
-                int newDesignationId = int.Parse(designationId.Trim());
-                query = query.Where(x => x.EmployeeOfficeDetail.DesignationId == newDesignationId);
+                query = query.Where(x => x.Office.LevelId == level);
             }
 
-            int pageNumber = page.HasValue ? page.Value : 1;
-            int pageSizeValue = pageSize.HasValue ? pageSize.Value : 10;
+            if (int.TryParse(designationId, out int designation) && designation > 0)
+            {
+                query = query.Where(x => x.Office.DesignationId == designation);
+            }
 
-            // Apply pagination at database level
-            var result = query.OrderByDescending(x => x.CreatedDate)
-                              .ToPagedList(pageNumber, pageSizeValue);
+            //=========================
+            // Sorting
+            //=========================
 
-            return base.View(result);
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    query = query.OrderByDescending(x => x.Employee.EmployeeName);
+                    break;
+
+                case "Date":
+                    query = query.OrderBy(x => x.Leave.ApplicationDate);
+                    break;
+
+                case "date_desc":
+                    query = query.OrderByDescending(x => x.Leave.ApplicationDate);
+                    break;
+
+                default:
+                    query = query.OrderByDescending(x => x.Leave.LeaveApplicationId);
+                    break;
+            }
+
+            // Execute only once
+            var list = query.ToList();
+
+            // Assign objects required by View
+            foreach (var item in list)
+            {
+                item.Leave.EmployeeInfo = item.Employee;
+                item.Leave.EmployeeOfficeDetail = item.Office;
+            }
+
+            var result = list.Select(x => x.Leave).ToPagedList(pageNumber, pageLength);
+
+            return View(result);
         }
 
         public ActionResult AddLeavePosting()

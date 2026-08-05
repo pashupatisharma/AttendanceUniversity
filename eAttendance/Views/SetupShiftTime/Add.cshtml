@@ -30,7 +30,7 @@
                 @if (User.IsInRole("Admin"))
                 {
 
-                    @Html.DropDownList("OfficeId", eAttendance.Utility.GetOfficeIdName(User), new { @class = "chosen-select form-control" })
+                    @Html.DropDownList("OfficeId", eAttendance.Utility.GetOfficeIdName(User), "छान्नुहोस्", new { @class = "chosen-select form-control" })
                 }
                 else
                 {
