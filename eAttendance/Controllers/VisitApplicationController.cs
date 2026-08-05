@@ -202,19 +202,16 @@ namespace eAttendance.Controllers
         [Authorize(Roles = "Admin,SuperAdmin")]
         public ActionResult VisitPosting(string nFromDate, string nToDate, string officeId, string branchId, string serviceId, string levelId, string designationId, string empId, string sortOrder, int? pageSize, int? page)
         {
-
             int? _officeId = EmployeeProvider.GetOfficeIdByUserId(User.Identity.Name);
 
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = (sortOrder == "Date") ? "date_desc" : "Date";
-           
             ViewBag.CurrentFilter = empId;
 
-            // OPTIMIZED: Use Include() for eager loading instead of N+1 queries
+            // Removed .Include(x => x.EmployeeOfficeDetail) - it's [NotMapped], not a real nav property
             IQueryable<VisitApplication> query = db.VisitApplication
-                .Include(x => x.EmployeeInfo)
-                .Include(x => x.EmployeeOfficeDetail);
+                .Include(x => x.EmployeeInfo);
 
             int? officeid = 0;
             int EmployeeId = 0;
@@ -234,10 +231,53 @@ namespace eAttendance.Controllers
             {
             }
 
-            // Apply filters at database level before materializing
+            // Build ONE combined filter over EmployeeOfficeDetail, then apply as a single subquery via Contains.
+            IQueryable<EmployeeOfficeDetail> officeDetailFilter = db.EmployeeOfficeDetail;
+
             if (User.IsInRole("Admin"))
+                officeDetailFilter = officeDetailFilter.Where(x => x.OfficeId == officeid);
+
+            if (!string.IsNullOrEmpty(officeId) && officeId != "0")
             {
-                query = query.Where(x => x.EmployeeOfficeDetail.OfficeId == officeid);
+                int neweofficeId = int.Parse(officeId.Trim());
+                officeDetailFilter = officeDetailFilter.Where(x => x.OfficeId == neweofficeId);
+            }
+
+            if (!string.IsNullOrEmpty(branchId))
+            {
+                int newbranchId = int.Parse(branchId.Trim());
+                officeDetailFilter = officeDetailFilter.Where(x => x.BranchId == newbranchId);
+            }
+
+            if (!string.IsNullOrEmpty(serviceId) && serviceId != "0")
+            {
+                int newserviceId = int.Parse(serviceId.Trim());
+                officeDetailFilter = officeDetailFilter.Where(x => x.ServiceId == newserviceId);
+            }
+
+            if (!string.IsNullOrEmpty(levelId) && levelId != "0")
+            {
+                int newlevel = int.Parse(levelId.Trim());
+                officeDetailFilter = officeDetailFilter.Where(x => x.LevelId == newlevel);
+            }
+
+            if (!string.IsNullOrEmpty(designationId) && designationId != "0")
+            {
+                int newDesignationId = int.Parse(designationId.Trim());
+                officeDetailFilter = officeDetailFilter.Where(x => x.DesignationId == newDesignationId);
+            }
+
+            bool anyOfficeFilterApplied = User.IsInRole("Admin")
+                || (!string.IsNullOrEmpty(officeId) && officeId != "0")
+                || !string.IsNullOrEmpty(branchId)
+                || (!string.IsNullOrEmpty(serviceId) && serviceId != "0")
+                || (!string.IsNullOrEmpty(levelId) && levelId != "0")
+                || (!string.IsNullOrEmpty(designationId) && designationId != "0");
+
+            if (anyOfficeFilterApplied)
+            {
+                var employeeIds = officeDetailFilter.Select(x => x.EmployeeId);
+                query = query.Where(x => employeeIds.Contains(x.EmployeeId));
             }
 
             if (!string.IsNullOrEmpty(nFromDate))
@@ -258,46 +298,29 @@ namespace eAttendance.Controllers
                 query = query.Where(x => x.EmployeeId == newempid);
             }
 
-            if (!string.IsNullOrEmpty(officeId) && officeId != "0")
-            {
-                int neweofficeId = int.Parse(officeId.Trim());
-                query = query.Where(x => x.EmployeeOfficeDetail.OfficeId == neweofficeId);
-            }
-
-            if (!string.IsNullOrEmpty(branchId))
-            {
-                int newbranchId = int.Parse(branchId.Trim());
-                query = query.Where(x => x.EmployeeOfficeDetail.BranchId == newbranchId);
-            }
-
-            if (!string.IsNullOrEmpty(serviceId) && serviceId != "0")
-            {
-                int newserviceId = int.Parse(serviceId.Trim());
-                query = query.Where(x => x.EmployeeOfficeDetail.ServiceId == newserviceId);
-            }
-
-            if (!string.IsNullOrEmpty(levelId) && levelId != "0")
-            {
-                int newlevel = int.Parse(levelId.Trim());
-                query = query.Where(x => x.EmployeeOfficeDetail.LevelId == newlevel);
-            }
-
-            if (!string.IsNullOrEmpty(designationId) && designationId != "0")
-            {
-                int newDesignationId = int.Parse(designationId.Trim());
-                query = query.Where(x => x.EmployeeOfficeDetail.DesignationId == newDesignationId);
-            }
-
             int pageNumber = page.HasValue ? page.Value : 1;
             int pageSizeValue = pageSize.HasValue ? pageSize.Value : 10;
 
-            // Apply pagination at database level
             var result = query.OrderByDescending(x => x.CreatedDate)
                               .ToPagedList(pageNumber, pageSizeValue);
 
+            // Attach EmployeeOfficeDetail in memory, only for the current page's employees,
+            // since it's [NotMapped] and can never be part of the EF query itself.
+            var pageEmployeeIds = result.Select(x => x.EmployeeId).ToList();
+            var officeDetailsById = db.EmployeeOfficeDetail
+                .Where(x => pageEmployeeIds.Contains(x.EmployeeId))
+                .ToList()
+                .GroupBy(x => x.EmployeeId)
+                .ToDictionary(g => g.Key, g => g.First()); // adjust if an employee can have multiple rows
+
+            foreach (var item in result)
+            {
+                if (item.EmployeeId.HasValue && officeDetailsById.ContainsKey(item.EmployeeId))
+                    item.EmployeeOfficeDetail = officeDetailsById[item.EmployeeId];
+            }
+
             return base.View(result);
         }
-
         public ActionResult AddVisitPosting()
         {
             VisitApplication model = new VisitApplication();
