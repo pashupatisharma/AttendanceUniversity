@@ -1085,43 +1085,72 @@ namespace eAttendance
 
 
 
-        public static IEnumerable<SelectListItem> GetEmployeeListBYUserSuper(int? officeId, IPrincipal User)
+        //public static IEnumerable<SelectListItem> GetEmployeeListBYUserSuper(int? officeId, IPrincipal User)
+        //{
+        //    ApplicationDbContext db = new ApplicationDbContext();
+
+        //    var dd = db.EmployeeOfficeDetail.ToList();
+
+        //    List<SelectListItem> list = new List<SelectListItem>();
+
+        //    if (User.IsInRole("SuperAdmin"))
+        //    {
+
+        //        if (dd.Count > 0)
+        //        {
+        //            foreach (var item in dd)
+        //            {
+        //                list.Add(new SelectListItem() { Value = item.EmployeeId.ToString(), Text = db.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault().EmployeeNameNp });
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        dd = dd.Where(x => x.OfficeId == officeId).ToList();
+
+        //        if (dd.Count > 0)
+        //        {
+        //            foreach (var item in dd)
+        //            {
+        //                list.Add(new SelectListItem() { Value = item.EmployeeId.ToString(), Text = db.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault().EmployeeNameNp });
+        //            }
+        //        }
+        //    }
+
+
+
+        //    return list;
+        //}
+
+        public static IEnumerable<SelectListItem> GetEmployeeListBYUserSuper(int? officeId, IPrincipal user)
         {
-            ApplicationDbContext db = new ApplicationDbContext();
-
-            var dd = db.EmployeeOfficeDetail.ToList();
-
-            List<SelectListItem> list = new List<SelectListItem>();
-
-            if (User.IsInRole("SuperAdmin"))
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
+                var query = from eod in db.EmployeeOfficeDetail
+                            join emp in db.EmployeeInfo
+                                on eod.EmployeeId equals emp.EmployeeId
+                            select new
+                            {
+                                eod.OfficeId,
+                                emp.EmployeeId,
+                                emp.EmployeeNameNp
+                            };
 
-                if (dd.Count > 0)
+                if (!user.IsInRole("SuperAdmin"))
                 {
-                    foreach (var item in dd)
-                    {
-                        list.Add(new SelectListItem() { Value = item.EmployeeId.ToString(), Text = db.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault().EmployeeNameNp });
-                    }
+                    query = query.Where(x => x.OfficeId == officeId);
                 }
-            }
-            else
-            {
-                dd = dd.Where(x => x.OfficeId == officeId).ToList();
 
-                if (dd.Count > 0)
-                {
-                    foreach (var item in dd)
+                return query
+                    .OrderBy(x => x.EmployeeNameNp)
+                    .Select(x => new SelectListItem
                     {
-                        list.Add(new SelectListItem() { Value = item.EmployeeId.ToString(), Text = db.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault().EmployeeNameNp });
-                    }
-                }
+                        Value = x.EmployeeId.ToString(),
+                        Text = x.EmployeeNameNp
+                    })
+                    .ToList();
             }
-
-
-
-            return list;
         }
-
         internal static string GetShiftNameById(int SetupShiftId)
         {
             ApplicationDbContext db = new ApplicationDbContext();

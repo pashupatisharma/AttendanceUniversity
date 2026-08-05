@@ -1,20 +1,14 @@
-﻿using System;
+﻿using eAttendance.Models;
+using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
-using eAttendance.Models;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Security.Principal;
-using System.Web.WebPages;
-using eAttendance.ReportModel;
-using PagedList;
 
 namespace eAttendance.Controllers
 {
@@ -40,7 +34,6 @@ namespace eAttendance.Controllers
             return View(Model);
         }
 
-
         public ActionResult Add()
         {
             LeaveApplication model = new LeaveApplication
@@ -63,7 +56,6 @@ namespace eAttendance.Controllers
                 DateTime toDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(model.NToDate));
                 if (CheckValidLeaveOrVisitDateInterval(frmDate, toDate, model.EmployeeId, 0))
                 {
-
                     TempData.Add("Message", "छान्नु भएको कर्मचारी बिदा वा काज मा पहिले देखि नै छ।");
                     return base.RedirectToAction("Index", "LeaveApplication");
                 }
@@ -83,26 +75,19 @@ namespace eAttendance.Controllers
                 model.Status = 1;
                 db.LeaveApplication.Add(model);
                 db.SaveChanges();
-
-
             }
             catch
             {
-
                 base.TempData.Add("Message", "Failed");
             }
             return base.RedirectToAction("Index", "LeaveApplication");
         }
-
-
 
         private bool CheckValidLeaveOrVisitDateInterval(DateTime frmDate, DateTime toDate, int? empId, int leaveApplicationId)
         {
             bool exist = false;
             for (DateTime day = frmDate.Date; day.Date <= toDate.Date; day = day.AddDays(1.0))
             {
-
-
                 var leave = db.LeaveApplication.Where(x => x.EmployeeId == empId).Where(x => x.ApplicationDate == day).FirstOrDefault();
                 if (leave != null)
                 {
@@ -118,18 +103,14 @@ namespace eAttendance.Controllers
                 }
             }
             return exist;
-
         }
-
 
         // GET: /LeaveApplication/Edit/5
         public ActionResult Edit(int? id)
         {
-
             LeaveApplication model = new LeaveApplication();
             if (id.HasValue)
             {
-
                 model = db.LeaveApplication.Where(x => x.LeaveApplicationId == id).FirstOrDefault();
                 model.NApplicationDate = model.ApplicationDate.HasValue ? NepaliDateConverter.ConvertToNepali(Convert.ToDateTime(model.ApplicationDate.Value.Date), "yyyy-MM-DD") : " ";
                 model.NFromDate = model.FromDate.HasValue ? NepaliDateConverter.ConvertToNepali(Convert.ToDateTime(model.FromDate.Value.Date), "yyyy-MM-DD") : " ";
@@ -140,10 +121,7 @@ namespace eAttendance.Controllers
         }
 
         // POST: /LeaveApplication/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-
         public ActionResult Edit(LeaveApplication model)
         {
             if (ModelState.IsValid)
@@ -158,7 +136,6 @@ namespace eAttendance.Controllers
                     DateTime toDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(model.NToDate));
                     if (CheckValidLeaveOrVisitDateInterval(frmDate, toDate, model.EmployeeId, 0))
                     {
-
                         TempData.Add("Message", "छान्नु भएको कर्मचारी बिदा वा काज मा पहिले देखि नै छ।");
                         return base.RedirectToAction("Index", "LeaveApplication");
                     }
@@ -176,18 +153,14 @@ namespace eAttendance.Controllers
                     model.Type = 1;
                     db.Entry(model).State = EntityState.Modified;
                     db.SaveChanges();
-
                 }
                 catch
                 {
-
                 }
                 return base.RedirectToAction("Index", "LeaveApplication");
             }
             return base.View();
-
         }
-
 
         [Authorize(Roles = "Admin,SuperAdmin")]
         public ActionResult LeavePosting(string nFromDate, string nToDate, string officeId, string branchId, string serviceId, string levelId, string designationId, string empId, string sortOrder, int? pageSize, int? page)
@@ -206,27 +179,13 @@ namespace eAttendance.Controllers
                 empId = designationId;
             }
             ViewBag.CurrentFilter = empId;
-            //  IEnumerable<LeaveApplication> source = db.LeaveApplication.Where(x => x.ApprovedStatus != 2).ToList();
-            var newsource = new List<LeaveApplication>();
 
-            //var newsource = new List<LeaveApplication>();
+            // OPTIMIZED: Use Include() for eager loading instead of N+1 queries
+            IQueryable<LeaveApplication> query = db.LeaveApplication
+                .Include(x => x.EmployeeInfo)
+                .Include(x => x.EmployeeOfficeDetail);
 
-
-            IEnumerable<LeaveApplication> source = db.LeaveApplication.ToList();
-           foreach (var item in source)
-            {
-                LeaveApplication obj = new LeaveApplication();
-                obj = item;
-                obj.EmployeeInfo = db.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
-                obj.EmployeeOfficeDetail = db.EmployeeOfficeDetail.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
-                newsource.Add(obj);
-            }
-
-
-
-
-
-            int ? officeid = 0;
+            int? officeid = 0;
             int EmployeeId = 0;
             try
             {
@@ -244,135 +203,68 @@ namespace eAttendance.Controllers
             {
             }
 
+            // Apply filters at database level before materializing
             if (User.IsInRole("Admin"))
             {
-                int? a = officeid;
-                newsource = newsource.Where(x => x.EmployeeOfficeDetail.OfficeId == a).ToList();
+                query = query.Where(x => x.EmployeeOfficeDetail.OfficeId == officeid);
             }
 
             if (!string.IsNullOrEmpty(nFromDate))
             {
                 DateTime frmDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(nFromDate));
-                newsource = newsource.Where(x => x.FromDate >= frmDate).ToList();
+                query = query.Where(x => x.FromDate >= frmDate);
             }
-
 
             if (!string.IsNullOrEmpty(nToDate))
             {
                 DateTime Todate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(nToDate));
-                newsource = newsource.Where(x => x.ToDate <= Todate).ToList();
-
+                query = query.Where(x => x.ToDate <= Todate);
             }
-            if (!string.IsNullOrWhiteSpace(empId)&&empId!="0")
+
+            if (!string.IsNullOrWhiteSpace(empId) && empId != "0")
             {
                 int newempid = int.Parse(empId.Trim());
-                newsource = newsource.Where(x => x.EmployeeId == newempid).ToList();
+                query = query.Where(x => x.EmployeeId == newempid);
             }
 
             if (!string.IsNullOrEmpty(officeId) && officeId != "0")
             {
-                var neweofficeId = int.Parse(officeId.Trim());
-                newsource = newsource.Where(x => x.EmployeeOfficeDetail.OfficeId == neweofficeId).ToList();
+                int neweofficeId = int.Parse(officeId.Trim());
+                query = query.Where(x => x.EmployeeOfficeDetail.OfficeId == neweofficeId);
             }
+
             if (!string.IsNullOrEmpty(branchId))
             {
                 int newbranchId = int.Parse(branchId.Trim());
-                newsource = newsource.Where(x => x.EmployeeOfficeDetail.BranchId == newbranchId).ToList();
+                query = query.Where(x => x.EmployeeOfficeDetail.BranchId == newbranchId);
             }
+
             if (!string.IsNullOrEmpty(serviceId) && serviceId != "0")
             {
-                var newserviceId = int.Parse(serviceId.Trim());
-                newsource = newsource.Where(x => x.EmployeeOfficeDetail.ServiceId == newserviceId).ToList();
+                int newserviceId = int.Parse(serviceId.Trim());
+                query = query.Where(x => x.EmployeeOfficeDetail.ServiceId == newserviceId);
             }
+
             if (!string.IsNullOrEmpty(levelId) && levelId != "0")
             {
-                var newlevel = int.Parse(levelId.Trim());
-                newsource = newsource.Where(x => x.EmployeeOfficeDetail.LevelId == newlevel).ToList();
+                int newlevel = int.Parse(levelId.Trim());
+                query = query.Where(x => x.EmployeeOfficeDetail.LevelId == newlevel);
             }
+
             if (!string.IsNullOrEmpty(designationId) && designationId != "0")
             {
-                var newDesignationId = int.Parse(designationId.Trim());
-                newsource = newsource.Where(x => x.EmployeeOfficeDetail.DesignationId == newDesignationId).ToList();
+                int newDesignationId = int.Parse(designationId.Trim());
+                query = query.Where(x => x.EmployeeOfficeDetail.DesignationId == newDesignationId);
             }
 
-            //if (!string.IsNullOrEmpty(nFromDate))
-            //{
+            int pageNumber = page.HasValue ? page.Value : 1;
+            int pageSizeValue = pageSize.HasValue ? pageSize.Value : 10;
 
-            //}
-            //else if (!(string.IsNullOrWhiteSpace(empId) || (int.Parse(empId.Trim()) != 0)))
-            //{
-            //}
-            //if (!string.IsNullOrEmpty(nToDate))
-            //{
-            //}
-            //else if (!(string.IsNullOrWhiteSpace(empId) || (int.Parse(empId.Trim()) != 0)))
-            //{
-            //}
-            //if ((!string.IsNullOrEmpty(officeId) && (int.Parse(officeId.Trim()) > 0)) && (_officeId > 0))
-            //{
-            //}
-            //if (!string.IsNullOrEmpty(branchId) && (int.Parse(branchId.Trim()) > 0))
-            //{
+            // Apply pagination at database level
+            var result = query.OrderByDescending(x => x.CreatedDate)
+                              .ToPagedList(pageNumber, pageSizeValue);
 
-            //}
-            //if (!string.IsNullOrEmpty(serviceId) && (int.Parse(serviceId.Trim()) > 0))
-            //{
-
-            //}
-            //if (!string.IsNullOrEmpty(levelId) && (int.Parse(levelId.Trim()) > 0))
-            //{
-
-            //}
-            //if (!string.IsNullOrEmpty(designationId) && (int.Parse(designationId.Trim()) > 0))
-            //{
-
-            //}
-            //if (!string.IsNullOrEmpty(empId) && (int.Parse(empId.Trim()) > 0))
-            //{
-
-            //}
-
-
-            //switch (sortOrder)
-            //{
-            //    case "name_desc":
-            //        newsource = from s in newsource
-            //                    orderby s.EmployeeInfo.EmployeeName descending
-            //                    select s;
-            //        break;
-
-            //    case "Date":
-            //        newsource = from s in newsource
-            //                    orderby s.ApplicationDate descending
-            //                 select s;
-            //        break;
-
-            //    case "date_desc":
-            //        newsource = from s in newsource
-            //                    orderby s.CreatedDate descending
-            //                 select s;
-            //        break;
-
-            //    default:
-            //        newsource = from s in newsource
-            //                 orderby s.EmployeeId
-            //                 select s;
-            //        break;
-            //}
-
-
-            int num = newsource.Count<LeaveApplication>();
-
-            num = newsource.Count<LeaveApplication>();
-            int num2 = 10;
-            if (pageSize.HasValue)
-            {
-                num2 = pageSize.Value;
-            }
-            int? nullable = page;
-            int pageNumber = nullable.HasValue ? nullable.GetValueOrDefault() : 1;
-            return base.View(newsource.ToPagedList<LeaveApplication>(pageNumber, num2));
-
+            return base.View(result);
         }
 
         public ActionResult AddLeavePosting()
@@ -392,14 +284,11 @@ namespace eAttendance.Controllers
                 DateTime frmDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(model.NFromDate));
                 DateTime toDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(model.NToDate));
 
-
                 if (CheckValidLeaveOrVisitDateInterval(frmDate, toDate, model.EmployeeId, 0))
                 {
-
                     TempData.Add("Message", "छान्नु भएको कर्मचारी बिदा वा काज मा पहिले देखि नै छ।");
                     return base.RedirectToAction("Index", "LeaveApplication");
                 }
-
 
                 model.FromDate = new DateTime?(frmDate);
                 model.ToDate = new DateTime?(toDate);
@@ -430,16 +319,12 @@ namespace eAttendance.Controllers
 
                 db.LeaveApplication.Add(model);
                 db.SaveChanges();
-
             }
             catch
             {
-
             }
             return base.RedirectToAction("LeavePosting", "LeaveApplication");
         }
-
-
 
         public ActionResult EditLeavePosting(int? id)
         {
@@ -461,7 +346,6 @@ namespace eAttendance.Controllers
             return base.View(model);
         }
 
-
         [HttpPost]
         public ActionResult EditLeavePosting(LeaveApplication model)
         {
@@ -479,11 +363,9 @@ namespace eAttendance.Controllers
 
                     if (CheckValidLeaveOrVisitDateInterval(frmDate, toDate, model.EmployeeId, 0))
                     {
-
                         TempData.Add("Message", "छान्नु भएको कर्मचारी बिदा वा काज मा पहिले देखि नै छ।");
                         return base.RedirectToAction("Index", "LeaveApplication");
                     }
-
 
                     data.ApprovedDate = new DateTime?(((model.NApplicationDate != null) && (model.NApplicationDate.Length > 8)) ? NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(model.NApplicationDate)) : DateTime.Now);
                     data.FromDate = new DateTime?(frmDate);
@@ -509,23 +391,14 @@ namespace eAttendance.Controllers
                     data.ApprovedStatus = 2;
                     db.Entry(data).State = EntityState.Modified;
                     db.SaveChanges();
-
                 }
                 catch
                 {
-
                 }
                 return base.RedirectToAction("LeavePosting", "LeaveApplication");
             }
             return base.View();
         }
-
-
-
-
-
-
-
 
         public ActionResult DeleteLeavePosting(int? id)
         {
@@ -533,7 +406,6 @@ namespace eAttendance.Controllers
             model = db.LeaveApplication.Where(x => x.LeaveApplicationId == id).FirstOrDefault();
             return base.View(model);
         }
-
 
         public async Task<ActionResult> Delete(int? id)
         {
