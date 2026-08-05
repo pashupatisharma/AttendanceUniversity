@@ -273,12 +273,28 @@ namespace eAttendance
 
         public static IEnumerable<SelectListItem> GetOfficeIdName(System.Security.Principal.IPrincipal User)
         {
-            using (ApplicationDbContext entities = new ApplicationDbContext())
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
+                IQueryable<OfficeSetUp> offices = db.OfficeSetUp;
 
-                return new SelectList(entities.OfficeSetUp.ToList(), "OfficeId", "OfficeName");
+                if (User.IsInRole("Admin"))
+                {
+                    int? officeId = EmployeeProvider.GetOfficeIdByUserId(User.Identity.Name);
+                    offices = offices.Where(x => x.OfficeId == officeId);
+                }
+
+                return offices
+                    .OrderBy(x => x.OfficeName)
+                    .Select(x => new SelectListItem
+                    {
+                        Value = x.OfficeId.ToString(),
+                        Text = x.OfficeName
+                    })
+                    .ToList();
             }
         }
+
+   
 
       
 

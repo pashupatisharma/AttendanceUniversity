@@ -199,29 +199,38 @@
                     }
 
 
-                    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+                    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator")|| User.IsInRole("Admin"))
                     {
                         <li>
                             <a href="#"><i class="fa fa-gears"></i> <span class="nav-label"> सेटअप</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
 
 
-                                <li><a href="@Url.Action("Index", "OfficeSetup")">कार्यालय</a></li>
+                                @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+                                {
+                                    <li><a href="@Url.Action("Index", "OfficeSetup")">कार्यालय</a></li>
 
-                                <li><a href="@Url.Action("Index", "SetupBranch")">शाखा</a></li>
-                                <li><a href="@Url.Action("Index", "SetupLevel")">श्रेणी</a></li>
-                                <li><a href="@Url.Action("Index", "SetupDesignation")">पद</a></li>
-                                <li><a href="@Url.Action("Index", "SetupService")">सेवा</a></li>
-                                <li><a href="@Url.Action("Index", "SetupFiscalYear")">  वर्ष</a></li>
-                                <li><a href="@Url.Action("Index", "SetupShift")"> बाषिक सिफ्ट</a></li>
-                                <li><a href="@Url.Action("Index", "SetupDailyShift")">दैनिक सिफ्ट</a></li>
-                                <li><a href="@Url.Action("Index", "YearlyShift")">बाषिक र्सिफ्ट मिति </a></li>
+                                    <li><a href="@Url.Action("Index", "SetupBranch")">शाखा</a></li>
+                                    <li><a href="@Url.Action("Index", "SetupLevel")">श्रेणी</a></li>
+                                    <li><a href="@Url.Action("Index", "SetupDesignation")">पद</a></li>
+                                    <li><a href="@Url.Action("Index", "SetupService")">सेवा</a></li>
+                                    <li><a href="@Url.Action("Index", "SetupFiscalYear")">  वर्ष</a></li>
+                                    <li><a href="@Url.Action("Index", "SetupShift")"> बाषिक सिफ्ट</a></li>
+                                    <li><a href="@Url.Action("Index", "SetupDailyShift")">दैनिक सिफ्ट</a></li>
+                                    <li><a href="@Url.Action("Index", "YearlyShift")">बाषिक र्सिफ्ट मिति </a></li>
+
+                                }
+
                                 <li><a href="@Url.Action("Add", "SetupShiftTime")">सिफ्ट समय</a></li>
 
-                                <li><a href="@Url.Action("Index","SetupOfficeDevice")">उपकरण</a></li>
 
-                                <li><a href="@Url.Action("Index", "SetupDistrict")">जिल्ला</a></li>
-                            </ul>
+                                @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+                                {
+                                    <li><a href="@Url.Action("Index", "SetupOfficeDevice")">उपकरण</a></li>
+
+                                    <li><a href="@Url.Action("Index", "SetupDistrict")">जिल्ला</a></li>
+                                }
+                                </ul>
                         </li>
                     }
 

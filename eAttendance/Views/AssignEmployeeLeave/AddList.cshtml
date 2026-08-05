@@ -100,7 +100,7 @@
                     </table>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group text-center">
-                        <input type="submit" id="SaveLeave" class="btn btn-success" title="बचत गर्नु" value="बचत गर्नु" />
+                        <input type="submit" id="SaveLeave" class="btn btn-success" title="सुरक्षित गर्नु" value="सुरक्षित गर्नु" />
                         <a href="@Url.Action("Index","AssignEmployeeLeave")" class="btn btn-danger" type="submit">@eAttendance.Service.MenuService.Cancel</a>
                     </div>
                 }
@@ -175,7 +175,7 @@
                     location.reload();
                 },
                 error: function () {
-                    Command: toastr['error']("डाटा बचत गर्दा त्रुटि भयो।", "त्रुटि सन्देश !")
+                    Command: toastr['error']("डाटा सुरक्षित गर्दा त्रुटि भयो।", "त्रुटि सन्देश !")
                 }
             });
         }
