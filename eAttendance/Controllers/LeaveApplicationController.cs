@@ -170,14 +170,7 @@ namespace eAttendance.Controllers
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = (sortOrder == "Date") ? "date_desc" : "Date";
-            if (empId != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                empId = designationId;
-            }
+          
             ViewBag.CurrentFilter = empId;
 
             // OPTIMIZED: Use Include() for eager loading instead of N+1 queries

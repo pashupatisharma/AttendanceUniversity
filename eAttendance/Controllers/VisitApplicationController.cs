@@ -21,9 +21,6 @@ namespace eAttendance.Controllers
         // GET: /VisitApplication/
         public ActionResult Index()
         {
-
-
-
             VisitApplicationModel Model = new VisitApplicationModel();
             Model.VisitApplicationList = new List<VisitApplicationModel>();
 
@@ -36,7 +33,6 @@ namespace eAttendance.Controllers
             var list = db.Database.SqlQuery<VisitApplicationModel>(s).ToList();
             Model.VisitApplicationList = list;
             return View(Model);
-
         }
 
         // GET: /VisitApplication/Details/5
@@ -77,7 +73,6 @@ namespace eAttendance.Controllers
                 DateTime toDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(model.NToDate));
                 if (this.CheckValidLeaveOrVisitDateInterval(frmDate, toDate, model.EmployeeId, 0))
                 {
-
                     base.TempData.Add("Message", "छान्नु भएको कर्मचारी बिदा वा काज मा पहिले देखि नै छ।");
                     return base.RedirectToAction("Index", "VisitApplication");
                 }
@@ -204,7 +199,7 @@ namespace eAttendance.Controllers
         }
 
         [Authorize(Roles = "Admin,SuperAdmin")]
-        public ActionResult VisitPosting(string nFromDate, string nToDate, string officeId, string branchId, string serviceId, string levelId, string designationId, string empId, string sortOrder, int? page)
+        public ActionResult VisitPosting(string nFromDate, string nToDate, string officeId, string branchId, string serviceId, string levelId, string designationId, string empId, string sortOrder, int? pageSize, int? page)
         {
 
             int? _officeId = EmployeeProvider.GetOfficeIdByUserId(User.Identity.Name);
@@ -214,20 +209,12 @@ namespace eAttendance.Controllers
             ViewBag.DateSortParm = (sortOrder == "Date") ? "date_desc" : "Date";
            
             ViewBag.CurrentFilter = empId;
-            //  IEnumerable<VisitApplication> source = db.VisitApplication.Where(x => x.ApprovedStatus != 2).ToList();
-    var newsource = new List<VisitApplication>();
 
+            // OPTIMIZED: Use Include() for eager loading instead of N+1 queries
+            IQueryable<VisitApplication> query = db.VisitApplication
+                .Include(x => x.EmployeeInfo)
+                .Include(x => x.EmployeeOfficeDetail);
 
-            IEnumerable<VisitApplication> source = db.VisitApplication.ToList();
-
-            foreach (var item in source)
-            {
-                VisitApplication obj = new VisitApplication();
-                obj = item;
-                obj.EmployeeInfo = db.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
-                obj.EmployeeOfficeDetail = db.EmployeeOfficeDetail.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
-                newsource.Add(obj);
-            }
             int? officeid = 0;
             int EmployeeId = 0;
             try
@@ -246,90 +233,68 @@ namespace eAttendance.Controllers
             {
             }
 
+            // Apply filters at database level before materializing
             if (User.IsInRole("Admin"))
             {
-                int? a = officeid;
-                newsource = newsource.Where(x => x.EmployeeOfficeDetail.OfficeId == a).ToList();
+                query = query.Where(x => x.EmployeeOfficeDetail.OfficeId == officeid);
             }
-
-
 
             if (!string.IsNullOrEmpty(nFromDate))
             {
                 DateTime frmDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(nFromDate));
-                newsource = newsource.Where(x => x.FromDate >= frmDate).ToList();
+                query = query.Where(x => x.FromDate >= frmDate);
             }
-
 
             if (!string.IsNullOrEmpty(nToDate))
             {
                 DateTime Todate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(nToDate));
-                newsource = newsource.Where(x => x.ToDate <= Todate).ToList();
-
+                query = query.Where(x => x.ToDate <= Todate);
             }
-            if (!string.IsNullOrWhiteSpace(empId)&&empId!="0")
+
+            if (!string.IsNullOrWhiteSpace(empId) && empId != "0")
             {
                 int newempid = int.Parse(empId.Trim());
-                newsource = newsource.Where(x => x.EmployeeId == newempid).ToList();
+                query = query.Where(x => x.EmployeeId == newempid);
             }
 
-            if (!string.IsNullOrEmpty(officeId) && officeId!="0"  )
+            if (!string.IsNullOrEmpty(officeId) && officeId != "0")
             {
-                var neweofficeId = int.Parse(officeId.Trim());
-                newsource = newsource.Where(x => x.EmployeeOfficeDetail.OfficeId == neweofficeId).ToList();
+                int neweofficeId = int.Parse(officeId.Trim());
+                query = query.Where(x => x.EmployeeOfficeDetail.OfficeId == neweofficeId);
             }
+
             if (!string.IsNullOrEmpty(branchId))
             {
                 int newbranchId = int.Parse(branchId.Trim());
-                newsource = newsource.Where(x => x.EmployeeOfficeDetail.BranchId == newbranchId).ToList();
+                query = query.Where(x => x.EmployeeOfficeDetail.BranchId == newbranchId);
             }
-            if (!string.IsNullOrEmpty(serviceId)&& serviceId!="0" )
+
+            if (!string.IsNullOrEmpty(serviceId) && serviceId != "0")
             {
-                var newserviceId = int.Parse(serviceId.Trim());
-                newsource = newsource.Where(x => x.EmployeeOfficeDetail.ServiceId == newserviceId).ToList();
+                int newserviceId = int.Parse(serviceId.Trim());
+                query = query.Where(x => x.EmployeeOfficeDetail.ServiceId == newserviceId);
             }
-            if (!string.IsNullOrEmpty(levelId)&& levelId!="0")
+
+            if (!string.IsNullOrEmpty(levelId) && levelId != "0")
             {
-                var newlevel = int.Parse(levelId.Trim());
-                newsource = newsource.Where(x => x.EmployeeOfficeDetail.LevelId == newlevel).ToList();
+                int newlevel = int.Parse(levelId.Trim());
+                query = query.Where(x => x.EmployeeOfficeDetail.LevelId == newlevel);
             }
-            if (!string.IsNullOrEmpty(designationId)&& designationId!="0")
+
+            if (!string.IsNullOrEmpty(designationId) && designationId != "0")
             {
-                var newDesignationId = int.Parse(designationId.Trim());
-                newsource = newsource.Where(x => x.EmployeeOfficeDetail.DesignationId == newDesignationId).ToList();
+                int newDesignationId = int.Parse(designationId.Trim());
+                query = query.Where(x => x.EmployeeOfficeDetail.DesignationId == newDesignationId);
             }
 
+            int pageNumber = page.HasValue ? page.Value : 1;
+            int pageSizeValue = pageSize.HasValue ? pageSize.Value : 10;
 
-            //switch (sortOrder)
-            //{
-            //    case "name_desc":
-            //        newsource = from s in newsource
-            //                 orderby s.EmployeeInfo.EmployeeName descending
-            //                 select s;
-            //        break;
+            // Apply pagination at database level
+            var result = query.OrderByDescending(x => x.CreatedDate)
+                              .ToPagedList(pageNumber, pageSizeValue);
 
-            //    case "Date":
-            //        newsource = from s in newsource
-            //                 orderby s.ApplicationDate descending
-            //                 select s;
-            //        break;
-
-            //    case "date_desc":
-            //        newsource = from s in newsource
-            //                 orderby s.CreatedDate descending
-            //                 select s;
-            //        break;
-
-            //    default:
-            //        source = from s in newsource
-            //                 orderby s.EmployeeId
-            //                 select s;
-            //        break;
-            //}
-            int pageSize = 10;
-            int? nullable = page;
-            int pageNumber = nullable.HasValue ? nullable.GetValueOrDefault() : 1;
-            return base.View(newsource.ToPagedList<VisitApplication>(pageNumber, pageSize));
+            return base.View(result);
         }
 
         public ActionResult AddVisitPosting()
