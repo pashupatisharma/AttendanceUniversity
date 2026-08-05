@@ -56,6 +56,7 @@ namespace eAttendance.Controllers
             {
                 db.Shift.Add(shift);
                 db.SaveChanges();
+                TempData["Message"] = "Shift created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -88,6 +89,7 @@ namespace eAttendance.Controllers
             {
                 db.Entry(shift).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Shift updated successfully.";
                 return RedirectToAction("Index");
             }
             return View(shift);
@@ -116,6 +118,7 @@ namespace eAttendance.Controllers
             Shift shift = db.Shift.Find(shiftmodel.ShiftId);
             db.Shift.Remove(shift);
             db.SaveChanges();
+            TempData["Message"] = "Shift deleted successfully.";
             return RedirectToAction("Index");
         }
 

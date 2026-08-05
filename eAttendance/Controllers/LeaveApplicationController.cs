@@ -75,6 +75,7 @@ namespace eAttendance.Controllers
                 model.Status = 1;
                 db.LeaveApplication.Add(model);
                 db.SaveChanges();
+                TempData["Message"] = "Leave application created successfully.";
             }
             catch
             {
@@ -153,6 +154,7 @@ namespace eAttendance.Controllers
                     model.Type = 1;
                     db.Entry(model).State = EntityState.Modified;
                     db.SaveChanges();
+                    TempData["Message"] = "Leave application updated successfully.";
                 }
                 catch
                 {
@@ -312,6 +314,7 @@ namespace eAttendance.Controllers
 
                 db.LeaveApplication.Add(model);
                 db.SaveChanges();
+                TempData["Message"] = "Leave application created successfully.";
             }
             catch
             {
@@ -384,6 +387,7 @@ namespace eAttendance.Controllers
                     data.ApprovedStatus = 2;
                     db.Entry(data).State = EntityState.Modified;
                     db.SaveChanges();
+                    TempData["Message"] = "Leave application updated successfully.";
                 }
                 catch
                 {
@@ -422,6 +426,7 @@ namespace eAttendance.Controllers
             LeaveApplication leaveapplication = await db.LeaveApplication.FindAsync(model.LeaveApplicationId);
             db.LeaveApplication.Remove(leaveapplication);
             await db.SaveChangesAsync();
+            TempData["Message"] = "Leave application deleted successfully.";
             return RedirectToAction("LeavePosting");
         }
 

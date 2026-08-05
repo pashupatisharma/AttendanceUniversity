@@ -61,6 +61,7 @@ namespace eAttendance.Controllers
                 servicesetup.Status = 1;
                 db.ServiceSetUp.Add(servicesetup);
                 db.SaveChanges();
+                TempData["Message"] = "Service created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -96,6 +97,7 @@ namespace eAttendance.Controllers
                 servicesetup.Status = 1;
                 db.Entry(servicesetup).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Service updated successfully.";
                 return RedirectToAction("Index");
             }
             return View(servicesetup);
@@ -124,6 +126,7 @@ namespace eAttendance.Controllers
             ServiceSetUp servicesetup = db.ServiceSetUp.Find(model.ServiceId);
             db.ServiceSetUp.Remove(servicesetup);
             db.SaveChanges();
+            TempData["Message"] = "Service deleted successfully.";
             return RedirectToAction("Index");
         }
 

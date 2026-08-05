@@ -190,6 +190,7 @@ namespace eAttendance.Controllers
 
                 db.Entry(visitapplication).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Visit application updated successfully.";
             }
             catch(Exception ex)
             {
@@ -344,6 +345,7 @@ namespace eAttendance.Controllers
                 // provider.Insert(model);
                 db.VisitApplication.Add(model);
                 db.SaveChanges();
+                TempData["Message"] = "Visit application created successfully.";
 
             }
             catch
@@ -412,6 +414,7 @@ namespace eAttendance.Controllers
                     model.ApprovedStatus = 2;
                     db.Entry(model).State = EntityState.Modified;
                     db.SaveChanges();
+                    TempData["Message"] = "Visit application updated successfully.";
 
                 }
                 catch
@@ -442,6 +445,7 @@ namespace eAttendance.Controllers
 
                 db.Entry(model).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Visit application deleted successfully.";
             }
             catch
             {
@@ -478,6 +482,7 @@ namespace eAttendance.Controllers
             VisitApplication visitapplication = await db.VisitApplication.FindAsync(id);
             db.VisitApplication.Remove(visitapplication);
             await db.SaveChangesAsync();
+            TempData["Message"] = "Visit application deleted successfully.";
             return RedirectToAction("Index");
         }
 

@@ -189,6 +189,7 @@ namespace eAttendance.Controllers
             {
                 db.AssignEmployeeLeave.Add(assignemployeeleave);
                 await db.SaveChangesAsync();
+                TempData["Message"] = "Assign employee leave created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -229,6 +230,7 @@ namespace eAttendance.Controllers
             {
                 db.Entry(assignemployeeleave).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+                TempData["Message"] = "Assign employee leave updated successfully.";
                 return RedirectToAction("Index");
             }
             ViewBag.EmployeeId = new SelectList(db.EmployeeInfo, "EmployeeId", "EmployeeNameNp", assignemployeeleave.EmployeeId);
@@ -261,6 +263,7 @@ namespace eAttendance.Controllers
             AssignEmployeeLeave assignemployeeleave = await db.AssignEmployeeLeave.FindAsync(id);
             db.AssignEmployeeLeave.Remove(assignemployeeleave);
             await db.SaveChangesAsync();
+            TempData["Message"] = "Assign employee leave deleted successfully.";
             return RedirectToAction("Index");
         }
 

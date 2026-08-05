@@ -150,6 +150,7 @@ namespace eAttendance.Controllers
              
                 entities.AttendanceLog.Add(data);
                 entities.SaveChanges();
+                TempData["Message"] = "Attendance log created successfully.";
 
             }
             catch
@@ -189,6 +190,7 @@ namespace eAttendance.Controllers
                         data.Remarks=model.Remarks;
                         entities.AttendanceLog.Add(data);
                         entities.SaveChanges();
+                        TempData["Message"] = "Attendance log created successfully.";
                     }
 
                 }
@@ -288,6 +290,7 @@ namespace eAttendance.Controllers
                     frgt.Status = 2;
                     frgt.DeletedDate = DateTime.Now;
                     entities.SaveChanges();
+                    TempData["Message"] = "Forgot entry deleted successfully.";
                 }
 
             }

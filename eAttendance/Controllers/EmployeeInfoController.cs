@@ -585,6 +585,7 @@ namespace eAttendance.Controllers
 
                         db.EmployeeInfo.Add(empinfo);
                         db.SaveChanges();
+                        TempData["Message"] = "Employee created successfully.";
 
                         int maxempid = db.EmployeeInfo.Max(z => z.EmployeeId);
                         EmployeeProvider.InsertEmployeeAndOfficeDetail(empinfo, model.EmployeeOfficeInfo,
@@ -738,6 +739,7 @@ namespace eAttendance.Controllers
 
                 db.Entry(model2).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Employee updated successfully.";
 
             }
             catch
@@ -804,6 +806,7 @@ namespace eAttendance.Controllers
                     model.Status = 1;
                     db.EmployeeOfficeDetail.Add(model);
                     db.SaveChanges();
+                    TempData["Message"] = "Employee office detail created successfully.";
                 }
                 else
                 {
@@ -823,6 +826,7 @@ namespace eAttendance.Controllers
 
                     db.Entry(model2).State = EntityState.Modified;
                     db.SaveChanges();
+                    TempData["Message"] = "Employee office detail updated successfully.";
                 }
 
             }
@@ -867,6 +871,7 @@ namespace eAttendance.Controllers
                 model2.ModifiedDate = DateTime.Now;
                 db.Entry(model2).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Employee updated successfully.";
 
             }
             catch
@@ -918,6 +923,7 @@ namespace eAttendance.Controllers
                     model.Stauts = 1;
                     db.EmployeeShiftTime.Add(model);
                     db.SaveChanges();
+                    TempData["Message"] = "Employee shift time created successfully.";
                 }
                 else
                 {
@@ -930,6 +936,7 @@ namespace eAttendance.Controllers
                     model2.Stauts = 1;
                     db.Entry(model2).State = EntityState.Modified;
                     db.SaveChanges();
+                    TempData["Message"] = "Employee shift time updated successfully.";
 
                 }
 
@@ -957,6 +964,7 @@ namespace eAttendance.Controllers
             {
                 db.Entry(employeeinfo).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Employee updated successfully.";
                 return RedirectToAction("Index");
             }
             return View(employeeinfo);
@@ -988,6 +996,7 @@ namespace eAttendance.Controllers
             data.Status = 2;
             // db.EmployeeInfo.Remove(employeeinfo);
             db.SaveChanges();
+            TempData["Message"] = "Employee deleted successfully.";
             return RedirectToAction("Index");
         }
 

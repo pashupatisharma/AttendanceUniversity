@@ -58,6 +58,7 @@ namespace eAttendance.Controllers
             {
                 db.VistTypeSetUp.Add(visittypesetup);
                 await db.SaveChangesAsync();
+                TempData["Message"] = "Visit type created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -92,6 +93,7 @@ namespace eAttendance.Controllers
             {
                 db.Entry(visittypesetup).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+                TempData["Message"] = "Visit type updated successfully.";
                 return RedirectToAction("Index");
             }
             ViewBag.OfficeId = new SelectList(db.OfficeSetUp, "OfficeId", "OfficeName", visittypesetup.OfficeId);
@@ -121,6 +123,7 @@ namespace eAttendance.Controllers
             VisitTypeSetUp visittypesetup = await db.VistTypeSetUp.FindAsync(id);
             db.VistTypeSetUp.Remove(visittypesetup);
             await db.SaveChangesAsync();
+            TempData["Message"] = "Visit type deleted successfully.";
             return RedirectToAction("Index");
         }
 

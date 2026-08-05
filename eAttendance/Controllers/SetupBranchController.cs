@@ -108,6 +108,7 @@ namespace eAttendance.Controllers
                 branchsetup.ModifiedBy = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
                 db.BranchSetUp.Add(branchsetup);
                 db.SaveChanges();
+                TempData["Message"] = "Branch created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -144,6 +145,7 @@ namespace eAttendance.Controllers
                 branchsetup.ModifiedBy = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
                 db.Entry(branchsetup).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Branch updated successfully.";
                 return RedirectToAction("Index");
             }
             return View(branchsetup);
@@ -172,6 +174,7 @@ namespace eAttendance.Controllers
             BranchSetUp branchsetup = db.BranchSetUp.Find(model.BranchId);
             db.BranchSetUp.Remove(branchsetup);
             db.SaveChanges();
+            TempData["Message"] = "Branch deleted successfully.";
             return RedirectToAction("Index");
         }
 

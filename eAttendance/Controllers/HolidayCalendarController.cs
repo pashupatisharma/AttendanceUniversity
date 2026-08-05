@@ -268,6 +268,7 @@ namespace eAttendance.Controllers
             HolidayCalender holidaycalender = await db.HolidayCalender.FindAsync(model.HolidayCalendarId);
             db.HolidayCalender.Remove(holidaycalender);
             await db.SaveChangesAsync();
+            TempData["Message"] = "Holiday calendar deleted successfully.";
             return RedirectToAction("Index");
         }
 

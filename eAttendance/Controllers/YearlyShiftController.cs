@@ -117,6 +117,7 @@ namespace eAttendance.Controllers
                 }
 
                 db.SaveChanges();
+                TempData["Message"] = "Yearly shift created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -155,6 +156,7 @@ namespace eAttendance.Controllers
 
                 db.Entry(yearlyshift).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Yearly shift updated successfully.";
                 return RedirectToAction("Index");
             }
             return View(yearlyshift);
@@ -183,6 +185,7 @@ namespace eAttendance.Controllers
             YearlyShift yearlyshift = db.YearlyShift.Find(model.YearlyShiftId);
             db.YearlyShift.Remove(yearlyshift);
             db.SaveChanges();
+            TempData["Message"] = "Yearly shift deleted successfully.";
             return RedirectToAction("Index");
         }
 

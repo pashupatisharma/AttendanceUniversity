@@ -65,6 +65,7 @@ namespace eAttendance.Controllers
                 fiscalyearsetup.ModifiedDate = DateTime.Now;
                 db.FiscalYearSetUp.Add(fiscalyearsetup);
                 db.SaveChanges();
+                TempData["Message"] = "Fiscal year created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -106,6 +107,7 @@ namespace eAttendance.Controllers
                 fiscalyearsetup.ModifiedDate = DateTime.Now;
                 db.Entry(fiscalyearsetup).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Fiscal year updated successfully.";
                 return RedirectToAction("Index");
             }
             return View(fiscalyearsetup);
@@ -134,6 +136,7 @@ namespace eAttendance.Controllers
             FiscalYearSetUp fiscalyearsetup = db.FiscalYearSetUp.Find(model.FiscalYearId);
             db.FiscalYearSetUp.Remove(fiscalyearsetup);
             db.SaveChanges();
+            TempData["Message"] = "Fiscal year deleted successfully.";
             return RedirectToAction("Index");
         }
 

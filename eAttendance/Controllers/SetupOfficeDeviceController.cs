@@ -62,6 +62,7 @@ namespace eAttendance.Controllers
                 officedevicesetup.Status = 1;
                 db.OfficeDeviceSetUp.Add(officedevicesetup);
                 db.SaveChanges();
+                TempData["Message"] = "Office device created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -98,6 +99,7 @@ namespace eAttendance.Controllers
                 officedevicesetup.Status = 1;
                 db.Entry(officedevicesetup).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Office device updated successfully.";
                 return RedirectToAction("Index");
             }
             ViewBag.OfficeId = new SelectList(db.OfficeSetUp, "OfficeId", "OfficeName", officedevicesetup.OfficeId);
@@ -127,6 +129,7 @@ namespace eAttendance.Controllers
             OfficeDeviceSetUp officedevicesetup = db.OfficeDeviceSetUp.Find(model.OfficeDeviceId);
             db.OfficeDeviceSetUp.Remove(officedevicesetup);
             db.SaveChanges();
+            TempData["Message"] = "Office device deleted successfully.";
             return RedirectToAction("Index");
         }
 

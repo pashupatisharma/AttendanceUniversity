@@ -385,6 +385,7 @@ namespace eAttendance.Controllers
                 setupshifttime.ModifiedDate = DateTime.Now;
                 db.Entry(setupshifttime).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Shift time updated successfully.";
                 return RedirectToAction("Index");
             }
             ViewBag.OfficeId = new SelectList(db.OfficeSetUp, "OfficeId", "OfficeName", setupshifttime.OfficeId);
@@ -415,6 +416,7 @@ namespace eAttendance.Controllers
             SetupShiftTime setupshifttime = db.SetupShiftTime.Find(id);
             db.SetupShiftTime.Remove(setupshifttime);
             db.SaveChanges();
+            TempData["Message"] = "Shift time deleted successfully.";
             return RedirectToAction("Index");
         }
 

@@ -336,6 +336,7 @@ namespace eAttendance.Controllers
             {
                 db.TransferModel.Add(transfermodel);
                 await db.SaveChangesAsync();
+                TempData["Message"] = "Transfer created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -368,6 +369,7 @@ namespace eAttendance.Controllers
             {
                 db.Entry(transfermodel).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+                TempData["Message"] = "Transfer updated successfully.";
                 return RedirectToAction("Index");
             }
             return View(transfermodel);
@@ -396,6 +398,7 @@ namespace eAttendance.Controllers
             TransferModel transfermodel = await db.TransferModel.FindAsync(id);
             db.TransferModel.Remove(transfermodel);
             await db.SaveChangesAsync();
+            TempData["Message"] = "Transfer deleted successfully.";
             return RedirectToAction("Index");
         }
 

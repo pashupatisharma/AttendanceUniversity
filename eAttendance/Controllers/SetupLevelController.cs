@@ -61,6 +61,7 @@ namespace eAttendance.Controllers
                 levelsetup.ModifiedBy = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
                 db.LevelSetUp.Add(levelsetup);
                 db.SaveChanges();
+                TempData["Message"] = "Level created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -97,6 +98,7 @@ namespace eAttendance.Controllers
                 levelsetup.ModifiedBy = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
                 db.Entry(levelsetup).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Level updated successfully.";
                 return RedirectToAction("Index");
             }
             return View(levelsetup);
@@ -125,6 +127,7 @@ namespace eAttendance.Controllers
             LevelSetUp levelsetup = db.LevelSetUp.Find(model.LevelId);
             db.LevelSetUp.Remove(levelsetup);
             db.SaveChanges();
+            TempData["Message"] = "Level deleted successfully.";
             return RedirectToAction("Index");
         }
 

@@ -61,6 +61,7 @@ namespace eAttendance.Controllers
                 districtsetup.Status = 1;
                 db.DistrictSetUp.Add(districtsetup);
                 db.SaveChanges();
+                TempData["Message"] = "District created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -96,6 +97,7 @@ namespace eAttendance.Controllers
               
                 db.Entry(districtsetup).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "District updated successfully.";
                 return RedirectToAction("Index");
             }
             return View(districtsetup);
@@ -124,6 +126,7 @@ namespace eAttendance.Controllers
             DistrictSetUp districtsetup = db.DistrictSetUp.Find(model.DistrictId);
             db.DistrictSetUp.Remove(districtsetup);
             db.SaveChanges();
+            TempData["Message"] = "District deleted successfully.";
             return RedirectToAction("Index");
         }
 

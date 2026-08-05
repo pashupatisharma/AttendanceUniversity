@@ -195,6 +195,7 @@ namespace eAttendance.Controllers
             {
                 db.Entry(document).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+                TempData["Message"] = "Document updated successfully.";
                 return RedirectToAction("IndexPage");
             }
             return View(document);
@@ -223,6 +224,7 @@ namespace eAttendance.Controllers
             Document document = await db.Documents.FindAsync(id);
             db.Documents.Remove(document);
             await db.SaveChangesAsync();
+            TempData["Message"] = "Document deleted successfully.";
             return RedirectToAction("IndexPage");
         }
 

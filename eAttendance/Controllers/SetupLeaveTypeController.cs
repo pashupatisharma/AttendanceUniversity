@@ -64,6 +64,7 @@ namespace eAttendance.Controllers
                 leavetypesetup.ModifiedBy = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
                 db.LeaveTypeSetUp.Add(leavetypesetup);
                 await db.SaveChangesAsync();
+                TempData["Message"] = "Leave type created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -101,6 +102,7 @@ namespace eAttendance.Controllers
                 leavetypesetup.ModifiedBy = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
                 db.Entry(leavetypesetup).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+                TempData["Message"] = "Leave type updated successfully.";
                 return RedirectToAction("Index");
             }
             ViewBag.OfficeId = new SelectList(db.OfficeSetUp, "OfficeId", "OfficeName", leavetypesetup.OfficeId);
@@ -130,6 +132,7 @@ namespace eAttendance.Controllers
             LeaveTypeSetUp leavetypesetup = await db.LeaveTypeSetUp.FindAsync(id);
             db.LeaveTypeSetUp.Remove(leavetypesetup);
             await db.SaveChangesAsync();
+            TempData["Message"] = "Leave type deleted successfully.";
             return RedirectToAction("Index");
         }
 

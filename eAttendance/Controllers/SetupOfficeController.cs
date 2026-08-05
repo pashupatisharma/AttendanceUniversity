@@ -61,6 +61,7 @@ namespace eAttendance.Controllers
                 officesetup.Status = 1;
                 db.OfficeSetUp.Add(officesetup);
                 db.SaveChanges();
+                TempData["Message"] = "Office created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -99,6 +100,7 @@ namespace eAttendance.Controllers
 
                 db.Entry(officesetup).State = EntityState.Modified;
                 db.SaveChanges();
+                TempData["Message"] = "Office updated successfully.";
                 return RedirectToAction("Index");
             }
             return View(officesetup);
@@ -127,6 +129,7 @@ namespace eAttendance.Controllers
             OfficeSetUp officesetup = db.OfficeSetUp.Find(model.OfficeId);
             db.OfficeSetUp.Remove(officesetup);
             db.SaveChanges();
+            TempData["Message"] = "Office deleted successfully.";
             return RedirectToAction("Index");
         }
 

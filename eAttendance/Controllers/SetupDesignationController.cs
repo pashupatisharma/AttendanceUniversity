@@ -108,6 +108,7 @@ namespace eAttendance.Controllers
                 designationsetup.Status = 1;
                 db.DesignationSetUp.Add(designationsetup);
                 db.SaveChanges();
+                TempData["Message"] = "Designation created successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -147,6 +148,7 @@ namespace eAttendance.Controllers
                 db.Entry(designationsetup).State = EntityState.Modified;
               
                 db.SaveChanges();
+                TempData["Message"] = "Designation updated successfully.";
                 return RedirectToAction("Index");
             }
             ViewBag.LevelId = new SelectList(db.LevelSetUp, "LevelId", "LevelName", designationsetup.LevelId);
@@ -176,6 +178,7 @@ namespace eAttendance.Controllers
             DesignationSetUp designationsetup = db.DesignationSetUp.Find(model.DesignationId);
             db.DesignationSetUp.Remove(designationsetup);
             db.SaveChanges();
+            TempData["Message"] = "Designation deleted successfully.";
             return RedirectToAction("Index");
         }
 
