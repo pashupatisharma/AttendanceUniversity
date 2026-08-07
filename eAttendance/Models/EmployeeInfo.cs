@@ -59,7 +59,7 @@ namespace eAttendance.Models
         [Display(Name = "स्थायी जिल्ला ")]
         public int? PDistrict { get; set; }
 
-        [Display(Name = "स्थायी गाविस ")]
+        [Display(Name = "स्थायी न.पा./गा.पा. ")]
         public string PVdc { get; set; }
 
         [Display(Name = "स्थायी वार्ड")]
@@ -71,7 +71,7 @@ namespace eAttendance.Models
         [Display(Name = "अस्थायी जिल्ला")]
         public int? TDistrict { get; set; }
 
-        [Display(Name = "अस्थायी गाविस ")]
+        [Display(Name = "अस्थायी न.पा./गा.पा. ")]
         public string TVdc { get; set; }
 
         [Display(Name = "अस्थायी वार्ड")]

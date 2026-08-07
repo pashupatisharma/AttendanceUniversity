@@ -46,11 +46,11 @@
         </div>
         <div class="form-group  col-md-6">
             <label class="control-label">@Html.DisplayNameFor(m => m.Recomender) <span class="text-danger">*</span></label>
-            @Html.DropDownListFor(m => m.Recomender, eAttendance.Utility.GetEmployeeRecommederListAll(User), new { @class = "chosen-select form-control", @required = "required" })
+            @Html.DropDownListFor(m => m.Recomender, eAttendance.Utility.GetEmployeeRecommederList(User), new { @class = "chosen-select form-control", @required = "required" })
         </div>
         <div class="form-group  col-md-6">
             <label class="control-label">@Html.DisplayNameFor(m => m.ApprovedBy)<span class="text-danger">*</span></label>
-            @Html.DropDownListFor(m => m.ApprovedBy, eAttendance.Utility.GetEmployeeApproverListAll(User), new { @class = "chosen-select form-control", @required = "required" })
+            @Html.DropDownListFor(m => m.ApprovedBy, eAttendance.Utility.GetEmployeeApproverList(User), new { @class = "chosen-select form-control", @required = "required" })
         </div>
     </div>
     <div class="row">

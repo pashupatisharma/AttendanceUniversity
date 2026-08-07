@@ -514,158 +514,269 @@ namespace eAttendance
 
         public static List<SelectListItem> GetEmployeeRecommederList(IPrincipal user)
         {
-            var list = new List<SelectListItem>();
             using (var entities = new ApplicationDbContext())
             {
-                if (user.IsInRole("SuperAdmin"))
+                var list = new List<SelectListItem>();
+
+                string sql = @"
+            SELECT DISTINCT
+                EI.EmployeeId,
+                EI.EmployeeNameNp
+            FROM EmployeeInfoes EI
+            INNER JOIN EmployeeOfficeDetails EOD
+                ON EI.EmployeeId = EOD.EmployeeId
+            INNER JOIN AspNetUsers U
+                ON EI.UserId = U.Id
+            INNER JOIN AspNetUserRoles UR
+                ON U.Id = UR.UserId
+            INNER JOIN AspNetRoles R
+                ON UR.RoleId = R.Id
+            WHERE R.Name = 'Recommendatory'";
+
+                // Restrict to own office for non-SuperAdmin
+                if (!user.IsInRole("SuperAdmin"))
                 {
-                    var newlist = entities.EmployeeOfficeDetail.ToList();
-                    foreach (var item in newlist)
-                    {
-                        var employeenew = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
-                        var userIdeach = employeenew.UserId;
+                    string userName = user.Identity.Name;
 
+                    var officeId = (from u in entities.Users
+                                    join ei in entities.EmployeeInfo
+                                        on u.Id equals ei.UserId
+                                    join eod in entities.EmployeeOfficeDetail
+                                        on ei.EmployeeId equals eod.EmployeeId
+                                    where u.UserName == userName
+                                    select eod.OfficeId)
+                                    .FirstOrDefault();
 
-
-                        List<string> RoleName = entities.Database
-                           .SqlQuery<String>(" SELECT dbo.AspNetRoles.Name FROM dbo.AspNetRoles INNER JOIN dbo.AspNetUserRoles ON dbo.AspNetRoles.Id = dbo.AspNetUserRoles.RoleId INNER JOIN dbo.AspNetUsers ON dbo.AspNetUserRoles.UserId = dbo.AspNetUsers.Id INNER JOIN dbo.EmployeeInfoes ON dbo.AspNetUserRoles.UserId = dbo.EmployeeInfoes.UserId where dbo.AspNetUsers.Id='" + userIdeach + "'").ToList();
-
-                        foreach (var itemrole in RoleName)
-                        {
-                            if (itemrole == "Recommendatory")
-                            {
-                                list.Add(new SelectListItem() { Text = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault().EmployeeNameNp, Value = item.EmployeeId.ToString() });
-
-                            }
-                        }
-
-                    }
-                }
-                else
-                {
-
-                    var userId = user.Identity.Name;
-                    var userid = entities.Users.Where(x => x.UserName == userId).FirstOrDefault().Id;
-
-                    var employee = entities.EmployeeInfo.Where(x => x.UserId == userid).FirstOrDefault();
-                    var officeid = entities.EmployeeOfficeDetail.Where(x => x.EmployeeId == employee.EmployeeId).FirstOrDefault().OfficeId;
-
-                    var newlist = entities.EmployeeOfficeDetail.Where(x => x.OfficeId == officeid).ToList();
-                    foreach (var item in newlist)
-                    {
-                        var employeenew = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
-                        var userIdeach = employeenew.UserId;
-
-
-
-                        List<string> RoleName = entities.Database
-                           .SqlQuery<String>(" SELECT dbo.AspNetRoles.Name FROM dbo.AspNetRoles INNER JOIN dbo.AspNetUserRoles ON dbo.AspNetRoles.Id = dbo.AspNetUserRoles.RoleId INNER JOIN dbo.AspNetUsers ON dbo.AspNetUserRoles.UserId = dbo.AspNetUsers.Id INNER JOIN dbo.EmployeeInfoes ON dbo.AspNetUserRoles.UserId = dbo.EmployeeInfoes.UserId where dbo.AspNetUsers.Id='" + userIdeach + "'").ToList();
-
-                        foreach (var itemrole in RoleName)
-                        {
-                            if (itemrole == "Recommendatory")
-                            {
-                                list.Add(new SelectListItem() { Text = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault().EmployeeNameNp, Value = item.EmployeeId.ToString() });
-
-                            }
-                        }
-
-
-
-
-
-
-
-
-                    }
-
-
+                    sql += " AND EOD.OfficeId = " + officeId;
                 }
 
+                var data = entities.Database.SqlQuery<EmployeeDropdownModel>(sql).ToList();
 
+                list = data.Select(x => new SelectListItem
+                {
+                    Text = x.EmployeeNameNp,
+                    Value = x.EmployeeId.ToString()
+                }).ToList();
 
                 return list;
             }
+        }
+
+        public class EmployeeDropdownModel
+        {
+            public int EmployeeId { get; set; }
+            public string EmployeeNameNp { get; set; }
         }
 
         public static List<SelectListItem> GetEmployeeApproverList(IPrincipal user)
         {
-            var list = new List<SelectListItem>();
             using (var entities = new ApplicationDbContext())
             {
+                var list = new List<SelectListItem>();
 
-                if (user.IsInRole("SuperAdmin"))
+                string sql = @"
+            SELECT DISTINCT
+                EI.EmployeeId,
+                EI.EmployeeNameNp
+            FROM EmployeeInfoes EI
+            INNER JOIN EmployeeOfficeDetails EOD
+                ON EI.EmployeeId = EOD.EmployeeId
+            INNER JOIN AspNetUsers U
+                ON EI.UserId = U.Id
+            INNER JOIN AspNetUserRoles UR
+                ON U.Id = UR.UserId
+            INNER JOIN AspNetRoles R
+                ON UR.RoleId = R.Id
+            WHERE R.Name = 'Approver'";
+
+                // Restrict to own office for non-SuperAdmin
+                if (!user.IsInRole("SuperAdmin"))
                 {
-                    var newlist = entities.EmployeeOfficeDetail.ToList();
-                    foreach (var item in newlist)
-                    {
-                        var employeenew = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
-                        var userIdeach = employeenew.UserId;
+                    string userName = user.Identity.Name;
 
+                    var officeId = (from u in entities.Users
+                                    join ei in entities.EmployeeInfo
+                                        on u.Id equals ei.UserId
+                                    join eod in entities.EmployeeOfficeDetail
+                                        on ei.EmployeeId equals eod.EmployeeId
+                                    where u.UserName == userName
+                                    select eod.OfficeId)
+                                    .FirstOrDefault();
 
-
-                        List<string> RoleName = entities.Database
-                           .SqlQuery<String>(" SELECT dbo.AspNetRoles.Name FROM dbo.AspNetRoles INNER JOIN dbo.AspNetUserRoles ON dbo.AspNetRoles.Id = dbo.AspNetUserRoles.RoleId INNER JOIN dbo.AspNetUsers ON dbo.AspNetUserRoles.UserId = dbo.AspNetUsers.Id INNER JOIN dbo.EmployeeInfoes ON dbo.AspNetUserRoles.UserId = dbo.EmployeeInfoes.UserId where dbo.AspNetUsers.Id='" + userIdeach + "'").ToList();
-
-                        foreach (var itemrole in RoleName)
-                        {
-                            if (itemrole == "Approver")
-                            {
-                                list.Add(new SelectListItem() { Text = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault().EmployeeNameNp, Value = item.EmployeeId.ToString() });
-
-                            }
-                        }
-
-                    }
+                    sql += " AND EOD.OfficeId = " + officeId;
                 }
 
+                var data = entities.Database.SqlQuery<EmployeeDropdownModel>(sql).ToList();
 
-                else
+                list = data.Select(x => new SelectListItem
                 {
-                    var userId = user.Identity.Name;
-                    var userid = entities.Users.Where(x => x.UserName == userId).FirstOrDefault().Id;
-
-                    var employee = entities.EmployeeInfo.Where(x => x.UserId == userid).FirstOrDefault();
-                    var officeid = entities.EmployeeOfficeDetail.Where(x => x.EmployeeId == employee.EmployeeId).FirstOrDefault().OfficeId;
-
-                    var newlist = entities.EmployeeOfficeDetail.Where(x => x.OfficeId == officeid).ToList();
-                    foreach (var item in newlist)
-                    {
-                        var employeenew = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
-
-
-
-
-                        var userIdeach = employeenew.UserId;
-
-
-
-                        List<string> RoleName = entities.Database
-                           .SqlQuery<String>(" SELECT dbo.AspNetRoles.Name FROM dbo.AspNetRoles INNER JOIN dbo.AspNetUserRoles ON dbo.AspNetRoles.Id = dbo.AspNetUserRoles.RoleId INNER JOIN dbo.AspNetUsers ON dbo.AspNetUserRoles.UserId = dbo.AspNetUsers.Id INNER JOIN dbo.EmployeeInfoes ON dbo.AspNetUserRoles.UserId = dbo.EmployeeInfoes.UserId where dbo.AspNetUsers.Id='" + userIdeach + "'").ToList();
-
-                        foreach (var itemrole in RoleName)
-                        {
-                            if (itemrole == "Approver")
-                            {
-                                list.Add(new SelectListItem() { Text = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault().EmployeeNameNp, Value = item.EmployeeId.ToString() });
-
-                            }
-                        }
-
-
-
-
-                    }
-                }
-
-
-
-
-
+                    Text = x.EmployeeNameNp,
+                    Value = x.EmployeeId.ToString()
+                }).ToList();
 
                 return list;
             }
         }
+
+   
+
+
+
+
+        //public static List<SelectListItem> GetEmployeeRecommederList(IPrincipal user)
+        //{
+        //    var list = new List<SelectListItem>();
+        //    using (var entities = new ApplicationDbContext())
+        //    {
+        //        if (user.IsInRole("SuperAdmin"))
+        //        {
+        //            var newlist = entities.EmployeeOfficeDetail.ToList();
+        //            foreach (var item in newlist)
+        //            {
+        //                var employeenew = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
+        //                var userIdeach = employeenew.UserId;
+
+
+
+        //                List<string> RoleName = entities.Database
+        //                   .SqlQuery<String>(" SELECT dbo.AspNetRoles.Name FROM dbo.AspNetRoles INNER JOIN dbo.AspNetUserRoles ON dbo.AspNetRoles.Id = dbo.AspNetUserRoles.RoleId INNER JOIN dbo.AspNetUsers ON dbo.AspNetUserRoles.UserId = dbo.AspNetUsers.Id INNER JOIN dbo.EmployeeInfoes ON dbo.AspNetUserRoles.UserId = dbo.EmployeeInfoes.UserId where dbo.AspNetUsers.Id='" + userIdeach + "'").ToList();
+
+        //                foreach (var itemrole in RoleName)
+        //                {
+        //                    if (itemrole == "Recommendatory")
+        //                    {
+        //                        list.Add(new SelectListItem() { Text = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault().EmployeeNameNp, Value = item.EmployeeId.ToString() });
+
+        //                    }
+        //                }
+
+        //            }
+        //        }
+        //        else
+        //        {
+
+        //            var userId = user.Identity.Name;
+        //            var userid = entities.Users.Where(x => x.UserName == userId).FirstOrDefault().Id;
+
+        //            var employee = entities.EmployeeInfo.Where(x => x.UserId == userid).FirstOrDefault();
+        //            var officeid = entities.EmployeeOfficeDetail.Where(x => x.EmployeeId == employee.EmployeeId).FirstOrDefault().OfficeId;
+
+        //            var newlist = entities.EmployeeOfficeDetail.Where(x => x.OfficeId == officeid).ToList();
+        //            foreach (var item in newlist)
+        //            {
+        //                var employeenew = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
+        //                var userIdeach = employeenew.UserId;
+
+
+
+        //                List<string> RoleName = entities.Database
+        //                   .SqlQuery<String>(" SELECT dbo.AspNetRoles.Name FROM dbo.AspNetRoles INNER JOIN dbo.AspNetUserRoles ON dbo.AspNetRoles.Id = dbo.AspNetUserRoles.RoleId INNER JOIN dbo.AspNetUsers ON dbo.AspNetUserRoles.UserId = dbo.AspNetUsers.Id INNER JOIN dbo.EmployeeInfoes ON dbo.AspNetUserRoles.UserId = dbo.EmployeeInfoes.UserId where dbo.AspNetUsers.Id='" + userIdeach + "'").ToList();
+
+        //                foreach (var itemrole in RoleName)
+        //                {
+        //                    if (itemrole == "Recommendatory")
+        //                    {
+        //                        list.Add(new SelectListItem() { Text = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault().EmployeeNameNp, Value = item.EmployeeId.ToString() });
+
+        //                    }
+        //                }
+
+
+
+
+
+
+
+
+        //            }
+
+
+        //        }
+
+
+
+        //        return list;
+        //    }
+        //}
+
+        //public static List<SelectListItem> GetEmployeeApproverList(IPrincipal user)
+        //{
+        //    var list = new List<SelectListItem>();
+        //    using (var entities = new ApplicationDbContext())
+        //    {
+
+        //        if (user.IsInRole("SuperAdmin"))
+        //        {
+        //            var newlist = entities.EmployeeOfficeDetail.ToList();
+        //            foreach (var item in newlist)
+        //            {
+        //                var employeenew = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
+        //                var userIdeach = employeenew.UserId;
+
+
+
+        //                List<string> RoleName = entities.Database
+        //                   .SqlQuery<String>(" SELECT dbo.AspNetRoles.Name FROM dbo.AspNetRoles INNER JOIN dbo.AspNetUserRoles ON dbo.AspNetRoles.Id = dbo.AspNetUserRoles.RoleId INNER JOIN dbo.AspNetUsers ON dbo.AspNetUserRoles.UserId = dbo.AspNetUsers.Id INNER JOIN dbo.EmployeeInfoes ON dbo.AspNetUserRoles.UserId = dbo.EmployeeInfoes.UserId where dbo.AspNetUsers.Id='" + userIdeach + "'").ToList();
+
+        //                foreach (var itemrole in RoleName)
+        //                {
+        //                    if (itemrole == "Approver")
+        //                    {
+        //                        list.Add(new SelectListItem() { Text = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault().EmployeeNameNp, Value = item.EmployeeId.ToString() });
+
+        //                    }
+        //                }
+
+        //            }
+        //        }
+
+
+        //        else
+        //        {
+        //            var userId = user.Identity.Name;
+        //            var userid = entities.Users.Where(x => x.UserName == userId).FirstOrDefault().Id;
+
+        //            var employee = entities.EmployeeInfo.Where(x => x.UserId == userid).FirstOrDefault();
+        //            var officeid = entities.EmployeeOfficeDetail.Where(x => x.EmployeeId == employee.EmployeeId).FirstOrDefault().OfficeId;
+
+        //            var newlist = entities.EmployeeOfficeDetail.Where(x => x.OfficeId == officeid).ToList();
+        //            foreach (var item in newlist)
+        //            {
+        //                var employeenew = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
+
+
+
+
+        //                var userIdeach = employeenew.UserId;
+
+
+
+        //                List<string> RoleName = entities.Database
+        //                   .SqlQuery<String>(" SELECT dbo.AspNetRoles.Name FROM dbo.AspNetRoles INNER JOIN dbo.AspNetUserRoles ON dbo.AspNetRoles.Id = dbo.AspNetUserRoles.RoleId INNER JOIN dbo.AspNetUsers ON dbo.AspNetUserRoles.UserId = dbo.AspNetUsers.Id INNER JOIN dbo.EmployeeInfoes ON dbo.AspNetUserRoles.UserId = dbo.EmployeeInfoes.UserId where dbo.AspNetUsers.Id='" + userIdeach + "'").ToList();
+
+        //                foreach (var itemrole in RoleName)
+        //                {
+        //                    if (itemrole == "Approver")
+        //                    {
+        //                        list.Add(new SelectListItem() { Text = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault().EmployeeNameNp, Value = item.EmployeeId.ToString() });
+
+        //                    }
+        //                }
+
+
+
+
+        //            }
+        //        }
+
+
+
+
+
+
+        //        return list;
+        //    }
+        //}
 
 
         public static List<SelectListItem> GetEmployeeApproverListAll(IPrincipal user)
@@ -689,40 +800,6 @@ namespace eAttendance
             }
         }
 
-        //public static List<SelectListItem> GetEmployeeApproverListAll(IPrincipal user)
-        //{
-        //    var list = new List<SelectListItem>();
-        //    using (var entities = new ApplicationDbContext())
-        //    {
-
-        //        //if (user.IsInRole("SuperAdmin"))
-        //        //{
-        //        var newlist = entities.EmployeeOfficeDetail.ToList();
-        //        foreach (var item in newlist)
-        //        {
-        //            var employeenew = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
-        //            var userIdeach = employeenew.UserId;
-
-
-
-        //            List<string> RoleName = entities.Database
-        //               .SqlQuery<String>(" SELECT dbo.AspNetRoles.Name FROM dbo.AspNetRoles INNER JOIN dbo.AspNetUserRoles ON dbo.AspNetRoles.Id = dbo.AspNetUserRoles.RoleId INNER JOIN dbo.AspNetUsers ON dbo.AspNetUserRoles.UserId = dbo.AspNetUsers.Id INNER JOIN dbo.EmployeeInfoes ON dbo.AspNetUserRoles.UserId = dbo.EmployeeInfoes.UserId where dbo.AspNetUsers.Id='" + userIdeach + "'").ToList();
-
-        //            foreach (var itemrole in RoleName)
-        //            {
-        //                if (itemrole == "Approver")
-        //                {
-        //                    list.Add(new SelectListItem() { Text = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault().EmployeeNameNp, Value = item.EmployeeId.ToString() });
-
-        //                }
-        //            }
-
-        //        }
-        //        // }
-
-        //        return list;
-        //    }
-        //}
 
 
         public static List<SelectListItem> GetEmployeeRecommederListAll(IPrincipal user)
@@ -748,43 +825,6 @@ namespace eAttendance
 
 
 
-
-        //public static List<SelectListItem> GetEmployeeRecommederListAll(IPrincipal user)
-        //{
-        //    var list = new List<SelectListItem>();
-        //    using (var entities = new ApplicationDbContext())
-        //    {
-        //        //if (user.IsInRole("SuperAdmin"))
-        //        //{
-        //            var newlist = entities.EmployeeOfficeDetail.ToList();
-        //            foreach (var item in newlist)
-        //            {
-        //                var employeenew = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
-        //                var userIdeach = employeenew.UserId;
-
-
-
-        //                List<string> RoleName = entities.Database
-        //                   .SqlQuery<String>(" SELECT dbo.AspNetRoles.Name FROM dbo.AspNetRoles INNER JOIN dbo.AspNetUserRoles ON dbo.AspNetRoles.Id = dbo.AspNetUserRoles.RoleId INNER JOIN dbo.AspNetUsers ON dbo.AspNetUserRoles.UserId = dbo.AspNetUsers.Id INNER JOIN dbo.EmployeeInfoes ON dbo.AspNetUserRoles.UserId = dbo.EmployeeInfoes.UserId where dbo.AspNetUsers.Id='" + userIdeach + "'").ToList();
-
-        //                foreach (var itemrole in RoleName)
-        //                {
-        //                    if (itemrole == "Recommendatory")
-        //                    {
-        //                        list.Add(new SelectListItem() { Text = entities.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault().EmployeeNameNp, Value = item.EmployeeId.ToString() });
-
-        //                    }
-        //                }
-
-        //            }
-        //        //}
-             
-
-
-
-        //        return list;
-        //    }
-        //}
 
         public static IEnumerable<SelectListItem> GetDistrictList()
         {

@@ -144,7 +144,7 @@ namespace eAttendance.Controllers
                 source = source.Where(x => x.OfficeId == officeid);
             }
 
-            if (User.IsInRole("Employee"))
+            else if (User.IsInRole("Employee"))
             {
                 source = source.Where(x => x.EmployeeId == EmployeeId);
             }
