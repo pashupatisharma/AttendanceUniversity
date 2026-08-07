@@ -1,0 +1,63 @@
+﻿@model eAttendance.Models.RegisterViewModel
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+@using (Html.BeginForm("EditAccountInfo", "EmployeeInfo", FormMethod.Post, new { @id = "frmEditAccountInfo" }))
+{
+    @Html.Hidden("employeeId", (int)ViewBag.EmployeeId)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>इमेल आइडी</label>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @readonly = "readonly", @style = "font-family:'Comic Sans MS'" })
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>नयाँ पासवर्ड</label>
+                                @Html.PasswordFor(m => m.Password, new { @placeholder = "छोड्नुहोस् यदि परिवर्तन गर्नु पर्दैन", @class = "form-control", data_val = "false" })
+                                <span class="help-block">पासवर्ड परिवर्तन गर्न मात्र भर्नुहोस्। खाली छोड्दा पासवर्ड परिवर्तन हुँदैन।</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>पासवर्ड सुनिश्चित</label>
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @placeholder = "Confirm New Password", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" id="btnSaveAccountInfo" class="btn btn-primary" title="सुरक्षित गर्नु">सुरक्षित गर्नु</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var form = $("#frmEditAccountInfo");
+            form.validate({
+                errorPlacement: function errorPlacement(error, element) { element.before(error); },
+                rules: {
+                    Password: {
+                        minlength: 6
+                    },
+                    ConfirmPassword: {
+                        equalTo: '#Password'
+                    }
+                }
+            });
+        });
+    </script>
+}

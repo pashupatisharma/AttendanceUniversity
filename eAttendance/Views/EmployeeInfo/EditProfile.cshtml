@@ -118,27 +118,6 @@
 
                     </div>
 
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>इमेल आइडी<span class="text-danger">*</span> </label>
-                                @Html.TextBoxFor(m => m.RegisterViewModel.Email, new { @placeholder = "Enter Email Address", @class = "form-control required email",@readonly="readonly", @style = "font-family:'Comic Sans MS'" })
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>पासवर्ड<span class="text-danger">*</span></label>
-                                @Html.PasswordFor(m => m.RegisterViewModel.Password, new { @placeholder = "Password", @class = "form-control required" })
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label> पासवर्ड सुनिश्चित <span class="text-danger">*</span></label>
-                                @Html.PasswordFor(m => m.RegisterViewModel.ConfirmPassword, new { @placeholder = "Confirm Password", @class = "form-control required" })
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
                 <div class="ibox-footer">
                     <div class="row">
@@ -160,20 +139,7 @@
 
             var form = $("#frmEditProfile");
             form.validate({
-                errorPlacement: function errorPlacement(error, element) { element.before(error); },
-                rules: {
-                    'RegisterViewModel.Password': {
-                        required: true,
-                        minlength: 6
-                    },
-                    
-                    'RegisterViewModel.ConfirmPassword': {
-                        equalTo: '#RegisterViewModel_Password'
-                    }
-                },
-                messages: {
-                 
-                }
+                errorPlacement: function errorPlacement(error, element) { element.before(error); }
             });
 
 

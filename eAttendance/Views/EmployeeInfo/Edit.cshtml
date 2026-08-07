@@ -102,6 +102,7 @@
                                     <li><a href="#AddressInfo" data-toggle="tab">ठेगाना </a></li>
                                     <li><a href="#ShiftInfo" data-toggle="tab">सिफ्ट</a></li>
                                     <li><a href="#RoleInfo" data-toggle="tab">रोल </a></li>
+                                    <li><a href="#AccountInfo" data-toggle="tab">खाता विवरण</a></li>
                                 </ul>
                                 <div class="tab-content">
                                     <div id="PersonalInfo" class="tab-pane active">
@@ -129,7 +130,11 @@
                                             @{Html.RenderAction("EditRoles", "EmployeeInfo", new { @EmployeeId = Model.EmployeeInfo.EmployeeId });}
                                         </div>
                                     </div>
-
+                                    <div id="AccountInfo" class="tab-pane">
+                                        <div class="panel-body">
+                                            @{Html.RenderAction("EditAccountInfo", "EmployeeInfo", new { @id = Model.EmployeeInfo.EmployeeId });}
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>

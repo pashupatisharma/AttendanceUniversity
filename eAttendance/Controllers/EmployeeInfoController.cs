@@ -665,8 +665,6 @@ namespace eAttendance.Controllers
             EmployeeInfo model = new EmployeeInfo();
             model = db.EmployeeInfo.Where(x => x.EmployeeId == id).FirstOrDefault();
             model.NDateOfBirth = ((model.DateOfBirth.HasValue && (model.DateOfBirth.Value.Year >= 0x779)) && (model.DateOfBirth.Value.Year <= 0x7fa)) ? NepaliDateConverter.ConvertToNepali(model.DateOfBirth.Value.Date, "yyyy-MM-DD") : "";
-            model.RegisterViewModel = new RegisterViewModel();
-            model.RegisterViewModel.Email = model.EmailId;
             model.NEntryDate = ((model.EntryDate.HasValue && (model.EntryDate.Value.Year >= 0x779)) && (model.EntryDate.Value.Year <= 0x7fa)) ? NepaliDateConverter.ConvertToNepali(model.EntryDate.Value.Date, "yyyy-MM-DD") : "";
             return base.View(model);
         }
@@ -675,26 +673,6 @@ namespace eAttendance.Controllers
         public ActionResult EditProfile(EmployeeInfo model)
         {
 
-            try
-            {
-
-
-
-                var userId = string.Empty;
-                userId = db.Users.Where(x => x.UserName == model.RegisterViewModel.Email).FirstOrDefault().Id;
-                var user = new ApplicationUser() { UserName = model.RegisterViewModel.Email };
-                var result = UserManager.RemovePassword(userId);
-
-                if (result.Succeeded)
-                {
-                    UserManager.AddPassword(userId, model.RegisterViewModel.Password);
-
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
             try
             {
 
@@ -949,7 +927,44 @@ namespace eAttendance.Controllers
         }
 
 
+        [HttpGet]
+        [Authorize(Roles = "SuperAdmin,Administrator,Admin")]
+        public ActionResult EditAccountInfo(int? id)
+        {
+            var model = db.EmployeeInfo.Where(x => x.EmployeeId == id).FirstOrDefault();
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
+            var vm = new RegisterViewModel { Email = model.EmailId };
+            ViewBag.EmployeeId = id; // used by the partial's hidden field
+            return View(vm);
+        }
 
+        [HttpPost]
+        [Authorize(Roles = "SuperAdmin,Administrator,Admin")]
+        public ActionResult EditAccountInfo(int employeeId, RegisterViewModel model)
+        {
+            if (!string.IsNullOrWhiteSpace(model.Password))
+            {
+                if (model.Password != model.ConfirmPassword)
+                {
+                    TempData["Message"] = "Passwords do not match.";
+                    TempData["MessageType"] = "error";
+                    return RedirectToAction("Edit", new { Id = employeeId });
+                }
+                var employee = db.EmployeeInfo.Find(employeeId);
+                var user = db.Users.FirstOrDefault(x => x.UserName == employee.EmailId);
+                if (user != null)
+                {
+                    var result = UserManager.RemovePassword(user.Id);
+                    if (result.Succeeded)
+                        UserManager.AddPassword(user.Id, model.Password);
+                }
+            }
+            TempData["Message"] = "Account info updated successfully.";
+            return RedirectToAction("Edit", new { Id = employeeId });
+        }
 
 
         // POST: /EmployeeInfo/Edit/5
