@@ -14,13 +14,13 @@
                     <div class="row">
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                <label>@Html.DisplayNameFor(m => m.EmployeeNo)</label>
+                                <label>@Html.DisplayNameFor(m => m.EmployeeNo)</label>  <span class="text-danger">*</span>
                                 @Html.TextBoxFor(m => m.EmployeeNo, new { @class = "form-control required", @style = "font-family:'Comic Sans MS'" })
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                <label>@Html.DisplayNameFor(m => m.EmployeeNameNp)</label>
+                                <label>@Html.DisplayNameFor(m => m.EmployeeNameNp)</label>  <span class="text-danger">*</span>
                                 @Html.TextBoxFor(m => m.EmployeeNameNp, new { @class = "form-control required" })
                             </div>
                         </div>
@@ -102,8 +102,8 @@
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                <label>@Html.DisplayNameFor(m => m.DisplayOrder)</label>
-                                @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control" })
+                                <label>@Html.DisplayNameFor(m => m.DisplayOrder)</label> <span class="text-danger">*</span>
+                                @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control",@required="required" })
                             </div>
                         </div>
 
