@@ -39,7 +39,7 @@ namespace eAttendance.Controllers
                 DateTime fromDate = month[0];
                 DateTime toDate = timeArray2[1];
 
-                List<MonthlyAttendanceModel> source = ReportService.ReportService.GetEmployeeBy_FromDate_ToDate_OfficeIdListAnnual(fromDate, toDate, num2, true);
+                List<MonthlyAttendanceModel> source = ReportService.ReportService.GetEmployeeBy_FromDate_ToDate_OfficeIdListAnnual(fromDate, toDate, num2,User, true);
                 int _branchId = model.BranchId;
                 if (_branchId > 0)
                 {

@@ -84,12 +84,15 @@
 
 
 
+                      
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                    <label class="control-label">कार्यालय</label>
-                                    @Html.DropDownListFor(m => m.OfficeId, Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control" })
+                                    <label class="control-label">कार्यालय <span class="text-danger">*</span> </label>
+                                    @Html.DropDownListFor(m => m.OfficeId, Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control", @required = "required" })
                                 </div>
                             </div>
+
+
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label class="control-label">शाखा</label>

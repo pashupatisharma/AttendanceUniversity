@@ -166,13 +166,37 @@
 @section scripts
 {
     <script type="text/javascript">
+  $(document).ready(function () {
+
+
+            $('#EmployeeInfo_EmployeeNo').change(function () {
+
+                var DeviceCode = $('#EmployeeInfo_EmployeeNo').val();
+
+
+     $.ajax({
+         type: "POST",
+         url: '@Url.Action("CheckDeviceCode", "Utility")',
+
+         data: {
+             "DeviceCode": DeviceCode
+
+
+         },
+
+         cache: false,
+         success: function (data) {
+             if (data == true) {
+                 alert("Device Code already exist  in database  try another one")
+                 $("#EmployeeInfo_EmployeeNo").val(null)
+             }
+         }
 
 
 
+     });
+ });
 
-
-
-        $(document).ready(function () {
 
 
 
@@ -208,7 +232,7 @@
 
 
             $.validator.setDefaults({ ignore: ":hidden:not(select)" });
-     
+
             var hasMessage = '@TempData["HasMessage"]';
             if (hasMessage) {
                 Command: toastr["@TempData["MessageType"]"]("@TempData["Message"]", "@TempData["MessageHeader"]")

@@ -60,22 +60,22 @@ namespace eAttendance.Controllers
             {
                 source = source.Where(x => x.DesignationId == designationId);
             }
-            if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
-            {
+            //if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+            //{
 
-            }
+            //}
 
-            else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
-            {
+            //else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
+            //{
 
-                var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
-                var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
+            //    var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
+            //    var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
 
-                source = source.Where(x => x.EmployeeId == employeeId);
+            //    source = source.Where(x => x.EmployeeId == employeeId);
 
 
 
-            }
+            //}
 
             foreach (var item in source.ToList())
             {
@@ -108,7 +108,7 @@ namespace eAttendance.Controllers
             DateTime fromDate = timeArray[0];
             DateTime toDate = timeArray[1];
             List<EmployeeAttendanceList> list = ReportService.ReportService
-                .GetEmployeeBy_FromDate_ToDate_OfficeIdList(fromDate, toDate, officeId, true).ToList();
+                .GetEmployeeBy_FromDate_ToDate_OfficeIdList(fromDate, toDate, officeId,User, true).ToList();
 
             if (branchId > 0)
             {
@@ -127,22 +127,22 @@ namespace eAttendance.Controllers
                 list = list.Where(x => x.DesignationId == designationId).ToList();
             }
 
-            if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
-            {
+            //if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+            //{
 
-            }
+            //}
 
-            else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
-            {
+            //else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
+            //{
 
-                var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
-                var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
+            //    var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
+            //    var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
 
-                list = list.Where(x => x.EmployeeId == employeeId).ToList();
+            //    list = list.Where(x => x.EmployeeId == employeeId).ToList();
 
 
 
-            }
+            //}
 
 
 
@@ -176,25 +176,25 @@ namespace eAttendance.Controllers
         {
          
             List<EmployeeAttendanceList> list = ReportService.ReportService
-                .GetEmployeeBy_FromDate_ToDate_OfficeIdList(DateTime.Now, DateTime.Now, officeId, true).ToList();
+                .GetEmployeeBy_FromDate_ToDate_OfficeIdList(DateTime.Now, DateTime.Now, officeId, User, true).ToList();
 
            
-            if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
-            {
+            //if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+            //{
 
-            }
+            //}
 
-            else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
-            {
+            //else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
+            //{
 
-                var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
-                var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
+            //    var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
+            //    var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
 
-                list = list.Where(x => x.EmployeeId == employeeId).ToList();
+            //    list = list.Where(x => x.EmployeeId == employeeId).ToList();
 
 
 
-            }
+            //}
 
 
 
@@ -238,7 +238,7 @@ namespace eAttendance.Controllers
             DateTime fromDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(nFromDate));
             DateTime toDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(nToDate));
             List<SelectListItem> list = new List<SelectListItem>();
-            IEnumerable<EmployeeAttendanceList> source = ReportService.ReportService.GetEmployeeBy_FromDate_ToDate_OfficeIdList(fromDate, toDate, officeId, false).ToList();
+            IEnumerable<EmployeeAttendanceList> source = ReportService.ReportService.GetEmployeeBy_FromDate_ToDate_OfficeIdList(fromDate, toDate, officeId, User, false).ToList();
             if (branchId > 0)
             {
 
@@ -260,22 +260,22 @@ namespace eAttendance.Controllers
 
 
 
-            if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
-            {
+            //if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+            //{
 
-            }
+            //}
 
-            else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
-            {
+            //else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
+            //{
 
-                var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
-                var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
+            //    var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
+            //    var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
 
-                source = source.Where(x => x.EmployeeId == employeeId).ToList();
+            //    source = source.Where(x => x.EmployeeId == employeeId).ToList();
 
 
 
-            }
+            //}
 
 
 
@@ -320,7 +320,7 @@ namespace eAttendance.Controllers
             DateTime toDate = timeArray2[1];
 
 
-            IEnumerable<EmployeeAttendanceList> source = ReportService.ReportService.GetEmployeeBy_FromDate_ToDate_OfficeIdList(fromDate, toDate, officeId, false).ToList();
+            IEnumerable<EmployeeAttendanceList> source = ReportService.ReportService.GetEmployeeBy_FromDate_ToDate_OfficeIdList(fromDate, toDate, officeId,User, false).ToList();
             if (branchId > 0)
             {
 
@@ -343,22 +343,22 @@ namespace eAttendance.Controllers
 
 
 
-            if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
-            {
+            //if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+            //{
 
-            }
+            //}
 
-            else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
-            {
+            //else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
+            //{
 
-                var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
-                var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
+            //    var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
+            //    var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
 
-                source = source.Where(x => x.EmployeeId == employeeId).ToList();
+            //    source = source.Where(x => x.EmployeeId == employeeId).ToList();
 
 
 
-            }
+            //}
 
             List<SelectListItem> newlist = new List<SelectListItem>();
             foreach (var item in source.ToList())
@@ -391,7 +391,7 @@ namespace eAttendance.Controllers
             DateTime? fromDate = year.FromDate;
             DateTime? toDate = year.ToDate;
 
-            IEnumerable<EmployeeAttendanceList> source = ReportService.ReportService.GetEmployeeBy_FromDate_ToDate_OfficeIdList(Convert.ToDateTime(fromDate), Convert.ToDateTime(toDate), officeId, false).ToList();
+            IEnumerable<EmployeeAttendanceList> source = ReportService.ReportService.GetEmployeeBy_FromDate_ToDate_OfficeIdList(Convert.ToDateTime(fromDate), Convert.ToDateTime(toDate), officeId,User, false).ToList();
             if (branchId > 0)
             {
 
@@ -412,22 +412,22 @@ namespace eAttendance.Controllers
             }
 
 
-            if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
-            {
+            //if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+            //{
 
-            }
+            //}
 
-            else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
-            {
+            //else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
+            //{
 
-                var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
-                var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
+            //    var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
+            //    var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
 
-                source = source.Where(x => x.EmployeeId == employeeId).ToList();
+            //    source = source.Where(x => x.EmployeeId == employeeId).ToList();
 
 
 
-            }
+            //}
 
             List<SelectListItem> newlist = new List<SelectListItem>();
             foreach (var item in source.ToList())

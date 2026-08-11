@@ -21,7 +21,7 @@ namespace eAttendance.Controllers
             model.EmployeeAttendanceLists = new List<EmployeeAttendanceList>();
             if (((model.YearId > 0) && (model.MonthId > 0)) && (model.OfficeId > 0))
             {
-                source = ReportService.ReportService.GetEmployeeBy_Year_Month_OfficeIdList(model.YearId, model.MonthId, model.OfficeId, true);
+                source = ReportService.ReportService.GetEmployeeBy_Year_Month_OfficeIdList(model.YearId, model.MonthId, model.OfficeId, User,true);
 
                 int _branchId = model.BranchId;
                 if (_branchId > 0)

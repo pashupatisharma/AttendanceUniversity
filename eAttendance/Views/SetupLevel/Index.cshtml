@@ -38,6 +38,8 @@
                         <th>@Html.DisplayNameFor(m => m.LevelName)</th>
                         <th>@Html.DisplayNameFor(m => m.Alias)</th>
                         <th>@Html.DisplayNameFor(m => m.Description)</th>
+                        <th>@Html.DisplayNameFor(m => m.DisplayOrder)</th>
+
                         <th class="project-actions hidden-print">कार्य </th>
                     </tr>
 
@@ -53,6 +55,7 @@
                             </td>
                             <td>@m.Alias</td>
                             <td>@m.Description</td>
+                            <td>@m.DisplayOrder</td>
                             <td class="project-actions hidden-print">
                                 <button value="@m.LevelId" type="button" class="btn-edit btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit","SetupLevel",new { @id=m.LevelId})'"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm"></span> </button>
                                 <button value="@m.LevelId" class="btn-delete btn btn-sm btn-danger"><i class="fa fa-remove"></i><span class="hidden-xs hidden-sm"></span> </button>

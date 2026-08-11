@@ -21,7 +21,7 @@ namespace eAttendance.Controllers
                 DateTime logDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(model.nLogDate));
 
 
-                source = ReportService.ReportService.GetEmpployeeListAccordingToOfficeAndPerDate(model.OfficeId, logDate, true);
+                source = ReportService.ReportService.GetEmpployeeListAccordingToOfficeAndPerDate(model.OfficeId, logDate, User,true);
 
 
 
@@ -81,7 +81,7 @@ namespace eAttendance.Controllers
               // DateTime logDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(model.nLogDate));
 
 
-                source = ReportService.ReportService.GetEmpployeeListAccordingToOfficeAndPerDate(model.OfficeId, date, true);
+                source = ReportService.ReportService.GetEmpployeeListAccordingToOfficeAndPerDate(model.OfficeId, date, User,true);
 
 
 

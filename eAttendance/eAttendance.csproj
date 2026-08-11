@@ -307,6 +307,7 @@
     <Compile Include="ReportModel\DailyPresentList.cs" />
     <Compile Include="ReportModel\EmployeeAttendanceList.cs" />
     <Compile Include="ReportModel\EmployeeSummmaryList.cs" />
+    <Compile Include="ReportService\ReportServiceOrginal.cs" />
     <Compile Include="ReportService\ReportService.cs" />
     <Compile Include="ReportService\SetupShiftTimeProvider.cs" />
     <Compile Include="Service\MenuService.cs" />

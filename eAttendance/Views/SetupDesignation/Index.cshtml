@@ -72,7 +72,8 @@
                                 <th>SNo</th>
                                 <th>पद </th>
                                 <th>श्रेणी</th>
-
+                                <th>हेराउने क्रम</th>
+           
                                 <th>विवरण</th>
                                 <th class="hidden-print action text-center">#</th>
                             </tr>
@@ -94,7 +95,9 @@
                                         <td>
                                             @m.LevelSetUp.LevelName
                                         </td>
-
+                                        <td>
+                                            @m.DisplayOrder
+                                        </td>
                                         <td>@m.Description</td>
                                         <td class="project-actions hidden-print">
                                             <button type="button" class="btn-edit btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit","SetupDesignation",new {@id=m.DesignationId })'"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm"></span> </button>

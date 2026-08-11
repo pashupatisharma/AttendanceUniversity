@@ -68,9 +68,9 @@ namespace eAttendance.Controllers
                             command.CommandText = "[SpSaveLogData]";
                             command.Parameters.AddWithValue("OfficeId", OfficeId);
 
-                            command.Parameters.AddWithValue("OfficeDeviceId", DeviceId);
+                            command.Parameters.AddWithValue("OfficeDeviceId", 1);
                             command.Parameters.AddWithValue("IpAddress", ip);
-                            command.Parameters.AddWithValue("EnrollNumber", Convert.ToInt32(dr[0].ToString()));
+                            command.Parameters.AddWithValue("EnrollNumber", dr[0].ToString());
                             command.Parameters.AddWithValue("VerifyMode", dr[3].ToString());
                             command.Parameters.AddWithValue("InOutMode", dr[2].ToString());
 

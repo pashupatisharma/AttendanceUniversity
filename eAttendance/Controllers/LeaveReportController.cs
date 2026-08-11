@@ -38,7 +38,7 @@ namespace eAttendance.Controllers
                 DateTime toDate = NepaliDateConverter.ConvertToEnglish(new NepaliDateConverter(int.Parse(strArray2[0]), int.Parse(strArray2[1]), int.Parse(strArray2[2])));
 
                 
-                var source = ReportService.ReportService.GetEmployeeBy_FromDate_ToDate_OfficeIdList(fromDate, toDate, model.OfficeId, true);
+                var source = ReportService.ReportService.GetEmployeeBy_FromDate_ToDate_OfficeIdList(fromDate, toDate, model.OfficeId,User, true);
 
 
                 int _branchId = model.BranchId;

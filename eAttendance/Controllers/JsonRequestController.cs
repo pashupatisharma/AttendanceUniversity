@@ -22,7 +22,7 @@ namespace eAttendance.Controllers
             DateTime fromDate = timeArray[0];
             DateTime toDate = timeArray[1];
             List<EmployeeAttendanceList> list = ReportService.ReportService
-                .GetEmployeeBy_FromDate_ToDate_OfficeIdList(fromDate, toDate, officeId, true).ToList();
+                .GetEmployeeBy_FromDate_ToDate_OfficeIdList(fromDate, toDate, officeId,User, true).ToList();
 
             if (branchId > 0)
             {

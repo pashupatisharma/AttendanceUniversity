@@ -136,6 +136,39 @@
     <script>
         $(document).ready(function () {
 
+            //Region
+            $('#EmployeeNo').change(function () {
+             
+
+               var DeviceCode = $('#EmployeeNo').val();
+
+
+    $.ajax({
+        type: "POST",
+        url: '@Url.Action("CheckDeviceCode", "Utility")',
+
+        data: {
+            "DeviceCode": DeviceCode
+
+
+        },
+
+        cache: false,
+        success: function (data) {
+            if (data == true) {
+                alert("Device Code already exist  in database  try another one")
+                $("#EmployeeNo").val(null)
+            }
+        }
+
+
+
+    });
+
+            });
+            //End Region
+
+
 
             var form = $("#frmEditProfile");
             form.validate({

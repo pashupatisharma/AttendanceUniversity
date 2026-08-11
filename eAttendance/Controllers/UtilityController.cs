@@ -28,6 +28,20 @@ namespace eAttendance.Controllers
             }
             return Json(exisist);
         }
+
+        public JsonResult CheckDeviceCode(string DeviceCode)
+        {
+            ApplicationDbContext entities = new ApplicationDbContext();
+
+            var obj = entities.EmployeeInfo.Where(x => x.EmployeeNo == DeviceCode).FirstOrDefault();
+            bool exisist = false;
+            if (obj!=null)
+            {
+                exisist = true;
+                return Json(exisist);
+            }
+            return Json(exisist);
+        }
         //
         // GET: /Utility/
         public SelectList GetDesignationByLevelId(string levelId = "", bool withAll = false, bool withSelect = false)

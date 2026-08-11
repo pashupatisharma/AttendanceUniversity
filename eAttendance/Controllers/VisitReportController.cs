@@ -22,7 +22,7 @@ namespace eAttendance.Controllers
                 string[] strArray2 = model._nToDate.Split(new char[] { '-' });
                 DateTime fromDate = NepaliDateConverter.ConvertToEnglish(new NepaliDateConverter(int.Parse(strArray[0]), int.Parse(strArray[1]), int.Parse(strArray[2])));
                 DateTime toDate = NepaliDateConverter.ConvertToEnglish(new NepaliDateConverter(int.Parse(strArray2[0]), int.Parse(strArray2[1]), int.Parse(strArray2[2])));
-                source = ReportService.ReportService.GetEmployeeBy_FromDate_ToDate_OfficeIdList(fromDate, toDate, model.OfficeId, true);
+                source = ReportService.ReportService.GetEmployeeBy_FromDate_ToDate_OfficeIdList(fromDate, toDate, model.OfficeId,User, true);
 
 
                 int _branchId = model.BranchId;

@@ -2,245 +2,156 @@
 using eAttendance.Models;
 using eAttendance.ReportModel;
 using eAttendance.ViewModel;
-using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 
 namespace ReportService
 {
-    public static class ReportService
+    public static class ReportServiceOrginal
     {
-        private static readonly string[] FullAccessRoles =
-       {
-        "Admin",
-        "SuperAdmin",
-        "Administrator"
-    };
-
-        private static IQueryable<EmployeeOfficeDetail> GetEmployeeOfficeQuery(
-            ApplicationDbContext db,
-            int officeId,
-            IPrincipal user)
+        public static List<EmployeeAttendanceList> GetEmpployeeListAccordingToOfficeAndPerDate(int officeId, DateTime logDate, bool GenerateReportStatus = false)
         {
-            var query = db.EmployeeOfficeDetail
-                .Where(x => x.OfficeId == officeId);
+            ApplicationDbContext db = new ApplicationDbContext();
 
-            // Admin users can see all employees
-            bool isFullAccess =
-                user.IsInRole("Admin") ||
-                user.IsInRole("SuperAdmin") ||
-                user.IsInRole("Administrator");
-
-            if (!isFullAccess)
+            List<EmployeeAttendanceList> list = new List<EmployeeAttendanceList>();
+            foreach (var m in db.EmployeeOfficeDetail.Where(x => x.OfficeId == officeId))
             {
-                // Get logged-in user's EmployeeId
-                string userId = user.Identity.GetUserId();
-
-                // Change "UserId" below if your EmployeeInfo
-                // uses another field to connect with ASP.NET Identity.
-                int? employeeId = db.EmployeeInfo
-                    .Where(x => x.UserId == userId)
-                    .Select(x => (int?)x.EmployeeId)
-                    .FirstOrDefault();
-
-                if (!employeeId.HasValue)
+                ApplicationDbContext dbnew = new ApplicationDbContext();
+                if (dbnew.EmployeeInfo.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault().Status != 2)
                 {
-                    // No employee associated with this user
-                    return query.Where(x => false);
+                    EmployeeAttendanceList obj = new EmployeeAttendanceList();
+                    obj.OfficeId = (int)m.OfficeId;
+                    obj.LevelId = (int)m.LevelId;
+                    obj.LevelDisplayOrder = dbnew.LevelSetUp.Where(x => x.LevelId == m.LevelId).FirstOrDefault().DisplayOrder;
+                    obj.EmployeeId = (int)m.EmployeeId;
+                    var shifttype = dbnew.EmployeeShiftTime.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault();
+                    if(shifttype!=null)
+                    obj.ShiftTypeId = shifttype.ShiftTypeId;
+                    obj.BranchId = (int)m.BranchId;
+                    obj.ServiceId = (int)m.ServiceId;
+                    obj.ServiceDisplayOrder = dbnew.ServiceSetUp.Where(x => x.ServiceId == m.ServiceId).FirstOrDefault().DisplayOrder;
+                    obj.DesignationId = (int)m.DesignationId;
+                    obj.DesignationDisplayOrder = dbnew.DesignationSetUp.Where(x => x.DesignationId == m.DesignationId).FirstOrDefault().DisplayOrder;
+                    list.Add(obj);
                 }
-
-                // Employee can see only his/her own record
-                query = query.Where(x => x.EmployeeId == employeeId.Value);
             }
 
-            return query;
+
+            return list.OrderBy(m => m.ServiceDisplayOrder).OrderBy(m => m.LevelDisplayOrder).OrderBy(m => m.DesignationDisplayOrder).ToList();
         }
 
-        private static List<EmployeeAttendanceList> GetEmployeeList(
-    ApplicationDbContext db,
-    int officeId,
-    IPrincipal user)
+
+        public static List<EmployeeAttendanceList> GetEmployeeBy_Year_Month_OfficeIdList(int year, int month, int officeId, bool GenerateReportStatus = false)
         {
-            var query = GetEmployeeOfficeQuery(db, officeId, user);
+            ApplicationDbContext db = new ApplicationDbContext();
 
-            var result =
-                from office in query
-
-                join employee in db.EmployeeInfo
-                    on office.EmployeeId equals employee.EmployeeId
-
-                join level in db.LevelSetUp
-                    on office.LevelId equals level.LevelId into levels
-                from level in levels.DefaultIfEmpty()
-
-                join service in db.ServiceSetUp
-                    on office.ServiceId equals service.ServiceId into services
-                from service in services.DefaultIfEmpty()
-
-                join designation in db.DesignationSetUp
-                    on office.DesignationId equals designation.DesignationId into designations
-                from designation in designations.DefaultIfEmpty()
-
-                join shift in db.EmployeeShiftTime
-                    on office.EmployeeId equals shift.EmployeeId into shifts
-                from shift in shifts.DefaultIfEmpty()
-
-                where employee.Status != 2
-
-                select new EmployeeAttendanceList
+            List<EmployeeAttendanceList> list = new List<EmployeeAttendanceList>();
+            foreach (var m in db.EmployeeOfficeDetail.Where(x => x.OfficeId == officeId))
+            {
+                ApplicationDbContext dbnew = new ApplicationDbContext();
+                if (dbnew.EmployeeInfo.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault().Status != 2)
                 {
-                    OfficeId = office.OfficeId ?? 0,
-                    LevelId = office.LevelId ?? 0,
-                    LevelDisplayOrder = level != null
-                        ? level.DisplayOrder
-                        : 0,
-
-                    EmployeeId = office.EmployeeId ?? 0,
-
-                    ShiftTypeId = shift != null
-                        ? shift.ShiftTypeId
-                        : 0,
-
-                    BranchId = office.BranchId ?? 0,
-                    ServiceId = office.ServiceId ?? 0,
-
-                    ServiceDisplayOrder = service != null
-                        ? service.DisplayOrder
-                        : 0,
-
-                    DesignationId = office.DesignationId ?? 0,
-
-                    DesignationDisplayOrder = designation != null
-                        ? designation.DisplayOrder
-                        : 0
-                };
-
-            return result
-                     .OrderBy(x => x.LevelDisplayOrder)
-
-                     .ThenBy(x => x.DesignationDisplayOrder)
-                     .ToList();
-        }
-
-        public static List<EmployeeAttendanceList>
-    GetEmpployeeListAccordingToOfficeAndPerDate(
-        int officeId,
-        DateTime logDate,
-        IPrincipal user,
-        bool GenerateReportStatus = false)
-        {
-            using (var db = new ApplicationDbContext())
-            {
-                return GetEmployeeList(db, officeId, user);
+                    EmployeeAttendanceList obj = new EmployeeAttendanceList();
+                    obj.OfficeId = (int)m.OfficeId;
+                    obj.LevelId = (int)m.LevelId;
+                    obj.LevelDisplayOrder = dbnew.LevelSetUp.Where(x => x.LevelId == m.LevelId).FirstOrDefault().DisplayOrder;
+                    obj.EmployeeId = (int)m.EmployeeId;
+                    var shifttype = dbnew.EmployeeShiftTime.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault();
+                    if (shifttype != null)
+                        obj.ShiftTypeId = shifttype.ShiftTypeId;
+                    obj.BranchId = (int)m.BranchId;
+                    obj.ServiceId = (int)m.ServiceId;
+                    obj.ServiceDisplayOrder = dbnew.ServiceSetUp.Where(x => x.ServiceId == m.ServiceId).FirstOrDefault().DisplayOrder;
+                    obj.DesignationId = (int)m.DesignationId;
+                    obj.DesignationDisplayOrder = dbnew.DesignationSetUp.Where(x => x.DesignationId == m.DesignationId).FirstOrDefault().DisplayOrder;
+                    list.Add(obj);
+                }
             }
+
+
+            return list.OrderBy(m => m.ServiceDisplayOrder).OrderBy(m => m.LevelDisplayOrder).OrderBy(m => m.DesignationDisplayOrder).ToList();
+    
         }
 
-        public static List<EmployeeAttendanceList>
-    GetEmployeeBy_Year_Month_OfficeIdList(
-        int year,
-        int month,
-        int officeId,
-        IPrincipal user,
-        bool GenerateReportStatus = false)
+
+        public static List<EmployeeAttendanceList> GetEmployeeBy_FromDate_ToDate_OfficeIdList(DateTime fromDate, DateTime toDate, int officeId, bool p)
         {
-            using (var db = new ApplicationDbContext())
+           ApplicationDbContext db = new ApplicationDbContext();
+            var e = db.EmployeeInfo.Where(x => x.EmployeeId == 1).FirstOrDefault();
+
+            List<EmployeeAttendanceList> list = new List<EmployeeAttendanceList>();
+            foreach (var item in db.EmployeeOfficeDetail.Where(x => x.OfficeId == officeId))
+
             {
-                return GetEmployeeList(db, officeId, user);
+                ApplicationDbContext dbnew = new ApplicationDbContext();
+                var exist = dbnew.EmployeeInfo.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
+                int? status = exist.Status;
+                if (status != 2)
+                {
+                    EmployeeAttendanceList obj = new EmployeeAttendanceList();
+                    obj.OfficeId = (int)item.OfficeId;
+                    obj.LevelId = (int)item.LevelId;
+                    obj.LevelDisplayOrder = dbnew.LevelSetUp.Where(x => x.LevelId == item.LevelId).FirstOrDefault().DisplayOrder;
+                    obj.EmployeeId = (int)item.EmployeeId;
+                    var shifttype = dbnew.EmployeeShiftTime.Where(x => x.EmployeeId == item.EmployeeId).FirstOrDefault();
+                    if (shifttype != null)
+                        obj.ShiftTypeId = shifttype.ShiftTypeId;
+                    obj.BranchId = (int)item.BranchId;
+                    obj.ServiceId = (int)item.ServiceId;
+                    obj.ServiceDisplayOrder = dbnew.ServiceSetUp.Where(x => x.ServiceId == item.ServiceId).FirstOrDefault().DisplayOrder;
+                    obj.DesignationId = (int)item.DesignationId;
+                    obj.DesignationDisplayOrder = dbnew.DesignationSetUp.Where(x => x.DesignationId == item.DesignationId).FirstOrDefault().DisplayOrder;
+                    list.Add(obj);
+                }
             }
+
+
+            return list.OrderBy(m => m.ServiceDisplayOrder).OrderBy(m => m.LevelDisplayOrder).OrderBy(m => m.DesignationDisplayOrder).ToList();
+    
         }
 
-        public static List<EmployeeAttendanceList>
-    GetEmployeeBy_FromDate_ToDate_OfficeIdList(
-        DateTime fromDate,
-        DateTime toDate,
-        int officeId,
-        IPrincipal user,
-        bool p)
+
+        public static List<MonthlyAttendanceModel> GetEmployeeBy_FromDate_ToDate_OfficeIdListAnnual(DateTime fromDate, DateTime toDate, int officeId, bool p)
         {
-            using (var db = new ApplicationDbContext())
+            ApplicationDbContext db = new ApplicationDbContext();
+
+            List<MonthlyAttendanceModel> list = new List<MonthlyAttendanceModel>();
+            foreach (var m in db.EmployeeOfficeDetail.Where(x => x.OfficeId == officeId))
             {
-                return GetEmployeeList(db, officeId, user);
+                ApplicationDbContext dbnew = new ApplicationDbContext();
+
+                if (dbnew.EmployeeInfo.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault().Status != 2)
+                {
+                   
+                    MonthlyAttendanceModel obj = new MonthlyAttendanceModel();
+                    obj.OfficeId = (int)m.OfficeId;
+                    obj.LevelId = (int)m.LevelId;
+                    obj.LevelDisplayOrder = dbnew.LevelSetUp.Where(x => x.LevelId == m.LevelId).FirstOrDefault().DisplayOrder;
+                    obj.EmployeeId = (int)m.EmployeeId;
+                    var shifttype = dbnew.EmployeeShiftTime.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault();
+                    if (shifttype != null)
+                        obj.ShiftTypeId = shifttype.ShiftTypeId;
+                    obj.BranchId = (int)m.BranchId;
+                    obj.ServiceId = (int)m.ServiceId;
+                    obj.ServiceDisplayOrder = dbnew.ServiceSetUp.Where(x => x.ServiceId == m.ServiceId).FirstOrDefault().DisplayOrder;
+                    obj.DesignationId = (int)m.DesignationId;
+                    obj.DesignationDisplayOrder = dbnew.DesignationSetUp.Where(x => x.DesignationId == m.DesignationId).FirstOrDefault().DisplayOrder;
+                    list.Add(obj);
+                }
             }
+
+
+            return list.OrderBy(m => m.ServiceDisplayOrder).OrderBy(m => m.LevelDisplayOrder).OrderBy(m => m.DesignationDisplayOrder).ToList();
+    
         }
 
-        public static List<MonthlyAttendanceModel>
-    GetEmployeeBy_FromDate_ToDate_OfficeIdListAnnual(
-        DateTime fromDate,
-        DateTime toDate,
-        int officeId,
-        IPrincipal user,
-        bool p)
-        {
-            using (var db = new ApplicationDbContext())
-            {
-                var query = GetEmployeeOfficeQuery(db, officeId, user);
 
-                var result =
-                    from office in query
 
-                    join employee in db.EmployeeInfo
-                        on office.EmployeeId equals employee.EmployeeId
 
-                    join level in db.LevelSetUp
-                        on office.LevelId equals level.LevelId into levels
-                    from level in levels.DefaultIfEmpty()
-
-                    join service in db.ServiceSetUp
-                        on office.ServiceId equals service.ServiceId into services
-                    from service in services.DefaultIfEmpty()
-
-                    join designation in db.DesignationSetUp
-                        on office.DesignationId equals designation.DesignationId into designations
-                    from designation in designations.DefaultIfEmpty()
-
-                    join shift in db.EmployeeShiftTime
-                        on office.EmployeeId equals shift.EmployeeId into shifts
-                    from shift in shifts.DefaultIfEmpty()
-
-                    where employee.Status != 2
-
-                    select new MonthlyAttendanceModel
-                    {
-                        OfficeId = office.OfficeId ?? 0,
-                        LevelId = office.LevelId ?? 0,
-
-                        LevelDisplayOrder = level != null
-                            ? level.DisplayOrder
-                            : 0,
-
-                        EmployeeId = office.EmployeeId ?? 0,
-
-                        ShiftTypeId = shift != null
-                            ? shift.ShiftTypeId
-                            : 0,
-
-                        BranchId = office.BranchId ?? 0,
-
-                        ServiceId = office.ServiceId ?? 0,
-
-                        ServiceDisplayOrder = service != null
-                            ? service.DisplayOrder
-                            : 0,
-
-                        DesignationId = office.DesignationId ?? 0,
-
-                        DesignationDisplayOrder = designation != null
-                            ? designation.DisplayOrder
-                            : 0
-                    };
-
-                return result
-                    .OrderBy(x => x.LevelDisplayOrder)
-                  
-                    .ThenBy(x => x.DesignationDisplayOrder)
-                    .ToList();
-            }
-        }
 
 
         public static List<EmployeeAttendanceList> GetEmployeeAttandaneByOfficeWithInDateRange(int? empId, int officeId, DateTime fromDate, DateTime toDate)
@@ -337,12 +248,12 @@ namespace ReportService
                                                     join slt in entities.LeaveTypeSetUp on la.LeaveTypeId equals slt.LeaveTypeId into slt
                                                     where ((((la.EmployeeId == empId) && (la.ApprovedStatus == 2)) && ((la.CreatedDate >= datfrom) && la.CreatedDate <= datto)))
                                                     select new EmployeeLeaveSummaryList
-                                                    {
-                                                        LeaveApplicationId = la.LeaveApplicationId,
-                                                        LeaveTypeId = la.LeaveTypeId,
-                                                        FromDate = la.FromDate,
-                                                        ToDate = la.ToDate
-                                                    }).ToList<EmployeeLeaveSummaryList>();
+                                            {
+                                                LeaveApplicationId = la.LeaveApplicationId,
+                                                LeaveTypeId = la.LeaveTypeId,
+                                                FromDate = la.FromDate,
+                                                ToDate = la.ToDate
+                                            }).ToList<EmployeeLeaveSummaryList>();
             foreach (EmployeeLeaveSummaryList item in list2)
             {
                 DateTime time;
@@ -376,11 +287,11 @@ namespace ReportService
                             list5 = (from holidayCalendar in entitiesnew.HolidayCalender
                                      where (holidayCalendar.Status == 1) && ((day > holidayCalendar.FromDate) && (day <= holidayCalendar.ToDate))
                                      select new EmployeeLeaveSummaryList
-                                     {
+                                                     {
 
-                                         HolidayCalendarId = holidayCalendar.HolidayCalendarId,
-                                         HolidayTypeName = holidayCalendar.HolidayTypeName
-                                     }).ToList();
+                                                         HolidayCalendarId = holidayCalendar.HolidayCalendarId,
+                                                         HolidayTypeName = holidayCalendar.HolidayTypeName
+                                                     }).ToList();
                             if (!model.HolidayInclude && model.WeeklyOffInclude)
                             {
                                 if (list5.Count <= 0)

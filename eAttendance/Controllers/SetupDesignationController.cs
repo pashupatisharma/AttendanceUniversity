@@ -31,38 +31,38 @@ namespace eAttendance.Controllers
                 searchString = currentFilter;
             }
             ViewBag.CurrentFilter = searchString;
-            IEnumerable<DesignationSetUp> source = db.DesignationSetUp;
+            IEnumerable<DesignationSetUp> source = db.DesignationSetUp.OrderBy(x=>x.DisplayOrder);
             if (!string.IsNullOrEmpty(searchString))
             {
 
                 source = source.Where(x => x.DesignationName.Contains(searchString));
             }
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    source = from s in source
-                             orderby s.DesignationName descending
-                             select s;
-                    break;
+            //switch (sortOrder)
+            //{
+            //    case "name_desc":
+            //        source = from s in source
+            //                 orderby s.DesignationName descending
+            //                 select s;
+            //        break;
 
-                case "Date":
-                    source = from s in source
-                             orderby s.CreatedDate descending
-                             select s;
-                    break;
+            //    case "Date":
+            //        source = from s in source
+            //                 orderby s.CreatedDate descending
+            //                 select s;
+            //        break;
 
-                case "date_desc":
-                    source = from s in source
-                             orderby s.CreatedDate descending
-                             select s;
-                    break;
+            //    case "date_desc":
+            //        source = from s in source
+            //                 orderby s.CreatedDate descending
+            //                 select s;
+            //        break;
 
-                default:
-                    source = from s in source
-                             orderby s.DesignationName
-                             select s;
-                    break;
-            }
+            //    default:
+            //        source = from s in source
+            //                 orderby s.DesignationName
+            //                 select s;
+            //        break;
+            //}
             int num = 10;
             int? nullable = page;
             int num2 = nullable.HasValue ? nullable.GetValueOrDefault() : 1;

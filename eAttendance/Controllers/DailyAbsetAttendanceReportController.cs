@@ -37,7 +37,7 @@ namespace eAttendance.Controllers
             if (model.OfficeId > 0)
             {
 
-                source = ReportService.ReportService.GetEmpployeeListAccordingToOfficeAndPerDate(model.OfficeId, date, true);
+                source = ReportService.ReportService.GetEmpployeeListAccordingToOfficeAndPerDate(model.OfficeId, date,User, true);
                 int _branchId = model.BranchId;
                 if (_branchId > 0)
                 {
@@ -118,7 +118,7 @@ namespace eAttendance.Controllers
             if (num > 0)
             {
 
-                source = ReportService.ReportService.GetEmpployeeListAccordingToOfficeAndPerDate(num, date, true);
+                source = ReportService.ReportService.GetEmpployeeListAccordingToOfficeAndPerDate(num, date,User, true);
                 int _branchId = model.BranchId;
                 if (_branchId > 0)
                 {
