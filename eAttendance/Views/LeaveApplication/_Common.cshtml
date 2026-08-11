@@ -25,11 +25,11 @@
         </div>
         <div class="form-group col-md-6 ">
             <label class="control-label">@Html.DisplayNameFor(m => m.NFromDate)<span class="text-danger">*</span></label>
-            @Html.TextBoxFor(m => m.NFromDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99", @id = "endDate",@required="required" })
+            @Html.TextBoxFor(m => m.NFromDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99", @id = "endDate",@required="required", @style = "font-family:'Comic Sans MS'" })
         </div>
         <div class="form-group  col-md-6">
             <label class="control-label">@Html.DisplayNameFor(m => m.NToDate) <span class="text-danger">*</span></label>
-            @Html.TextBoxFor(m => m.NToDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", @mask = "9999-99-99", @required = "required" })
+            @Html.TextBoxFor(m => m.NToDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", @mask = "9999-99-99", @required = "required", @style = "font-family:'Comic Sans MS'" })
         </div>
         <div class="form-group  col-md-6">
             <label class="control-label">@Html.DisplayNameFor(m => m.Subject)</label>
