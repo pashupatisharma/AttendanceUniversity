@@ -13,9 +13,9 @@
         {
             <div class="modal-body">
                 @Html.HiddenFor(m => m.VisitApplicationId)
-                @Html.HiddenFor(m=> m.ApplicationDate)
-                @Html.HiddenFor(m=>m.ApprovedStatus)
-                @Html.HiddenFor(m=>m.RecomenderStatus)
+                @Html.HiddenFor(m => m.ApplicationDate)
+                @Html.HiddenFor(m => m.ApprovedStatus)
+                @Html.HiddenFor(m => m.RecomenderStatus)
                 @Html.HiddenFor(m => m.CreatedBy)
                 @Html.HiddenFor(m => m.CreatedDate)
                 <div class="row">
@@ -32,11 +32,11 @@
                             </div>
                             <div class="form-group col-md-6 ">
                                 <label class="control-label">@Html.DisplayNameFor(m => m.NFromDate)</label>
-                                @Html.TextBoxFor(m => m.NFromDate, "{0:yyyy/MM/dd }", new {@id="EditVisitPosting_FromDate",@class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99"})@*, @id = "endDate" })*@
+                                @Html.TextBoxFor(m => m.NFromDate, "{0:yyyy/MM/dd }", new { @id = "EditVisitPosting_FromDate", @class = "form-control inputmask nepali-calendar", data_mask = "9999-99-99" })@*, @id = "endDate" })*@
                             </div>
                             <div class="form-group  col-md-6">
                                 <label class="control-label">@Html.DisplayNameFor(m => m.NToDate)</label>
-                                @Html.TextBoxFor(m => m.NToDate, "{0:yyyy/MM/dd }", new {@id="EditVisitPosting_ToDate" ,@class = "form-control inputmask nepali-calendar", @mask = "9999-99-99" })
+                                @Html.TextBoxFor(m => m.NToDate, "{0:yyyy/MM/dd }", new { @id = "EditVisitPosting_ToDate", @class = "form-control inputmask nepali-calendar", @mask = "9999-99-99" })
                             </div>
                             <div class="form-group  col-md-12">
                                 <label class="control-label">@Html.DisplayNameFor(m => m.Subject)</label>
@@ -55,20 +55,20 @@
                                 <div class="ibox-content">
                                     <div>
                                         @*<div>
-                        <span class="font-bold">Remaining Visit</span>
-                        <small class="pull-right">
-                            <label id="lblVisitBalance" class="control-label">0</label>
-                        </small>
-                    </div>*@
+                                                <span class="font-bold">Remaining Visit</span>
+                                                <small class="pull-right">
+                                                    <label id="lblVisitBalance" class="control-label">0</label>
+                                                </small>
+                                            </div>*@
                                         <div class="progress progress-small" style="height: 5px;">
                                             <div style="width: 100%; height:5px;" class="progress-bar"></div>
                                         </div>
                                         @*<div>
-                        <span class="font-bold">Total Visit</span>
-                        <small class="pull-right">
-                            <label class="control-label" id="lblTotalDays">0</label>
-                        </small>
-                    </div>*@
+                                                <span class="font-bold">Total Visit</span>
+                                                <small class="pull-right">
+                                                    <label class="control-label" id="lblTotalDays">0</label>
+                                                </small>
+                                            </div>*@
                                         <div class="progress progress-small" style="height: 5px;">
                                             <div style="width: 100%;" class="progress-bar progress-bar-danger"></div>
                                         </div>
@@ -86,10 +86,10 @@
                                 </div>
                             </div>
 
-                            <div class="form-group  col-md-12">
-                                <label class="control-label">@Html.DisplayNameFor(m => m.Recomender)</label>
-                                @Html.DropDownListFor(m => m.Recomender, eAttendance.Utility.GetEmployeeRecommederList(User), new { @class = "chosen-select form-control" })
-                            </div>
+                            @*<div class="form-group  col-md-12">
+                                    <label class="control-label">@Html.DisplayNameFor(m => m.Recomender)</label>
+                                    @Html.DropDownListFor(m => m.Recomender, eAttendance.Utility.GetEmployeeRecommederList(User), new { @class = "chosen-select form-control" })
+                                </div>*@
                             <div class="form-group  col-md-12">
                                 <label class="control-label">@Html.DisplayNameFor(m => m.ApprovedBy)</label>
                                 @Html.DropDownListFor(m => m.ApprovedBy, eAttendance.Utility.GetEmployeeApproverList(User), new { @class = "chosen-select form-control" })

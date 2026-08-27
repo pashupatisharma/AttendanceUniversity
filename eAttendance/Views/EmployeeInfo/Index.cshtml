@@ -5,6 +5,7 @@
     ViewBag.Title = "Employee Information";
     eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
 }
+<script src="~/Scripts/ExcelExport.js"></script>
 <div class="modal-content">
     <div class="modal-header">
         <ol class="breadcrumb">
@@ -92,12 +93,22 @@
                         </div>
 
 
+                        <div class="col-sm-6">
+                            <div class="title-action">
 
-                        <div class="col-sm-3">
-                            <div class="form-group margin-top-25">
-                                <button type="submit" class="btn-Search btn btn-primary btn-rounded btn-outline fa fa-search"> खोज्नुहोस्</button>
+
+                                <a download="Monthly Report.xls" class="btn btn-success btn_excel fa fa-file-excel-o" href="#" onclick="return ExcellentExport.excel(this, 'divprint', 'Daily Report');">Excel मा लैजानुहोस् </a>
+
+                                <button type="button" id="btnPrint" class="btn btn-primary"><i class="fa fa-print"></i> Print </button>
+
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> खोज्नुहोस् </button>
+
                             </div>
                         </div>
+
+
+
+
                     </div>
                 </fieldset>
             }
@@ -108,112 +119,117 @@
             <label>
                 @Html.DropDownList("pageSize", @Utility.GetPageSize(), new { @class = "form-control input-sm" })
             </label>
-            <table id="tblEmployeeInfo" class="table table-bordered table-hover table-condensed table-striped table-color ">
-                <thead>
-                    <tr>
-                        <th class="text-center">क्र.सं</th>
-                        <th class="col-md-1">तह</th>
-                        <th class="col-md-1">पद</th>
-                        <th>कर्मचारी</th>
-
-                        <th>इमेल आइडी</th>
-                        <th>लिंग</th>
-
-                        <th>लिंग</th>
-                        <th class="hidden-print col-md-1 text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{int count = ((Model.PageNumber - 1) * Model.PageSize);}
-                    @foreach (var m in Model.OrderBy(x => x.DesignationId))
-                    {
-                        count += 1;
-                        var office = db.EmployeeOfficeDetail.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault();
-
-                        var userid = m.EmailId;
+            <div id="divprint">
+                <table id="tblEmployeeInfo" class="table table-bordered table-hover table-condensed table-striped table-color ">
+                    <thead>
                         <tr>
-                            <td class="text-center">@count</td>
-                            <td class="col-md-1">
-                                @if (office != null && office.LevelSetUp != null)
-                                {
-                                    @Html.Raw(office.LevelSetUp.LevelName)
-                                }
-                            </td>
-                            <td class="col-md-1">
-                                @{
-                                    if (office != null && office.DesignationSetUp != null)
+                            <th class="text-center">क्र.सं</th>
+                            <th class="col-md-1">तह</th>
+                            <th class="col-md-1">पद</th>
+                            <th>कर्मचारी</th>
+
+                            <th>इमेल आइडी</th>
+                            <th>लिंग</th>
+
+                            <th>लिंग</th>
+                            <th class="hidden-print col-md-1 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int count = ((Model.PageNumber - 1) * Model.PageSize);}
+                        @foreach (var m in Model)
+                        {
+                            count += 1;
+                            var office = db.EmployeeOfficeDetail.Where(x => x.EmployeeId == m.EmployeeId).FirstOrDefault();
+
+                            var userid = m.EmailId;
+                            <tr>
+                                <td class="text-center">@count</td>
+                                <td class="col-md-1">
+                                    @if (office != null && office.LevelSetUp != null)
                                     {
-                                        @Html.Raw(office.DesignationSetUp.DesignationName)
+                                        @Html.Raw(office.LevelSetUp.LevelName)
                                     }
-                                }
-                            </td>
+                                </td>
+                                <td class="col-md-1">
+                                    @{
+                                        if (office != null && office.DesignationSetUp != null)
+                                        {
+                                            @Html.Raw(office.DesignationSetUp.DesignationName)
+                                        }
+                                    }
+                                </td>
 
 
 
-                            <td class="project-title">
-                                @m.EmployeeName  [ <text style="font-family:'Comic Sans MS'">@m.EmployeeNo</text>]
-                                <br />
-                                @if (office != null)
-                                {
-                                    @Html.Raw(office.OfficeSetUp.OfficeName)
-                                }
-                            </td>
-                            <td  style = "font-family:'Comic Sans MS'">@m.EmailId</td>
-                            <td>
-                                <span class="text-center">
-                                    @if (m.Gender == 1)
+                                <td class="project-title">
+                                    @m.EmployeeName  [ <text style="font-family:'Comic Sans MS'">@m.EmployeeNo</text>]
+                                    <br />
+                                    @if (office != null)
                                     {
-                                        <span class="btn btn-success btn-xs">
-                                            पुरुष
-                                        </span>
+                                        @Html.Raw(office.OfficeSetUp.OfficeName)
                                     }
-                                    else if (m.Gender == 2)
-                                    {
-                                        <span class="btn btn-success btn-xs">
-                                            महिला
-                                        </span>
-                                    }
-                                </span>
-                            </td>
+                                </td>
+                                <td style="font-family:'Comic Sans MS'">@m.EmailId</td>
+                                <td>
+                                    <span class="text-center">
+                                        @if (m.Gender == 1)
+                                        {
+                                            <span class="btn btn-success btn-xs">
+                                                पुरुष
+                                            </span>
+                                        }
+                                        else if (m.Gender == 2)
+                                        {
+                                            <span class="btn btn-success btn-xs">
+                                                महिला
+                                            </span>
+                                        }
+                                    </span>
+                                </td>
 
-                            <td>
-                                @if (m.Status == 1)
-                                {
-                                    @eAttendance.Service.MenuService.Active
-                                }
-                                else if (m.Status == 2)
-                                {
-                                    @eAttendance.Service.MenuService.Inactive
-                                }
-                                else if (m.Status == 4)
-                                {
-                                    @eAttendance.Service.MenuService.ExternalTransfer
-                                }
-                                else if (m.Status == 3)
-                                {
-
-                                    <label>आन्तरिक स्थानान्तरण</label>
-                                }
-                            </td>
-                            <td class="hidden-print project-actions col-md-1">
-                                <div class="btn-group btn-group-sm">
-                                    <a href="@Url.Action("edit", "EmployeeInfo" , new { @id=m.EmployeeId })" type="button" class="btn-edit btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+                                <td>
                                     @if (m.Status == 1)
                                     {
-                                        <a href="#" value="@m.EmployeeId" class="btn-delete btn btn-sm btn-danger"><i class='fa fa-remove'></i></a>
+                                        @eAttendance.Service.MenuService.Active
                                     }
                                     else if (m.Status == 2)
                                     {
-                                        <a href="#" value="@m.EmployeeId" class="btn-delete btn btn-sm btn-danger"><i class='fa fa-remove'></i> </a>
+                                        @eAttendance.Service.MenuService.Inactive
                                     }
+                                    else if (m.Status == 4)
+                                    {
+                                        @eAttendance.Service.MenuService.ExternalTransfer
+                                    }
+                                    else if (m.Status == 3)
+                                    {
 
+                                        <label>आन्तरिक स्थानान्तरण</label>
+                                    }
+                                </td>
+                                <td class="hidden-print project-actions col-md-1">
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="@Url.Action("edit", "EmployeeInfo" , new { @id=m.EmployeeId })" type="button" class="btn-edit btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+                                        @if (User.IsInRole("SuperAdmin"))
+                                        {
+                                            if (m.Status == 1)
+                                            {
+                                                <a href="#" value="@m.EmployeeId" class="btn-delete btn btn-sm btn-danger"><i class='fa fa-remove'></i></a>
+                                            }
+                                            else if (m.Status == 2)
+                                            {
+                                                <a href="#" value="@m.EmployeeId" class="btn-delete btn btn-sm btn-danger"><i class='fa fa-remove'></i> </a>
+                                            }
 
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                                        }
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
             <div class="row">
                 <div class=" col-md-3 col-sm-3">
                     <div class="pull-left">
@@ -244,10 +260,16 @@
         $(document).ready(function () {
 
 
+            $('#btnPrint').on('click', function () {
+
+                printReport('Employee List');
+
+
+            });
 
             $('#tblEmployeeInfo tbody').on('click', '.btn-delete', function () {
                 var districtId = $(this).attr('value');
-           
+
             $.ajax({
                 url: '@Url.Action("Delete", "EmployeeInfo")',
                 type: 'GET',

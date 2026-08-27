@@ -125,10 +125,10 @@
                             </div>
                           
 
-                            <div class="form-group  col-md-6">
+                            @*<div class="form-group  col-md-6">
                                 <label class="control-label">@Html.DisplayNameFor(m => m.Recomender)</label>
                                 @Html.DropDownListFor(m => m.Recomender, eAttendance.Utility.GetEmployeeRecommederList(User), new { @class = "chosen-select form-control" })
-                            </div>
+                            </div>*@
                             <div class="form-group  col-md-6">
                                 <label class="control-label">@Html.DisplayNameFor(m => m.ApprovedBy)</label>
                                 @Html.DropDownListFor(m => m.ApprovedBy, eAttendance.Utility.GetEmployeeApproverList(User), new { @class = "chosen-select form-control" })

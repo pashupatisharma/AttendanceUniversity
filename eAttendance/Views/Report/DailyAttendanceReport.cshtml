@@ -2,6 +2,11 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Daily Attendance Report";
+
+    bool isFullAccess =
+    User.IsInRole("Admin") ||
+    User.IsInRole("SuperAdmin") ||
+    User.IsInRole("Administrator");
 }
 
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
@@ -37,9 +42,10 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8 col-md-8 col-sm-8">
         <h2>
-            दैनिक हाजिरी</h2>
-          
-</div>
+            दैनिक हाजिरी
+        </h2>
+
+    </div>
     <div class="col-lg-4 col-md-4 col-sm-4">
         <div class="title-action">
 
@@ -54,82 +60,99 @@
     <div class="col-lg-12">
         <div class="wrapper wrapper-content animated fadeInDown no-margins padding-top-md">
             <div class="ibox float-e-margins no-margins">
-                
+
                 <div class="ibox-content no-border-bottom">
                     @using (Ajax.BeginForm("DailyAttendanceReport", "Report", new AjaxOptions { HttpMethod = "Post", OnBegin = "ShowLoader", OnComplete = "EndLoader", UpdateTargetId = "divprint" }))
                     {
-                    <fieldset>
-                        <legend>Search Criteria</legend>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label class="control-label">@eAttendance.Service.MenuService.Date <span class="text-danger">*</span> </label>
-                                    @Html.TextBoxFor(m => m.nLogDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", @mask = "9999-99-99",@required="required" })
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label class="control-label">कार्यालय <span class="text-danger">*</span> </label>
-                                    @Html.DropDownListFor(m => m.OfficeId, Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control", @required = "required" })
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label class="control-label">शाखा</label>
+                        <fieldset>
+                            <legend>Search Criteria</legend>
 
-                                    @Html.DropDownListFor(m => m.BranchId, Utility.GetBranchIdName(@User), new { @class = "chosen-select form-control" })
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label class="control-label ">सेवा</label>
-                                    @Html.DropDownListFor(m => m.ServiceId, Utility.GetServiceIdName(), new { @class = "chosen-select form-control" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label class="control-label">तह</label>
-                                    @Html.DropDownListFor(m => m.LevelId, Utility.GetLevelIdName(), new { @class = "chosen-select form-control" })
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label class="control-label">पद</label>
-                                    @Html.DropDownList("designationId", Utility.GetDesignationIdName(User), new { @class = "chosen-select form-control chosen-select" })
-                                </div>
-                            </div>
 
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>शिफ्ट </label>
-                                    @Html.DropDownList("ShiftTypeId", Utility.GetShiftTypeList(),"सबै", new { @class = " chosen-select form-control" })
-                                </div>
-                            </div>
+                            @if (isFullAccess)
+                            {
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="control-label">@eAttendance.Service.MenuService.Date <span class="text-danger">*</span> </label>
+                                            @Html.TextBoxFor(m => m.nLogDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", @mask = "9999-99-99", @required = "required" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="control-label">कार्यालय <span class="text-danger">*</span> </label>
+                                            @Html.DropDownListFor(m => m.OfficeId, Utility.GetOfficeIdNameWithSelect(User), new { @class = "chosen-select form-control", @required = "required" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="control-label">शाखा</label>
 
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label class="control-label">कर्मचारी र @eAttendance.Service.MenuService.EmployeeNo</label>
-                                    @Html.DropDownListFor(m => m.EmployeeId, Enumerable.Empty<SelectListItem>(), new { @class = "chosen-select form-control chosen-select" })
+                                            @Html.DropDownListFor(m => m.BranchId, Utility.GetBranchIdName(@User), new { @class = "chosen-select form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="control-label ">सेवा</label>
+                                            @Html.DropDownListFor(m => m.ServiceId, Utility.GetServiceIdName(), new { @class = "chosen-select form-control" })
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="control-label">तह</label>
+                                            @Html.DropDownListFor(m => m.LevelId, Utility.GetLevelIdName(), new { @class = "chosen-select form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="control-label">पद</label>
+                                            @Html.DropDownList("designationId", Utility.GetDesignationIdName(User), new { @class = "chosen-select form-control chosen-select" })
+                                        </div>
+                                    </div>
 
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label class="control-label">किसम</label>
-                                    @Html.DropDownListFor(m => m.StatusType, Utility.GetAttendanceype(), new { @class = "chosen-select form-control chosen-select" })
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>शिफ्ट </label>
+                                            @Html.DropDownList("ShiftTypeId", Utility.GetShiftTypeList(), "सबै", new { @class = " chosen-select form-control" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="control-label">कर्मचारी र @eAttendance.Service.MenuService.EmployeeNo</label>
+                                            @Html.DropDownListFor(m => m.EmployeeId, Enumerable.Empty<SelectListItem>(), new { @class = "chosen-select form-control chosen-select" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="control-label">किसम</label>
+                                            @Html.DropDownListFor(m => m.StatusType, Utility.GetAttendanceype(), new { @class = "chosen-select form-control chosen-select" })
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label class="control-label">@eAttendance.Service.MenuService.Date <span class="text-danger">*</span> </label>
+                                            @Html.TextBoxFor(m => m.nLogDate, "{0:yyyy/MM/dd }", new { @class = "form-control inputmask nepali-calendar", @mask = "9999-99-99", @required = "required" })
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group margin-top-25">
+                                        <button type="submit" class="btn-Search btn btn-primary btn-rounded btn-outline fa fa-search"> खोज्नुहोस्</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div class="form-group margin-top-25">
-                                    <button type="submit" class="btn-Search btn btn-primary btn-rounded btn-outline fa fa-search"> खोज्नुहोस्</button>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
+                        </fieldset>
                     }
                 </div>
             </div>

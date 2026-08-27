@@ -41,7 +41,71 @@ namespace eAttendance.Controllers
 
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public ActionResult EditPhoto(int id)
+        {
+            var employeeImage = db.EmployeeImage
+                                  .FirstOrDefault(x => x.EmployeeId == id);
 
+            if (employeeImage == null)
+            {
+                employeeImage = new EmployeeImage
+                {
+                    EmployeeId = id
+                };
+            }
+
+            return PartialView("_EditPhoto", employeeImage);
+        }
+
+        [HttpPost]
+        public ActionResult SavePhoto(EmployeeImage model, HttpPostedFileBase photo)
+        {
+            if (photo != null && photo.ContentLength > 0)
+            {
+                var fileName = Guid.NewGuid().ToString()
+                             + Path.GetExtension(photo.FileName);
+
+                var folderPath = Server.MapPath("~/Uploads/EmployeePhotos/");
+
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                var fullPath = Path.Combine(folderPath, fileName);
+
+                photo.SaveAs(fullPath);
+
+                var imagePath = "/Uploads/EmployeePhotos/" + fileName;
+
+                var existingImage = db.EmployeeImage
+                                      .FirstOrDefault(x => x.EmployeeId == model.EmployeeId);
+
+                if (existingImage != null)
+                {
+                    model.CreatedDate = DateTime.Now;
+                    model.ModifiedDate = DateTime.Now;
+                    existingImage.ImageName = imagePath;
+                    db.Entry(existingImage).State = EntityState.Modified;
+                }
+                else
+                {
+                    model.CreatedDate = DateTime.Now;
+                    model.ModifiedDate = DateTime.Now;
+                    model.ImageName = imagePath;
+                    db.EmployeeImage.Add(model);
+                }
+
+                db.SaveChanges();
+
+                TempData["HasMessage"] = true;
+                TempData["MessageType"] = "success";
+                TempData["Message"] = "फोटो सफलतापूर्वक सुरक्षित गरियो।";
+                TempData["MessageHeader"] = "सफलता";
+            }
+
+            return RedirectToAction("Edit", new { id = model.EmployeeId });
+        }
 
         [HttpPost]
         public JsonResult LoadDistrict(int zoneid)
@@ -114,7 +178,8 @@ namespace eAttendance.Controllers
                               EmailId = x.EmailId,
                               Gender = x.Gender,
                               Status = x.Status,
-                              serviceId = y.ServiceId
+                              serviceId = y.ServiceId,
+                              DisplayOrder=x.DisplayOrder
 
 
 
@@ -190,25 +255,15 @@ namespace eAttendance.Controllers
             {
                 case "name_desc":
                     source = from s in source
-                             orderby s.EmployeeName descending
+                             orderby s.DisplayOrder 
                              select s;
                     break;
 
-                case "Date":
-                    source = from s in source
-                             orderby s.CreatedDate descending
-                             select s;
-                    break;
-
-                case "date_desc":
-                    source = from s in source
-                             orderby s.CreatedDate descending
-                             select s;
-                    break;
+            
 
                 default:
                     source = from s in source
-                             orderby s.EmployeeName
+                             orderby s.DisplayOrder
                              select s;
                     break;
             }
@@ -1396,9 +1451,13 @@ namespace eAttendance.Controllers
             modelnew.EmployeeInfo = new EmployeeInfo();
             modelnew.EmployeeOfficeInfo = new EmployeeOfficeDetail();
             modelnew.EmployeeShiftTime = new EmployeeShiftTime();
+            modelnew.EmployeeImage = new EmployeeImage();
             modelnew.EmployeeInfo = dbContext.EmployeeInfo.Where(x => x.EmployeeId == id).FirstOrDefault();
+
+            modelnew.EmployeeImage = dbContext.EmployeeImage.Where(x => x.EmployeeId == id).FirstOrDefault();
             modelnew.EmployeeOfficeInfo = dbContext.EmployeeOfficeDetail.Where(x => x.EmployeeId == id).FirstOrDefault();
             modelnew.EmployeeShiftTime = db.EmployeeShiftTime.Where(x => x.EmployeeId == id).FirstOrDefault();
+
 
             return base.View(modelnew);
         }

@@ -1,4 +1,5 @@
 ﻿using eAttendance.ReportModel;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace eAttendance.Controllers
                 DateTime logDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(model.nLogDate));
 
 
-                source = ReportService.ReportService.GetEmpployeeListAccordingToOfficeAndPerDate(model.OfficeId, logDate, User,true);
+                source = ReportService.ReportService.GetEmpployeeListAccordingToOfficeAndPerDate(model.OfficeId, logDate, User, true);
 
 
 
@@ -59,6 +60,29 @@ namespace eAttendance.Controllers
         [HttpPost]
         public ActionResult LateInEarlyOutAttendanceReport(EmployeeAttendanceList model)
         {
+            bool isFullAccess =
+User.IsInRole("Admin") ||
+User.IsInRole("SuperAdmin") ||
+User.IsInRole("Administrator");
+            if (!isFullAccess)
+            {
+                string userId = User.Identity.GetUserId();
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    int? officeId = (from emp in db.EmployeeInfo
+                                     join office in db.EmployeeOfficeDetail
+                                         on emp.EmployeeId equals office.EmployeeId
+                                     where emp.UserId == userId
+                                     select office.OfficeId)
+                   .FirstOrDefault();
+                    if (officeId != null)
+                    {
+                        model.OfficeId = Convert.ToInt32(officeId);
+                    }
+                }
+            }
+
+
             DateTime date = DateTime.Now.Date;
 
             if (!string.IsNullOrWhiteSpace(model.nLogDate))
@@ -78,10 +102,10 @@ namespace eAttendance.Controllers
             List<EmployeeAttendanceList> source = new List<EmployeeAttendanceList>();
             if ((model.nLogDate != null) && (model.OfficeId != 0))
             {
-              // DateTime logDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(model.nLogDate));
+                // DateTime logDate = NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(model.nLogDate));
 
 
-                source = ReportService.ReportService.GetEmpployeeListAccordingToOfficeAndPerDate(model.OfficeId, date, User,true);
+                source = ReportService.ReportService.GetEmpployeeListAccordingToOfficeAndPerDate(model.OfficeId, date, User, true);
 
 
 
@@ -115,7 +139,7 @@ namespace eAttendance.Controllers
                     source = source.Where(x => x.EmployeeId == model.EmployeeId).ToList();
                 }
 
-              //  model.EmployeeAttendanceLists = source;
+                //  model.EmployeeAttendanceLists = source;
 
 
 

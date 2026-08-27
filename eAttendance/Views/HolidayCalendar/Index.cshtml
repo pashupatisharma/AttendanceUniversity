@@ -17,7 +17,7 @@
 <div class="row wrapper white-bg page-heading hidden-print">
     <div class="col-lg-10 col-sm-10">
         <h2>सार्वजनिक बिदा  सेटअप</h2>
-        
+
     </div>
     <div class="col-lg-2 col-sm-2">
         <div class="hidden-print title-action">
@@ -52,11 +52,16 @@
         <div class="ibox-content no-border-bottom">
             @using (Html.BeginForm("SearchHolidayCalendarOfficeWise", "HolidayCalendar", FormMethod.Get, new { @id = "frmSearch", @class = "form-view-data" }))
             {
+
+
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label class="control-label">कार्यालय</label>
-                            @Html.DropDownList("officeId", eAttendance.Utility.GetOfficeIdName(User), new { @class = "chosen-select form-control" })
+                           
+                        
+                                @Html.DropDownList("officeId", eAttendance.Utility.GetOfficeIdName(User), new { @class = "chosen-select form-control" })
+                            
                         </div>
                     </div>
                     <div class="col-sm-3">

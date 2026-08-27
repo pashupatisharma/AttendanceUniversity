@@ -60,22 +60,22 @@ namespace eAttendance.Controllers
             {
                 source = source.Where(x => x.DesignationId == designationId);
             }
-            //if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
-            //{
+            if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+            {
 
-            //}
+            }
 
-            //else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
-            //{
+            else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
+            {
 
-            //    var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
-            //    var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
+                var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
+                var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
 
-            //    source = source.Where(x => x.EmployeeId == employeeId);
+                source = source.Where(x => x.EmployeeId == employeeId);
 
 
 
-            //}
+            }
 
             foreach (var item in source.ToList())
             {
@@ -127,22 +127,22 @@ namespace eAttendance.Controllers
                 list = list.Where(x => x.DesignationId == designationId).ToList();
             }
 
-            //if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
-            //{
+            if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+            {
 
-            //}
+            }
 
-            //else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
-            //{
+            else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
+            {
 
-            //    var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
-            //    var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
+                var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
+                var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
 
-            //    list = list.Where(x => x.EmployeeId == employeeId).ToList();
+                list = list.Where(x => x.EmployeeId == employeeId).ToList();
 
 
 
-            //}
+            }
 
 
 
@@ -178,23 +178,23 @@ namespace eAttendance.Controllers
             List<EmployeeAttendanceList> list = ReportService.ReportService
                 .GetEmployeeBy_FromDate_ToDate_OfficeIdList(DateTime.Now, DateTime.Now, officeId, User, true).ToList();
 
-           
-            //if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
-            //{
 
-            //}
+            if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+            {
 
-            //else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
-            //{
+            }
 
-            //    var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
-            //    var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
+            else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
+            {
 
-            //    list = list.Where(x => x.EmployeeId == employeeId).ToList();
+                var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
+                var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
+
+                list = list.Where(x => x.EmployeeId == employeeId).ToList();
 
 
 
-            //}
+            }
 
 
 
@@ -260,22 +260,22 @@ namespace eAttendance.Controllers
 
 
 
-            //if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
-            //{
+            if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+            {
 
-            //}
+            }
 
-            //else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
-            //{
+            else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
+            {
 
-            //    var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
-            //    var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
+                var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
+                var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
 
-            //    source = source.Where(x => x.EmployeeId == employeeId).ToList();
+                source = source.Where(x => x.EmployeeId == employeeId).ToList();
 
 
 
-            //}
+            }
 
 
 
@@ -343,22 +343,22 @@ namespace eAttendance.Controllers
 
 
 
-            //if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
-            //{
+            if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+            {
 
-            //}
+            }
 
-            //else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
-            //{
+            else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
+            {
 
-            //    var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
-            //    var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
+                var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
+                var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
 
-            //    source = source.Where(x => x.EmployeeId == employeeId).ToList();
+                source = source.Where(x => x.EmployeeId == employeeId).ToList();
 
 
 
-            //}
+            }
 
             List<SelectListItem> newlist = new List<SelectListItem>();
             foreach (var item in source.ToList())
@@ -412,22 +412,22 @@ namespace eAttendance.Controllers
             }
 
 
-            //if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
-            //{
+            if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+            {
 
-            //}
+            }
 
-            //else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
-            //{
+            else if (User.IsInRole("Employee") && !User.IsInRole("Admin"))
+            {
 
-            //    var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
-            //    var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
+                var userid = db.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault().Id;
+                var employeeId = EmployeeProvider.GetEmployeeIdByUserId(userid);
 
-            //    source = source.Where(x => x.EmployeeId == employeeId).ToList();
+                source = source.Where(x => x.EmployeeId == employeeId).ToList();
 
 
 
-            //}
+            }
 
             List<SelectListItem> newlist = new List<SelectListItem>();
             foreach (var item in source.ToList())

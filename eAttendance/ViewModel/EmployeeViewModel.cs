@@ -31,6 +31,8 @@ namespace eAttendance.ViewModel
 
         public List<AssignEmployeeLeave> AssignEmployeeLeaveLlist { get; set; }
 
+        public EmployeeImage EmployeeImage { get; set; }
+
 
 
     }

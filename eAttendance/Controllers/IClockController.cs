@@ -112,7 +112,7 @@ namespace eAttendance.Controllers
                                     if (string.IsNullOrEmpty(enrollNo))
                                         continue;
 
-                                    var emp = db.EmployeeInfo.FirstOrDefault(x => x.EmployeeNo == enrollNo);
+                                    var emp = db.EmployeeInfo.Where(x=>x.Status!=2).FirstOrDefault(x => x.EmployeeNo == enrollNo);
                                     if (emp == null) continue;
 
                                     var office = db.EmployeeOfficeDetail.FirstOrDefault(x => x.EmployeeId == emp.EmployeeId);

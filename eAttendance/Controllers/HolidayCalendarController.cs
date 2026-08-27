@@ -62,7 +62,7 @@ namespace eAttendance.Controllers
             try
             {
                 string userIdByUserName = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
-                if (model.OfficeId != 0)
+                if (model.OfficeId != 0 & model.OfficeId!=null)
                 {
                     model.CreatedBy = userIdByUserName;
                     model.FromDate = (NepaliDateConverter.ConvertToEnglish(NepaliDateConverter.Format(model.NFromDate)));

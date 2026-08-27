@@ -22,7 +22,7 @@
                     <td colspan="@totalcolumn" class="no-borders bg-white text-center">
 
                         <img src="@Url.Content("~/Images/Emblem_of_Nepal.png")" width="80" height="80" />
-                        <h4>नेपाल सरकार</h4>
+                
                         <h5>@eAttendance.Utility.GetOfficeIdNameWithSelect(User).First(w => w.Value == ((Request["officeId"] != null) ? Request["officeId"] : "0")).Text</h5>
                         <h5>
                             @if (Model.OfficeId > 0)
@@ -126,18 +126,18 @@
                             <td>@count</td>
                             <td>@Html.Raw(eAttendance.Utility.GetDesignationByDesignationId(e.DesignationId).DesignationName ?? "")</td>
                             <td>@CodeName</td>
-                            @foreach (var m in attendance.OrderBy(w => w.DesignationId))
+                            @foreach (var m in attendance)
                             {
 
-                                var data = db.TransferModel.Where(x => x.TransferDateTime <= m.LogDate).Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault();
-                                if (data != null)
-                                {
-                                    transfer = true;
-                                }
-                                if (transfer)
-                                {
-                                    m.StatusType = 4;
-                                }
+                                //var data = db.TransferModel.Where(x => x.TransferDateTime <= m.LogDate).Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault();
+                                //if (data != null)
+                                //{
+                                //    transfer = true;
+                                //}
+                                //if (transfer)
+                                //{
+                                //    m.StatusType = 4;
+                                //}
                                 var css = "";
                                 if (m.LogDate > DateTime.Now)
                                 {

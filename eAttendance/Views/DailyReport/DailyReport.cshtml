@@ -108,7 +108,7 @@
                                 <tr class="no-borders bg-white">
                                     <td colspan="9" class="no-borders bg-white text-center">
                                         <img src="@Url.Content("~/Images/Emblem_of_Nepal.png")" />
-                                        <h4>नेपाल सरकार</h4>
+                                     
                                         <h5>@eAttendance.Utility.GetOfficeIdNameWithSelect(User).First(w => w.Value == ((Request["officeId"] != null) ? Request["officeId"] : "0")).Text</h5>
                                         <h5>( @eAttendance.Service.MenuService.DailyAttendanceReport )</h5>
                                     </td>

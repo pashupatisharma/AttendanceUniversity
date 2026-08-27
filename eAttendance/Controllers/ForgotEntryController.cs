@@ -265,41 +265,103 @@ namespace eAttendance.Controllers
         }
 
 
+        //[HttpPost]
+        //public ActionResult Delete(ForgotEntry model)
+        //{
+        //    try
+        //    {
+
+        //        ApplicationDbContext entities = new ApplicationDbContext();
+        //        string userIdByUserName = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
+        //        model.ModifiedBy = userIdByUserName;
+        //        model.ModifiedDate = DateTime.Now;
+        //        model.Status = 2;
+
+        //        DateTime forgotDateTime = model.ForgotDate + model.ForgotTime;
+        //        List<AttendanceLog> list = entities.AttendanceLog.Where(x => x.EmployeeId == model.EmployeeId).Where(x => x.DateTime == forgotDateTime).ToList();
+        //        foreach (AttendanceLog item in list)
+        //        {
+        //            AttendanceLog data = entities.AttendanceLog.FirstOrDefault();
+        //            data.Status = 2;
+        //            data.DeletedBy = userIdByUserName;
+        //            data.DeletedDate = DateTime.Now;
+
+        //            ForgotEntry frgt = entities.ForgotEntry.Where(x => x.ForegotEntryId == item.DeviceDataId).FirstOrDefault();
+        //            frgt.Status = 2;
+        //            frgt.DeletedDate = DateTime.Now;
+        //            entities.SaveChanges();
+        //            TempData["Message"] = "Forgot entry deleted successfully.";
+        //        }
+
+        //    }
+        //    catch
+        //    {
+
+        //    }
+        //    return base.RedirectToAction("Index", "ForgotEntry");
+        //}
+
         [HttpPost]
         public ActionResult Delete(ForgotEntry model)
         {
             try
             {
-
-                ApplicationDbContext entities = new ApplicationDbContext();
-                string userIdByUserName = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
-                model.ModifiedBy = userIdByUserName;
-                model.ModifiedDate = DateTime.Now;
-                model.Status = 2;
-
-                DateTime forgotDateTime = model.ForgotDate + model.ForgotTime;
-                List<AttendanceLog> list = entities.AttendanceLog.Where(x => x.EmployeeId == model.EmployeeId).Where(x => x.DateTime == forgotDateTime).ToList();
-                foreach (AttendanceLog item in list)
+                using (ApplicationDbContext entities = new ApplicationDbContext())
                 {
-                    AttendanceLog data = entities.AttendanceLog.Where(x => x.DeviceDataId == item.DeviceDataId).FirstOrDefault();
-                    data.Status = 2;
-                    data.DeletedBy = userIdByUserName;
-                    data.DeletedDate = DateTime.Now;
+                    string userId = EmployeeProvider.GetUserIdByUserName(User.Identity.Name);
+                    DateTime now = DateTime.Now;
 
-                    ForgotEntry frgt = entities.ForgotEntry.Where(x => x.ForegotEntryId == item.DeviceDataId).FirstOrDefault();
-                    frgt.Status = 2;
-                    frgt.DeletedDate = DateTime.Now;
-                    entities.SaveChanges();
-                    TempData["Message"] = "Forgot entry deleted successfully.";
+                    using (var transaction = entities.Database.BeginTransaction())
+                    {
+                        // Get Forgot Entry
+                        var forgotEntry = entities.ForgotEntry
+                            .FirstOrDefault(x => x.ForegotEntryId == model.ForegotEntryId);
+
+                        if (forgotEntry == null)
+                        {
+                            TempData["Error"] = "Forgot entry not found.";
+                            return RedirectToAction("Index", "ForgotEntry");
+                        }
+
+                        // Soft delete ForgotEntry
+                        forgotEntry.Status = 2;
+                        //forgotEntry.DeletedBy = userId;
+                        forgotEntry.DeletedDate = now;
+
+                        // Get related AttendanceLog
+                        var attendanceLogs = entities.AttendanceLog
+                            .Where(x => x.DeviceDataId == forgotEntry.ForegotEntryId
+                                     && x.EmployeeId == model.EmployeeId
+                                     && x.Status != 2)
+                            .ToList();
+
+                        // Soft delete AttendanceLog
+                        foreach (var attendanceLog in attendanceLogs)
+                        {
+                            attendanceLog.Status = 2;
+                            attendanceLog.DeletedBy = userId;
+                            attendanceLog.DeletedDate = now;
+                        }
+
+                        entities.SaveChanges();
+
+                        transaction.Commit();
+
+                        TempData["Message"] =
+                            "Forgot entry and attendance log deleted successfully.";
+                    }
                 }
-
             }
-            catch
+            catch (Exception ex)
             {
-
+                TempData["Error"] =
+                    "Unable to delete forgot entry. " + ex.Message;
             }
-            return base.RedirectToAction("Index", "ForgotEntry");
+
+            return RedirectToAction("Index", "ForgotEntry");
         }
+
+
 
         protected override void Dispose(bool disposing)
         {

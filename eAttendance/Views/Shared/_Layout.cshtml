@@ -151,7 +151,7 @@
                             <a class="logo clearfix" href="@Url.Action("Index","Home")">
                                 <span class="logo-img clearfix">
                                     @{var logo = Utility.GetCompanyInfo();}
-                                 
+
                                     @*<img src="~/Images/Emblem_of_Nepal.png" class="img-responsive" />*@
                                     <img src="~/Images/Emblem_of_Nepal.png" class="img-responsive" height="160" width="180" />
 
@@ -199,7 +199,7 @@
                     }
 
 
-                    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator")|| User.IsInRole("Admin"))
+                    @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator") || User.IsInRole("Admin"))
                     {
                         <li>
                             <a href="#"><i class="fa fa-gears"></i> <span class="nav-label"> सेटअप</span><span class="fa arrow"></span></a>
@@ -230,7 +230,7 @@
 
                                     <li><a href="@Url.Action("Index", "SetupDistrict")">जिल्ला</a></li>
                                 }
-                                </ul>
+                            </ul>
                         </li>
                     }
 
@@ -243,10 +243,15 @@
                                 @if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator") || User.IsInRole("Admin"))
                                 {
                                     <li><a href="@Url.Action("Index", "EmployeeInfo")">कर्मचारीको सुची</a></li>
-                                    <li><a href="@Url.Action("AttendanceRecordDelete", "EmployeeInfo")">हाजिरी मेटाउने</a></li>
+                                    if (User.IsInRole("SuperAdmin") || User.IsInRole("Administrator"))
+                                    {
+
+                                        <li><a href="@Url.Action("AttendanceRecordDelete", "EmployeeInfo")">हाजिरी मेटाउने</a></li>
+
 
                                     <li><a href="@Url.Action("Index", "Transfer")">कर्मचारी आन्तरिक सरुवा</a></li>
                                     <li><a href="@Url.Action("IndexExternalTransfer", "Transfer")">कर्मचारी बाह्य सरुवा</a></li>
+                                    }
 
                                     <li><a href="@Url.Action("IndexPage", "Document")">कागजात</a></li>
                                 }
@@ -276,7 +281,9 @@
                             }
                             @if (User.IsInRole("Administrator") || User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
                             {
-                                <li><a href="@Url.Action("AddList", "AssignEmployeeLeave")">बिदा नियूक्ति</a></li>
+                                
+
+                                <li><a href="@Url.Action("AddList", "AssignEmployeeLeave")">निर्धारित बिदा</a></li>
 
                             }
 
@@ -395,7 +402,7 @@
                                 <b>@data.OfficeName</b>
                             </h2>
                             <h3 style="font-size: 14px; font-weight: bold; margin: 0; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; padding: 5px">
-                                @data.Address
+                                @*@data.Address*@
                             </h3>
                         }
                         <h4 style="font-size: 12px; font-weight: bold; margin: 0; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; padding: 5px">
@@ -452,7 +459,7 @@
 
             //Highlight Active menu and folder
 
-         var currentUrl = window.location.pathname.toLowerCase();
+            var currentUrl = window.location.pathname.toLowerCase();
 
             $('#side-menu a').each(function () {
 
@@ -478,3 +485,29 @@
 
 </body>
 </html>
+
+@*<style>
+    .modal,
+    .modal-dialog,
+    .modal-content,
+    .modal-body {
+        overflow: visible !important;
+    }
+</style>*@
+
+
+<style>
+    .modal {
+        overflow-y: auto !important;
+    }
+
+    .modal-dialog,
+    .modal-content {
+        overflow: hidden !important;
+    }
+
+    .modal-body {
+        overflow-y: auto !important;
+        max-height: 70vh;
+    }
+</style>

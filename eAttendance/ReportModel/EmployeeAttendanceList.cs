@@ -107,5 +107,6 @@ namespace eAttendance.ReportModel
         public int ServiceDisplayOrder { get; set; }
 
         public int DesignationDisplayOrder { get; set; }
+        public int? DisplayOrder { get; internal set; }
     }
 }

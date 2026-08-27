@@ -33,7 +33,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins no-margins">
-               <div class="ibox-content no-border-bottom">
+                <div class="ibox-content no-border-bottom">
                     @using (Html.BeginForm("VisitPosting", "VisitApplication", FormMethod.Get, new { @class = "form-view-data", @id = "frmVisitPosting" }))
                     {<fieldset>
                             <legend>Search Criteria</legend>
@@ -163,10 +163,13 @@
                                                 <i class="fa fa-pencil"></i>
                                                 <span class="hidden-xs hidden-sm"></span>
                                             </button>
-                                            <button value="@m.VisitApplicationId" class="btn-delete btn btn-sm btn-danger">
-                                                <i class="fa fa-remove"></i>
-                                                <span class="hidden-xs hidden-sm"></span>
-                                            </button>
+                                            @if (User.IsInRole("SuperAdmin"))
+                                            {
+                                                <button value="@m.VisitApplicationId" class="btn-delete btn btn-sm btn-danger">
+                                                    <i class="fa fa-remove"></i>
+                                                    <span class="hidden-xs hidden-sm"></span>
+                                                </button>
+                                            }
                                         </td>
                                     </tr>
                                 }

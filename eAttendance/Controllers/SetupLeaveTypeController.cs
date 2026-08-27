@@ -127,9 +127,9 @@ namespace eAttendance.Controllers
         // POST: /SetupLeaveType/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(LeaveTypeSetUp model)
         {
-            LeaveTypeSetUp leavetypesetup = await db.LeaveTypeSetUp.FindAsync(id);
+            LeaveTypeSetUp leavetypesetup = await db.LeaveTypeSetUp.FindAsync(model.LeaveTypeId);
             db.LeaveTypeSetUp.Remove(leavetypesetup);
             await db.SaveChangesAsync();
             TempData["Message"] = "Leave type deleted successfully.";

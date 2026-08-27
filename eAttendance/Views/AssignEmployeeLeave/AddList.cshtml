@@ -3,6 +3,29 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
 }
+<script>
+    $(document).on('input', '.LastYearValue, .ThisYearValue', function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    $(document).on('keypress', '.LastYearValue, .ThisYearValue', function (e) {
+        if (e.which < 48 || e.which > 57) {
+            e.preventDefault();
+        }
+    });
+</script>
+
+<script>
+    $(document).on('input', '.OpeningBalance, .NoofLeave', function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    $(document).on('keypress', '.OpeningBalance, .NoofLeave', function (e) {
+        if (e.which < 48 || e.which > 57) {
+            e.preventDefault();
+        }
+    });
+</script>
 <div class="modal-content">
     <div class="modal-header">
         <ol class="breadcrumb">
@@ -16,8 +39,8 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8">
-        <h2>निर्धारित छुट्टी</h2>
-    
+        <h2>निर्धारित बिदा</h2>
+
     </div>
 
 </div>
@@ -80,8 +103,8 @@
                             <tr>
                                 @foreach (var lt in db.LeaveTypeSetUp.ToList())
                                 {
-                                    <th leavetypeid="@lt.LeaveTypeId"><input type="text" class="form-control input-sm text-center LastYearValue" /></th>
-                                    <th leavetypeid="@lt.LeaveTypeId"><input type="text" class="form-control input-sm text-center ThisYearValue" /></th>
+                                    <th leavetypeid="@lt.LeaveTypeId"><input type="text" class="form-control input-sm text-center LastYearValue" inputmode="numeric" autocomplete="off"/></th>
+                                    <th leavetypeid="@lt.LeaveTypeId"><input type="text" class="form-control input-sm text-center ThisYearValue"  inputmode="numeric"  autocomplete="off"></th>
                                 }
                             </tr>
                         </thead>

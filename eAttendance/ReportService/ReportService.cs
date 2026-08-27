@@ -96,6 +96,7 @@ namespace ReportService
                 {
                     OfficeId = office.OfficeId ?? 0,
                     LevelId = office.LevelId ?? 0,
+                    DisplayOrder=employee.DisplayOrder,
                     LevelDisplayOrder = level != null
                         ? level.DisplayOrder
                         : 0,
@@ -121,9 +122,9 @@ namespace ReportService
                 };
 
             return result
-                     .OrderBy(x => x.LevelDisplayOrder)
+                     .OrderBy(x => x.DisplayOrder)
 
-                     .ThenBy(x => x.DesignationDisplayOrder)
+                     //.ThenBy(x => x.DesignationDisplayOrder)
                      .ToList();
         }
 
@@ -208,6 +209,7 @@ namespace ReportService
                     {
                         OfficeId = office.OfficeId ?? 0,
                         LevelId = office.LevelId ?? 0,
+                        DisplayOrder = employee.DisplayOrder,
 
                         LevelDisplayOrder = level != null
                             ? level.DisplayOrder
@@ -235,9 +237,9 @@ namespace ReportService
                     };
 
                 return result
-                    .OrderBy(x => x.LevelDisplayOrder)
+                    .OrderBy(x => x.DisplayOrder)
                   
-                    .ThenBy(x => x.DesignationDisplayOrder)
+                   // .ThenBy(x => x.DesignationDisplayOrder)
                     .ToList();
             }
         }

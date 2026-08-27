@@ -1,5 +1,6 @@
 ﻿using eAttendance.ReportModel;
 using eAttendance.ViewModel;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,33 @@ namespace eAttendance.Controllers
         [HttpPost]
         public ActionResult AnualReport(MonthlyAttendanceModel model)
         {
+            bool isFullAccess =
+User.IsInRole("Admin") ||
+User.IsInRole("SuperAdmin") ||
+User.IsInRole("Administrator");
+            if (!isFullAccess)
+            {
+                string userId = User.Identity.GetUserId();
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    var employeeInfo = (from emp in db.EmployeeInfo
+                                        join office in db.EmployeeOfficeDetail
+                                            on emp.EmployeeId equals office.EmployeeId
+                                        where emp.UserId == userId
+                                        select new
+                                        {
+                                            EmployeeId = emp.EmployeeId,
+                                            OfficeId = office.OfficeId
+                                        })
+                                       .FirstOrDefault();
+
+                    if (employeeInfo != null)
+                    {
+                        model.EmployeeId = employeeInfo.EmployeeId;
+                        model.OfficeId = Convert.ToInt32(employeeInfo.OfficeId);
+                    }
+                }
+            }
 
             model.FilteredEmployeeList = new List<MonthlyAttendanceModel>();
             model.EmployeeLeaveSummaryList = new List<EmployeeLeaveSummaryList>();

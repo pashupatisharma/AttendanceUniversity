@@ -81,10 +81,13 @@
                                                 <i class="fa fa-pencil"></i>
                                                 <span class="hidden-xs hidden-sm"></span>
                                             </button>
+                                            @if (User.IsInRole("SuperAdmin"))
+                                            {
                                             <button value="@m.VisitApplicationId" class="btn-delete btn btn-sm btn-danger">
                                                 <i class="fa fa-remove"></i>
                                                 <span class="hidden-xs hidden-sm"></span>
                                             </button>
+                                            }
                                         </td>
 
                                     </tr>

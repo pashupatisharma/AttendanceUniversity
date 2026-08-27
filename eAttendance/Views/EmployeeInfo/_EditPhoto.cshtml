@@ -1,0 +1,76 @@
+﻿@model eAttendance.Models.EmployeeImage
+@{
+    Layout = "~/Views/Shared/_Blank.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+
+        @using (Html.BeginForm(
+            "SavePhoto",
+            "EmployeeInfo",
+            FormMethod.Post,
+            new { enctype = "multipart/form-data", id = "photoForm" }))
+        {
+            @Html.HiddenFor(m => m.EmployeeId)
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    <h4>कर्मचारी फोटो</h4>
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="text-center">
+
+                        <img id="photoPreview"
+                             src="@(string.IsNullOrEmpty(Model.ImageName)
+                                 ? Url.Content("~/images/img_not_available.png")
+                                 : Url.Content(Model.ImageName))"
+                             class="img-thumbnailImageName"
+                             style="width:180px;height:180px;object-fit:cover;" />
+
+                    </div>
+
+                    <br />
+
+                    <div class="form-group">
+                        <label>फोटो छान्नुहोस्</label>
+
+                        <input type="file"
+                               name="photo"
+                               id="photo"
+                               accept="image/*"
+                               class="form-control" />
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i> फोटो सुरक्षित गर्नुहोस्
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+</div>
+
+<script>
+    $("#photo").change(function () {
+
+        var file = this.files[0];
+
+        if (file) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $("#photoPreview").attr("src", e.target.result);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+</script>

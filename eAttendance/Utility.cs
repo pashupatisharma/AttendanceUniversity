@@ -991,7 +991,9 @@ namespace eAttendance
             list.Add(new SelectListItem() { Value = "20", Text = "20" });
             list.Add(new SelectListItem() { Value = "30", Text = "40" });
             list.Add(new SelectListItem() { Value = "50", Text = "50" });
-
+            list.Add(new SelectListItem() { Value = "100", Text = "100" });
+            list.Add(new SelectListItem() { Value = "500", Text = "500" });
+            list.Add(new SelectListItem() { Value = "100000", Text = "ALL" });
             return list;
 
 

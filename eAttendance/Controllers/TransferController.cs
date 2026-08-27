@@ -201,58 +201,63 @@ namespace eAttendance.Controllers
 
                     info.ModifiedDate = DateTime.Now;
 
-                    info.Status = 4;
+                    info.Status = 1;
 
                     db.Entry(info).State = EntityState.Modified;
                     db.SaveChanges();
+                    EmployeeOfficeDetail model2 = db.EmployeeOfficeDetail.Where(x => x.EmployeeId == objInfo.EmployeeId).FirstOrDefault();
 
-                    EmployeeOfficeDetail model2 = new EmployeeOfficeDetail
-                    {
-                        EmployeeId = objInfo.EmployeeId,
-                        EffectiveDate = time,
-                        OfficeId = new int?(model.ToOfficeId),
-                        BranchId = new int?(model.ToBranchId),
-                        LevelId = new int?(model.ToLevelId),
-                        DesignationId = new int?(model.ToDesignationId),
-                        ServiceId = new int?(model.ToServiceId),
-                        Remarks = model.Remarks,
-                        CreatedBy = userIdByUserName,
-                        CreatedDate = DateTime.Now,
-                        ModifiedDate = DateTime.Now,
-                        Status = 1
-                    };
+                    model2.EmployeeId = objInfo.EmployeeId;
+                    model2.EffectiveDate = time;
+                    model2.OfficeId = new int?(model.ToOfficeId);
+                    model2.BranchId = new int?(model.ToBranchId);
+                    model2.LevelId = new int?(model.ToLevelId);
+                    model2.DesignationId = new int?(model.ToDesignationId);
+                    model2.ServiceId = new int?(model.ToServiceId);
+                    model2.Remarks = model.Remarks;
+                    model2.CreatedBy = userIdByUserName;
+                    model2.CreatedDate = DateTime.Now;
+                    model2.ModifiedDate = DateTime.Now;
+                    model2.Status = 1;
+
                     db.Entry(model2).State = EntityState.Modified;
                     db.SaveChanges();
 
+                    //var log = db.AttendanceLog.Where(x => x.EmployeeId == objInfo.EmployeeId).ToList();
+                    //foreach(var item in log)
+                    //{
+                    //    item.OfficeId = model.ToOfficeId;
+                    //    db.SaveChanges();
+                    //}
 
-                    EmployeeShiftTime time2 = db.EmployeeShiftTime.Where(x => x.EmployeeId == objInfo.EmployeeId).FirstOrDefault();
-                    if (time2 != null)
-                    {
-                        time2.Stauts = 4;
-                        db.Entry(time2).State = EntityState.Modified;
-                        db.SaveChanges();
-                        SetupShiftTime time3 = db.SetupShiftTime.Where(x => x.ShiftId == time2.ShiftId).FirstOrDefault();
-                        if (time3 != null)
-                        {
-                            EmployeeShiftTime model3 = new EmployeeShiftTime
-                            {
-                                EmployeeId = obj.EmployeeId,
-                                EffectiveDate = time,
-                                ShiftId = time2.ShiftId,
-                                Remarks = model.Remarks,
-                                CreatedBy = userIdByUserName,
-                                CreatedDate = DateTime.Now,
-                                ModifiedDate = DateTime.Now,
-                                Stauts = 1
-                            };
-                            db.Entry(model3).State = EntityState.Modified;
-                            db.SaveChanges();
-                        }
-                    }
+                    //EmployeeShiftTime time2 = db.EmployeeShiftTime.Where(x => x.EmployeeId == objInfo.EmployeeId).FirstOrDefault();
+                    //if (time2 != null)
+                    //{
+                    //    time2.Stauts = 4;
+                    //    db.Entry(time2).State = EntityState.Modified;
+                    //    db.SaveChanges();
+                    //    SetupShiftTime time3 = db.SetupShiftTime.Where(x => x.ShiftId == time2.ShiftId).FirstOrDefault();
+                    //    if (time3 != null)
+                    //    {
+                    //        EmployeeShiftTime model3 = new EmployeeShiftTime
+                    //        {
+                    //            EmployeeId = obj.EmployeeId,
+                    //            EffectiveDate = time,
+                    //            ShiftId = time2.ShiftId,
+                    //            Remarks = model.Remarks,
+                    //            CreatedBy = userIdByUserName,
+                    //            CreatedDate = DateTime.Now,
+                    //            ModifiedDate = DateTime.Now,
+                    //            Stauts = 1
+                    //        };
+                    //        db.Entry(model3).State = EntityState.Modified;
+                    //        db.SaveChanges();
+                    //    }
+                    //}
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
 
             }

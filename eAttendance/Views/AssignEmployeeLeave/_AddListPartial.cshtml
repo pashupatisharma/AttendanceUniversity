@@ -3,6 +3,8 @@
 @{
     eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
 }
+
+
 @using (Html.BeginCollectionItem("EmployeeInfo.EmoloyeeList"))
 {
     @Html.HiddenFor(m => m.EmployeeId)
@@ -36,14 +38,14 @@
                 <td assignleaveid="@Model.LeaveTypes[i].LeaveApplicationId" leavetypeid="@Model.LeaveTypes[i].LeaveTypeId" assigntype="lastyear">
 
 
-                    @Html.TextBoxFor(m => Model.LeaveTypes[i].OpenningBalance, new { @class = "form-control input-sm text-center OpeningBalance" })
+                    @Html.TextBoxFor(m => Model.LeaveTypes[i].OpenningBalance, new { @class = "form-control input-sm text-center OpeningBalance", inputmode = "numeric" })
 
 
                 </td>
 
 
                 <td assignleaveid="@Model.LeaveTypes[i].LeaveApplicationId" leavetypeid="@Model.LeaveTypes[i].LeaveTypeId" assigntype="thisyear">
-                    @Html.TextBoxFor(m => Model.LeaveTypes[i].NoOfLeave, new { @class = "form-control input-sm text-center NoofLeave" })
+                    @Html.TextBoxFor(m => Model.LeaveTypes[i].NoOfLeave, new { @class = "form-control input-sm text-center NoofLeave", inputmode = "numeric" })
                 </td>
 
 
@@ -95,10 +97,10 @@
 
                 <td assignleaveid="0" leavetypeid="@Model.LeaveTypes[i].LeaveTypeId" assigntype="lastyear">
 
-                    @Html.TextBoxFor(m => Model.LeaveTypes[i].OpenningBalance, new { @class = "form-control input-sm text-center OpeningBalance" })
+                    @Html.TextBoxFor(m => Model.LeaveTypes[i].OpenningBalance, new { @class = "form-control input-sm text-center OpeningBalance", inputmode = "numeric"  })
                 </td>
                 <td assignleaveid="0" leavetypeid="@Model.LeaveTypes[i].LeaveTypeId" assigntype="thisyear">
-                    @Html.TextBoxFor(m => Model.LeaveTypes[i].NoOfLeave, new { @class = "form-control input-sm text-center NoofLeave" })
+                    @Html.TextBoxFor(m => Model.LeaveTypes[i].NoOfLeave, new { @class = "form-control input-sm text-center NoofLeave", inputmode = "numeric" })
                 </td>
 
 

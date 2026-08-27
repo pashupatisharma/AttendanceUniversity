@@ -9,7 +9,7 @@
                 <tr class="no-borders bg-white">
                     <td colspan="34" class="no-borders bg-white text-center">
                         <img src="@Url.Content("~/Images/Emblem_of_Nepal.png")" width="80" height="80" />
-                        <h4>नेपाल सरकार</h4>
+                     
 
 
 
@@ -130,15 +130,15 @@
                             <td style="padding:0px;">@CodeName</td>
                             @foreach (var m in attendance.OrderBy(w => w.LogDate))
                             {
-                                var data = db.TransferModel.Where(x => x.TransferDateTime <= m.LogDate).Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault();
-                                if (data != null)
-                                {
-                                    transfer = true;
-                                }
-                                if (transfer)
-                                {
-                                    m.StatusType = 4;
-                                }
+                                //var data = db.TransferModel.Where(x => x.TransferDateTime <= m.LogDate).Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault();
+                                //if (data != null)
+                                //{
+                                //    transfer = true;
+                                //}
+                                //if (transfer)
+                                //{
+                                //    m.StatusType = 4;
+                                //}
 
 
                                 var css = "";

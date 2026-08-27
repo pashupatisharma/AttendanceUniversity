@@ -100,9 +100,12 @@
                                     <li class="active"><a href="#PersonalInfo" data-toggle="tab"> विवरण </a></li>
                                     <li><a href="#OfficeInfo" data-toggle="tab"> कार्यालय विवरण</a></li>
                                     <li><a href="#AddressInfo" data-toggle="tab">ठेगाना </a></li>
-                                    <li><a href="#ShiftInfo" data-toggle="tab">सिफ्ट</a></li>
+                                    <li><a href="#ShiftInfo" data-toggle="tab">सिफ्ट</a></li>a
                                     <li><a href="#RoleInfo" data-toggle="tab">रोल </a></li>
                                     <li><a href="#AccountInfo" data-toggle="tab">खाता विवरण</a></li>
+                                    <li>
+                                        <a href="#PhotoInfo" data-toggle="tab">फोटो</a>
+                                    </li>
                                 </ul>
                                 <div class="tab-content">
                                     <div id="PersonalInfo" class="tab-pane active">
@@ -133,6 +136,20 @@
                                     <div id="AccountInfo" class="tab-pane">
                                         <div class="panel-body">
                                             @{Html.RenderAction("EditAccountInfo", "EmployeeInfo", new { @id = Model.EmployeeInfo.EmployeeId });}
+                                        </div>
+                                    </div>
+
+
+
+                                    <div id="PhotoInfo" class="tab-pane">
+                                        <div class="panel-body">
+                                            @{
+                                                Html.RenderAction(
+                                                    "EditPhoto",
+                                                    "EmployeeInfo",
+                                                    new { @id = Model.EmployeeInfo.EmployeeId }
+                                                );
+                                            }
                                         </div>
                                     </div>
 
