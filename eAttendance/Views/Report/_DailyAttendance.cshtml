@@ -71,6 +71,7 @@
                     <th colspan="2" class="text-center">समय</th>
                     <th colspan="2" class="text-center">समयको कैफियत</th>
                     <th rowspan="2" class="text-center">@eAttendance.Service.MenuService.WorkedHour</th>
+                    <th rowspan="2" class="text-center">ओभरटाइम</th>
                     <th rowspan="2" class="text-center">@eAttendance.Service.MenuService.Remarks</th>
                 </tr>
                 <tr>
@@ -104,6 +105,24 @@
                             {
                                 @Html.Raw(m.StatusType == 1 ? (m.CheckOut - m.CheckIn).Value.ToString(@"hh\:mm") : "")
                             }
+                        </td>
+                        <td class="text-center">
+                            @{
+                                string overtimeDisplay = "";
+                                if (m.StatusType == 1 && shift != null
+                                    && m.CheckOut != TimeSpan.Zero && m.CheckOut != null
+                                    && !string.IsNullOrEmpty(shift.ShiftEndTime))
+                                {
+                                    TimeSpan shiftEndTime;
+                                    if (TimeSpan.TryParse(shift.ShiftEndTime, out shiftEndTime) && shiftEndTime != TimeSpan.Zero
+                                        && m.CheckOut.Value > shiftEndTime)
+                                    {
+                                        TimeSpan overtime = m.CheckOut.Value - shiftEndTime;
+                                        overtimeDisplay = overtime.ToString(@"hh\:mm");
+                                    }
+                                }
+                            }
+                            @Html.Raw(overtimeDisplay)
                         </td>
                         <td>
                             @if (m.StatusType == 1)
@@ -148,7 +167,7 @@
                 @if (count == 0)
                 {
                     <tr>
-                        <td colspan="10" class="text-center font-bold">@eAttendance.Service.MenuService.NoRecordFound</td>
+                        <td colspan="11" class="text-center font-bold">@eAttendance.Service.MenuService.NoRecordFound</td>
                     </tr>
                 }
             </tbody>
