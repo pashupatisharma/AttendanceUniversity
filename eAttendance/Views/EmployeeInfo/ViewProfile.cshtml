@@ -30,14 +30,16 @@
                     <h4>Profile Information</h4>
                 </div>
                 <div class="ibox-content no-padding border-left-right">
-               
-
                     <img id="photoPreview"
-                         src="@(string.IsNullOrEmpty(Model.EmployeeImage.ImageName)
-     ? Url.Content("~/images/img_not_available.png")
-     : Url.Content(Model.EmployeeImage.ImageName))"
-                         class="img-thumbnailImageName"
+                         src="@(
+             Model.EmployeeImage == null ||
+             string.IsNullOrEmpty(Model.EmployeeImage.ImageName)
+                 ? Url.Content("~/images/img_not_available.png")
+                 : Url.Content(Model.EmployeeImage.ImageName)
+         )"
+                         class="img-thumbnail ImageName"
                          style="width:180px;height:180px;object-fit:cover;" />
+
 
 
                 </div>

@@ -18,6 +18,27 @@ namespace eAttendance
             return new SelectList(context.Roles.ToList(), "Name", "Name");
         }
 
+     
+
+        public static string GetEmployeeImageByUserId(string userId)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                int employeeId = GetEmployeeIdByUserId(userId);
+
+                var employeeImage = db.EmployeeImage
+                  
+                    .FirstOrDefault(x => x.EmployeeId == employeeId);
+
+                if (employeeImage != null && !string.IsNullOrEmpty(employeeImage.ImageName))
+                {
+                    return employeeImage.ImageName;
+                }
+
+                return "~/Images/user-image.jpg";
+            }
+        }
+
         public static CompanyInfo GetCompanyInfo()
         {
             ApplicationDbContext context = new ApplicationDbContext();

@@ -1,19 +1,25 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
+    var userImage = Utility.GetEmployeeImageByUserId(User.Identity.GetUserId());
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
         @Html.AntiForgeryToken()
       
         <li class="dropdown no-borders">
             <a class="dropdown-toggle count-info dropdown-header" data-toggle="dropdown" href="#">
-                <img alt="image" class="img-circle img-responsive" src="@Url.Content("~/Images/user-image.jpg")"/>
+                <img alt="image" class="img-circle img-responsive"  src="@Url.Content(userImage)"/>
                 <i class="fa fa-angle-down text-white"></i>
             </a>
             <ul class="dropdown-menu dropdown-user animated fadeInUp no-borders bounce">
                 <li class="no-margins list-user">
                     <div class="widget-head-color-box blue-bg p-lg text-center no-borders">
-                        <img alt="profile" class="img-circle circle-border m-b-sm" src="@Url.Content("~/Images/user-image.jpg")">
+                        <img alt="profile" class="img-circle circle-border m-b-sm"  src="@Url.Content(userImage)">
+
+
+
+
+
                         <h2 class="font-bold no-margins">
                             @Html.ActionLink(User.Identity.GetUserName() + "!", "", "", routeValues: null, htmlAttributes: new { title = "Manage", @class = "text-white" })
                         </h2>
