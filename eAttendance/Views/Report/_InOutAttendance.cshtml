@@ -34,11 +34,11 @@
                 </tr>
                 <tr class='no-border-row bg-white'>
                     @{
-                            int nYear = Model.YearId;
-                            int nMonth = Model.MonthId;
-                            DateTime[] date = NepaliDateConverter.GetMonth(nYear, nMonth);
-                            int dayinmonth = Convert.ToInt32((date[1] - date[0]).TotalDays) + 1;
-                            int totalcolumn = dayinmonth + 3;
+                        int nYear = Model.YearId;
+                        int nMonth = Model.MonthId;
+                        DateTime[] date = NepaliDateConverter.GetMonth(nYear, nMonth);
+                        int dayinmonth = Convert.ToInt32((date[1] - date[0]).TotalDays) + 1;
+                        int totalcolumn = dayinmonth + 3;
                     }
                     <td colspan="34">
                         <table class="table no-borders no-margins">
@@ -83,15 +83,15 @@
             </thead>
             <tbody>
                 @{ int count = 0;
-                 DateTime[] datetime = NepaliDateConverter.GetMonth(nYear, nMonth);
-                 DateTime FromDate = datetime[0];
-                 DateTime ToDate = datetime[1];
+                    DateTime[] datetime = NepaliDateConverter.GetMonth(nYear, nMonth);
+                    DateTime FromDate = datetime[0];
+                    DateTime ToDate = datetime[1];
 
-                 // Preload this office's shift times once, instead of querying the DB per day per employee (N+1 fix)
-                 var shiftTimesById = db.SetupShiftTime
-                     .Where(s => s.OfficeId == Model.OfficeId)
-                     .ToList()
-                     .ToDictionary(s => s.ShiftTimeId, s => s);
+                    // Preload this office's shift times once, instead of querying the DB per day per employee (N+1 fix)
+                    var shiftTimesById = db.SetupShiftTime
+                        .Where(s => s.OfficeId == Model.OfficeId)
+                        .ToList()
+                        .ToDictionary(s => s.ShiftTimeId, s => s);
                 }
 
                 @if (Model != null)
@@ -176,9 +176,9 @@
                                     else if (m.StatusType == 1)
                                     {
                                         @Html.Raw("<table><tr><td>आ:</td><td>" + ((m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? m.CheckIn.Value.ToString(@"hh\:mm") : "") + "</td></tr>" +
-                                                                            "<tr><td>ग:</td><td>" + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null) ? m.CheckOut.Value.ToString(@"hh\:mm") : "") + "</td></tr>" +
-                                                                            "<tr><td>क.स:</td><td>" + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null && m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? (m.CheckOut - m.CheckIn).Value.ToString(@"hh\:mm") : "") + "</td></tr></table>"
-                                                                  )
+                                                                             "<tr><td>ग:</td><td>" + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null) ? m.CheckOut.Value.ToString(@"hh\:mm") : "") + "</td></tr>" +
+                                                                             "<tr><td>क.स:</td><td>" + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null && m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? (m.CheckOut - m.CheckIn).Value.ToString(@"hh\:mm") : "") + "</td></tr></table>"
+                                                                   )
                                     }
                                     else
                                     {
@@ -210,37 +210,82 @@
                                         @Html.Raw(remarks);
                                     }
                                 </td>
-                                // First pass: calculate total hours and overtime
-                                if (m.StatusType == 1 && m.CheckOut != TimeSpan.Zero && m.CheckOut != null && m.CheckIn != TimeSpan.Zero && m.CheckIn != null)
+                                // Calculate total worked hours and overtime
+                                if (m.StatusType == 1
+                                    && m.CheckOut.HasValue
+                                    && m.CheckIn.HasValue
+                                    && m.CheckOut.Value != TimeSpan.Zero
+                                    && m.CheckIn.Value != TimeSpan.Zero)
                                 {
-                                    totalDailyHours += (m.CheckOut - m.CheckIn).Value;
+                                    // Actual hours worked by employee for this day
+                                    TimeSpan actualWorkingHours =
+                                        m.CheckOut.Value - m.CheckIn.Value;
 
-                                    // calculate overtime for this day based on shift end time
+                                    // Add to monthly total worked hours
+                                    totalDailyHours += actualWorkingHours;
+
+                                    // Get employee's shift
                                     eAttendance.Models.SetupShiftTime shift = null;
+
                                     if (m.ShiftTimeId.HasValue)
                                     {
-                                        shiftTimesById.TryGetValue(m.ShiftTimeId.Value, out shift);
+                                        shiftTimesById.TryGetValue(
+                                            m.ShiftTimeId.Value,
+                                            out shift
+                                        );
                                     }
-                                    if (shift != null && !string.IsNullOrEmpty(shift.ShiftEndTime))
+
+                                    if (shift != null
+                                        && !string.IsNullOrEmpty(shift.ShiftStartTime)
+                                        && !string.IsNullOrEmpty(shift.ShiftEndTime))
                                     {
+                                        TimeSpan shiftStartTime;
                                         TimeSpan shiftEndTime;
-                                        if (TimeSpan.TryParse(shift.ShiftEndTime, out shiftEndTime) && shiftEndTime != TimeSpan.Zero)
+
+                                        bool validStartTime = TimeSpan.TryParse(
+                                            shift.ShiftStartTime,
+                                            out shiftStartTime
+                                        );
+
+                                        bool validEndTime = TimeSpan.TryParse(
+                                            shift.ShiftEndTime,
+                                            out shiftEndTime
+                                        );
+
+                                        if (validStartTime && validEndTime)
                                         {
-                                            if (m.CheckOut.Value > shiftEndTime)
+                                            // Required working hours according to the shift
+                                            TimeSpan requiredWorkingHours =
+                                                shiftEndTime - shiftStartTime;
+
+                                            // Overtime = Actual Worked Hours - Required Shift Hours
+                                            TimeSpan dailyOvertime =
+                                                actualWorkingHours - requiredWorkingHours;
+
+                                            // Only add positive overtime
+                                            if (dailyOvertime > TimeSpan.Zero)
                                             {
-                                                totalOvertime += (m.CheckOut - shiftEndTime).Value;
+                                                totalOvertime += dailyOvertime;
                                             }
                                         }
                                     }
                                 }
                             }
+
                             @{
                                 int totalHours = (int)totalDailyHours.TotalHours;
                                 int totalMinutes = totalDailyHours.Minutes;
-                                string formattedTotal = totalHours.ToString("00") + ":" + totalMinutes.ToString("00");
+
+                                string formattedTotal =
+                                    totalHours.ToString("00") + ":" +
+                                    totalMinutes.ToString("00");
+
                                 int otHours = (int)totalOvertime.TotalHours;
                                 int otMinutes = totalOvertime.Minutes;
-                                string formattedOvertime = otHours.ToString("00") + ":" + otMinutes.ToString("00");
+
+                                string formattedOvertime =
+                                    otHours.ToString("00") + ":" +
+                                    otMinutes.ToString("00");
                             }
                             <!-- Total at the end -->
                             <td style="padding:0px;">@formattedTotal</td>

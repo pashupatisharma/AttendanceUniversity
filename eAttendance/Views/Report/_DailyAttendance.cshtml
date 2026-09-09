@@ -9,8 +9,8 @@
             <thead>
                 <tr class="no-borders bg-white">
                     <td colspan="9" class="no-borders bg-white text-center">
-                        <img src="@Url.Content("~/Images/Emblem_of_Nepal.png")"  width="80" height="80"/>
-                   
+                        <img src="@Url.Content("~/Images/Emblem_of_Nepal.png")" width="80" height="80" />
+
 
 
                         <h5>
@@ -55,7 +55,7 @@
                                 <td class="no-borders">पद: @Html.Raw((Model.DesignationId > 0) ? eAttendance.Utility.GetDesignationByDesignationId(Model.DesignationId).DesignationName : "सबै")</td>
                                 <td class="no-borders">शिफ्ट: @Html.Raw((Model.ShiftTypeId > 0) ? eAttendance.Utility.GetShiftTypeListById(Model.ShiftTypeId).Name : "सबै")</td>
                                 <td class="no-borders">कर्मचारी: @Html.Raw((Model.EmployeeId > 0) ? eAttendance.Utility.GetEmployeeInfoByEmnployeeId(Model.EmployeeId).EmployeeNameNp : "सबै")</td>
-                             
+
                             </tr>
                         </table>
                     </td>
@@ -84,10 +84,10 @@
             <tbody>
 
                 @{int count = 0;
-           }
+                }
                 @foreach (var m in Model.EmployeeAttendanceLists)
                 {
-                     
+
                     count += 1;
                     var shift = db.SetupShiftTime.Where(w => w.ShiftTimeId == m.ShiftTimeId).FirstOrDefault();
                     string color = "";
@@ -106,22 +106,56 @@
                                 @Html.Raw(m.StatusType == 1 ? (m.CheckOut - m.CheckIn).Value.ToString(@"hh\:mm") : "")
                             }
                         </td>
+
                         <td class="text-center">
                             @{
                                 string overtimeDisplay = "";
-                                if (m.StatusType == 1 && shift != null
-                                    && m.CheckOut != TimeSpan.Zero && m.CheckOut != null
+
+                                if (m.StatusType == 1
+                                    && shift != null
+                                    && m.CheckIn.HasValue
+                                    && m.CheckOut.HasValue
+                                    && m.CheckIn.Value != TimeSpan.Zero
+                                    && m.CheckOut.Value != TimeSpan.Zero
+                                    && !string.IsNullOrEmpty(shift.ShiftStartTime)
                                     && !string.IsNullOrEmpty(shift.ShiftEndTime))
                                 {
+                                    TimeSpan shiftStartTime;
                                     TimeSpan shiftEndTime;
-                                    if (TimeSpan.TryParse(shift.ShiftEndTime, out shiftEndTime) && shiftEndTime != TimeSpan.Zero
-                                        && m.CheckOut.Value > shiftEndTime)
+
+                                    bool validStart = TimeSpan.TryParse(
+                                        shift.ShiftStartTime,
+                                        out shiftStartTime
+                                    );
+
+                                    bool validEnd = TimeSpan.TryParse(
+                                        shift.ShiftEndTime,
+                                        out shiftEndTime
+                                    );
+
+                                    if (validStart && validEnd)
                                     {
-                                        TimeSpan overtime = m.CheckOut.Value - shiftEndTime;
-                                        overtimeDisplay = overtime.ToString(@"hh\:mm");
+                                        // Shift's required working duration
+                                        TimeSpan requiredWorkingHours =
+                                            shiftEndTime - shiftStartTime;
+
+                                        // Employee's actual working duration
+                                        TimeSpan actualWorkingHours =
+                                            m.CheckOut.Value - m.CheckIn.Value;
+
+                                        // Overtime
+                                        TimeSpan overtime =
+                                            actualWorkingHours - requiredWorkingHours;
+
+                                        if (overtime > TimeSpan.Zero)
+                                        {
+                                            overtimeDisplay =
+                                                overtime.ToString(@"hh\:mm");
+                                        }
                                     }
                                 }
                             }
+
                             @Html.Raw(overtimeDisplay)
                         </td>
                         <td>
@@ -162,7 +196,7 @@
                             }
                         </td>
                     </tr>
-                
+
                 }
                 @if (count == 0)
                 {
