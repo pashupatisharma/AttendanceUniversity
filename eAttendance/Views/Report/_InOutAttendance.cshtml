@@ -9,21 +9,11 @@
                 <tr class="no-borders bg-white">
                     <td colspan="34" class="no-borders bg-white text-center">
                         <img src="@Url.Content("~/Images/Emblem_of_Nepal.png")" width="80" height="80" />
-                     
-
-
-
-
-
-
-
 
                         <h5>
                             @if (Model.OfficeId > 0)
                             {
                                 @eAttendance.Utility.GetOfficeInfoByOfficeId(Model.OfficeId).OfficeName
-
-
                             }
                             else
                             {
@@ -31,14 +21,12 @@
                             }
                         </h5>
 
-
                         <h5>
                             @if (Model.OfficeId > 0)
                             {
                                 @db.OfficeSetUp.Where(x => x.OfficeId == Model.OfficeId).FirstOrDefault().Address
                             }
                         </h5>
-
 
                         <h5>(ईन आउट रिपोर्ट)</h5>
 
@@ -54,8 +42,6 @@
                     }
                     <td colspan="34">
                         <table class="table no-borders no-margins">
-
-
                             <tr class="no-border-row">
                                 <td class="no-borders">साल: @Html.Raw(Model.YearId)</td>
                                 <td class="no-borders">@eAttendance.Service.MenuService.Month: @Html.Raw(Utility.NepaliMonthList().First(w => w.Value == ((Model.MonthId == 0) ? "1" : Model.MonthId.ToString())).Text)</td>
@@ -65,14 +51,9 @@
                             <tr class="no-border-row">
                                 <td class="no-borders">शाखा: @Html.Raw((Model.BranchId > 0) ? eAttendance.Utility.GetBranchByMainBranchId(Model.BranchId).BranchName : "सबै")</td>
                                 <td class="no-borders">तह: @Html.Raw((Model.LevelId > 0) ? eAttendance.Utility.GetLevelByLevelId(Model.LevelId).LevelName : "सबै")</td>
-
-
-
                                 <td class="no-borders">पद: @Html.Raw((Model.DesignationId > 0) ? eAttendance.Utility.GetDesignationByDesignationId(Model.DesignationId).DesignationName : "सबै")</td>
-
                                 <td class="no-borders">शिफ्ट: @Html.Raw((Model.ShiftTypeId > 0) ? eAttendance.Utility.GetShiftTypeListById(Model.ShiftTypeId).Name : "सबै")</td>
                                 <td class="no-borders">कर्मचारी: @Html.Raw((Model.EmployeeId > 0) ? eAttendance.Utility.GetEmployeeInfoByEmnployeeId(Model.EmployeeId).EmployeeNameNp : "सबै")</td>
-                            
                             </tr>
                         </table>
                     </td>
@@ -89,6 +70,7 @@
                         </th>
                     }
                     <th rowspan="2" class="text-center">कुल क.स</th>
+                    <th rowspan="2" class="text-center">ओभरटाइम</th>
                 </tr>
                 <tr>
                     @for (int i = 1; i <= dayinmonth; i++)
@@ -104,20 +86,25 @@
                  DateTime[] datetime = NepaliDateConverter.GetMonth(nYear, nMonth);
                  DateTime FromDate = datetime[0];
                  DateTime ToDate = datetime[1];
+
+                 // Preload this office's shift times once, instead of querying the DB per day per employee (N+1 fix)
+                 var shiftTimesById = db.SetupShiftTime
+                     .Where(s => s.OfficeId == Model.OfficeId)
+                     .ToList()
+                     .ToDictionary(s => s.ShiftTimeId, s => s);
                 }
 
                 @if (Model != null)
                 {
-
                     string CodeName = string.Empty;
                     foreach (var e in Model.EmployeeAttendanceLists)
                     {
                         // Reset for each employee
                         TimeSpan totalDailyHours = TimeSpan.Zero;
+                        TimeSpan totalOvertime = TimeSpan.Zero;
 
                         var employee =
                             db.EmployeeInfo.Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault();
-
 
                         CodeName = employee.EmployeeNameNp + "[" + employee.EmployeeNo + "]";
                         var transfer = false;
@@ -146,8 +133,6 @@
                                 {
                                     css = "#FFFFFF";
                                 }
-
-
                                 else if (m.StatusType == 4)
                                 {
                                     css = "yellow";
@@ -156,14 +141,12 @@
                                 {
                                     css = "#d1dade";
                                 }
-
                                 else
                                 {
                                     if (m.Holiday != null && m.Holiday.Length > 0)
                                     {
                                         css = "#1c84c6";
                                     }
-
                                     else if (m.OnLeave != null && m.OnLeave.Length > 0)
                                     {
                                         css = "#23c6c8";
@@ -176,7 +159,6 @@
                                     {
                                         css = "#4cff00";
                                     }
-
                                     else
                                     {
                                         css = "#ed5565";
@@ -193,7 +175,6 @@
                                     }
                                     else if (m.StatusType == 1)
                                     {
-
                                         @Html.Raw("<table><tr><td>आ:</td><td>" + ((m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? m.CheckIn.Value.ToString(@"hh\:mm") : "") + "</td></tr>" +
                                                                             "<tr><td>ग:</td><td>" + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null) ? m.CheckOut.Value.ToString(@"hh\:mm") : "") + "</td></tr>" +
                                                                             "<tr><td>क.स:</td><td>" + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null && m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? (m.CheckOut - m.CheckIn).Value.ToString(@"hh\:mm") : "") + "</td></tr></table>"
@@ -207,7 +188,6 @@
                                             string[] h = m.Holiday.Split(' ');
                                             remarks += m.Holiday + " ";
                                         }
-
                                         if (m.OnLeave != null && m.OnLeave.Length > 0)
                                         {
                                             string[] l = m.OnLeave.Split(' ');
@@ -218,13 +198,11 @@
                                         {
                                             string[] v = m.OnVisit.Split(' ');
                                             remarks += m.OnVisit + " ";
-
                                         }
                                         if (m.WorkType == 3)
                                         {
                                             remarks += "स";
                                         }
-
                                         if (remarks.Length == 0)
                                         {
                                             remarks = "अ";
@@ -232,36 +210,53 @@
                                         @Html.Raw(remarks);
                                     }
                                 </td>
-                                // First pass: calculate total hours
-
+                                // First pass: calculate total hours and overtime
                                 if (m.StatusType == 1 && m.CheckOut != TimeSpan.Zero && m.CheckOut != null && m.CheckIn != TimeSpan.Zero && m.CheckIn != null)
                                 {
                                     totalDailyHours += (m.CheckOut - m.CheckIn).Value;
-                                }
 
+                                    // calculate overtime for this day based on shift end time
+                                    eAttendance.Models.SetupShiftTime shift = null;
+                                    if (m.ShiftTimeId.HasValue)
+                                    {
+                                        shiftTimesById.TryGetValue(m.ShiftTimeId.Value, out shift);
+                                    }
+                                    if (shift != null && !string.IsNullOrEmpty(shift.ShiftEndTime))
+                                    {
+                                        TimeSpan shiftEndTime;
+                                        if (TimeSpan.TryParse(shift.ShiftEndTime, out shiftEndTime) && shiftEndTime != TimeSpan.Zero)
+                                        {
+                                            if (m.CheckOut.Value > shiftEndTime)
+                                            {
+                                                totalOvertime += (m.CheckOut - shiftEndTime).Value;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                             @{
                                 int totalHours = (int)totalDailyHours.TotalHours;
                                 int totalMinutes = totalDailyHours.Minutes;
                                 string formattedTotal = totalHours.ToString("00") + ":" + totalMinutes.ToString("00");
+                                int otHours = (int)totalOvertime.TotalHours;
+                                int otMinutes = totalOvertime.Minutes;
+                                string formattedOvertime = otHours.ToString("00") + ":" + otMinutes.ToString("00");
                             }
                             <!-- Total at the end -->
                             <td style="padding:0px;">@formattedTotal</td>
+                            <td style="padding:0px;">@formattedOvertime</td>
                         </tr>
                     }
                     if (count == 0)
                     {
                         <tr>
-
-                            <td class="text-center alert-info" colspan="35">@eAttendance.Service.MenuService.NoRecordFound</td>
+                            <td class="text-center alert-info" colspan="36">@eAttendance.Service.MenuService.NoRecordFound</td>
                         </tr>
                     }
                 }
             </tbody>
             <tfoot>
                 <tr>
-               
-
                     <th colspan="2" style="background:#d1dade;">उपस्थित = उ</th>
                     <th colspan="2" style="background:#ed5565;">अनुपस्थित = अ</th>
                     <th colspan="3" style="background:#4cff00">सप्ताह = स</th>
@@ -269,9 +264,6 @@
                     <th colspan="5" style="background:#1c84c6">सार्वजनिक बिदा = *स.बि</th>
                     <th colspan="3" style="background:#ff00dc">काज = *का</th>
                     <th colspan="9" style="background: yellow">सरुवा भएको या कार्यालय संग सम्बन्धित नरहेको = *सरु</th>
-
-
-
                     <th colspan="2">आएको समय = आ</th>
                     <th colspan="2">गएको समय = ग</th>
                     <th colspan="3">कुल समय = क.स</th>
