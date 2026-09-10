@@ -82,35 +82,58 @@
                 </tr>
             </thead>
             <tbody>
-                @{ int count = 0;
+                @{
+                    int count = 0;
+
                     DateTime[] datetime = NepaliDateConverter.GetMonth(nYear, nMonth);
                     DateTime FromDate = datetime[0];
                     DateTime ToDate = datetime[1];
 
-                    // Preload this office's shift times once, instead of querying the DB per day per employee (N+1 fix)
+                    /*
+                     * Load all shifts for this office once.
+                     * Avoids querying SetupShiftTime inside every employee/day loop (N+1 fix).
+                     */
                     var shiftTimesById = db.SetupShiftTime
                         .Where(s => s.OfficeId == Model.OfficeId)
                         .ToList()
                         .ToDictionary(s => s.ShiftTimeId, s => s);
                 }
 
-                @if (Model != null)
+                @if (Model != null && Model.EmployeeAttendanceLists != null)
                 {
                     string CodeName = string.Empty;
                     foreach (var e in Model.EmployeeAttendanceLists)
                     {
-                        // Reset for each employee
-                        TimeSpan totalDailyHours = TimeSpan.Zero;
-                        TimeSpan totalOvertime = TimeSpan.Zero;
+                        count++;
 
-                        var employee =
-                            db.EmployeeInfo.Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault();
+                        /*
+                         * ============================================================
+                         * MONTHLY TOTALS
+                         * ============================================================
+                         * totalWorkedHours     : actual worked hours on NORMAL working days only
+                         * totalRequiredHours   : total shift hours required on NORMAL working days
+                         * totalHolidayOvertime : actual worked hours on holidays/weekends (all counts as OT)
+                         *
+                         * We do NOT compute overtime day-by-day; it's derived once, after
+                         * all days are summed, from (worked - required) + holiday work.
+                         */
+                        TimeSpan totalWorkedHours = TimeSpan.Zero;
+                        TimeSpan totalRequiredHours = TimeSpan.Zero;
+                        TimeSpan totalHolidayOvertime = TimeSpan.Zero;
 
-                        CodeName = employee.EmployeeNameNp + "[" + employee.EmployeeNo + "]";
+                        var employee = db.EmployeeInfo
+                            .Where(x => x.EmployeeId == e.EmployeeId)
+                            .FirstOrDefault();
+
+                        CodeName = employee != null
+                            ? employee.EmployeeNameNp + "[" + employee.EmployeeNo + "]"
+                            : "";
+
                         var transfer = false;
 
-                        count += 1;
-                        var attendance = ReportService.ReportService.GetEmployeeAttandaneByOfficeWithInDateRange(e.EmployeeId, e.OfficeId, FromDate, ToDate);
+                        var attendance = ReportService.ReportService
+                            .GetEmployeeAttandaneByOfficeWithInDateRange(e.EmployeeId, e.OfficeId, FromDate, ToDate);
+
                         <tr>
                             <td style="padding:0px;">@count</td>
                             <td style="padding:0px;">@Html.Raw(eAttendance.Utility.GetDesignationByDesignationId(e.DesignationId).DesignationName ?? "")</td>
@@ -118,15 +141,8 @@
                             @foreach (var m in attendance.OrderBy(w => w.LogDate))
                             {
                                 //var data = db.TransferModel.Where(x => x.TransferDateTime <= m.LogDate).Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault();
-                                //if (data != null)
-                                //{
-                                //    transfer = true;
-                                //}
-                                //if (transfer)
-                                //{
-                                //    m.StatusType = 4;
-                                //}
-
+                                //if (data != null) { transfer = true; }
+                                //if (transfer) { m.StatusType = 4; }
 
                                 var css = "";
                                 if (m.LogDate > DateTime.Now)
@@ -210,82 +226,112 @@
                                         @Html.Raw(remarks);
                                     }
                                 </td>
-                                // Calculate total worked hours and overtime
-                                if (m.StatusType == 1
-                                    && m.CheckOut.HasValue
-                                    && m.CheckIn.HasValue
-                                    && m.CheckOut.Value != TimeSpan.Zero
-                                    && m.CheckIn.Value != TimeSpan.Zero)
+
+                                /*
+                                 * ====================================================
+                                 * MONTHLY OVERTIME CALCULATION (doc10 methodology)
+                                 * ====================================================
+                                 */
                                 {
-                                    // Actual hours worked by employee for this day
-                                    TimeSpan actualWorkingHours =
-                                        m.CheckOut.Value - m.CheckIn.Value;
+                                    bool hasValidCheckInOut =
+                                        m.StatusType == 1
+                                        && m.CheckIn.HasValue
+                                        && m.CheckOut.HasValue
+                                        && m.CheckIn.Value != TimeSpan.Zero
+                                        && m.CheckOut.Value != TimeSpan.Zero;
 
-                                    // Add to monthly total worked hours
-                                    totalDailyHours += actualWorkingHours;
+                                    /*
+                                     * Holiday/weekend definition.
+                                     * m.Holiday != empty => public holiday
+                                     * m.WorkType == 3    => weekend/Saturday
+                                     */
+                                    bool isHolidayOrWeekend =
+                                        !string.IsNullOrWhiteSpace(m.Holiday)
+                                        || m.WorkType == 3;
 
-                                    // Get employee's shift
                                     eAttendance.Models.SetupShiftTime shift = null;
-
                                     if (m.ShiftTimeId.HasValue)
                                     {
-                                        shiftTimesById.TryGetValue(
-                                            m.ShiftTimeId.Value,
-                                            out shift
-                                        );
+                                        shiftTimesById.TryGetValue(m.ShiftTimeId.Value, out shift);
                                     }
 
+                                    // Required shift hours for this day
+                                    TimeSpan requiredWorkingHours = TimeSpan.Zero;
                                     if (shift != null
-                                        && !string.IsNullOrEmpty(shift.ShiftStartTime)
-                                        && !string.IsNullOrEmpty(shift.ShiftEndTime))
+                                        && !string.IsNullOrWhiteSpace(shift.ShiftStartTime)
+                                        && !string.IsNullOrWhiteSpace(shift.ShiftEndTime))
                                     {
                                         TimeSpan shiftStartTime;
                                         TimeSpan shiftEndTime;
-
-                                        bool validStartTime = TimeSpan.TryParse(
-                                            shift.ShiftStartTime,
-                                            out shiftStartTime
-                                        );
-
-                                        bool validEndTime = TimeSpan.TryParse(
-                                            shift.ShiftEndTime,
-                                            out shiftEndTime
-                                        );
+                                        bool validStartTime = TimeSpan.TryParse(shift.ShiftStartTime, out shiftStartTime);
+                                        bool validEndTime = TimeSpan.TryParse(shift.ShiftEndTime, out shiftEndTime);
 
                                         if (validStartTime && validEndTime)
                                         {
-                                            // Required working hours according to the shift
-                                            TimeSpan requiredWorkingHours =
-                                                shiftEndTime - shiftStartTime;
+                                            requiredWorkingHours = shiftEndTime - shiftStartTime;
 
-                                            // Overtime = Actual Worked Hours - Required Shift Hours
-                                            TimeSpan dailyOvertime =
-                                                actualWorkingHours - requiredWorkingHours;
-
-                                            // Only add positive overtime
-                                            if (dailyOvertime > TimeSpan.Zero)
+                                            // Overnight shift support (e.g. 22:00 -> 06:00 gives 08:00, not -16:00)
+                                            if (requiredWorkingHours < TimeSpan.Zero)
                                             {
-                                                totalOvertime += dailyOvertime;
+                                                requiredWorkingHours += TimeSpan.FromDays(1);
                                             }
                                         }
+                                    }
+
+                                    // Actual worked hours for this day
+                                    TimeSpan actualWorkingHours = TimeSpan.Zero;
+                                    if (hasValidCheckInOut)
+                                    {
+                                        actualWorkingHours = m.CheckOut.Value - m.CheckIn.Value;
+
+                                        // Overnight shift support
+                                        if (actualWorkingHours < TimeSpan.Zero)
+                                        {
+                                            actualWorkingHours += TimeSpan.FromDays(1);
+                                        }
+                                    }
+
+                                    if (!isHolidayOrWeekend)
+                                    {
+                                        // Count required hours even without a completed CheckIn/CheckOut,
+                                        // so totalRequiredHours reflects the true monthly requirement.
+                                        if (requiredWorkingHours > TimeSpan.Zero)
+                                        {
+                                            totalRequiredHours += requiredWorkingHours;
+                                        }
+
+                                        if (hasValidCheckInOut && actualWorkingHours > TimeSpan.Zero)
+                                        {
+                                            totalWorkedHours += actualWorkingHours;
+                                        }
+                                    }
+                                    else if (hasValidCheckInOut && actualWorkingHours > TimeSpan.Zero)
+                                    {
+                                        // Any work on a holiday/weekend is pure overtime -
+                                        // shift hours aren't subtracted.
+                                        totalHolidayOvertime += actualWorkingHours;
                                     }
                                 }
                             }
 
                             @{
-                                int totalHours = (int)totalDailyHours.TotalHours;
-                                int totalMinutes = totalDailyHours.Minutes;
+                                // Normal-day overtime = worked beyond what was required, floored at zero
+                                TimeSpan monthlyNormalOvertime = totalWorkedHours - totalRequiredHours;
+                                if (monthlyNormalOvertime < TimeSpan.Zero)
+                                {
+                                    monthlyNormalOvertime = TimeSpan.Zero;
+                                }
 
-                                string formattedTotal =
-                                    totalHours.ToString("00") + ":" +
-                                    totalMinutes.ToString("00");
+                                TimeSpan totalOvertime = monthlyNormalOvertime + totalHolidayOvertime;
 
-                                int otHours = (int)totalOvertime.TotalHours;
-                                int otMinutes = totalOvertime.Minutes;
+                                // Don't use ToString("hh:mm") - it wraps past 24 hours (e.g. 34:45 -> 10:45)
+                                int totalWorkedHoursPart = (int)totalWorkedHours.TotalHours;
+                                int totalWorkedMinutesPart = totalWorkedHours.Minutes;
+                                string formattedTotal = totalWorkedHoursPart.ToString("00") + ":" + totalWorkedMinutesPart.ToString("00");
 
-                                string formattedOvertime =
-                                    otHours.ToString("00") + ":" +
-                                    otMinutes.ToString("00");
+                                int overtimeHoursPart = (int)totalOvertime.TotalHours;
+                                int overtimeMinutesPart = totalOvertime.Minutes;
+                                string formattedOvertime = overtimeHoursPart.ToString("00") + ":" + overtimeMinutesPart.ToString("00");
                             }
                             <!-- Total at the end -->
                             <td style="padding:0px;">@formattedTotal</td>
