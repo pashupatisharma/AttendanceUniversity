@@ -123,30 +123,41 @@ namespace eAttendance.Controllers
             return Json(districtList, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: /EmployeeInfo/
 
-
-        [Authorize(Roles = "SuperAdmin,Administrator,Admin")]
-        public ActionResult Index(string officeId, string branchId, string levelId, string designationId, string serviceId, string employeeid, string statusid, string sortOrder, int? pageSize, int? page)
+       
+[Authorize(Roles = "SuperAdmin,Administrator,Admin")]
+public ActionResult Index(
+    string officeId,
+    string branchId,
+    string levelId,
+    string designationId,
+    string serviceId,
+    string employeeid,
+    string statusid,
+    string sortOrder,
+    int? pageSize,
+    int? page)
         {
             ViewBag.officeId = officeId;
             ViewBag.BranchId = branchId;
-
             ViewBag.LevelId = levelId;
-
-
             ViewBag.DesignationId = designationId;
-
-
             ViewBag.ServiceId = serviceId;
 
-
-
-
             ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.DateSortParm = (sortOrder == "Date") ? "date_desc" : "Date";
-            if (employeeid != null)
+            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder)
+                ? "name_desc"
+                : "";
+
+            ViewBag.DateSortParm = (sortOrder == "Date")
+                ? "date_desc"
+                : "Date";
+
+            // ---------------------------------------------------------
+            // PAGE RESET
+            // ---------------------------------------------------------
+
+            if (!string.IsNullOrEmpty(employeeid))
             {
                 page = 1;
             }
@@ -154,135 +165,452 @@ namespace eAttendance.Controllers
             {
                 employeeid = designationId;
             }
+
             ViewBag.CurrentFilter = employeeid;
 
 
+            // ---------------------------------------------------------
+            // BASE QUERY
+            // ---------------------------------------------------------
+
+            var source =
+                from x in db.EmployeeInfo
+                join y in db.EmployeeOfficeDetail
+                    on x.EmployeeId equals y.EmployeeId
+                where x.Status != 2
+                select new EmployeeInfoReport
+                {
+                    EmployeeId = x.EmployeeId,
+                    LevelId = y.LevelId,
+                    OfficeId = y.OfficeId,
+                    BranchId = y.BranchId,
+                    DesignationId = y.DesignationId,
+
+                    EmployeeNo = x.EmployeeNo,
+                    EmployeeName = x.EmployeeName,
+                    EmailId = x.EmailId,
+                    Gender = x.Gender,
+                    Status = x.Status,
+
+                    serviceId = y.ServiceId,
+
+                    DisplayOrder = x.DisplayOrder
+                };
 
 
-            var source = (from x in db.EmployeeInfo
+            // ---------------------------------------------------------
+            // CURRENT USER / OFFICE
+            // ---------------------------------------------------------
 
-                          join y in db.EmployeeOfficeDetail on x.EmployeeId equals y.EmployeeId
+            int? officeid = null;
+            int currentEmployeeId = 0;
 
-                          where x.Status != 2
-
-                          select new EmployeeInfoReport
-                          {
-
-                              EmployeeId = x.EmployeeId,
-                              LevelId = y.LevelId,
-                              OfficeId = y.OfficeId,
-                              BranchId = y.BranchId,
-                              DesignationId = y.DesignationId,
-                              EmployeeNo = x.EmployeeNo,
-                              EmployeeName = x.EmployeeName,
-                              EmailId = x.EmailId,
-                              Gender = x.Gender,
-                              Status = x.Status,
-                              serviceId = y.ServiceId,
-                              DisplayOrder=x.DisplayOrder
-
-
-
-
-                          });
-
-            int? officeid = 0;
-            int EmployeeId = 0;
             try
             {
-                var userId = User.Identity.Name;
-                var userid = db.Users.Where(x => x.UserName == userId).FirstOrDefault().Id;
+                var userName = User.Identity.Name;
 
-                var employee = db.EmployeeInfo.Where(x => x.UserId == userid).FirstOrDefault();
-                if (employee != null)
+                var user = db.Users
+                    .FirstOrDefault(x => x.UserName == userName);
+
+                if (user != null)
                 {
-                    EmployeeId = employee.EmployeeId;
-                    officeid = db.EmployeeOfficeDetail.Where(x => x.EmployeeId == employee.EmployeeId).FirstOrDefault().OfficeId;
+                    var employee = db.EmployeeInfo
+                        .FirstOrDefault(x => x.UserId == user.Id);
+
+                    if (employee != null)
+                    {
+                        currentEmployeeId = employee.EmployeeId;
+
+                        var employeeOffice =
+                            db.EmployeeOfficeDetail
+                              .FirstOrDefault(x =>
+                                  x.EmployeeId == employee.EmployeeId);
+
+                        if (employeeOffice != null)
+                        {
+                            officeid = employeeOffice.OfficeId;
+                        }
+                    }
                 }
             }
-            catch (Exception ex)
+            catch
             {
+                // Optional: log exception
             }
+
+
+            // ---------------------------------------------------------
+            // ROLE FILTER
+            // ---------------------------------------------------------
 
             if (User.IsInRole("Admin"))
             {
-                source = source.Where(x => x.OfficeId == officeid);
+                if (officeid.HasValue)
+                {
+                    source = source.Where(x =>
+                        x.OfficeId == officeid.Value);
+                }
             }
-
             else if (User.IsInRole("Employee"))
             {
-                source = source.Where(x => x.EmployeeId == EmployeeId);
+                source = source.Where(x =>
+                    x.EmployeeId == currentEmployeeId);
             }
 
 
-            if (!string.IsNullOrEmpty(employeeid) && employeeid != "0")
+            // ---------------------------------------------------------
+            // EMPLOYEE FILTER
+            // ---------------------------------------------------------
+
+            if (!string.IsNullOrEmpty(employeeid) &&
+                employeeid != "0")
             {
-                int id = int.Parse(employeeid);
-                source = source.Where(x => x.EmployeeId == id);
+                int id;
+
+                if (int.TryParse(employeeid, out id))
+                {
+                    source = source.Where(x =>
+                        x.EmployeeId == id);
+                }
             }
 
-            if (!string.IsNullOrEmpty(officeId) && officeId != "0")
+
+            // ---------------------------------------------------------
+            // OFFICE FILTER
+            // ---------------------------------------------------------
+
+            if (!string.IsNullOrEmpty(officeId) &&
+                officeId != "0")
             {
-                int id = int.Parse(officeId);
-                source = source.Where(x => x.OfficeId == id);
+                int id;
+
+                if (int.TryParse(officeId, out id))
+                {
+                    source = source.Where(x =>
+                        x.OfficeId == id);
+                }
             }
-            if (!string.IsNullOrEmpty(branchId) && branchId != "0")
+
+
+            // ---------------------------------------------------------
+            // BRANCH FILTER
+            // ---------------------------------------------------------
+
+            if (!string.IsNullOrEmpty(branchId) &&
+                branchId != "0")
             {
-                int id = int.Parse(branchId);
-                source = source.Where(x => x.BranchId == id);
+                int id;
+
+                if (int.TryParse(branchId, out id))
+                {
+                    source = source.Where(x =>
+                        x.BranchId == id);
+                }
             }
 
-            if (!string.IsNullOrEmpty(designationId) && designationId != "0")
+
+            // ---------------------------------------------------------
+            // DESIGNATION FILTER
+            // ---------------------------------------------------------
+
+            if (!string.IsNullOrEmpty(designationId) &&
+                designationId != "0")
             {
-                int id = int.Parse(designationId);
-                source = source.Where(x => x.DesignationId == id);
+                int id;
+
+                if (int.TryParse(designationId, out id))
+                {
+                    source = source.Where(x =>
+                        x.DesignationId == id);
+                }
             }
 
 
-            if (!string.IsNullOrEmpty(levelId) && levelId != "0")
+            // ---------------------------------------------------------
+            // LEVEL FILTER
+            // ---------------------------------------------------------
+
+            if (!string.IsNullOrEmpty(levelId) &&
+                levelId != "0")
             {
-                int id = int.Parse(levelId);
-                source = source.Where(x => x.LevelId == id);
+                int id;
+
+                if (int.TryParse(levelId, out id))
+                {
+                    source = source.Where(x =>
+                        x.LevelId == id);
+                }
             }
 
 
-            if (!string.IsNullOrEmpty(serviceId) && serviceId != "0")
+            // ---------------------------------------------------------
+            // SERVICE FILTER
+            // ---------------------------------------------------------
+
+            if (!string.IsNullOrEmpty(serviceId) &&
+                serviceId != "0")
             {
-                int id = int.Parse(serviceId);
-                source = source.Where(x => x.serviceId == id);
+                int id;
+
+                if (int.TryParse(serviceId, out id))
+                {
+                    source = source.Where(x =>
+                        x.serviceId == id);
+                }
             }
+
+
+            // ---------------------------------------------------------
+            // SORTING
+            // IMPORTANT:
+            // EmployeeId is used as a UNIQUE SECONDARY SORT.
+            // This prevents duplicate records between pages.
+            // ---------------------------------------------------------
+
             switch (sortOrder)
             {
                 case "name_desc":
-                    source = from s in source
-                             orderby s.DisplayOrder 
-                             select s;
+
+                    source = source
+                        .OrderByDescending(x => x.DisplayOrder)
+                        .ThenByDescending(x => x.EmployeeId);
+
                     break;
+
+                case "Date":
+
+                    source = source
+                        .OrderBy(x => x.DisplayOrder)
+                        .ThenBy(x => x.EmployeeId);
+
+                    break;
+
+                case "date_desc":
+
+                    source = source
+                        .OrderByDescending(x => x.DisplayOrder)
+                        .ThenByDescending(x => x.EmployeeId);
+
+                    break;
+
+                default:
+
+                    source = source
+                        .OrderBy(x => x.DisplayOrder)
+                        .ThenBy(x => x.EmployeeId);
+
+                    break;
+            }
+
+
+            // ---------------------------------------------------------
+            // PAGINATION
+            // ---------------------------------------------------------
+
+            int pageNumber = page ?? 1;
+
+            int recordsPerPage = pageSize ?? 10;
+
+            // Protect against invalid page size
+            if (recordsPerPage <= 0)
+            {
+                recordsPerPage = 10;
+            }
+
+            // Optional maximum page size
+            if (recordsPerPage > 100)
+            {
+                recordsPerPage = 100;
+            }
+
+
+            // ---------------------------------------------------------
+            // TOTAL RECORDS
+            // ---------------------------------------------------------
+
+            int totalRecords = source.Count();
+
+
+            // ---------------------------------------------------------
+            // PAGED RESULT
+            // ---------------------------------------------------------
+
+            var pagedData = source.ToPagedList(
+                pageNumber,
+                recordsPerPage);
+
+
+            return View(pagedData);
+        }
+
+
+
+
+        // GET: /EmployeeInfo/
+
+
+
+
+
+
+
+        //[Authorize(Roles = "SuperAdmin,Administrator,Admin")]
+        //public ActionResult Index(string officeId, string branchId, string levelId, string designationId, string serviceId, string employeeid, string statusid, string sortOrder, int? pageSize, int? page)
+        //{
+        //    ViewBag.officeId = officeId;
+        //    ViewBag.BranchId = branchId;
+
+        //    ViewBag.LevelId = levelId;
+
+
+        //    ViewBag.DesignationId = designationId;
+
+
+        //    ViewBag.ServiceId = serviceId;
+
+
+
+
+        //    ViewBag.CurrentSort = sortOrder;
+        //    ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+        //    ViewBag.DateSortParm = (sortOrder == "Date") ? "date_desc" : "Date";
+        //    if (employeeid != null)
+        //    {
+        //        page = 1;
+        //    }
+        //    else
+        //    {
+        //        employeeid = designationId;
+        //    }
+        //    ViewBag.CurrentFilter = employeeid;
+
+
+
+
+        //    var source = (from x in db.EmployeeInfo
+
+        //                  join y in db.EmployeeOfficeDetail on x.EmployeeId equals y.EmployeeId
+
+        //                  where x.Status != 2
+
+        //                  select new EmployeeInfoReport
+        //                  {
+
+        //                      EmployeeId = x.EmployeeId,
+        //                      LevelId = y.LevelId,
+        //                      OfficeId = y.OfficeId,
+        //                      BranchId = y.BranchId,
+        //                      DesignationId = y.DesignationId,
+        //                      EmployeeNo = x.EmployeeNo,
+        //                      EmployeeName = x.EmployeeName,
+        //                      EmailId = x.EmailId,
+        //                      Gender = x.Gender,
+        //                      Status = x.Status,
+        //                      serviceId = y.ServiceId,
+        //                      DisplayOrder=x.DisplayOrder
+
+
+
+
+        //                  });
+
+        //    int? officeid = 0;
+        //    int EmployeeId = 0;
+        //    try
+        //    {
+        //        var userId = User.Identity.Name;
+        //        var userid = db.Users.Where(x => x.UserName == userId).FirstOrDefault().Id;
+
+        //        var employee = db.EmployeeInfo.Where(x => x.UserId == userid).FirstOrDefault();
+        //        if (employee != null)
+        //        {
+        //            EmployeeId = employee.EmployeeId;
+        //            officeid = db.EmployeeOfficeDetail.Where(x => x.EmployeeId == employee.EmployeeId).FirstOrDefault().OfficeId;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //    }
+
+        //    if (User.IsInRole("Admin"))
+        //    {
+        //        source = source.Where(x => x.OfficeId == officeid);
+        //    }
+
+        //    else if (User.IsInRole("Employee"))
+        //    {
+        //        source = source.Where(x => x.EmployeeId == EmployeeId);
+        //    }
+
+
+        //    if (!string.IsNullOrEmpty(employeeid) && employeeid != "0")
+        //    {
+        //        int id = int.Parse(employeeid);
+        //        source = source.Where(x => x.EmployeeId == id);
+        //    }
+
+        //    if (!string.IsNullOrEmpty(officeId) && officeId != "0")
+        //    {
+        //        int id = int.Parse(officeId);
+        //        source = source.Where(x => x.OfficeId == id);
+        //    }
+        //    if (!string.IsNullOrEmpty(branchId) && branchId != "0")
+        //    {
+        //        int id = int.Parse(branchId);
+        //        source = source.Where(x => x.BranchId == id);
+        //    }
+
+        //    if (!string.IsNullOrEmpty(designationId) && designationId != "0")
+        //    {
+        //        int id = int.Parse(designationId);
+        //        source = source.Where(x => x.DesignationId == id);
+        //    }
+
+
+        //    if (!string.IsNullOrEmpty(levelId) && levelId != "0")
+        //    {
+        //        int id = int.Parse(levelId);
+        //        source = source.Where(x => x.LevelId == id);
+        //    }
+
+
+        //    if (!string.IsNullOrEmpty(serviceId) && serviceId != "0")
+        //    {
+        //        int id = int.Parse(serviceId);
+        //        source = source.Where(x => x.serviceId == id);
+        //    }
+        //    switch (sortOrder)
+        //    {
+        //        case "name_desc":
+        //            source = from s in source
+        //                     orderby s.DisplayOrder 
+        //                     select s;
+        //            break;
 
             
 
-                default:
-                    source = from s in source
-                             orderby s.DisplayOrder
-                             select s;
-                    break;
-            }
+        //        default:
+        //            source = from s in source
+        //                     orderby s.DisplayOrder
+        //                     select s;
+        //            break;
+        //    }
 
 
-            int num = source.Count<EmployeeInfoReport>();
+        //    int num = source.Count<EmployeeInfoReport>();
 
-            num = source.Count<EmployeeInfoReport>();
-            int num2 = 10;
-            if (pageSize.HasValue)
-            {
-                num2 = pageSize.Value;
-            }
-            int? nullable = page;
-            int pageNumber = nullable.HasValue ? nullable.GetValueOrDefault() : 1;
+        //    num = source.Count<EmployeeInfoReport>();
+        //    int num2 = 10;
+        //    if (pageSize.HasValue)
+        //    {
+        //        num2 = pageSize.Value;
+        //    }
+        //    int? nullable = page;
+        //    int pageNumber = nullable.HasValue ? nullable.GetValueOrDefault() : 1;
 
-            return base.View(source.ToPagedList<EmployeeInfoReport>(pageNumber, num2));
+        //    return base.View(source.ToPagedList<EmployeeInfoReport>(pageNumber, num2));
 
-        }
+        //}
 
         [Authorize(Roles = "SuperAdmin,Administrator,Admin")]
         public ActionResult Add()

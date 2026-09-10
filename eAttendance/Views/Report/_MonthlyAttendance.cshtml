@@ -1,264 +1,633 @@
 ﻿@using eAttendance.Models
-@model  eAttendance.ReportModel.EmployeeAttendanceList
+@model eAttendance.ReportModel.EmployeeAttendanceList
 @{
     eAttendance.Models.ApplicationDbContext db = new eAttendance.Models.ApplicationDbContext();
 }
-<div id="datatables_table_0_wrapper">
+<div id="datatables_table_0_wrapper" class="attendance-report">
     @if (Model.YearId != 0 && Model.MonthId != 0 && Model.OfficeId != 0)
     {
-        <table class="table table-bordered table-condensed" cellpadding="0" style="width:100%;">
-            <thead>
-                @{
+        <style>
+            /* ===================== Attendance Report — Clean Professional Theme ===================== */
+            .attendance-report {
+                font-family: "Segoe UI", "Noto Sans Devanagari", Arial, sans-serif;
+                color: #2c3441;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
 
-                    int nYear = Model.YearId;
-                    int nMonth = Model.MonthId;
-
-
-                    DateTime[] date = NepaliDateConverter.GetMonth(nYear, nMonth);
-                    int dayinmonth = Convert.ToInt32((date[1] - date[0]).TotalDays) + 1;
-                    int totalcolumn = dayinmonth + 3;
-                }
-                <tr class="no-borders bg-white">
-                    <td colspan="@totalcolumn" class="no-borders bg-white text-center">
-
-                        <img src="@Url.Content("~/Images/Emblem_of_Nepal.png")" width="80" height="80" />
-                
-                        <h5>@eAttendance.Utility.GetOfficeIdNameWithSelect(User).First(w => w.Value == ((Request["officeId"] != null) ? Request["officeId"] : "0")).Text</h5>
-                        <h5>
-                            @if (Model.OfficeId > 0)
-                            {
-                                @db.OfficeSetUp.Where(x => x.OfficeId == Model.OfficeId).FirstOrDefault().Address
-                            }
-                        </h5>
-
-
-                        <h5>( उपस्थित अनुपस्थित )</h5>
-                    </td>
-                </tr>
-
-                <tr class='no-border-row bg-white'>
-
-                    <td colspan="38">
-                        <table class="table no-borders no-margins">
-
-
-                            <tr class="no-border-row">
-                                <td class="no-borders">साल:@Model.YearId</td>
-                                <td class="no-borders">@eAttendance.Service.MenuService.Month: @Html.Raw(Utility.NepaliMonthList().First(w => w.Value == ((Model.MonthId == 0) ? "1" : Model.MonthId.ToString())).Text)</td>
-                                @*<td class="no-borders">@eAttendance.Service.MenuService.Month: @Html.Raw(Utility.NepaliMonthList().First(w => w.Value == ((Request["nMonthId"] == null) ? "1" : Request["nMonthId"])).Text)</td>*@
-                                <td class="no-borders">कार्यालय: @Html.Raw((Model.OfficeId > 0) ? eAttendance.Utility.GetOfficeInfoByOfficeId(Model.OfficeId).OfficeName : "सबै")</td>
-                                <td class="no-borders">सेवा: @Html.Raw((Model.ServiceId > 0) ? eAttendance.Utility.GetServiceByServiceId(Model.ServiceId).ServiceName : "सबै")</td>
-                            </tr>
-                            <tr class="no-border-row">
-                                <td class="no-borders">शाखा: @Html.Raw((Model.BranchId > 0) ? eAttendance.Utility.GetBranchByMainBranchId(Model.BranchId).BranchName : "सबै")</td>
-                                <td class="no-borders">तह: @Html.Raw((Model.LevelId > 0) ? eAttendance.Utility.GetLevelByLevelId(Model.LevelId).LevelName : "सबै")</td>
-                                <td class="no-borders">पद: @Html.Raw((Model.DesignationId > 0) ? eAttendance.Utility.GetDesignationByDesignationId(Model.DesignationId).DesignationName : "सबै")</td>
-                                <td class="no-borders">शिफ्ट: @Html.Raw((Model.ShiftTypeId > 0) ? eAttendance.Utility.GetShiftTypeListById(Model.ShiftTypeId).Name : "सबै")</td>
-                                <td class="no-borders">कर्मचारी: @Html.Raw((Model.EmployeeId > 0) ? eAttendance.Utility.GetEmployeeInfoByEmnployeeId(Model.EmployeeId).EmployeeNameNp : "सबै")</td>
-
-                            </tr>
-
-                        </table>
-                    </td>
-                </tr>
-
-                <tr>
-                    <th rowspan="2" class="text-center">@eAttendance.Service.MenuService.SNo</th>
-                    <th rowspan="2" class="text-center">पद</th>
-                    <th rowspan="2" class="text-center col-md-2">कर्मचारी</th>
-                    @for (int i = 1; i <= dayinmonth; i++)
-                    {
-                        <th class="text-center th-padding-xs">
-                            @NepaliDateConverter.ConvertToNepaliShortDayName(date[0].AddDays(i - 1)) <br />
-                        </th>
-                    }
-                    <th>
-                        जम्मा उपस्थित दिन
-                    </th>
-                    <th>
-                        जम्मा काज दिन
-                    </th>
-                    <th>
-                        जम्मा बिदा लिएको दिन
-                    </th>
-                    <th>
-                        जम्मा अनुपस्थित दिन
-                    </th>
-                </tr>
-                <tr>
-                    @for (int i = 1; i <= dayinmonth; i++)
-                    {
-                        <th class="text-center th-padding-xs">
-                            @EnglishToNepaliNumber.ConvertToNepaliNumber(i)
-                        </th>
-                    }
-                </tr>
-
-            </thead>
-            <tbody>
-                @{ int count = 0;
-                    DateTime[] datetime = NepaliDateConverter.GetMonth(nYear, nMonth);
-                    DateTime FromDate = datetime[0];
-                    DateTime ToDate = datetime[1];
+                .attendance-report .report-card {
+                    background: #ffffff;
+                    border: 1px solid #e2e6ec;
+                    border-radius: 10px;
+                    box-shadow: 0 1px 3px rgba(20, 30, 50, 0.06);
+                    overflow: hidden;
+                    margin-bottom: 20px;
                 }
 
-                @if (Model != null)
-                {
-                    string CodeName = string.Empty;
-                    foreach (var e in Model.EmployeeAttendanceLists)
+                /* ---------- Header ---------- */
+                .attendance-report .report-header {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 16px;
+                    padding: 20px 24px 14px;
+                    border-bottom: 1px solid #eef1f5;
+                    text-align: center;
+                    flex-direction: column;
+                }
+
+                    .attendance-report .report-header img {
+                        width: 64px;
+                        height: 64px;
+                        object-fit: contain;
+                    }
+
+                    .attendance-report .report-header h5 {
+                        margin: 2px 0;
+                        font-weight: 600;
+                        letter-spacing: 0.2px;
+                    }
+
+                        .attendance-report .report-header h5.office-name {
+                            font-size: 18px;
+                            color: #1c2733;
+                        }
+
+                        .attendance-report .report-header h5.office-address {
+                            font-size: 13px;
+                            font-weight: 400;
+                            color: #6b7484;
+                        }
+
+                        .attendance-report .report-header h5.report-title {
+                            font-size: 14px;
+                            font-weight: 600;
+                            color: #24405f;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                            margin-top: 6px;
+                        }
+
+                /* ---------- Filter / meta bar ---------- */
+                .attendance-report .report-meta {
+                    padding: 14px 24px;
+                    background: #f7f9fb;
+                    font-size: 13px;
+                    text-align: left;
+                }
+
+                    .attendance-report .report-meta .meta-row {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 6px 24px;
+                    }
+
+                        .attendance-report .report-meta .meta-row + .meta-row {
+                            margin-top: 6px;
+                        }
+
+                    .attendance-report .report-meta .meta-item {
+                        white-space: normal;
+                        overflow-wrap: break-word;
+                        min-width: 0;
+                        flex: 1 1 160px;
+                    }
+
+                        .attendance-report .report-meta .meta-item.meta-wide {
+                            flex: 2 1 320px;
+                        }
+
+                        .attendance-report .report-meta .meta-item .label {
+                            color: #8892a0;
+                            font-weight: 500;
+                            margin-right: 4px;
+                        }
+
+                        .attendance-report .report-meta .meta-item .value {
+                            color: #1c2733;
+                            font-weight: 600;
+                        }
+
+                /* ---------- Table ---------- */
+                .attendance-report .table-scroll {
+                    overflow-x: auto;
+                    width: 100%;
+                }
+
+                .attendance-report table.attendance-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 11px;
+                    min-width: 900px;
+                }
+
+                    .attendance-report table.attendance-table thead th {
+                        background: linear-gradient(180deg, #2a4a75 0%, #1f3a5c 100%);
+                        color: #fff;
+                        font-weight: 600;
+                        text-align: center;
+                        padding: 7px 4px;
+                        border: 1px solid #33507a;
+                        position: sticky;
+                        top: 0;
+                        z-index: 2;
+                    }
+
+                    .attendance-report table.attendance-table thead tr.day-name-row th {
+                        background: #24405f;
+                        font-weight: 500;
+                        font-size: 11px;
+                    }
+
+                    /* Summary columns (जम्मा उपस्थित / काज / बिदा / अनुपस्थित) get their own accent */
+                    .attendance-report table.attendance-table thead th.col-total {
+                        background: linear-gradient(180deg, #b8862c 0%, #9a6f22 100%);
+                        border-color: #a9772a;
+                    }
+
+                    .attendance-report table.attendance-table th.col-sno,
+                    .attendance-report table.attendance-table td.col-sno {
+                        width: 40px;
+                    }
+
+                    .attendance-report table.attendance-table th.col-name {
+                        min-width: 170px;
+                        text-align: left !important;
+                    }
+
+                    .attendance-report table.attendance-table tbody td {
+                        border: 1px solid #e5e8ee;
+                        padding: 4px 6px;
+                        text-align: center;
+                        vertical-align: middle;
+                    }
+
+                        .attendance-report table.attendance-table tbody td.col-name {
+                            text-align: left;
+                            font-weight: 500;
+                            white-space: nowrap;
+                        }
+
+                    .attendance-report table.attendance-table tbody tr:nth-child(even) {
+                        background: #fafbfc;
+                    }
+
+                    .attendance-report table.attendance-table tbody tr:hover {
+                        background: #eef5fc;
+                    }
+
+                    .attendance-report table.attendance-table td.day-cell {
+                        width: 40px;
+                        padding: 4px 2px !important;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        max-width: 60px;
+                    }
+
+                    .attendance-report table.attendance-table td.total-cell {
+                        font-weight: 700;
+                        background: #fbf3e3;
+                        color: #7a5814;
+                    }
+
+                    .attendance-report table.attendance-table td.no-record {
+                        padding: 24px;
+                        background: #fbfbfc;
+                        color: #8892a0;
+                        font-style: italic;
+                    }
+
+                /* ---------- Status color chips — softened, professional palette ---------- */
+                .attendance-report .st-present {
+                    background: #dbe7f5 !important;
+                    color: #204a72;
+                }
+
+                .attendance-report .st-absent {
+                    background: #fbdadd !important;
+                    color: #a3303d;
+                }
+
+                .attendance-report .st-weekend {
+                    background: #dcf2df !important;
+                    color: #2e7d4f;
+                }
+
+                .attendance-report .st-leave {
+                    background: #fde3c8 !important;
+                    color: #b35900;
+                }
+
+                .attendance-report .st-holiday {
+                    background: #e6ddf6 !important;
+                    color: #5b3fa0;
+                }
+
+                .attendance-report .st-visit {
+                    background: #fadaf1 !important;
+                    color: #a3268e;
+                }
+
+                .attendance-report .st-transfer {
+                    background: #fff3b0 !important;
+                    color: #8a6a0a;
+                }
+
+                .attendance-report .st-future {
+                    background: #ffffff !important;
+                }
+
+                /* ---------- Legend footer ---------- */
+                .attendance-report .report-legend {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 8px 10px;
+                    padding: 16px 24px;
+                    background: #f7f9fb;
+                    border-top: 1px solid #eef1f5;
+                }
+
+                    .attendance-report .report-legend .legend-item {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 6px;
+                        font-size: 12px;
+                        color: #3a4250;
+                        background: #ffffff;
+                        border: 1px solid #e5e8ee;
+                        border-radius: 20px;
+                        padding: 4px 10px 4px 6px;
+                    }
+
+                    .attendance-report .report-legend .swatch {
+                        width: 12px;
+                        height: 12px;
+                        border-radius: 3px;
+                        flex-shrink: 0;
+                        display: inline-block;
+                    }
+
+            /* ====================================================================
+               PRINT — landscape + let the full table render at its natural
+               size, with static columns pinned tight so day columns (and the
+               four जम्मा totals) get the most legible width available.
+               ==================================================================== */
+            @@page {
+                size: A4 landscape;
+                margin: 7mm;
+            }
+
+            @@media print {
+                body {
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
+                }
+
+                .attendance-report .report-header img {
+                    width: 44px;
+                    height: 44px;
+                }
+
+                .attendance-report .report-header {
+                    padding: 6px 20px 8px;
+                    gap: 2px;
+                }
+
+                    .attendance-report .report-header h5.office-name {
+                        font-size: 14px;
+                    }
+
+                    .attendance-report .report-header h5.office-address,
+                    .attendance-report .report-header h5.report-title {
+                        font-size: 10px;
+                    }
+
+                .attendance-report .report-meta {
+                    padding: 6px 20px;
+                    font-size: 9px;
+                }
+
+                    .attendance-report .report-meta .meta-row {
+                        gap: 2px 14px;
+                    }
+
+                        .attendance-report .report-meta .meta-row + .meta-row {
+                            margin-top: 2px;
+                        }
+
+                .attendance-report .report-card {
+                    box-shadow: none;
+                    border: none;
+                    border-radius: 0;
+                }
+
+                .attendance-report .table-scroll {
+                    overflow: visible !important;
+                    width: auto !important;
+                }
+
+                .attendance-report table.attendance-table {
+                    width: 100% !important;
+                    min-width: 0 !important;
+                    max-width: 100% !important;
+                    table-layout: fixed;
+                    font-size: 9px;
+                }
+
+                    .attendance-report table.attendance-table thead th {
+                        position: static;
+                        padding: 3px 1px;
+                        font-size: 9px;
+                    }
+
+                    .attendance-report table.attendance-table thead tr.day-name-row th {
+                        font-size: 8.5px;
+                    }
+
+                    .attendance-report table.attendance-table th.col-sno,
+                    .attendance-report table.attendance-table td.col-sno {
+                        width: 2.5%;
+                        padding: 2px 1px;
+                    }
+
+                    .attendance-report table.attendance-table thead th:nth-child(2),
+                    .attendance-report table.attendance-table tbody td:nth-child(2) {
+                        width: 8%;
+                        font-size: 7.5px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+
+                    .attendance-report table.attendance-table th.col-name,
+                    .attendance-report table.attendance-table td.col-name {
+                        min-width: 0;
+                        width: 10%;
+                        font-size: 7.5px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+
+                    .attendance-report table.attendance-table th.col-total,
+                    .attendance-report table.attendance-table td.total-cell {
+                        width: 4.5%;
+                        font-size: 8.5px;
+                    }
+
+                    .attendance-report table.attendance-table tbody td {
+                        padding: 2px 1px;
+                    }
+
+                    .attendance-report table.attendance-table td.day-cell {
+                        width: auto;
+                        max-width: none;
+                        padding: 2px 1px !important;
+                        font-size: 8px;
+                    }
+
+                    .attendance-report table.attendance-table tbody tr {
+                        page-break-inside: avoid;
+                    }
+
+                .attendance-report thead {
+                    display: table-header-group;
+                }
+
+                .attendance-report .report-legend {
+                    padding: 6px 20px;
+                }
+
+                    .attendance-report .report-legend .legend-item {
+                        font-size: 8.5px;
+                        padding: 2px 7px 2px 4px;
+                    }
+
+                    .attendance-report .report-legend .swatch {
+                        width: 9px;
+                        height: 9px;
+                    }
+            }
+        </style>
+
+        
+            int nYear = Model.YearId;
+            int nMonth = Model.MonthId;
+            DateTime[] date = NepaliDateConverter.GetMonth(nYear, nMonth);
+            int dayinmonth = Convert.ToInt32((date[1] - date[0]).TotalDays) + 1;
+            int totalcolumn = dayinmonth + 3;
+        
+
+        <div class="report-card">
+            <!-- ===================== Header ===================== -->
+            <div class="report-header">
+                <img src="@Url.Content("~/Images/Emblem_of_Nepal.png")" alt="Emblem of Nepal" />
+
+                <h5 class="office-name">
+                    @eAttendance.Utility.GetOfficeIdNameWithSelect(User).First(w => w.Value == ((Request["officeId"] != null) ? Request["officeId"] : "0")).Text
+                </h5>
+
+                <h5 class="office-address">
+                    @if (Model.OfficeId > 0)
                     {
-                        var employee =
-                            db.EmployeeInfo.Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault();
+                        @db.OfficeSetUp.Where(x => x.OfficeId == Model.OfficeId).FirstOrDefault().Address
+                    }
+                </h5>
 
+                <h5 class="report-title">( उपस्थित अनुपस्थित )</h5>
+            </div>
 
-                        CodeName = employee.EmployeeNameNp + "[" + employee.EmployeeNo + "]";
-                        var transfer = false;
+            <!-- ===================== Filter / meta summary ===================== -->
+            <div class="report-meta">
+                <div class="meta-row">
+                    <div class="meta-item"><span class="label">साल:</span><span class="value">@Model.YearId</span></div>
+                    <div class="meta-item"><span class="label">@eAttendance.Service.MenuService.Month:</span><span class="value">@Html.Raw(Utility.NepaliMonthList().First(w => w.Value == ((Model.MonthId == 0) ? "1" : Model.MonthId.ToString())).Text)</span></div>
+                    <div class="meta-item meta-wide"><span class="label">कार्यालय:</span><span class="value">@Html.Raw((Model.OfficeId > 0) ? eAttendance.Utility.GetOfficeInfoByOfficeId(Model.OfficeId).OfficeName : "सबै")</span></div>
+                    <div class="meta-item"><span class="label">सेवा:</span><span class="value">@Html.Raw((Model.ServiceId > 0) ? eAttendance.Utility.GetServiceByServiceId(Model.ServiceId).ServiceName : "सबै")</span></div>
+                </div>
+                <div class="meta-row">
+                    <div class="meta-item"><span class="label">शाखा:</span><span class="value">@Html.Raw((Model.BranchId > 0) ? eAttendance.Utility.GetBranchByMainBranchId(Model.BranchId).BranchName : "सबै")</span></div>
+                    <div class="meta-item"><span class="label">तह:</span><span class="value">@Html.Raw((Model.LevelId > 0) ? eAttendance.Utility.GetLevelByLevelId(Model.LevelId).LevelName : "सबै")</span></div>
+                    <div class="meta-item"><span class="label">पद:</span><span class="value">@Html.Raw((Model.DesignationId > 0) ? eAttendance.Utility.GetDesignationByDesignationId(Model.DesignationId).DesignationName : "सबै")</span></div>
+                    <div class="meta-item"><span class="label">शिफ्ट:</span><span class="value">@Html.Raw((Model.ShiftTypeId > 0) ? eAttendance.Utility.GetShiftTypeListById(Model.ShiftTypeId).Name : "सबै")</span></div>
+                    <div class="meta-item"><span class="label">कर्मचारी:</span><span class="value">@Html.Raw((Model.EmployeeId > 0) ? eAttendance.Utility.GetEmployeeInfoByEmnployeeId(Model.EmployeeId).EmployeeNameNp : "सबै")</span></div>
+                </div>
+            </div>
 
-                        decimal PresentdaysCount = 0;
-                        decimal AbsentdaysCount = 0;
-
-                        decimal VisitdaysCount = 0;
-                        decimal LeavedaysCount = 0;
-
-                        count += 1;
-                        var attendance = @ReportService.ReportService.GetEmployeeAttandaneByOfficeWithInDateRange(e.EmployeeId, e.OfficeId, FromDate, ToDate);
+            <!-- ===================== Table ===================== -->
+            <div class="table-scroll">
+                <table class="attendance-table" cellpadding="0" style="width:100%;">
+                    <thead>
                         <tr>
-                            <td>@count</td>
-                            <td>@Html.Raw(eAttendance.Utility.GetDesignationByDesignationId(e.DesignationId).DesignationName ?? "")</td>
-                            <td>@CodeName</td>
-                            @foreach (var m in attendance)
+                            <th rowspan="2" class="col-sno">@eAttendance.Service.MenuService.SNo</th>
+                            <th rowspan="2">पद</th>
+                            <th rowspan="2" class="col-name">कर्मचारी</th>
+                            @for (int i = 1; i <= dayinmonth; i++)
                             {
-
-                                //var data = db.TransferModel.Where(x => x.TransferDateTime <= m.LogDate).Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault();
-                                //if (data != null)
-                                //{
-                                //    transfer = true;
-                                //}
-                                //if (transfer)
-                                //{
-                                //    m.StatusType = 4;
-                                //}
-                                var css = "";
-                                if (m.LogDate > DateTime.Now)
-                                {
-                                    css = "#FFFFFF";
-                                }
-                                else if (m.StatusType == 4)
-                                {
-                                    css = "yellow";
-                                }
-                                else if (m.StatusType == 1)
-                                {
-                                    css = "#d1dade";
-                                }
-                                else
-                                {
-                                    if (m.Holiday != null && m.Holiday.Length > 0)
-                                    {
-                                        css = "#1c84c6";
-                                    }
-
-                                    else if (m.OnLeave != null && m.OnLeave.Length > 0)
-                                    {
-                                        css = "#23c6c8";
-                                    }
-                                    else if (m.OnVisit != null && m.OnVisit.Length > 0)
-                                    {
-                                        css = "#ff00dc";
-                                    }
-                                    else if (m.WorkType == 3)
-                                    {
-                                        css = "#4cff00";
-                                    }
-
-                                    else
-                                    {
-                                        css = "#ed5565";
-                                    }
-                                }
-                                <td style="background:@css !important;">
-                                    @if (m.LogDate > DateTime.Now)
-                                    {
-                                        @Html.Raw("")
-                                    }
-
-                                    else if (m.StatusType == 4)
-                                    {
-                                        @Html.Raw("सरु")
-                                    }
-
-                                    else if (m.StatusType == 1)
-                                    {
-                                        PresentdaysCount += 1;
-                                        @Html.Raw("उ")
-                                    }
-                                    else
-                                    {
-                                        string remarks = "";
-                                        if (m.Holiday != null && m.Holiday.Length > 0)
-                                        {
-                                            string[] h = m.Holiday.Split(' ');
-                                            remarks += m.Holiday + " "; //"स.बि"; //h[0].PadLeft(1) + (h.Length > 1 ? "." + h[1].PadLeft(1) : "");
-                                        }
-
-                                        if (m.OnLeave != null && m.OnLeave.Length > 0)
-                                        {
-                                            LeavedaysCount += 1;
-                                            string[] l = m.OnLeave.Split(' ');
-                                            remarks += m.OnLeave + " "; //"बि"; //l[0].PadLeft(1) + (l.Length > 1 ? "." + l[1].PadLeft(1) : "");
-                                                                        //remarks += m.OnLeave;
-                                        }
-                                        if (m.OnVisit != null && m.OnVisit.Length > 0)
-                                        {
-                                            VisitdaysCount += 1;
-                                            string[] v = m.OnVisit.Split(' ');
-                                            remarks += m.OnVisit + " "; //"का"; //v[0].PadLeft(1) + (v.Length > 1 ? "." + v[1].PadLeft(1) : "");
-                                                                        //remarks += m.OnVisit;
-                                        }
-                                        if (m.WorkType == 3)
-                                        {
-                                            remarks += "स";
-                                        }
-
-                                        if (remarks.Length == 0)
-                                        {
-                                            remarks = "अ";
-                                            AbsentdaysCount += 1;
-                                        }
-                                        @Html.Raw(remarks);
-                                    }
-                                </td>
+                                <th>
+                                    @NepaliDateConverter.ConvertToNepaliShortDayName(date[0].AddDays(i - 1))
+                                </th>
                             }
-                            <td>@PresentdaysCount</td>
-                            <td>
-                                @VisitdaysCount
-                            </td>
-                            <td>
-                                @LeavedaysCount
-                            </td>
-                            <td>@AbsentdaysCount</td>
+                            <th rowspan="2" class="col-total">जम्मा उपस्थित दिन</th>
+                            <th rowspan="2" class="col-total">जम्मा काज दिन</th>
+                            <th rowspan="2" class="col-total">जम्मा बिदा लिएको दिन</th>
+                            <th rowspan="2" class="col-total">जम्मा अनुपस्थित दिन</th>
                         </tr>
-                    }
-                    if (count == 0)
-                    {
-                        <tr>
-                            <td class="text-center alert-info" colspan="35">@eAttendance.Service.MenuService.NoRecordFound</td>
+                        <tr class="day-name-row">
+                            @for (int i = 1; i <= dayinmonth; i++)
+                            {
+                                <th>
+                                    @EnglishToNepaliNumber.ConvertToNepaliNumber(i)
+                                </th>
+                            }
                         </tr>
-                    }
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th colspan="5" style="background: #d1dade !important">उपस्थित = उ</th>
-                    <th colspan="5" style="background: #ed5565 !important">अनुपस्थित = अ</th>
-                    <th colspan="5" style="background: #4cff00 !important">सप्ताह = स</th>
-                    <th colspan="5" style="background: #23c6c8 !important">बिदा = *बि</th>
-                    <th colspan="5" style="background: #1c84c6 !important">सार्वजनिक बिदा = *स.बि</th>
-                    <th colspan="5" style="background: #ff00dc !important">काज = *का</th>
-                    <th colspan="5" style="background: yellow !important">सरुवा भएको या कार्यालय संग सम्बन्धित नरहेको = *सरु</th>
-                </tr>
-            </tfoot>
-        </table>
+                    </thead>
+                    <tbody>
+                        @{
+                            int count = 0;
+                            DateTime[] datetime = NepaliDateConverter.GetMonth(nYear, nMonth);
+                            DateTime FromDate = datetime[0];
+                            DateTime ToDate = datetime[1];
+                        }
+
+                        @if (Model != null)
+                        {
+                            string CodeName = string.Empty;
+                            foreach (var e in Model.EmployeeAttendanceLists)
+                            {
+                                var employee =
+                                    db.EmployeeInfo.Where(x => x.EmployeeId == e.EmployeeId).FirstOrDefault();
+
+                                CodeName = employee.EmployeeNameNp + "[" + employee.EmployeeNo + "]";
+                                var transfer = false;
+
+                                decimal PresentdaysCount = 0;
+                                decimal AbsentdaysCount = 0;
+
+                                decimal VisitdaysCount = 0;
+                                decimal LeavedaysCount = 0;
+
+                                count += 1;
+                                var attendance = @ReportService.ReportService.GetEmployeeAttandaneByOfficeWithInDateRange(e.EmployeeId, e.OfficeId, FromDate, ToDate);
+                                <tr>
+                                    <td class="col-sno">@count</td>
+                                    <td>@Html.Raw(eAttendance.Utility.GetDesignationByDesignationId(e.DesignationId).DesignationName ?? "")</td>
+                                    <td class="col-name">@CodeName</td>
+                                    @foreach (var m in attendance)
+                                    {
+                                        var statusClass = "";
+                                        if (m.LogDate > DateTime.Now)
+                                        {
+                                            statusClass = "st-future";
+                                        }
+                                        else if (m.StatusType == 4)
+                                        {
+                                            statusClass = "st-transfer";
+                                        }
+                                        else if (m.StatusType == 1)
+                                        {
+                                            statusClass = "st-present";
+                                        }
+                                        else
+                                        {
+                                            if (m.Holiday != null && m.Holiday.Length > 0)
+                                            {
+                                                statusClass = "st-holiday";
+                                            }
+                                            else if (m.OnLeave != null && m.OnLeave.Length > 0)
+                                            {
+                                                statusClass = "st-leave";
+                                            }
+                                            else if (m.OnVisit != null && m.OnVisit.Length > 0)
+                                            {
+                                                statusClass = "st-visit";
+                                            }
+                                            else if (m.WorkType == 3)
+                                            {
+                                                statusClass = "st-weekend";
+                                            }
+                                            else
+                                            {
+                                                statusClass = "st-absent";
+                                            }
+                                        }
+                                        <td class="day-cell @statusClass">
+                                            @if (m.LogDate > DateTime.Now)
+                                            {
+                                                @Html.Raw("")
+                                            }
+                                            else if (m.StatusType == 4)
+                                            {
+                                                @Html.Raw("सरु")
+                                            }
+                                            else if (m.StatusType == 1)
+                                            {
+                                                PresentdaysCount += 1;
+                                                @Html.Raw("उ")
+                                            }
+                                            else
+                                            {
+                                                string remarks = "";
+                                                if (m.Holiday != null && m.Holiday.Length > 0)
+                                                {
+                                                    string[] h = m.Holiday.Split(' ');
+                                                    remarks += m.Holiday + " ";
+                                                }
+
+                                                if (m.OnLeave != null && m.OnLeave.Length > 0)
+                                                {
+                                                    LeavedaysCount += 1;
+                                                    string[] l = m.OnLeave.Split(' ');
+                                                    remarks += m.OnLeave + " ";
+                                                }
+                                                if (m.OnVisit != null && m.OnVisit.Length > 0)
+                                                {
+                                                    VisitdaysCount += 1;
+                                                    string[] v = m.OnVisit.Split(' ');
+                                                    remarks += m.OnVisit + " ";
+                                                }
+                                                if (m.WorkType == 3)
+                                                {
+                                                    remarks += "स";
+                                                }
+
+                                                if (remarks.Length == 0)
+                                                {
+                                                    remarks = "अ";
+                                                    AbsentdaysCount += 1;
+                                                }
+                                                @Html.Raw(remarks);
+                                            }
+                                        </td>
+                                    }
+                                    <td class="total-cell">@PresentdaysCount</td>
+                                    <td class="total-cell">@VisitdaysCount</td>
+                                    <td class="total-cell">@LeavedaysCount</td>
+                                    <td class="total-cell">@AbsentdaysCount</td>
+                                </tr>
+                            }
+                            if (count == 0)
+                            {
+                                <tr>
+                                    <td class="no-record text-center" colspan="@(totalcolumn + 2)">@eAttendance.Service.MenuService.NoRecordFound</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ===================== Legend ===================== -->
+            <div class="report-legend">
+                <span class="legend-item"><span class="swatch st-present"></span>उपस्थित = उ</span>
+                <span class="legend-item"><span class="swatch st-absent"></span>अनुपस्थित = अ</span>
+                <span class="legend-item"><span class="swatch st-weekend"></span>सप्ताह = स</span>
+                <span class="legend-item"><span class="swatch st-leave"></span>बिदा = *बि</span>
+                <span class="legend-item"><span class="swatch st-holiday"></span>सार्वजनिक बिदा = *स.बि</span>
+                <span class="legend-item"><span class="swatch st-visit"></span>काज = *का</span>
+                <span class="legend-item"><span class="swatch st-transfer"></span>सरुवा भएको या कार्यालय संग सम्बन्धित नरहेको = *सरु</span>
+            </div>
+        </div>
     }
 </div>
-

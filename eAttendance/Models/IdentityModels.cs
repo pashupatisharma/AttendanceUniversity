@@ -61,8 +61,8 @@ namespace eAttendance.Models
         public DbSet<ZoneSetUp> ZoneSetUp { get; set; }
         public DbSet<AttendanceLog> AttendanceLog { get; set; }
         public DbSet<TransferModel> TransferModel { get; set; }
-        public System.Data.Entity.DbSet<eAttendance.Models.DocumentCatogory> DocumentCatogory { get; set; }
-        public System.Data.Entity.DbSet<eAttendance.Models.Document> Documents { get; set; }
+        public System.Data.Entity.DbSet<DocumentCatogory> DocumentCatogory { get; set; }
+        public System.Data.Entity.DbSet<Document> Documents { get; set; }
 
 
     }
