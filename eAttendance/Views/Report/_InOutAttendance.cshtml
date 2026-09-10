@@ -102,6 +102,7 @@
                 @if (Model != null && Model.EmployeeAttendanceLists != null)
                 {
                     string CodeName = string.Empty;
+
                     foreach (var e in Model.EmployeeAttendanceLists)
                     {
                         count++;
@@ -110,16 +111,14 @@
                          * ============================================================
                          * MONTHLY TOTALS
                          * ============================================================
-                         * totalWorkedHours     : actual worked hours on NORMAL working days only
-                         * totalRequiredHours   : total shift hours required on NORMAL working days
-                         * totalHolidayOvertime : actual worked hours on holidays/weekends (all counts as OT)
+                         * totalWorkedHours   : actual worked hours on ANY day (normal, Saturday, holiday - all count)
+                         * totalRequiredHours : shift hours required on NORMAL working days only
+                         *                      (Saturdays/holidays require 0, so they naturally add nothing here)
                          *
-                         * We do NOT compute overtime day-by-day; it's derived once, after
-                         * all days are summed, from (worked - required) + holiday work.
+                         * Overtime = max(0, totalWorkedHours - totalRequiredHours)
                          */
                         TimeSpan totalWorkedHours = TimeSpan.Zero;
                         TimeSpan totalRequiredHours = TimeSpan.Zero;
-                        TimeSpan totalHolidayOvertime = TimeSpan.Zero;
 
                         var employee = db.EmployeeInfo
                             .Where(x => x.EmployeeId == e.EmployeeId)
@@ -201,18 +200,14 @@
                                         string remarks = "";
                                         if (m.Holiday != null && m.Holiday.Length > 0)
                                         {
-                                            string[] h = m.Holiday.Split(' ');
                                             remarks += m.Holiday + " ";
                                         }
                                         if (m.OnLeave != null && m.OnLeave.Length > 0)
                                         {
-                                            string[] l = m.OnLeave.Split(' ');
                                             remarks += m.OnLeave + " ";
-                                            //remarks += m.OnLeave;
                                         }
                                         if (m.OnVisit != null && m.OnVisit.Length > 0)
                                         {
-                                            string[] v = m.OnVisit.Split(' ');
                                             remarks += m.OnVisit + " ";
                                         }
                                         if (m.WorkType == 3)
@@ -299,30 +294,23 @@
                                         {
                                             totalRequiredHours += requiredWorkingHours;
                                         }
-
-                                        if (hasValidCheckInOut && actualWorkingHours > TimeSpan.Zero)
-                                        {
-                                            totalWorkedHours += actualWorkingHours;
-                                        }
                                     }
-                                    else if (hasValidCheckInOut && actualWorkingHours > TimeSpan.Zero)
+
+                                    // Worked hours count on ANY day - normal, Saturday, or holiday alike.
+                                    if (hasValidCheckInOut && actualWorkingHours > TimeSpan.Zero)
                                     {
-                                        // Any work on a holiday/weekend is pure overtime -
-                                        // shift hours aren't subtracted.
-                                        totalHolidayOvertime += actualWorkingHours;
+                                        totalWorkedHours += actualWorkingHours;
                                     }
                                 }
                             }
 
                             @{
-                                // Normal-day overtime = worked beyond what was required, floored at zero
-                                TimeSpan monthlyNormalOvertime = totalWorkedHours - totalRequiredHours;
-                                if (monthlyNormalOvertime < TimeSpan.Zero)
+                                // Overtime = total worked (any day) minus total required (normal days only), floored at zero
+                                TimeSpan totalOvertime = totalWorkedHours - totalRequiredHours;
+                                if (totalOvertime < TimeSpan.Zero)
                                 {
-                                    monthlyNormalOvertime = TimeSpan.Zero;
+                                    totalOvertime = TimeSpan.Zero;
                                 }
-
-                                TimeSpan totalOvertime = monthlyNormalOvertime + totalHolidayOvertime;
 
                                 // Don't use ToString("hh:mm") - it wraps past 24 hours (e.g. 34:45 -> 10:45)
                                 int totalWorkedHoursPart = (int)totalWorkedHours.TotalHours;
