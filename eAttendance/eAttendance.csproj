@@ -188,11 +188,6 @@
     <Compile Include="App_Start\LoadDefultData.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Connected Services\UpdateSoftwareInformation\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AnualReportController.cs" />
     <Compile Include="Controllers\AssignEmployeeLeaveController.cs" />
@@ -320,13 +315,6 @@
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\EmployeeViewModel.cs" />
     <Compile Include="ViewModel\MonthlyAttendanceModel.cs" />
-    <None Include="Connected Services\UpdateSoftwareInformation\UpdateLoginService.disco" />
-    <None Include="Connected Services\UpdateSoftwareInformation\configuration91.svcinfo" />
-    <None Include="Connected Services\UpdateSoftwareInformation\configuration.svcinfo" />
-    <None Include="Connected Services\UpdateSoftwareInformation\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="Content\animated-nepal-flag-image-0004.gif" />
     <Content Include="Content\assets\attedance1.jpeg" />
     <Content Include="Content\assets\attendance.jpeg" />
@@ -586,7 +574,6 @@
     <Content Include="Content\Login\light\assets\fonts\Material-Design-Iconic-Fontd1f1.ttf" />
     <Content Include="Content\Login\light\assets\fonts\Material-Design-Iconic-Fontd1f1.woff" />
     <Content Include="Content\Login\light\assets\fonts\Material-Design-Iconic-Fontd1f1.woff2" />
-    <None Include="Connected Services\UpdateSoftwareInformation\UpdateLoginService.wsdl" />
     <None Include="Properties\PublishProfiles\Eattemdance.pubxml" />
     <Content Include="Scripts\bootstrap-wizard\css\custom.wizard.css" />
     <Content Include="Scripts\bootstrap-wizard\js\jquery.bootstrap.wizard.min.js" />
@@ -1186,9 +1173,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\UpdateSoftwareInformation\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

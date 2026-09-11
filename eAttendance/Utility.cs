@@ -1,15 +1,44 @@
-﻿using eAttendance.Models;
+﻿using eAttendance.eAttendance.Models;
+using eAttendance.Models;
 using eAttendance.ReportModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Principal;
 using System.Web.Mvc;
 
 namespace eAttendance
 {
+
+    namespace eAttendance.Models
+    {
+        public class OfficeWorkingHoursResult
+        {
+            public int OfficeId { get; set; }
+
+            public System.DateTime StartDate { get; set; }
+
+            public System.DateTime EndDate { get; set; }
+
+            public int WorkingDays { get; set; }
+
+            public int TotalWorkingMinutes { get; set; }
+
+            public decimal TotalWorkingHours { get; set; }
+
+            public int TotalHours { get; set; }
+
+            public int RemainingMinutes { get; set; }
+
+            public string TotalWorkingHoursFormatted { get; set; }
+
+
+        }
+    }
+
     public class Utility
     {
         public static IEnumerable<System.Web.Mvc.SelectListItem> GetRolesList()
@@ -18,7 +47,237 @@ namespace eAttendance
             return new SelectList(context.Roles.ToList(), "Name", "Name");
         }
 
-     
+
+
+        public static string CalculateOvertime(
+            int? employeeId,
+            DateTime startDate,
+            DateTime endDate,
+            int? ShifttypeId,
+            int OfficeId)
+        {
+            string officeHours = CalculateOfficeHour(
+                startDate,
+                endDate,
+                OfficeId,
+                ShifttypeId);
+
+            string employeeHours = CalculateWorkingTimeOfEmployee(
+                employeeId,
+                startDate,
+                endDate);
+
+            // Convert HH:MM to total minutes
+            int officeMinutes = ConvertTimeToMinutes(officeHours);
+            int employeeMinutes = ConvertTimeToMinutes(employeeHours);
+
+            // If employee working hours are less than or equal to
+            // required office hours, there is NO overtime.
+            if (employeeMinutes <= officeMinutes)
+                return "0:00";
+
+            // Overtime = Employee Hours - Office Hours
+            int overtimeMinutes = employeeMinutes - officeMinutes;
+
+            int hours = overtimeMinutes / 60;
+            int minutes = overtimeMinutes % 60;
+
+            return string.Format("{0}:{1:D2}", hours, minutes);
+        }
+
+
+        private static int ConvertTimeToMinutes(string time)
+        {
+            if (string.IsNullOrWhiteSpace(time))
+                return 0;
+
+            var parts = time.Split(':');
+
+            int hours = int.Parse(parts[0]);
+            int minutes = parts.Length > 1 ? int.Parse(parts[1]) : 0;
+
+            int sign = hours < 0 ? -1 : 1;
+            return hours * 60 + sign * minutes;
+        }
+
+
+
+
+
+
+
+        public static string CalculateOfficeHour(
+
+DateTime startDate,
+DateTime endDate,
+int? OfficeId,
+int? ShiftTypeId
+)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var connection = db.Database.Connection;
+
+                if (connection.State != System.Data.ConnectionState.Open)
+                    connection.Open();
+
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "dbo.GetOfficeMonthlyWorkingHours";
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+
+               
+
+                    command.Parameters.Add(
+                        new System.Data.SqlClient.SqlParameter(
+                            "@StartDate",
+                            startDate.Date));
+
+                    command.Parameters.Add(
+                        new System.Data.SqlClient.SqlParameter(
+                            "@EndDate",
+                            endDate.Date));
+
+                    command.Parameters.Add(
+                   new System.Data.SqlClient.SqlParameter(
+                       "@OfficeId",
+                       OfficeId ?? (object)DBNull.Value));
+
+
+                    command.Parameters.Add(
+               new System.Data.SqlClient.SqlParameter(
+                   "@ShiftTypeId",
+                   ShiftTypeId ?? (object)DBNull.Value));
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        // -------------------------------------------------
+                        // RESULT SET 0
+                        // Daily attendance records
+                        // We don't need to read it
+                        // -------------------------------------------------
+
+                        // Move to RESULT SET 1
+                        if (reader.NextResult())
+                        {
+                            // Now reader is reading table[1]
+
+                            if (reader.Read())
+                            {
+                                int columnIndex =
+                                    reader.GetOrdinal("TotalWorkingHoursFormatted");
+
+                                if (!reader.IsDBNull(columnIndex))
+                                {
+                                    return reader.GetString(columnIndex);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return "0:00";
+        }
+
+
+
+
+
+
+
+        public static string CalculateWorkingTimeOfEmployee(
+    int? employeeId,
+    DateTime startDate,
+    DateTime endDate)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var connection = db.Database.Connection;
+
+                if (connection.State != System.Data.ConnectionState.Open)
+                    connection.Open();
+
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "dbo.GetEmployeeWorkingHours";
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    command.Parameters.Add(
+                        new System.Data.SqlClient.SqlParameter(
+                            "@EmployeeId",
+                            employeeId ?? (object)DBNull.Value));
+
+                    command.Parameters.Add(
+                        new System.Data.SqlClient.SqlParameter(
+                            "@StartDate",
+                            startDate.Date));
+
+                    command.Parameters.Add(
+                        new System.Data.SqlClient.SqlParameter(
+                            "@EndDate",
+                            endDate.Date));
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        // -------------------------------------------------
+                        // RESULT SET 0
+                        // Daily attendance records
+                        // We don't need to read it
+                        // -------------------------------------------------
+
+                        // Move to RESULT SET 1
+                        if (reader.NextResult())
+                        {
+                            // Now reader is reading table[1]
+
+                            if (reader.Read())
+                            {
+                                int columnIndex =
+                                    reader.GetOrdinal("TotalWorkingHoursFormatted");
+
+                                if (!reader.IsDBNull(columnIndex))
+                                {
+                                    return reader.GetString(columnIndex);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return "0:00";
+        }
+
+
+
+
+
+
+
+
+        //public static string CalculateWorkingTimeOfEmployee(
+        //    int? employeeId,
+        //    DateTime startDate,
+        //    DateTime endDate)
+        //{
+        //    using (ApplicationDbContext db = new ApplicationDbContext())
+        //    {
+        //        var result = db.Database.SqlQuery<OfficeWorkingHoursResult>(
+        //            "EXEC dbo.GetEmployeeWorkingHours @EmployeeId, @StartDate, @EndDate",
+        //            new SqlParameter("@EmployeeId", employeeId),
+        //            new SqlParameter("@StartDate", startDate.Date),
+        //            new SqlParameter("@EndDate", endDate.Date)
+        //        ).FirstOrDefault();
+
+        //        if (result == null)
+        //            return "0:00";
+
+        //        return result.TotalWorkingHoursFormatted ?? "0:00";
+        //    }
+       // }
+
+
 
         public static string GetEmployeeImageByUserId(string userId)
         {
@@ -27,7 +286,7 @@ namespace eAttendance
                 int employeeId = GetEmployeeIdByUserId(userId);
 
                 var employeeImage = db.EmployeeImage
-                  
+
                     .FirstOrDefault(x => x.EmployeeId == employeeId);
 
                 if (employeeImage != null && !string.IsNullOrEmpty(employeeImage.ImageName))
@@ -106,52 +365,52 @@ namespace eAttendance
 
 
 
-    //        return new SelectList(new[] { new {
-    //    Id = "0",
-    //    Value = "छान्नुहोश "
-    //}, new {
-    //    Id = "2",
-    //    Value = "मेची"
-    //}, new {
-    //    Id = "3",
-    //    Value = "कोशी"
-    //}, new {
-    //    Id = "4",
-    //    Value = "सगरमाथा"
-    //}, new {
-    //    Id = "5",
-    //    Value = "जनकपुर"
-    //}, new {
-    //    Id = "6",
-    //    Value = "बागमति"
-    //}, new {
-    //    Id = "7",
-    //    Value = "नारायणी"
-    //}, new {
-    //    Id = "8",
-    //    Value = "गण्डकी"
-    //}, new {
-    //    Id = "9",
-    //    Value = "लुम्विनी"
-    //}, new {
-    //    Id = "10",
-    //    Value = "धवलागिरी"
-    //}, new {
-    //    Id = "11",
-    //    Value = "राप्ती"
-    //}, new {
-    //    Id = "12",
-    //    Value = "कर्णाली"
-    //}, new {
-    //    Id = "13",
-    //    Value = "भेरी"
-    //}, new {
-    //    Id = "14",
-    //    Value = "सेती"
-    //}, new {
-    //    Id = "15",
-    //    Value = "महाकाली"
-    //} }, "id", "Value");
+            //        return new SelectList(new[] { new {
+            //    Id = "0",
+            //    Value = "छान्नुहोश "
+            //}, new {
+            //    Id = "2",
+            //    Value = "मेची"
+            //}, new {
+            //    Id = "3",
+            //    Value = "कोशी"
+            //}, new {
+            //    Id = "4",
+            //    Value = "सगरमाथा"
+            //}, new {
+            //    Id = "5",
+            //    Value = "जनकपुर"
+            //}, new {
+            //    Id = "6",
+            //    Value = "बागमति"
+            //}, new {
+            //    Id = "7",
+            //    Value = "नारायणी"
+            //}, new {
+            //    Id = "8",
+            //    Value = "गण्डकी"
+            //}, new {
+            //    Id = "9",
+            //    Value = "लुम्विनी"
+            //}, new {
+            //    Id = "10",
+            //    Value = "धवलागिरी"
+            //}, new {
+            //    Id = "11",
+            //    Value = "राप्ती"
+            //}, new {
+            //    Id = "12",
+            //    Value = "कर्णाली"
+            //}, new {
+            //    Id = "13",
+            //    Value = "भेरी"
+            //}, new {
+            //    Id = "14",
+            //    Value = "सेती"
+            //}, new {
+            //    Id = "15",
+            //    Value = "महाकाली"
+            //} }, "id", "Value");
 
         }
 
@@ -232,7 +491,7 @@ namespace eAttendance
         public static IEnumerable<SelectListItem> GetStatusList()
         {
             List<SelectListItem> list = new List<SelectListItem>();
-          
+
             list.Add(new SelectListItem() { Value = "1", Text = "सक्रिय" });
             list.Add(new SelectListItem() { Value = "2", Text = "निस्क्रिय" });
             list.Add(new SelectListItem() { Value = "3", Text = "आन्तरिक स्थानान्तरण" });
@@ -315,9 +574,9 @@ namespace eAttendance
             }
         }
 
-   
 
-      
+
+
 
         public static IEnumerable<SelectListItem> GetShiftIdName()
         {
@@ -336,10 +595,10 @@ namespace eAttendance
         }
 
 
-        public static ShiftType GetShiftTypeListById(int?id)
+        public static ShiftType GetShiftTypeListById(int? id)
         {
             using (ApplicationDbContext entities = new ApplicationDbContext())
-            { 
+            {
                 return entities.ShiftType.Where(x => x.ShiftTypeId == id).FirstOrDefault();
             }
         }
@@ -520,11 +779,11 @@ namespace eAttendance
 
         public static IEnumerable<SelectListItem> GetEmployeeIdbyOffice(int? officeId)
         {
-           
+
             using (var entities = new ApplicationDbContext())
             {
                 var employeeDetail = entities.EmployeeOfficeDetail.Where(x => x.OfficeId == officeId).ToList();
-               foreach(var item in employeeDetail)
+                foreach (var item in employeeDetail)
                 {
 
                 }
@@ -639,7 +898,7 @@ namespace eAttendance
             }
         }
 
-   
+
 
 
 
@@ -991,7 +1250,7 @@ namespace eAttendance
             {
                 ApplicationDbContext context = new ApplicationDbContext();
                 var UserName = context.Users.Where(x => x.Id == UserId).FirstOrDefault().UserName;
-                user= UserName;
+                user = UserName;
             }
             catch (Exception ex)
 

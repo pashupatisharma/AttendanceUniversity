@@ -417,12 +417,7 @@ public ActionResult Index(
                 recordsPerPage = 10;
             }
 
-            // Optional maximum page size
-            if (recordsPerPage > 100)
-            {
-                recordsPerPage = 100;
-            }
-
+         
 
             // ---------------------------------------------------------
             // TOTAL RECORDS

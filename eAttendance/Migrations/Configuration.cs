@@ -10,14 +10,14 @@ namespace eAttendance.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
     //mig
-    internal sealed class Configuration : DbMigrationsConfiguration<eAttendance.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(eAttendance.Models.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
             if (!context.Roles.Any(r => r.Name == "SuperAdmin"))
             {
