@@ -9,7 +9,7 @@
         {
             <div class="text-center article-title">
                 <img src="@Url.Content("~/Images/Emblem_of_Nepal.png")" width="80" height="80" />
-             
+
                 <h5>
                     @if (Model.OfficeId > 0)
                     {
@@ -70,9 +70,9 @@
                 </thead>
                 <tbody>
                     @{
-                    int count = 0;
+                        int count = 0;
 
-                    string CodeName = string.Empty;
+                        string CodeName = string.Empty;
                     }
                     @foreach (var m in Model.EmployeeAttendanceLists)
                     {
@@ -117,6 +117,118 @@
                     }
                 </tbody>
             </table>
+            <!-- Signature Section -->
+            <table class="signature-table">
+                <tr>
+                    <td class="signature-left">
+                        <div class="signature-line"></div>
+                        <div class="signature-title">तयार गर्ने</div>
+
+                    </td>
+
+                    <td class="signature-right">
+                        <div class="signature-line"></div>
+                        <div class="signature-title">प्रमाणित गर्ने</div>
+
+                    </td>
+                </tr>
+            </table>
+
+            <style>
+                             /* ================================
+                SIGNATURE SECTION
+                ================================ */
+
+                             .signature-table {
+                                 width: 100%;
+                                 border-collapse: collapse !important;
+                                 border: none !important;
+                                 margin-top: 50px;
+                                 page-break-inside: avoid !important;
+                                 table-layout: fixed;
+                             }
+
+                                 .signature-table tr,
+                                 .signature-table td {
+                                     border: none !important;
+                                 }
+
+                                 .signature-table td {
+                                     width: 50%;
+                                     vertical-align: top;
+                                     padding: 0 !important;
+                                 }
+
+                             .signature-left {
+                                 text-align: center;
+                                 padding-right: 80px !important;
+                             }
+
+                             .signature-right {
+                                 text-align: center;
+                                 padding-left: 80px !important;
+                             }
+
+                             .signature-line {
+                                 width: 200px;
+                                 border-top: 1px solid #000;
+                                 margin: 0 auto 8px auto;
+                             }
+
+                             .signature-title {
+                                 font-weight: bold;
+                                 margin-bottom: 8px;
+                             }
+
+
+                             /* ================================
+                PRINT - A4 LANDSCAPE
+                ================================ */
+
+                             @@media print {
+
+                                 @@page {
+                                     size: A4 landscape;
+                                     margin: 10mm;
+                                 }
+
+                                 .signature-table {
+                                     width: 100% !important;
+                                     display: table !important;
+                                     table-layout: fixed !important;
+                                     border-collapse: collapse !important;
+                                     page-break-inside: avoid !important;
+                                     margin-top: 40px !important;
+                                 }
+
+                                     .signature-table tr {
+                                         display: table-row !important;
+                                     }
+
+                                     .signature-table td {
+                                         display: table-cell !important;
+                                         width: 50% !important;
+                                         border: none !important;
+                                         vertical-align: top !important;
+                                     }
+
+                                 .signature-left {
+                                     text-align: center !important;
+                                     padding-right: 100px !important;
+                                 }
+
+                                 .signature-right {
+                                     text-align: center !important;
+                                     padding-left: 100px !important;
+                                 }
+
+                                 .signature-line {
+                                     width: 200px !important;
+                                     margin-left: auto !important;
+                                     margin-right: auto !important;
+                                 }
+                             }
+            </style>
         }
     </div>
 </div>

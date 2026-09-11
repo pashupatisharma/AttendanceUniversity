@@ -249,8 +249,8 @@
                                         <li><a href="@Url.Action("AttendanceRecordDelete", "EmployeeInfo")">हाजिरी मेटाउने</a></li>
 
 
-                                    <li><a href="@Url.Action("Index", "Transfer")">कर्मचारी आन्तरिक सरुवा</a></li>
-                                    <li><a href="@Url.Action("IndexExternalTransfer", "Transfer")">कर्मचारी बाह्य सरुवा</a></li>
+                                        <li><a href="@Url.Action("Index", "Transfer")">कर्मचारी आन्तरिक सरुवा</a></li>
+                                        <li><a href="@Url.Action("IndexExternalTransfer", "Transfer")">कर्मचारी बाह्य सरुवा</a></li>
                                     }
 
                                     <li><a href="@Url.Action("IndexPage", "Document")">कागजात</a></li>
@@ -281,7 +281,7 @@
                             }
                             @if (User.IsInRole("Administrator") || User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
                             {
-                                
+
 
                                 <li><a href="@Url.Action("AddList", "AssignEmployeeLeave")">निर्धारित बिदा</a></li>
 
@@ -487,13 +487,13 @@
 </html>
 
 @*<style>
-    .modal,
-    .modal-dialog,
-    .modal-content,
-    .modal-body {
-        overflow: visible !important;
-    }
-</style>*@
+        .modal,
+        .modal-dialog,
+        .modal-content,
+        .modal-body {
+            overflow: visible !important;
+        }
+    </style>*@
 
 
 <style>
@@ -511,3 +511,4 @@
         max-height: 70vh;
     }
 </style>
+

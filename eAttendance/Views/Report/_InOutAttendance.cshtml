@@ -533,7 +533,7 @@
                             DateTime[] datetime = NepaliDateConverter.GetMonth(nYear, nMonth);
                             DateTime FromDate = datetime[0];
                             DateTime ToDate = datetime[1];
-                           
+
                         }
 
                         @if (Model != null && Model.EmployeeAttendanceLists != null)
@@ -557,7 +557,7 @@
                                     .Where(x => x.EmployeeId == e.EmployeeId)
                                     .FirstOrDefault();
 
-                                var overtime = Utility.CalculateOvertime(e.EmployeeId, FromDate, ToDate, ShiftType.ShiftTypeId,Model.OfficeId);
+                                var overtime = Utility.CalculateOvertime(e.EmployeeId, FromDate, ToDate, ShiftType.ShiftTypeId, Model.OfficeId);
 
                                 CodeName = employee != null
                                             ? employee.EmployeeNameNp + "[" + employee.EmployeeNo + "]"
@@ -622,9 +622,9 @@
                                             else if (m.StatusType == 1)
                                             {
                                                 @Html.Raw("<span class='dc-in'>आ " + ((m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? m.CheckIn.Value.ToString(@"hh\:mm") : "-") + "</span>" +
-                                                                "<span class='dc-out'>ग " + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null) ? m.CheckOut.Value.ToString(@"hh\:mm") : "-") + "</span>" +
-                                                                "<span class='dc-total'>क.स " + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null && m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? (m.CheckOut - m.CheckIn).Value.ToString(@"hh\:mm") : "-") + "</span>"
-                                                               )
+                                                                     "<span class='dc-out'>ग " + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null) ? m.CheckOut.Value.ToString(@"hh\:mm") : "-") + "</span>" +
+                                                                     "<span class='dc-total'>क.स " + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null && m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? (m.CheckOut - m.CheckIn).Value.ToString(@"hh\:mm") : "-") + "</span>"
+                                                                    )
                                             }
                                             else
                                             {
@@ -655,10 +655,10 @@
 
                                     }
 
-                                   
+
                                     <!-- Total at the end -->
-                                <td class="total-cell">@workinghourofemployee</td>
-                                <td class="total-cell">@overtime</td>
+                                    <td class="total-cell">@workinghourofemployee</td>
+                                    <td class="total-cell">@overtime</td>
                                 </tr>
                             }
                             if (count == 0)
@@ -685,6 +685,119 @@
                 <span class="legend-item">ग = गएको समय</span>
                 @*<span class="legend-item"></span>*@
             </div>
+
+            <!-- Signature Section -->
+            <table class="signature-table">
+                <tr>
+                    <td class="signature-left">
+                        <div class="signature-line"></div>
+                        <div class="signature-title">तयार गर्ने</div>
+
+                    </td>
+
+                    <td class="signature-right">
+                        <div class="signature-line"></div>
+                        <div class="signature-title">प्रमाणित गर्ने</div>
+
+                    </td>
+                </tr>
+            </table>
+
+            <style>
+                             /* ================================
+                SIGNATURE SECTION
+                ================================ */
+
+                             .signature-table {
+                                 width: 100%;
+                                 border-collapse: collapse !important;
+                                 border: none !important;
+                                 margin-top: 50px;
+                                 page-break-inside: avoid !important;
+                                 table-layout: fixed;
+                             }
+
+                                 .signature-table tr,
+                                 .signature-table td {
+                                     border: none !important;
+                                 }
+
+                                 .signature-table td {
+                                     width: 50%;
+                                     vertical-align: top;
+                                     padding: 0 !important;
+                                 }
+
+                             .signature-left {
+                                 text-align: center;
+                                 padding-right: 80px !important;
+                             }
+
+                             .signature-right {
+                                 text-align: center;
+                                 padding-left: 80px !important;
+                             }
+
+                             .signature-line {
+                                 width: 200px;
+                                 border-top: 1px solid #000;
+                                 margin: 0 auto 8px auto;
+                             }
+
+                             .signature-title {
+                                 font-weight: bold;
+                                 margin-bottom: 8px;
+                             }
+
+
+                             /* ================================
+                PRINT - A4 LANDSCAPE
+                ================================ */
+
+                             @@media print {
+
+                                 @@page {
+                                     size: A4 landscape;
+                                     margin: 10mm;
+                                 }
+
+                                 .signature-table {
+                                     width: 100% !important;
+                                     display: table !important;
+                                     table-layout: fixed !important;
+                                     border-collapse: collapse !important;
+                                     page-break-inside: avoid !important;
+                                     margin-top: 40px !important;
+                                 }
+
+                                     .signature-table tr {
+                                         display: table-row !important;
+                                     }
+
+                                     .signature-table td {
+                                         display: table-cell !important;
+                                         width: 50% !important;
+                                         border: none !important;
+                                         vertical-align: top !important;
+                                     }
+
+                                 .signature-left {
+                                     text-align: center !important;
+                                     padding-right: 100px !important;
+                                 }
+
+                                 .signature-right {
+                                     text-align: center !important;
+                                     padding-left: 100px !important;
+                                 }
+
+                                 .signature-line {
+                                     width: 200px !important;
+                                     margin-left: auto !important;
+                                     margin-right: auto !important;
+                                 }
+                             }
+            </style>
         </div>
     }
 </div>
