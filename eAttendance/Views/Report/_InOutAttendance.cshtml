@@ -122,6 +122,10 @@
                 }
 
                     .attendance-report table.attendance-table thead th {
+                        /* Fallback for exporters (e.g. ExcellentExport.js) that don't
+                           support CSS gradients — if the gradient line below is dropped,
+                           this solid color still applies so header text stays visible. */
+                        background-color: #1f3a5c;
                         background: linear-gradient(180deg, #2a4a75 0%, #1f3a5c 100%);
                         color: #fff;
                         font-weight: 600;
@@ -134,6 +138,7 @@
                     }
 
                     .attendance-report table.attendance-table thead tr.day-name-row th {
+                        background-color: #24405f;
                         background: #24405f;
                         font-weight: 500;
                         font-size: 11px;
@@ -141,9 +146,26 @@
 
                     /* Summary columns (कुल क.स / ओभरटाइम) get their own accent so totals stand out */
                     .attendance-report table.attendance-table thead th.col-total {
+                        background-color: #9a6f22; /* fallback for Excel export */
                         background: linear-gradient(180deg, #b8862c 0%, #9a6f22 100%);
                         border-color: #a9772a;
                     }
+
+                    /* Second-row filler cells under S.No / पद / कर्मचारी / totals —
+                       these replace rowspan for those columns (Excel's HTML-to-XLS
+                       renderer handles rowspan/colspan inconsistently and can leave
+                       misaligned or blank cells). Styled to match the row above so
+                       the two rows still read as one solid header block. */
+                    .attendance-report table.attendance-table thead tr.day-name-row th.col-fill {
+                        background-color: #24405f;
+                        background: #24405f;
+                        border-top: 1px solid rgba(255,255,255,0.15);
+                    }
+
+                        .attendance-report table.attendance-table thead tr.day-name-row th.col-fill.col-total-fill {
+                            background-color: #9a6f22;
+                            background: #9a6f22;
+                        }
 
                     .attendance-report table.attendance-table th.col-sno,
                     .attendance-report table.attendance-table td.col-sno {
@@ -504,26 +526,35 @@
             <div class="table-scroll">
                 <table class="attendance-table" cellpadding="0" style="width:100%;">
                     <thead>
+                        <!-- Row 1: static labels (S.No / पद / कर्मचारी), day short-names, and totals -->
                         <tr>
-                            <th rowspan="2" class="col-sno">@eAttendance.Service.MenuService.SNo</th>
-                            <th rowspan="2">पद</th>
-                            <th rowspan="2" class="col-name">कर्मचारी</th>
+                            <th class="col-sno" style="background-color:#1f3a5c;color:#fff;">@eAttendance.Service.MenuService.SNo</th>
+                            <th style="background-color:#1f3a5c;color:#fff;">पद</th>
+                            <th class="col-name" style="background-color:#1f3a5c;color:#fff;">कर्मचारी</th>
                             @for (int i = 1; i <= dayinmonth; i++)
                             {
-                                <th>
+                                <th style="background-color:#1f3a5c;color:#fff;">
                                     @NepaliDateConverter.ConvertToNepaliShortDayName(date[0].AddDays(i - 1))
                                 </th>
                             }
-                            <th rowspan="2" class="col-total">कुल क.स</th>
-                            <th rowspan="2" class="col-total">ओभरटाइम</th>
+                            <th class="col-total" style="background-color:#9a6f22;color:#fff;">कुल क.स</th>
+                            <th class="col-total" style="background-color:#9a6f22;color:#fff;">ओभरटाइम</th>
                         </tr>
+                        <!-- Row 2: day numbers, with plain filler cells (same header color,
+                             no rowspan) under S.No / पद / कर्मचारी / totals so the header
+                             renders as two clean rows in both the browser and Excel export -->
                         <tr class="day-name-row">
+                            <th class="col-fill" style="background-color:#24405f;color:#fff;"></th>
+                            <th class="col-fill" style="background-color:#24405f;color:#fff;"></th>
+                            <th class="col-fill" style="background-color:#24405f;color:#fff;"></th>
                             @for (int i = 1; i <= dayinmonth; i++)
                             {
-                                <th>
+                                <th style="background-color:#24405f;color:#fff;">
                                     @EnglishToNepaliNumber.ConvertToNepaliNumber(i)
                                 </th>
                             }
+                            <th class="col-fill col-total-fill" style="background-color:#9a6f22;color:#fff;"></th>
+                            <th class="col-fill col-total-fill" style="background-color:#9a6f22;color:#fff;"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -801,4 +832,3 @@
         </div>
     }
 </div>
-
