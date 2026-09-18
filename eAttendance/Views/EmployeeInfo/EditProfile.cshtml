@@ -103,18 +103,25 @@
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
                                 <label>@Html.DisplayNameFor(m => m.DisplayOrder)</label> <span class="text-danger">*</span>
-                            
+
                                 @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control required", @style = "font-family:'Comic Sans MS'" })
                             </div>
                         </div>
 
-                        <div class="col-sm-4 col-md-4">
-                            <div class="form-group">
-                                <label>अवस्था</label>
-                                @Html.DropDownListFor(m => m.Status, Utility.GetStatusList(), new { @class = "form-control" })
+                        @if (User.IsInRole("SuperAdmin"))
+                        {
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>अवस्था</label>
+                                    @Html.DropDownListFor(m => m.Status, Utility.GetStatusList(), new { @class = "form-control" })
 
+                                </div>
                             </div>
-                        </div>
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(m=>m.Status)
+                        }
 
 
                     </div>
@@ -139,7 +146,7 @@
 
             //Region
             $('#EmployeeNo').change(function () {
-             
+
 
                var DeviceCode = $('#EmployeeNo').val();
 

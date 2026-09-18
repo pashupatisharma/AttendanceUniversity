@@ -622,9 +622,9 @@
                                             else if (m.StatusType == 1)
                                             {
                                                 @Html.Raw("<span class='dc-in'>आ " + ((m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? m.CheckIn.Value.ToString(@"hh\:mm") : "-") + "</span>" +
-                                                                     "<span class='dc-out'>ग " + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null) ? m.CheckOut.Value.ToString(@"hh\:mm") : "-") + "</span>" +
-                                                                     "<span class='dc-total'>क.स " + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null && m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? (m.CheckOut - m.CheckIn).Value.ToString(@"hh\:mm") : "-") + "</span>"
-                                                                    )
+                                                                          "<span class='dc-out'>ग " + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null) ? m.CheckOut.Value.ToString(@"hh\:mm") : "-") + "</span>" +
+                                                                          "<span class='dc-total'>क.स " + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null && m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? (m.CheckOut - m.CheckIn).Value.ToString(@"hh\:mm") : "-") + "</span>"
+                                                                         )
                                             }
                                             else
                                             {
@@ -704,100 +704,101 @@
             </table>
 
             <style>
-                             /* ================================
+                /* ================================
                 SIGNATURE SECTION
                 ================================ */
 
-                             .signature-table {
-                                 width: 100%;
-                                 border-collapse: collapse !important;
-                                 border: none !important;
-                                 margin-top: 50px;
-                                 page-break-inside: avoid !important;
-                                 table-layout: fixed;
-                             }
+                .signature-table {
+                    width: 100%;
+                    border-collapse: collapse !important;
+                    border: none !important;
+                    margin-top: 50px;
+                    page-break-inside: avoid !important;
+                    table-layout: fixed;
+                }
 
-                                 .signature-table tr,
-                                 .signature-table td {
-                                     border: none !important;
-                                 }
+                    .signature-table tr,
+                    .signature-table td {
+                        border: none !important;
+                    }
 
-                                 .signature-table td {
-                                     width: 50%;
-                                     vertical-align: top;
-                                     padding: 0 !important;
-                                 }
+                    .signature-table td {
+                        width: 50%;
+                        vertical-align: top;
+                        padding: 0 !important;
+                    }
 
-                             .signature-left {
-                                 text-align: center;
-                                 padding-right: 80px !important;
-                             }
+                .signature-left {
+                    text-align: center;
+                    padding-right: 80px !important;
+                }
 
-                             .signature-right {
-                                 text-align: center;
-                                 padding-left: 80px !important;
-                             }
+                .signature-right {
+                    text-align: center;
+                    padding-left: 80px !important;
+                }
 
-                             .signature-line {
-                                 width: 200px;
-                                 border-top: 1px solid #000;
-                                 margin: 0 auto 8px auto;
-                             }
+                .signature-line {
+                    width: 200px;
+                    border-top: 1px solid #000;
+                    margin: 0 auto 8px auto;
+                }
 
-                             .signature-title {
-                                 font-weight: bold;
-                                 margin-bottom: 8px;
-                             }
+                .signature-title {
+                    font-weight: bold;
+                    margin-bottom: 8px;
+                }
 
 
-                             /* ================================
+                /* ================================
                 PRINT - A4 LANDSCAPE
                 ================================ */
 
-                             @@media print {
+                @@media print {
 
-                                 @@page {
-                                     size: A4 landscape;
-                                     margin: 10mm;
-                                 }
+                    @@page {
+                        size: A4 landscape;
+                        margin: 10mm;
+                    }
 
-                                 .signature-table {
-                                     width: 100% !important;
-                                     display: table !important;
-                                     table-layout: fixed !important;
-                                     border-collapse: collapse !important;
-                                     page-break-inside: avoid !important;
-                                     margin-top: 40px !important;
-                                 }
+                    .signature-table {
+                        width: 100% !important;
+                        display: table !important;
+                        table-layout: fixed !important;
+                        border-collapse: collapse !important;
+                        page-break-inside: avoid !important;
+                        margin-top: 40px !important;
+                    }
 
-                                     .signature-table tr {
-                                         display: table-row !important;
-                                     }
+                        .signature-table tr {
+                            display: table-row !important;
+                        }
 
-                                     .signature-table td {
-                                         display: table-cell !important;
-                                         width: 50% !important;
-                                         border: none !important;
-                                         vertical-align: top !important;
-                                     }
+                        .signature-table td {
+                            display: table-cell !important;
+                            width: 50% !important;
+                            border: none !important;
+                            vertical-align: top !important;
+                        }
 
-                                 .signature-left {
-                                     text-align: center !important;
-                                     padding-right: 100px !important;
-                                 }
+                    .signature-left {
+                        text-align: center !important;
+                        padding-right: 100px !important;
+                    }
 
-                                 .signature-right {
-                                     text-align: center !important;
-                                     padding-left: 100px !important;
-                                 }
+                    .signature-right {
+                        text-align: center !important;
+                        padding-left: 100px !important;
+                    }
 
-                                 .signature-line {
-                                     width: 200px !important;
-                                     margin-left: auto !important;
-                                     margin-right: auto !important;
-                                 }
-                             }
+                    .signature-line {
+                        width: 200px !important;
+                        margin-left: auto !important;
+                        margin-right: auto !important;
+                    }
+                }
             </style>
         </div>
     }
 </div>
+

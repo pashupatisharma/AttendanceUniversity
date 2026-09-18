@@ -60,7 +60,9 @@ namespace eAttendance
                 startDate,
                 endDate,
                 OfficeId,
-                ShifttypeId);
+                ShifttypeId,
+                employeeId
+                );
 
             string employeeHours = CalculateWorkingTimeOfEmployee(
                 employeeId,
@@ -111,9 +113,11 @@ namespace eAttendance
 DateTime startDate,
 DateTime endDate,
 int? OfficeId,
-int? ShiftTypeId
+int? ShiftTypeId,
+int? employeeId
 )
         {
+            string s = "";
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 var connection = db.Database.Connection;
@@ -148,6 +152,11 @@ int? ShiftTypeId
                new System.Data.SqlClient.SqlParameter(
                    "@ShiftTypeId",
                    ShiftTypeId ?? (object)DBNull.Value));
+
+                    command.Parameters.Add(
+      new System.Data.SqlClient.SqlParameter(
+          "@EmployeeId",
+          employeeId ?? (object)DBNull.Value));
 
                     using (var reader = command.ExecuteReader())
                     {
@@ -191,6 +200,8 @@ int? ShiftTypeId
     DateTime startDate,
     DateTime endDate)
         {
+
+
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 var connection = db.Database.Connection;
