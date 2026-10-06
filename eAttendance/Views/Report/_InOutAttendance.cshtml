@@ -561,9 +561,17 @@
                         @{
                             int count = 0;
 
+
                             DateTime[] datetime = NepaliDateConverter.GetMonth(nYear, nMonth);
                             DateTime FromDate = datetime[0];
                             DateTime ToDate = datetime[1];
+                            DateTime ToDateOvertime = datetime[1];
+
+
+                       
+
+
+                            //if (DateTime.Now < ToDate) { ToDateOvertime = DateTime.Now; }
 
                         }
 
@@ -575,7 +583,20 @@
                             {
                                 count++;
 
-                                var workinghourofemployee = Utility.CalculateWorkingTimeOfEmployee(e.EmployeeId, FromDate, ToDate);
+                                if (DateTime.Now.Date <= ToDate.Date)
+                                {
+                                    ToDateOvertime = DateTime.Now.Date.Date;
+
+                                    DateTime? shiftEnd = Utility.GetShiftEnd(e.EmployeeId, Model.OfficeId, DateTime.Now.Date);
+
+                                    // subtract a day only when today has a shift and it is not over yet
+                                    if (shiftEnd != null && DateTime.Now.Date < shiftEnd.Value)
+                                    {
+                                        ToDateOvertime = DateTime.Now.Date.Date.AddDays(-1);
+                                    }
+                                }
+
+                                var workinghourofemployee = Utility.CalculateWorkingTimeOfEmployee(e.EmployeeId, FromDate, ToDateOvertime);
 
 
 
@@ -588,7 +609,7 @@
                                     .Where(x => x.EmployeeId == e.EmployeeId)
                                     .FirstOrDefault();
 
-                                var overtime = Utility.CalculateOvertime(e.EmployeeId, FromDate, ToDate, ShiftType.ShiftTypeId, Model.OfficeId);
+                                var overtime = Utility.CalculateOvertime(e.EmployeeId, FromDate, ToDateOvertime, ShiftType.ShiftTypeId, Model.OfficeId);
 
                                 CodeName = employee != null
                                             ? employee.EmployeeNameNp + "[" + employee.EmployeeNo + "]"
@@ -653,9 +674,9 @@
                                             else if (m.StatusType == 1)
                                             {
                                                 @Html.Raw("<span class='dc-in'>आ " + ((m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? m.CheckIn.Value.ToString(@"hh\:mm") : "-") + "</span>" +
-                                                                          "<span class='dc-out'>ग " + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null) ? m.CheckOut.Value.ToString(@"hh\:mm") : "-") + "</span>" +
-                                                                          "<span class='dc-total'>क.स " + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null && m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? (m.CheckOut - m.CheckIn).Value.ToString(@"hh\:mm") : "-") + "</span>"
-                                                                         )
+                                               "<span class='dc-out'>ग " + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null) ? m.CheckOut.Value.ToString(@"hh\:mm") : "-") + "</span>" +
+                                               "<span class='dc-total'>क.स " + ((m.CheckOut != TimeSpan.Zero && m.CheckOut != null && m.CheckIn != TimeSpan.Zero && m.CheckIn != null) ? (m.CheckOut - m.CheckIn).Value.ToString(@"hh\:mm") : "-") + "</span>"
+                                              )
                                             }
                                             else
                                             {

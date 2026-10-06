@@ -4,6 +4,7 @@ using eAttendance.ReportModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
@@ -41,6 +42,56 @@ namespace eAttendance
 
     public class Utility
     {
+
+        public static DateTime? GetShiftEnd(int? employeeId, int officeId, DateTime date)
+        {
+
+            ApplicationDbContext db = new ApplicationDbContext();
+            date = date.Date;
+            int weekDay = (int)date.DayOfWeek + 1;      // SQL: DATEFIRST 7 -> Sunday = 1
+
+            // 1. employee's current shift type (latest assignment effective on or before date)
+            int? shiftTypeId = db.EmployeeShiftTime
+                .Where(e => e.EmployeeId == employeeId && e.EffectiveDate <= date)
+                .OrderByDescending(e => e.EffectiveDate)
+                .ThenByDescending(e => e.EmployeeShiftTimeId)
+                .Select(e => e.ShiftTypeId)
+                .FirstOrDefault();
+
+            // 2. office yearly shift covering the date (same as the procedure)
+            int? shiftId = db.YearlyShift
+                .Where(y => y.Status == 1
+                         && y.OfficeId == officeId
+                         && DbFunctions.TruncateTime(y.StartDate) <= date
+                         && DbFunctions.TruncateTime(y.EndDate) >= date)
+                .OrderByDescending(y => y.StartDate)
+                .ThenByDescending(y => y.YearlyShiftId)
+                .Select(y => y.ShiftId)
+                .FirstOrDefault();
+
+            if (shiftId == null) return null;
+
+            // 3. shift time for that weekday
+            var t = db.SetupShiftTime
+                .Where(s => s.OfficeId == officeId
+                         && s.ShiftId == shiftId
+                         && s.WeekDay == weekDay
+                         && s.Status == 1
+                         && (shiftTypeId == null || s.ShiftTypeId == shiftTypeId))
+               .OrderBy(s => s.IsDefault == true ? 0 : 1)
+                .ThenBy(s => s.DisplayOrder)
+                .ThenBy(s => s.ShiftTimeId)
+                .Select(s => new { s.ShiftStartTime, s.ShiftEndTime })
+                .FirstOrDefault();
+
+            if (t == null
+                || !TimeSpan.TryParse(t.ShiftStartTime?.Trim(), out var start)
+                || !TimeSpan.TryParse(t.ShiftEndTime?.Trim(), out var end))
+                return null;
+
+            // night shift: end time is on the next day
+            return end >= start ? date + end : date.AddDays(1) + end;
+        }
         public static IEnumerable<System.Web.Mvc.SelectListItem> GetRolesList()
         {
             ApplicationDbContext context = new ApplicationDbContext();
